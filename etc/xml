@@ -1,0 +1,4 @@
+# License markers line for xml file
+header_mark='<!--'
+footer_mark='-->'
+begin_line=1

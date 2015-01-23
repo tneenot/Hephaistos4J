@@ -1,0 +1,5 @@
+# License line markers for c++ file type
+header_mark="/*"
+footer_mark="*/"
+line_mark="* "
+begin_line=1

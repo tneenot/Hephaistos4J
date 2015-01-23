@@ -1,0 +1,3 @@
+# License markers lines for plain file type
+line_mark="# "
+begin_line=0

@@ -1,0 +1,3 @@
+# License markers line for x-shellscript file type
+line_mark="# "
+begin_line=1

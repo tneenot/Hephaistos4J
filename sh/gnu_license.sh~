@@ -1,0 +1,105 @@
+#!/bin/sh
+
+# This script is a simple way to manage the gnu license file into a text file.
+# Author: Tioben Neenot
+# Date: Sun Dec 28th 2014
+
+# ######### Begin section: Global variables
+LICENSE_PATH=./etc/license.txt
+LICENSE_PART="the Free Software Foundation, Inc.,"
+SRC_DIR=$1
+# ######### End section: Global variables
+
+# ########## Begin section: functions
+create_first_part()
+{
+ head -n$begin_line $src_file > $1.1
+}
+
+create_license_part()
+{
+ while read line;
+ do
+   echo "$line_mark $line" >> $1.1
+ done < $LICENSE_PATH
+}
+
+create_left_part()
+{
+ tail -n$(($nb_lines - $begin_line)) $src_file >> $1.2
+}
+
+assemble_parts_file()
+{
+  cat $1.1 $1.2 > $1
+}
+
+    
+# ########## End section: functions
+
+
+# ############ Begin Section: Main
+
+# Find all files from SRC_DIR and control if license file exists or not
+files_list=`find $SRC_DIR -type f -print`
+nb_lic_lines=`wc -l $LICENSE_PATH | cut -f1 -d' '`
+for src_file in $files_list; do
+  # Control if file contains the GNU license declaration
+  grep -q "$LICENSE_PART" $src_file
+  if [ $? -ne 0 ]; then
+    header_mark=""
+    footer_mark=""
+    line_mark=""
+    begin_line=1
+    
+    # It's necessary to add the license file declaration to the header of the file
+    # According to the type of file, the license declaration must be included between header mark
+    file_type=`file -ib $src_file | cut -f1 -d';'`
+    case $file_type in
+      "text/html" | "application/xml")
+        header_mark="<\!--"
+        footer_mark="-->"
+        begin_line=2
+        ;;
+       
+       "text/x-java")
+        header_mark="/*"
+        footer_mark="*/"
+        begin_line=1
+        ;;
+        
+       "text/plain") 
+        line_mark="#"
+        begin_line=1
+        ;;
+        
+       "text/x-shellscript")
+         line_mark="#"
+         begin_line=2
+         ;; 
+       
+        *)
+        ;;
+    esac
+    
+    nb_lines=`wc -l $src_file | cut -f1 -d' '`
+    file_only=/tmp/`basename $src_file`
+    
+    create_first_part $file_only
+    create_license_part $file_only
+    create_left_part $file_only
+    assemble_parts_file $file_only
+   
+   
+    
+   
+
+    rm -f $file_ony.1 $file_only.2
+    mv $file_only $src_file
+  fi
+done
+
+
+# ############ End Section: Main
+
+
