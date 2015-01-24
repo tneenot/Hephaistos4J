@@ -41,10 +41,6 @@ public class JFI18NChild extends JFrame implements I18n
 	 */
 	private static final long serialVersionUID = -7010803432954171543L;
 	/**
-	 * Internal content pane
-	 */
-	private final JPanel contentPane;
-	/**
 	 * Internal components
 	 */
 	private final JLabel lblText;
@@ -57,15 +53,18 @@ public class JFI18NChild extends JFrame implements I18n
 		// Here adds another window same i18n manager than JFI18nTest window.
 		// JFI18NTest.i18n.add(this);
 
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
 		setBounds( 100, 100, 200, 100 );
-		contentPane = new JPanel();
-		contentPane.setBorder( new EmptyBorder( 5, 5, 5, 5 ) );
-		contentPane.setLayout( new BorderLayout( 0, 0 ) );
-		setContentPane( contentPane );
+		/*
+	  Internal content pane
+	 */
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
 
 		lblText = new JLabel();
-		contentPane.add( lblText, BorderLayout.CENTER );
+		contentPane.add(lblText, BorderLayout.CENTER);
 	}
 
 	@Override

@@ -48,13 +48,6 @@ public class JI18nLayoutSample extends JFrame implements ActionListener
 	 */
 	private final I18nLayout layout;
 	/**
-	 * Components for sample
-	 */
-	private final JLabel     lblLabel1;
-	private final JLabel     lblLabel2;
-	private final JButton    btnBtn1;
-	private final JButton    btnBtn2;
-	/**
 	 * Default locale
 	 */
 	private Locale defaultLocal = new Locale( "en", "GB" );
@@ -65,29 +58,32 @@ public class JI18nLayoutSample extends JFrame implements ActionListener
 	JI18nLayoutSample()
 	{
 		setTitle( "JI18nLayout sample" );
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
 
 		JPanel _panel = new JPanel( new BorderLayout() );
 		layout = new I18nLayout( "org.hlib4j.samples.i18n.layout", _panel );
 
-		lblLabel1 = new JLabel( "Default label 1" );
-		lblLabel1.setName( "label1.text" );
+		/*
+	  Components for sample
+	 */
+		JLabel lblLabel1 = new JLabel("Default label 1");
+		lblLabel1.setName("label1.text");
 
-		lblLabel2 = new JLabel( "Default label 2" );
-		lblLabel2.setName( "label2.text" );
+		JLabel lblLabel2 = new JLabel("Default label 2");
+		lblLabel2.setName("label2.text");
 
-		btnBtn1 = new JButton( "Default button 1" );
-		btnBtn1.setName( "btn1.text" );
-		btnBtn1.setToolTipText( "Default tooltip text" );
+		JButton btnBtn1 = new JButton("Default button 1");
+		btnBtn1.setName("btn1.text");
+		btnBtn1.setToolTipText("Default tooltip text");
 
-		btnBtn2 = new JButton( "Default button 2" );
-		btnBtn2.setName( "btn2.text" );
-		btnBtn2.addActionListener( this );
+		JButton btnBtn2 = new JButton("Default button 2");
+		btnBtn2.setName("btn2.text");
+		btnBtn2.addActionListener(this);
 
-		_panel.add( lblLabel1, BorderLayout.NORTH );
-		_panel.add( lblLabel2, BorderLayout.WEST );
-		_panel.add( btnBtn1, BorderLayout.EAST );
-		_panel.add( btnBtn2, BorderLayout.SOUTH );
+		_panel.add(lblLabel1, BorderLayout.NORTH );
+		_panel.add(lblLabel2, BorderLayout.WEST );
+		_panel.add(btnBtn1, BorderLayout.EAST );
+		_panel.add(btnBtn2, BorderLayout.SOUTH );
 		_panel.add( new JLabel( "Static text", SwingConstants.CENTER ), BorderLayout.CENTER );
 
 		add( _panel );

@@ -43,16 +43,8 @@ public class JFI18NTest extends JFrame implements ActionListener, I18n
 	 * Serial ID for application
 	 */
 	private static final long          serialVersionUID = 7966266710914701667L;
-	public static        I18nContainer i18n             = new I18nContainer( new Locale( "en", "GB" ) );
-	static               int           currentIndex     = 0;
-	/**
-	 * Internal panel
-	 */
-	private final JPanel              contentPane;
-	/**
-	 * Internals components for JPanel
-	 */
-	private final JTextField          txtField;
+	private static final I18nContainer i18n             = new I18nContainer( new Locale( "en", "GB" ) );
+	private static               int           currentIndex     = 0;
 	private final JLabel              lblText;
 	private final JLabel              lblLang;
 	private final JComboBox< Object > cbLang;
@@ -68,12 +60,15 @@ public class JFI18NTest extends JFrame implements ActionListener, I18n
 		// Initialise the i18n manager
 		i18n.add( this );
 
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
 		setBounds( 100, 100, 200, 120 );
-		contentPane = new JPanel();
-		contentPane.setBorder( new EmptyBorder( 5, 5, 5, 5 ) );
-		contentPane.setLayout( new GridLayout( 5, 1 ) );
-		setContentPane( contentPane );
+		/*
+	  Internal panel
+	 */
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new GridLayout(5, 1));
+		setContentPane(contentPane);
 
 		// Build all components with no default initialisation
 		lblText = new JLabel();
@@ -100,21 +95,24 @@ public class JFI18NTest extends JFrame implements ActionListener, I18n
 		// Due to fix the current selected index after an addActionListener, the
 		// change will be calling
 		cbLang.setSelectedIndex( currentIndex );
-		txtField = new JTextField( 25 );
+		/*
+	  Internals components for JPanel
+	 */
+		JTextField txtField = new JTextField(25);
 
 		JPanel _txt_panel = new JPanel( new BorderLayout() );
 		_txt_panel.add( lblText, BorderLayout.WEST );
-		_txt_panel.add( txtField, BorderLayout.CENTER );
+		_txt_panel.add(txtField, BorderLayout.CENTER );
 
 		JPanel _lang_panel = new JPanel( new BorderLayout() );
 		_lang_panel.add( lblLang, BorderLayout.WEST );
 		_lang_panel.add( cbLang, BorderLayout.CENTER );
 
-		contentPane.add( _txt_panel );
-		contentPane.add( _lang_panel );
-		contentPane.add( btnNewWindow );
-		contentPane.add( btnChildWindow );
-		contentPane.add( btnBis );
+		contentPane.add(_txt_panel);
+		contentPane.add(_lang_panel);
+		contentPane.add(btnNewWindow);
+		contentPane.add(btnChildWindow);
+		contentPane.add(btnBis);
 
 		pack();
 	}
@@ -137,7 +135,7 @@ public class JFI18NTest extends JFrame implements ActionListener, I18n
 					JFI18NTest frame = new JFI18NTest();
 					frame.setVisible( true );
 				}
-				catch ( Exception e )
+				catch ( Exception ignored)
 				{
 				}
 			}
@@ -209,7 +207,7 @@ public class JFI18NTest extends JFrame implements ActionListener, I18n
 			btnChildWindow.setText( r.getString( "JFI18NTest.text.buttonChild" ) );
 			btnBis.setText( r.getString( "JFI18NTest.txt.buttonBis" ) );
 		}
-		catch ( Exception e )
+		catch ( Exception ignored)
 		{
 		}
 	}

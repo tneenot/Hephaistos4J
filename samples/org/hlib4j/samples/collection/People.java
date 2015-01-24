@@ -90,26 +90,6 @@ class People
 	}
 
 	/**
-	 * Gets people's lastname
-	 *
-	 * @return People's lastname
-	 */
-	String getLastname()
-	{
-		return lastname;
-	}
-
-	/**
-	 * Gets people's birthdate
-	 *
-	 * @return People's birthdate
-	 */
-	Date getBirthdate()
-	{
-		return birthdate;
-	}
-
-	/**
 	 * Gets people type
 	 *
 	 * @return <code>true</code> if people is a type of * * female, <code>false</code> otherwise.
@@ -150,11 +130,8 @@ class People
 		{
 			return false;
 		}
-		if ( this.birthdate != other.birthdate && ( this.birthdate == null || !this.birthdate.equals( other.birthdate ) ) )
-		{
-			return false;
-		}
-		return this.female == other.female;
+
+		return  ( this.birthdate != other.birthdate && ( this.birthdate == null || !this.birthdate.equals( other.birthdate ) ) ) && this.female == other.female;
 	}
 
 	@Override

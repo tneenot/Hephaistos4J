@@ -23,7 +23,6 @@ package org.hlib4j.samples.collection;
 import org.hlib4j.collection.Collections;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This sample allow to show code difference between standard filtering collection and filtering with
+ * This sample allows to show code difference between standard filtering collection and filtering with
  * {@link org.hlib4j.collection.Collections} classes. The objective is to show differences of cost coding between
  * classical method and proposal method for collection filtering.
  * 
@@ -66,12 +65,7 @@ public class CollectionSamplesTesting
 			}
 
 			_reader.close();
-		}
-		catch ( FileNotFoundException ex )
-		{
-			Logger.getLogger( CollectionSamplesTesting.class.getName() ).log( Level.SEVERE, null, ex );
-		}
-		catch ( IOException | ParseException ex )
+		} catch ( IOException | ParseException ex )
 		{
 			Logger.getLogger( CollectionSamplesTesting.class.getName() ).log( Level.SEVERE, null, ex );
 		}

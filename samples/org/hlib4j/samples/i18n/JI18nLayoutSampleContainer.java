@@ -48,13 +48,6 @@ public class JI18nLayoutSampleContainer extends JFrame implements ActionListener
 	 */
 	private final I18nLayout layout;
 	/**
-	 * Components for sample
-	 */
-	private final JLabel     lblLabel1;
-	private final JLabel     lblLabel2;
-	private final JButton    btnBtn1;
-	private final JButton    btnBtn2;
-	/**
 	 * Default locale
 	 */
 	private Locale defaultLocal = new Locale( "en", "GB" );
@@ -65,33 +58,36 @@ public class JI18nLayoutSampleContainer extends JFrame implements ActionListener
 	JI18nLayoutSampleContainer()
 	{
 		setTitle( "JI18nLayout sample container" );
-		setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
 
 		JPanel _panel1 = new JPanel( new BorderLayout() );
 		layout = new I18nLayout( "org.hlib4j.samples.i18n.layout", _panel1 );
 
 		JPanel _panel2 = new JPanel();
 
-		lblLabel1 = new JLabel( "Default label 1" );
-		lblLabel1.setName( "label1.text" );
+		/*
+	  Components for sample
+	 */
+		JLabel lblLabel1 = new JLabel("Default label 1");
+		lblLabel1.setName("label1.text");
 
-		lblLabel2 = new JLabel( "Default label 2" );
-		lblLabel2.setName( "label2.text" );
+		JLabel lblLabel2 = new JLabel("Default label 2");
+		lblLabel2.setName("label2.text");
 
-		btnBtn1 = new JButton( "Default button 1" );
-		btnBtn1.setName( "btn1.text" );
-		btnBtn1.setToolTipText( "Default tooltip text" );
+		JButton btnBtn1 = new JButton("Default button 1");
+		btnBtn1.setName("btn1.text");
+		btnBtn1.setToolTipText("Default tooltip text");
 
-		btnBtn2 = new JButton( "Default button 2" );
-		btnBtn2.setName( "btn2.text" );
-		btnBtn2.addActionListener( this );
+		JButton btnBtn2 = new JButton("Default button 2");
+		btnBtn2.setName("btn2.text");
+		btnBtn2.addActionListener(this);
 
-		_panel1.add( lblLabel1, BorderLayout.NORTH );
-		_panel1.add( lblLabel2, BorderLayout.WEST );
+		_panel1.add(lblLabel1, BorderLayout.NORTH );
+		_panel1.add(lblLabel2, BorderLayout.WEST );
 		_panel1.add( new JLabel( "Static text", SwingConstants.CENTER ), BorderLayout.CENTER );
 
-		_panel2.add( btnBtn1 );
-		_panel2.add( btnBtn2 );
+		_panel2.add(btnBtn1);
+		_panel2.add(btnBtn2);
 
 		_panel1.add( _panel2, BorderLayout.SOUTH );
 
