@@ -92,7 +92,7 @@ public class Predicate < E > implements Rule< E >
 	{
 		// Control if the property name exists in the element and gets the value
 		// returned by this method, as referenced value
-		this( ( isValid( model, methodName ).invoke( model, new Object[ 0 ] ) ) );
+		this( ( isValid( model, methodName ).invoke( model ) ) );
 		this.methodName = methodName;
 	}
 
@@ -123,7 +123,7 @@ public class Predicate < E > implements Rule< E >
 		catch ( NoSuchMethodException | SecurityException e )
 		{
 			throw new ClassCastException( "The " + propertyName + " doesn't exist in the "
-																			+ ( element == null ? element : element.getClass().getName() ) );
+																			+ ( element == null ? null : element.getClass().getName() ) );
 		}
 	}
 
@@ -150,7 +150,7 @@ public class Predicate < E > implements Rule< E >
 
 			try
 			{
-				_val2 = _target_method.invoke( e, new Object[ 0 ] );
+				_val2 = _target_method.invoke( e );
 			}
 			catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
 			{
@@ -162,6 +162,6 @@ public class Predicate < E > implements Rule< E >
 			_val2 = e;
 		}
 
-		return null == this.simpleValue ? this.simpleValue == _val2 : this.simpleValue.equals( _val2 );
+		return null == this.simpleValue ? null == _val2 : this.simpleValue.equals( _val2 );
 	}
 }

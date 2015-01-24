@@ -169,7 +169,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aFloat % ((Float) this.refValue).floatValue()) == 0.0f;
+			return (aFloat % (Float) this.refValue) == 0.0f;
 		}
 		catch (ClassCastException e)
 		{
@@ -190,7 +190,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aDouble % ((Double) this.refValue).doubleValue()) == 0.0d;
+			return (aDouble % (Double) this.refValue) == 0.0d;
 		}
 		catch (ClassCastException e)
 		{
@@ -211,7 +211,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aByte % ((Byte) this.refValue).byteValue()) == 0;
+			return (aByte % (Byte) this.refValue) == 0;
 		}
 		catch (ClassCastException e)
 		{
@@ -232,7 +232,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (anInteger % ((Integer) this.refValue).intValue()) == 0;
+			return (anInteger % (Integer) this.refValue) == 0;
 		}
 		catch (ClassCastException e)
 		{
@@ -253,7 +253,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aLong % ((Long) this.refValue).longValue()) == 0L;
+			return (aLong % (Long) this.refValue) == 0L;
 		}
 		catch (ClassCastException e)
 		{
@@ -274,7 +274,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aShort % ((Short) this.refValue).shortValue()) == 0;
+			return (aShort % (Short) this.refValue) == 0;
 		}
 		catch (ClassCastException e)
 		{
@@ -295,7 +295,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (anAtomicInteger.intValue() % ((AtomicInteger) this.refValue).intValue()) == 0;
+			return (anAtomicInteger.intValue() % this.refValue.intValue()) == 0;
 		}
 		catch (ClassCastException e)
 		{
@@ -316,7 +316,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (anAtomicLong.longValue() % ((AtomicLong) this.refValue).longValue()) == 0L;
+			return (anAtomicLong.longValue() % this.refValue.longValue()) == 0L;
 		}
 		catch (ClassCastException e)
 		{
@@ -337,7 +337,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aBigInteger.intValue() % ((BigInteger) this.refValue).intValue()) == 0;
+			return (aBigInteger.intValue() % this.refValue.intValue()) == 0;
 		}
 		catch (ClassCastException e)
 		{
@@ -358,7 +358,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (aBigDecimal.doubleValue() % ((BigDecimal) this.refValue).doubleValue()) == 0.0d;
+			return (aBigDecimal.doubleValue() % this.refValue.doubleValue()) == 0.0d;
 		}
 		catch (ClassCastException e)
 		{

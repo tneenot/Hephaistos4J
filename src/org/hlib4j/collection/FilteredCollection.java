@@ -76,7 +76,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	/*
 	 * (non-Javadoc)
 	 *
-	 *  @see org.hlib4j.managedCollection.Cleaner#clean()
+	 *  @see org.hlib4j.collection.Cleaner#clean()
 	 */
 	@SuppressWarnings( "unchecked" )
 	@Override
@@ -315,11 +315,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 		{
 			return false;
 		}
-		if ( !this.filter.equals( other.filter ) )
-		{
-			return false;
-		}
+		return this.filter.equals(other.filter);
 
-		return true;
 	}
 }

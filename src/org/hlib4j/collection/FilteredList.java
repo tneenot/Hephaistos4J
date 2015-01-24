@@ -85,7 +85,7 @@ final class FilteredList < ElementType > extends AbstractList< ElementType > imp
 		int _original_size = this.managedList.size();
 
 		{
-			new FilteredCollection<ElementType>( this.managedList, this.filter );
+			new FilteredCollection<>( this.managedList, this.filter );
 		}
 
 		return _original_size - this.managedList.size();
@@ -97,14 +97,9 @@ final class FilteredList < ElementType > extends AbstractList< ElementType > imp
 	 * @see java.util.AbstractList#add(java.lang.Object)
 	 */
 	@Override
-	public boolean add( ElementType elementType )
-	{
-		if ( !this.filter.accept( elementType ) )
-		{
-			return false;
-		}
+	public boolean add( ElementType elementType ) {
+		return this.filter.accept(elementType) && this.managedList.add(elementType);
 
-		return this.managedList.add( elementType );
 	}
 
 	/*
@@ -179,31 +174,22 @@ final class FilteredList < ElementType > extends AbstractList< ElementType > imp
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals( Object obj )
-	{
-		if ( this == obj )
-		{
+	public boolean equals( Object obj ) {
+		if (this == obj) {
 			return true;
 		}
-		if ( obj == null )
-		{
+		if (obj == null) {
 			return false;
 		}
-		if ( !super.equals( obj ) )
-		{
+		if (!super.equals(obj)) {
 			return false;
 		}
-		if ( !( obj instanceof FilteredList ) )
-		{
+		if (!(obj instanceof FilteredList)) {
 			return false;
 		}
-		FilteredList< ? > other = ( FilteredList< ? > ) obj;
-		if ( !this.managedList.equals( other.managedList ) )
-		{
-			return false;
-		}
+		FilteredList<?> other = (FilteredList<?>) obj;
+		return this.managedList.equals(other.managedList) && this.filter.equals(other.filter);
 
-		return this.filter.equals( other.filter );
 	}
 
 	/*
