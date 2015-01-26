@@ -104,10 +104,14 @@ public class I18nLayout implements I18n, LayoutManager
 				updateComponents( resourceBundle, ( Container ) _component );
 			}
 
-			// Control if component as tooltip text associated with
-			if ( _is_name && resourceBundle.containsKey( _component.getName() + ".tooltip" ) )
+			try {
+				// Control if component as tooltip text associated with
+				if (_is_name && resourceBundle.containsKey(_component.getName() + ".tooltip")) {
+					((JComponent) _component).setToolTipText(resourceBundle.getString(_component.getName() + ".tooltip"));
+				}
+			} catch(ClassCastException e)
 			{
-				( ( JComponent ) _component ).setToolTipText( resourceBundle.getString( _component.getName() + ".tooltip" ) );
+				// Do nothing
 			}
 		}
 	}

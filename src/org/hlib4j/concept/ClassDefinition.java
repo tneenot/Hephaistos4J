@@ -20,6 +20,8 @@ package org.hlib4j.concept;
 *  
 */
 
+import org.hlib4j.util.States;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,7 +67,7 @@ public abstract class ClassDefinition
 	/**
 	 * Properties list for user properties.
 	 */
-	protected Map< String, Property > properties = new HashMap<>();
+	protected final Map< String, Property > properties = new HashMap<>();
 
 	/**
 	 * Sets a property value. If a value can't be set or if the property name doesn't exist, an exception is occurs.
@@ -80,15 +82,11 @@ public abstract class ClassDefinition
 		UnsupportedOperationException
 	{
 		// Control the argument validity
-		validate( name );
-
-		if ( properties.containsKey( name ) == false )
-		{
-			throw new InvocationTargetException( new Throwable( "Unknown property" ) );
-		}
+		ControlArgumentValidity(name);
 
 		properties.get( name ).setValue( value );
 	}
+
 
 	/**
 	 * Gets a property value. If the property name doesn't exist, an exception is occurs.
@@ -100,15 +98,36 @@ public abstract class ClassDefinition
 	 */
 	public Object getPropertyValue( String name ) throws IllegalArgumentException, InvocationTargetException
 	{
-		// Control the argument validity
-		validate( name );
-
-		if ( properties.containsKey( name ) == false )
-		{
-			throw new InvocationTargetException( new Throwable( "Unknown property : " + name ) );
-		}
+		ControlArgumentValidity(name);
 
 		return properties.get( name ).getValue();
+	}
+
+	private void ControlArgumentValidity(String name) throws InvocationTargetException {
+		// Control the argument validity
+		validate( name );
+		isPropertyExists(name);
+	}
+
+	/**
+	 * Validate the property name
+	 *
+	 * @param propertyName Property name's to validate
+	 * @throws IllegalArgumentException If propertyName is null or empty
+	 */
+	private void validate( String propertyName )
+	{
+		if (States.isNullOrEmpty( propertyName ) )
+		{
+			throw new IllegalArgumentException( "Property name can't be null" );
+		}
+	}
+
+	private void isPropertyExists(String name) throws InvocationTargetException {
+		if ( properties.containsKey( name ) == false )
+		{
+			throw new InvocationTargetException( new Throwable( "Unknown property" + name) );
+		}
 	}
 
 	/**
@@ -140,22 +159,4 @@ public abstract class ClassDefinition
 		return getName();
 	}
 
-	/**
-	 * Validate the property name
-	 *
-	 * @param propertyName Property name's to validate
-	 * @throws IllegalArgumentException If propertyName is null or empty
-	 */
-	private void validate( String propertyName )
-	{
-		if ( null == propertyName )
-		{
-			throw new IllegalArgumentException( "Property name can't be null" );
-		}
-
-		if ( "".equals( propertyName.trim() ) )
-		{
-			throw new IllegalArgumentException( "Property name can't be an empty string" );
-		}
-	}
 }

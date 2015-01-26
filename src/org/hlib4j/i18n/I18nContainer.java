@@ -46,7 +46,7 @@ public class I18nContainer
 	/**
 	 * Internal collection of I18n implementation.
 	 */
-	private Collection< I18n > i18nCollections;
+	private final Collection< I18n > i18nCollections;
 	/**
 	 * Last locale used.
 	 */

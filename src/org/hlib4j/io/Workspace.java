@@ -46,7 +46,7 @@ public class Workspace
 	/**
 	 * List of files of the workspace
 	 */
-	private List<File> files;
+	private final List<File> files;
 
 	/**
 	 * Builds an instance of the {@link Workspace} for the specified path.
@@ -76,7 +76,7 @@ public class Workspace
 	 * 
 	 * @return URI of this workspace.
 	 */
-	public URI toURI()
+	URI toURI()
 	{
 		return root.toURI();
 	}
@@ -192,7 +192,7 @@ public class Workspace
 		/**
 		 * Workspace associated for this file.
 		 */
-		private Workspace workspace;
+		private final Workspace workspace;
 
 		/**
 		 * Creates a new <code>WorkspaceFile</code> instance by converting the given <code>pathname</code> string into an

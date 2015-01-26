@@ -121,7 +121,7 @@ public class Property
 	 */
 	public final void setValue( Object value ) throws UnsupportedOperationException
 	{
-		if ( true == isReadOnly() )
+		if (isReadOnly())
 		{
 			throw new UnsupportedOperationException( "The property is readonly" );
 		}

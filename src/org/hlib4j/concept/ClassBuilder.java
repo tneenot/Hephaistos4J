@@ -115,7 +115,7 @@ public class ClassBuilder
 	 * @return XML file parsed from the ResourceBundle.
 	 * @throws java.io.IOException If error during XML file creating.
 	 */
-	public static File parse( ResourceBundle bundle, File dir ) throws IOException
+	private static File parse(ResourceBundle bundle, File dir) throws IOException
 	{
 		File _xml_file = new File( dir.getAbsolutePath() + File.separator + "DefXML" + System.nanoTime() + ".tmp" );
 		try ( FileWriter _xml_writer = new FileWriter( _xml_file ) )

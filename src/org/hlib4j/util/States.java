@@ -73,7 +73,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(Object[] objectArray)
 	{
-		return isNullOrEmpty(objectArray) ? true : objectArray.length == 0;
+		return isNullOrEmpty(objectArray) || objectArray.length == 0;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(int[] i)
 	{
-		return isNullOrEmpty(i) ? true : i.length == 0;
+		return isNullOrEmpty(i) || i.length == 0;
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(short[] shortArray)
 	{
-		return isNullOrEmpty(shortArray) ? true : shortArray.length == 0;
+		return isNullOrEmpty(shortArray) || shortArray.length == 0;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(long[] longArray)
 	{
-		return isNullOrEmpty(longArray) ? true : longArray.length == 0;
+		return isNullOrEmpty(longArray) || longArray.length == 0;
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(boolean[] booleanArray)
 	{
-		return isNullOrEmpty(booleanArray) ? true : booleanArray.length == 0;
+		return isNullOrEmpty(booleanArray) || booleanArray.length == 0;
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(float[] floatArray)
 	{
-		return isNullOrEmpty(floatArray) ? true : floatArray.length == 0;
+		return isNullOrEmpty(floatArray) || floatArray.length == 0;
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(double[] doubleArray)
 	{
-		return isNullOrEmpty(doubleArray) ? true : doubleArray.length == 0;
+		return isNullOrEmpty(doubleArray) || doubleArray.length == 0;
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(char[] charArray)
 	{
-		return isNullOrEmpty(charArray) ? true : charArray.length == 0;
+		return isNullOrEmpty(charArray) || charArray.length == 0;
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class States
 	 */
 	public static boolean isNullOrEmptyArray(byte[] byteArray)
 	{
-		return isNullOrEmpty(byteArray) ? true : byteArray.length == 0;
+		return isNullOrEmpty(byteArray) || byteArray.length == 0;
 	}
 
 	/**
