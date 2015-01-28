@@ -43,15 +43,6 @@ public class WorkspaceTest
 	 */
 	private File ftest = null;
 
-	@BeforeClass
-	public static void setUpClass()
-	{
-	}
-
-	@AfterClass
-	public static void tearDownClass()
-	{
-	}
 
 	@Before
 	public void setUp()
@@ -60,11 +51,11 @@ public class WorkspaceTest
 		workspace = new Workspace(File.separator + "tmp" + File.separator + "FTest");
 		try
 		{
-		workspace.init();
+		workspace.mkdirs();
 		}catch(IllegalAccessError e)
 		{
 			workspace = new Workspace(File.separator + "tmp" + File.separator + "FTest2");
-			workspace.init();
+			workspace.mkdirs();
 		}
 
 		ftest = null;
@@ -82,7 +73,11 @@ public class WorkspaceTest
 		}
 
 		// Destroy the workspace context
-		workspace.delete();
+		if(!workspace.delete())
+		{
+			workspace.deleteOnExit();
+		}
+
 		workspace = null;
 	}
 
@@ -115,7 +110,7 @@ public class WorkspaceTest
 	@Test
 	public void testAddUriAndCompareToString() throws IOException
 	{
-		File ref = new File("/foobar");
+		File ref = new File(File.separator + "foobar");
 		File add_file = workspace.addFileByURI(new File(workspace + File.separator + "foobar").toURI());
 
 		Assert.assertEquals(ref.toURI(), add_file.toURI());
@@ -203,10 +198,10 @@ public class WorkspaceTest
 	/**
 	 * Initialized a workspace already initialized.
 	 */
-	@Test(expected = IllegalAccessError.class)
+	@Test
 	public void testInitializedWorkspace()
 	{
-		workspace.init();
+		Assert.assertFalse(workspace.mkdirs());
 	}
 
 	/**
@@ -243,7 +238,7 @@ public class WorkspaceTest
 		f2.createNewFile();
 
 		Assert.assertTrue(f.renameTo(workspace.addFileByStringPath("bar")));
-		Assert.assertTrue(f2.renameTo(workspace.addFileByStringPath("/bar2")));
+		Assert.assertTrue(f2.renameTo(workspace.addFileByStringPath(File.separator + "bar2")));
 
 		Assert.assertTrue(new File(workspace + File.separator + "bar").exists());
 		Assert.assertTrue(new File(workspace + File.separator + "bar2").exists());
@@ -286,5 +281,31 @@ public class WorkspaceTest
 		ftest = workspace.addFileByStringPath("foo5");
 		
 		Assert.assertEquals(File.separator, ftest.toPath().getParent().toString());
+	}
+
+	/**
+	 * Call <code>createNewFile</code> for a <code>Workspace</code> and control that raises an exception.
+	 */
+	@Test(expected = IOException.class )
+	public void testWorkspace_createNewFile_Failed() throws IOException {
+		workspace.createNewFile();
+	}
+
+	@Test
+	public void Workspace_BuildInstanceWithParentAndChildString()
+	{
+		new Workspace(File.separator + "tmp" + File.separator +"foo","bar");
+	}
+
+	@Test
+	public void Workspace_BuildInstanceWithParentFileAndChildString()
+	{
+		new Workspace(new File(File.separator + "tmp" + File.separator + "foo"), "bar");
+	}
+
+	@Test
+	public void Workspace_BuildInstanceWithURI()
+	{
+		new Workspace(new File(File.separator + "tmp" + File.separator + "foo").toURI());
 	}
 }

@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represents a workspace in which all file creates or attach to this workspace will be stored. Thanks to the
@@ -35,272 +33,224 @@ import java.util.List;
  *
  * @author Tioben Neenot &lt;tioben.neenot@laposte.net&gt;
  */
-public class Workspace
-{
+public class Workspace extends File {
+    /**
+     * Builds an instance of the <code>Workspace</code> for the specified path.
+     *
+     * @param path Path for the workspace.
+     */
+    public Workspace(String path) {
+        super(path);
+    }
 
-	/**
-	 * Path associated with this workspace
-	 */
-	private final File root;
+    /**
+     * Builds an instance of <code>Workspace</code> from a parent pathname string and a child pathname child.
+     *
+     * @param parent The parent pathname string
+     * @param child  The child pathname string
+     * @see java.io.File
+     */
+    public Workspace(String parent, String child) {
+        super(parent, child);
+    }
 
-	/**
-	 * List of files of the workspace
-	 */
-	private final List<File> files;
+    /**
+     * Builds an instance of <code>Workspace</code> with a {@link java.io.File} instance by converting the given file: URI into an abstract pathname.
+     *
+     * @param uri The URI file.
+     * @see java.io.File
+     */
+    public Workspace(URI uri) {
+        super(uri);
+    }
 
-	/**
-	 * Builds an instance of the {@link Workspace} for the specified path.
-	 *
-	 * @param path
-	 *          Path for the workspace.
-	 */
-	public Workspace(String path)
-	{
-		this.files = new ArrayList<>();
-		this.root = new File(path);
-	}
+    /**
+     * Builds an instance of <code>Workspace</code> from a parent file abstract pathname and a child pathname string.
+     *
+     * @param parent The parent abstract pathname
+     * @param child  The child pathname string
+     * @see java.io.File
+     */
+    public Workspace(File parent, String child) {
+        super(parent, child);
+    }
 
-	/**
-	 * Return the representation of the Workspace
-	 *
-	 * @return Representation of the Workspace
-	 */
-	@Override
-	public String toString()
-	{
-		return this.root.toString();
-	}
+    /**
+     * This method is overriding from the <code>File</code> parent class and always return an exception. It's impossible for a Workspace to be only a file. Only directory creating is available by calling {@link #mkdirs()}
+     *
+     * @return Nothing
+     * @throws IOException Always throw an IOException, since a Workspace is only a directory and not a file.
+     */
+    @Override
+    public boolean createNewFile() throws IOException {
+        throw new IOException("Workspace can't be created as a file, but only as directory");
+    }
 
-	/**
-	 * Return the URI description of this workspace.
-	 * 
-	 * @return URI of this workspace.
-	 */
-	URI toURI()
-	{
-		return root.toURI();
-	}
+    /**
+     * Adds a file into the workspace according to its path. If path is given as full absolute path, it will be always
+     * stored into the workspace name. The file adds into the workspace is not created by default.
+     *
+     * @param path WorkspaceUnitFile's path.
+     * @return The file into the workspace.
+     * @throws IOException If file exists into the workspace yet.
+     */
+    public File addFileByStringPath(String path) throws IOException {
+        File _inner_file = new File(getAbsolutePath(), path);
+        if(!_inner_file.exists())
+        {
+            return new WorkspaceUnitFile(this, path);
+        }
 
-	/**
-	 * Delete the contents of the current Workspace
-	 */
-	public void delete()
-	{
-		if (!this.root.delete())
-		{
-			this.root.deleteOnExit();
-		}
-	}
+        throw new IOException("File exists yet");
+    }
 
-	/**
-	 * Initialize the workspace. The initialization process consist to create the workspace corresponding to its workspace
-	 * name as defined by its constructor. If workspace has been initialized yet, an <code>IllegalAccessError</code> will
-	 * occur.
-	 */
-	public void init()
-	{
-		if (!this.root.exists())
-		{
-			if (!this.root.mkdirs()) { throw new IllegalAccessError("File creation failed: " + this.root); }
-		}
-		else
-		{
-			throw new IllegalAccessError("Workspace exists yet: " + this.root);
-		}
-	}
+    /**
+     * Adds a file according to its URI representation.
+     *
+     * @param uri The URI file
+     * @return The file added into the workspace. It's URI will differ from the original URI, according to the fact the
+     * root URI will be removed from the original URI file.
+     * @throws IOException If file exists into the workspace yet.
+     */
+    public File addFileByURI(URI uri) throws IOException {
+        File _workspace_file = new WorkspaceUnitFile(this, uri);
+        return addFileByStringPath(_workspace_file.toString());
+    }
 
-	/**
-	 * Adds a file into the workspace according to its path. If path is given as full absolute path, it will be always
-	 * stored into the workspace name. The file adds into the workspace is not created by default.
-	 *
-	 * @param path
-	 *          WorkspaceFile's path.
-	 * @return The file into the workspace.
-	 * @throws IOException
-	 *           If file exists into the workspace yet.
-	 */
-	public File addFileByStringPath(String path) throws IOException
-	{
-		File _workspace_file = new WorkspaceFile(this, path);
-		if (!this.files.contains(_workspace_file) && !_workspace_file.exists())
-		{
-			this.files.add(_workspace_file);
-			return _workspace_file;
-		}
+    /**
+     * Attach a file to the workspace. If file exists yet or had been created, an <code>IOException</code> will throw.
+     *
+     * @param file File to attach to the workspace.
+     * @return The attached file.
+     * @throws IOException If file exists into the workspace or had been created outside the workspace.
+     */
+    public File attachFile(File file) throws IOException {
+        if (!file.exists()) {
+            return addFileByStringPath(file.getPath());
+        }
 
-		throw new IOException("File exists yet");
-	}
+        throw new IOException("File exists or created yet");
+    }
 
-	/**
-	 * Adds a file according to its URI representation.
-	 * 
-	 * @param uri
-	 *          The URI file
-	 * @return The file added into the workspace. It's URI will differ from the original URI, according to the fact the
-	 *         root URI will be removed from the original URI file.
-	 * @throws IOException
-	 *           If file exists into the workspace yet.
-	 */
-	public File addFileByURI(URI uri) throws IOException
-	{
-		File _workspace_file = new WorkspaceFile(this, uri);
-		return addFileByStringPath(_workspace_file.toString());
-	}
+    /**
+     * Gets the file that is corresponding to the given path.
+     *
+     * @param path WorkspaceUnitFile's path
+     * @return WorkspaceUnitFile that is corresponding to the given path, or <code>null</code> if not found.
+     */
+    public File getFileByStringPath(String path) {
+        File _inner_file = new File(getAbsolutePath(), path);
+        return _inner_file.exists() ? new File(path) : null;
+    }
 
-	/**
-	 * Attach a file to the workspace. If file exists yet or had been created, an <code>IOException</code> will throw.
-	 *
-	 * @param file
-	 *          File to attach to the workspace.
-	 * @return The attached file.
-	 * @throws IOException
-	 *           If file exists into the workspace or had been created outside the workspace.
-	 */
-	public File attachFile(File file) throws IOException
-	{
-		if (!file.exists()) { return addFileByStringPath(file.getPath()); }
+    /**
+     * A class that's representing a controlled file that is locking into a specific workspace.
+     *
+     * @author Tioben Neenot
+     */
+    private class WorkspaceUnitFile extends File {
 
-		throw new IOException("File exists or created yet");
-	}
+        /**
+         * Component serial ID
+         */
+        private static final long serialVersionUID = -3621417823396419262L;
 
-	/**
-	 * Gets the file that is corresponding to the given path.
-	 *
-	 * @param path
-	 *          WorkspaceFile's path
-	 * @return WorkspaceFile that is corresponding to the given path, or <code>null</code> if not found.
-	 */
-	public File getFileByStringPath(String path)
-	{
-		int _idx = this.files.indexOf(new WorkspaceFile(this, path));
-		return _idx < 0 ? null : this.files.get(_idx);
-	}
+        /**
+         * Workspace associated for this file.
+         */
+        private final Workspace workspace;
 
-	/**
-	 * A class that's representing a controlled file that is locking into a specific workspace.
-	 *
-	 * @author Tioben Neenot
-	 */
-	private class WorkspaceFile extends File
-	{
+        /**
+         * Creates a new <code>WorkspaceUnitFile</code> instance by converting the given <code>pathname</code> string into an
+         * abstract pathname. The rules applied to this constructor are the same as {@link File}. Furthermore, according to
+         * {@link Workspace} concepts, if this abstract pathname contains the full pathname of the workspace, the pathname
+         * will be considered as relative inside the {@link Workspace} pathname.
+         *
+         * @param workspace workspace links to this file
+         * @param pathname  A pathname string
+         * @throws NullPointerException If the pathname or workspace argument is <code>null</code>
+         * @see java.io.File
+         */
+        WorkspaceUnitFile(Workspace workspace, String pathname) {
+            super(workspace.toString(), pathname);
+            this.workspace = workspace;
+        }
 
-		/**
-		 * Component serial ID
-		 */
-		private static final long serialVersionUID = -3621417823396419262L;
+        /**
+         * Creates a new File instance by converting the given file: URI into an abstract pathname. Furthermore, according
+         * to {@link Workspace} concepts, if this abstract pathname contains the full pathname of the workspace, the
+         * pathname will be considered as relative inside the {@link Workspace} pathname.
+         *
+         * @param uri An absolute, hierarchical URI with a scheme equal to <code>"file"</code>, a non-empty path component,
+         *            and undefined authority, query, and fragment components
+         * @throws NullPointerException     If <code>URI</code> is <code>null</code>.
+         * @throws IllegalArgumentException If the preconditions on the parameter do not hold
+         * @see java.io.File
+         */
+        WorkspaceUnitFile(Workspace workspace, URI uri) {
+            this(workspace, uri.toString());
+        }
 
-		/**
-		 * Workspace associated for this file.
-		 */
-		private final Workspace workspace;
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.io.File#toPath()
+         */
+        @Override
+        public Path toPath() {
+            return new File(this.toString()).toPath();
+        }
 
-		/**
-		 * Creates a new <code>WorkspaceFile</code> instance by converting the given <code>pathname</code> string into an
-		 * abstract pathname. The rules applied to this constructor are the same as {@link File}. Furthermore, according to
-		 * {@link Workspace} concepts, if this abstract pathname contains the full pathname of the workspace, the pathname
-		 * will be considered as relative inside the {@link Workspace} pathname.
-		 *
-		 * @param workspace
-		 *          workspace links to this file
-		 * @param pathname
-		 *          A pathname string
-		 * @throws NullPointerException
-		 *           If the pathname or workspace argument is <code>null</code>
-		 * @see java.io.File
-		 */
-		WorkspaceFile(Workspace workspace, String pathname)
-		{
-			super(workspace.toString(), pathname);
-			this.workspace = workspace;
-		}
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.io.File#getParentFile()
+         */
+        @Override
+        public File getParentFile() {
+            File _parent_file = super.getParentFile();
 
-		/**
-		 * Creates a new File instance by converting the given file: URI into an abstract pathname. Furthermore, according
-		 * to {@link Workspace} concepts, if this abstract pathname contains the full pathname of the workspace, the
-		 * pathname will be considered as relative inside the {@link Workspace} pathname.
-		 *
-		 * @param uri
-		 *          An absolute, hierarchical URI with a scheme equal to <code>"file"</code>, a non-empty path component,
-		 *          and undefined authority, query, and fragment components
-		 * @throws NullPointerException
-		 *           If <code>URI</code> is <code>null</code>.
-		 * @throws IllegalArgumentException
-		 *           If the preconditions on the parameter do not hold
-		 * @see java.io.File
-		 */
-		WorkspaceFile(Workspace workspace, URI uri)
-		{
-			this(workspace, uri.toString());
-		}
+            return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getAbsolutePath());
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.io.File#toPath()
-		 */
-		@Override
-		public Path toPath()
-		{
-			return new File(this.toString()).toPath();
-		}
+        /**
+         * Returns the pathname string of this abstract pathname's parent, or <code>null</code> if this pathname does not
+         * name a parent directory.
+         */
+        @Override
+        public String getParent() {
+            // Limits to workspace root directory has upper level.
+            String _parent = super.getParent();
+            String _its_parent = _parent.replace(this.workspace.toString(), "");
+            return "".equals(_its_parent) ? null : _its_parent;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.io.File#getParentFile()
-		 */
-		@Override
-		public File getParentFile()
-		{
-			File _parent_file = super.getParentFile();
+        /**
+         * Returns the description for this WorkspaceUnitFile. This description doesn't show the root workspace into the full
+         * workspace.
+         *
+         * @return The description for this WorkspaceUnitFile.
+         */
+        @Override
+        public String toString() {
+            return super.toString().replace(String.format("%1$1s%2$1s", this.workspace.toString(), File.separator),
+                    File.separator);
+        }
 
-			return null == _parent_file ? null : new WorkspaceFile(this.workspace, _parent_file.getAbsolutePath());
-		}
+        /**
+         * Returns the URI of this WorkspaceUnitFile.
+         *
+         * @return URI description of this WorkspaceUnitFile or <code>null</code> if the URI is invalid.
+         */
+        @Override
+        public URI toURI() {
+            try {
+                return new URI(super.toURI().toString().replace(this.workspace.toURI().toString(), ""));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
 
-		/**
-		 * Returns the pathname string of this abstract pathname's parent, or <code>null</code> if this pathname does not
-		 * name a parent directory.
-		 */
-		@Override
-		public String getParent()
-		{
-			// Limits to workspace root directory has upper level.
-			String _parent = super.getParent();
-			String _its_parent = _parent.replace(this.workspace.toString(), "");
-			return "".equals(_its_parent) ? null : _its_parent;
-		}
-
-		/**
-		 * Returns the description for this WorkspaceFile. This description doesn't show the root workspace into the full
-		 * workspace.
-		 *
-		 * @return The description for this WorkspaceFile.
-		 */
-		@Override
-		public String toString()
-		{
-			return super.toString().replace(String.format("%1$1s%2$1s", this.workspace.toString(), File.separator),
-					File.separator);
-		}
-
-		/**
-		 * Returns the URI of this WorkspaceFile.
-		 * 
-		 * @return URI description of this WorkspaceFile or <code>null</code> if the URI is invalid.
-		 */
-		@Override
-		public URI toURI()
-		{
-			try
-			{
-				return new URI(super.toURI().toString().replace(this.workspace.toURI().toString(), ""));
-			}
-			catch (URISyntaxException e)
-			{
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }
