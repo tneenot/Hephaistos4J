@@ -214,7 +214,7 @@ public class Workspace extends File {
         }
 
         /**
-         * Returns the pathname string of this abstract pathname's parent, or <code>null</code> if this pathname does not
+         * Returns the pathname string of this abstract pathname parent, or <code>null</code> if this pathname does not
          * name a parent directory.
          */
         @Override
