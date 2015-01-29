@@ -20,9 +20,6 @@ package org.hlib4j.collection;
 *  
 */
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 /**
  * A convenience class to compare a reference value with another one.
  * The comparison has validated if and
