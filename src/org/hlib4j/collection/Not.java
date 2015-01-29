@@ -29,17 +29,17 @@ import java.lang.reflect.InvocationTargetException;
  * @param <E>
  *          Type of element for the predicate
  * @author Tioben Neenot
- * @see Predicate
+ * @see PredicateMethod
  */
-public class Not<E> extends Predicate<E>
+public class Not<E> extends PredicateMethod<E>
 {
 
 	/**
-	 * Builds an instance of the opposite of a {@link Predicate}.
+	 * Builds an instance of the opposite of a {@link PredicateMethod}.
 	 *
 	 * @param value
-	 *          reference value for opposite of a {@link Predicate}.
-	 * @see org.hlib4j.collection.Predicate#Predicate(Object)
+	 *          reference value for opposite of a {@link PredicateMethod}.
+	 * @see PredicateMethod#PredicateMethod(Object)
 	 */
 	public Not(Object value)
 	{
@@ -47,7 +47,7 @@ public class Not<E> extends Predicate<E>
 	}
 
 	/**
-	 * Builds an instance of the opposite of a {@link Predicate} according to model and method's name.
+	 * Builds an instance of the opposite of a {@link PredicateMethod} according to model and method's name.
 	 *
 	 * @param model
 	 *          Model type of this class
@@ -62,7 +62,7 @@ public class Not<E> extends Predicate<E>
 	 *           Invocation error into given model
 	 * 
 	 *           <b>Note: </b> If method not found, a ClassCastException will be thrown.
-	 * @see org.hlib4j.collection.Predicate#Predicate(Object, String)
+	 * @see PredicateMethod#PredicateMethod(Object, String)
 	 */
 	public Not(E model, String methodName) throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException
@@ -73,7 +73,7 @@ public class Not<E> extends Predicate<E>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.hlib4j.collection.Predicate#accept(java.lang.Object)
+	 * @see org.hlib4j.collection.PredicateMethod#accept(java.lang.Object)
 	 */
 	@Override
 	public boolean accept(E e)

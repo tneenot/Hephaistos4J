@@ -92,13 +92,13 @@ public class NotTest
 	 * <li><b>Description : </b>Build a Not predicate with a specific method for
 	 * control value, builds another test instance class and test this last with
 	 * Not predicate.</li>
-	 * <li><b>Result : </b>Predicate builds without error</li>
+	 * <li><b>Result : </b>PredicateMethod builds without error</li>
 	 * <li><b>Comments: </b>None.</li>
 	 * </ul>
 	 *
 	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran during test to be available.
 	 * @throws IllegalAccessException            Exception that must not be ran during test to be available.
-	 * @see Predicate
+	 * @see PredicateMethod
 	 */
 	@Test
 	public void testNotWithMethod() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
