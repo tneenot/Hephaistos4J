@@ -295,8 +295,8 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (anAtomicInteger.intValue() % ((AtomicInteger) this.refValue).intValue()) == 0;
-		}
+            return (anAtomicInteger.intValue() % this.refValue.intValue()) == 0;
+        }
 		catch (ClassCastException e)
 		{
 			// Do nothing, only for implementation
@@ -316,8 +316,8 @@ public class Multiple<E extends Number> implements Rule<E>
 	{
 		try
 		{
-			return (anAtomicLong.longValue() % ((AtomicLong) this.refValue).longValue()) == 0L;
-		}
+            return (anAtomicLong.longValue() % this.refValue.longValue()) == 0L;
+        }
 		catch (ClassCastException e)
 		{
 			// Do nothing, only for implementation
