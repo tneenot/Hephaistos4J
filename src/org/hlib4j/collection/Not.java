@@ -20,65 +20,45 @@ package org.hlib4j.collection;
 *  
 */
 
-import java.lang.reflect.InvocationTargetException;
+import org.hlib4j.util.States;
 
 /**
  * Builds a predicate whose the result is the opposite to the parent predicate itself. The predicate is given by a
  * method for an object, that will return a value.
  *
- * @param <E>
- *          Type of element for the predicate
  * @author Tioben Neenot
- * @see PredicateMethod
  */
-public class Not<E> extends PredicateMethod<E>
+public class Not<E> implements Rule<E>
 {
 
-	/**
-	 * Builds an instance of the opposite of a {@link PredicateMethod}.
-	 *
-	 * @param value
-	 *          reference value for opposite of a {@link PredicateMethod}.
-	 * @see PredicateMethod#PredicateMethod(Object)
-	 */
-	public Not(Object value)
-	{
-		super(value);
-	}
+    private final Object refValue;
 
-	/**
+    /**
 	 * Builds an instance of the opposite of a {@link PredicateMethod} according to model and method's name.
 	 *
-	 * @param model
-	 *          Model type of this class
-	 * @param methodName
-	 *          The method's name for the class. The value returned by this methodName will be compare to the &lt;E&gt;
-	 *          type.
-	 * @throws InvocationTargetException
-	 *           Invocation method error
-	 * @throws IllegalAccessException
-	 *           Method invocation error
-	 * @throws IllegalArgumentException
-	 *           Invocation error into given model
-	 * 
-	 *           <b>Note: </b> If method not found, a ClassCastException will be thrown.
-	 * @see PredicateMethod#PredicateMethod(Object, String)
-	 */
-	public Not(E model, String methodName) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException
+     * @param refValue
+     *          Reference value for this rule.
+     */
+	public Not(Object refValue)
 	{
-		super(model, methodName);
+		this.refValue = refValue;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.hlib4j.collection.PredicateMethod#accept(java.lang.Object)
-	 */
-	@Override
-	public boolean accept(E e)
+
+    @Override
+	public boolean accept(E theValue)
 	{
-		return !super.accept(e);
+        // If the reference value and the comparison value are null so return the opposite of this state
+        boolean _flag_ctrl = States.isNullOrEmpty(this.refValue) & States.isNullOrEmpty(theValue);
+        if(_flag_ctrl) { return false; }
+
+        // If the reference value is not null, compare it with the parameter
+        if(!States.isNullOrEmpty(this.refValue)) {
+            return !refValue.equals(theValue);
+        }
+
+        // Otherwise, compare the parameter with the reference value
+        return !theValue.equals(this.refValue);
 	}
 
 }

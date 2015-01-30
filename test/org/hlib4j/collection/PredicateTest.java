@@ -26,17 +26,17 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Unit tests for {@link org.hlib4j.collection.PredicateValue} class.
+ * Unit tests for {@link Predicate} class.
  *
  * @author Tioben Neenot
  */
-public class PredicateValueTest
+public class PredicateTest
 {
 
 	/**
 	 * Test of accept method, of class PredicateMethod. <br>
 	 * <ul>
-	 * <li><b>Description : </b>Sets a value for the {@link org.hlib4j.collection.PredicateValue#accept(Object)} and control it</li>
+	 * <li><b>Description : </b>Sets a value for the {@link Predicate#accept(Object)} and control it</li>
 	 * <li><b>Result : </b>Value conforms</li>
 	 * <li><b>Comments : </b>None.</li>
 	 * </ul>
@@ -44,14 +44,14 @@ public class PredicateValueTest
 	@Test
 	public void testAccept()
 	{
-		PredicateValue<Integer> ref = new PredicateValue<>(5);
+		Predicate<Integer> ref = new Predicate<>(5);
 		assertTrue( ref.accept( 5 ) );
 	}
 
 	/**
 	 * Test of accept method, of class PredicateMethod. <br>
 	 * <ul>
-	 * <li><b>Description : </b>Sets a value for the {@link org.hlib4j.collection.PredicateValue#accept(Object) } and control a different
+	 * <li><b>Description : </b>Sets a value for the {@link Predicate#accept(Object) } and control a different
 	 * value</li>
 	 * <li><b>Result : </b>Value not conforms</li>
 	 * <li><b>Comments : </b>None.</li>
@@ -60,12 +60,12 @@ public class PredicateValueTest
 	@Test
 	public void testAcceptFalse()
 	{
-        PredicateValue<Integer> ref = new PredicateValue<>(4);
+        Predicate<Integer> ref = new Predicate<>(4);
 		Assert.assertFalse( ref.accept( 5 ) );
 	}
 
 	/**
-	 * Test method for {@link PredicateValue#accept(Object)}.
+	 * Test method for {@link Predicate#accept(Object)}.
 	 * <ul>
 	 * <li><b>Description: </b>Controls if the given value is valid or not</li>
 	 * <li><b>Results: </b>Value conforms</li>
@@ -75,12 +75,12 @@ public class PredicateValueTest
 	@Test
 	public final void testAcceptNull()
 	{
-        PredicateValue< Object > _ref = new PredicateValue<>( null );
+        Predicate< Object > _ref = new Predicate<>( null );
 		Assert.assertFalse( _ref.accept( new Object() ) );
 	}
 
 	/**
-	 * Test method for {@link PredicateValue#accept(Object)}.
+	 * Test method for {@link Predicate#accept(Object)}.
 	 * <ul>
 	 * <li><b>Description: </b>Controls if the given value is not valid</li>
 	 * <li><b>Results: </b>Value not conforms</li>
@@ -90,7 +90,7 @@ public class PredicateValueTest
 	@Test
 	public final void testAcceptFalseNull()
 	{
-        PredicateValue< Object > _ref = new PredicateValue<>( null );
+        Predicate< Object > _ref = new Predicate<>( null );
 		Assert.assertTrue( _ref.accept( null ) );
 	}
 }

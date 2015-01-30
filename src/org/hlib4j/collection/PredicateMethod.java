@@ -58,13 +58,13 @@ import java.lang.reflect.Method;
  * <code>ClassCastException</code> will be thrown. <br>
  * <br>
  * <code>PredicateMethod</code> can be used a simple value as reference thanks to
- * {@link #PredicateMethod(Object)} constructor. In this case only value will be
+ * {@link #PredicateMethod(Object, String)} constructor. In this case only value will be
  * compared during {@link #accept(Object)} method calling.
  *
  * @param <E> value type for comparison
  * @author Tioben Neenot
  */
-public class PredicateMethod< E > implements Rule< E >
+public class PredicateMethod< E > implements Rule < E >
 {
 
 	/**
@@ -75,7 +75,7 @@ public class PredicateMethod< E > implements Rule< E >
 	/**
 	 * The equal clause to gets the referenced value
 	 */
-	private Object simpleValue = null;
+	private Object objectValue = null;
 
 	/**
 	 * Builds an instance of the <code>PredicateMethod</code> class.
@@ -92,21 +92,11 @@ public class PredicateMethod< E > implements Rule< E >
 	{
 		// Control if the property name exists in the element and gets the value
 		// returned by this method, as referenced value
-		this( ( isValid( model, methodName ).invoke( model ) ) );
+		this.objectValue = isValid( model, methodName ).invoke( model );
 		this.methodName = methodName;
 	}
 
-	/**
-	 * Builds an instance of a PredicateMethod with a value only as reference.
-	 *
-	 * @param simpleValue Reference value
-	 */
-	public PredicateMethod(Object simpleValue)
-	{
-		this.simpleValue = simpleValue;
-	}
-
-	/**
+    /**
 	 * Controls if the propertyName exists in the element
 	 *
 	 * @param element      The element reference
@@ -133,7 +123,7 @@ public class PredicateMethod< E > implements Rule< E >
 	 * method a <code>ClassCastException</code> will be thrown. If method exist
 	 * and invocation error is occurs, so return <code>false</code>. If
 	 * <code>PredicateMethod</code> was built for a reference value only with
-	 * {@link #PredicateMethod(Object)} constructor , so in this case accept method runs
+	 * {@link #PredicateMethod(Object, String)} constructor , so in this case accept method runs
 	 * only on this value.
 	 *
 	 * @see org.hlib4j.collection.Rule#accept(java.lang.Object)
@@ -143,25 +133,18 @@ public class PredicateMethod< E > implements Rule< E >
 	{
 		Object _val2;
 
-		if ( null != this.methodName )
-		{
-			// Controls if the method name exists in the element e
-			Method _target_method = isValid( e, this.methodName );
+        // Controls if the method name exists in the element e
+        Method _target_method = isValid( e, this.methodName );
 
-			try
-			{
-				_val2 = _target_method.invoke( e );
-			}
-			catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
-			{
-				return false;
-			}
-		}
-		else
-		{
-			_val2 = e;
-		}
+        try
+        {
+            _val2 = _target_method.invoke( e );
+        }
+        catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
+        {
+            return false;
+        }
 
-		return null == this.simpleValue ? null == _val2 : this.simpleValue.equals( _val2 );
+		return this.objectValue.equals( _val2 );
 	}
 }

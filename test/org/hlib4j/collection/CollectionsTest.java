@@ -596,10 +596,7 @@ public class CollectionsTest
 		_src.add( 3 );
 		_src.add( 4 );
 
-		Assert.assertTrue( _ccol.containsAll( Arrays.asList( new Integer[]
-																													 {
-																														 1, 3
-																													 } ) ) );
+		Assert.assertTrue( _ccol.containsAll( Arrays.asList( new Integer[] {1, 3 } ) ) );
 	}
 
 	/**
@@ -741,10 +738,7 @@ public class CollectionsTest
 		_src.add( 3 );
 		_src.add( 4 );
 
-		Assert.assertTrue( _ccol.removeAll( Arrays.asList( new Integer[]
-																												 {
-																													 1, 2, 3, 4
-																												 } ) ) );
+		Assert.assertTrue( _ccol.removeAll( Arrays.asList( new Integer[] { 1, 2, 3, 4 } ) ) );
 	}
 
 	/**

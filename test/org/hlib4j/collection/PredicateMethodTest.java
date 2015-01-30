@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Tioben Neenot
  */
-public class PredicateMethodMethodTest
+public class PredicateMethodTest
 {
 
 	/**
@@ -118,36 +118,6 @@ public class PredicateMethodMethodTest
 	}
 
 	/**
-	 * Test of accept method, of class PredicateMethod. <br>
-	 * <ul>
-	 * <li><b>Description : </b>Sets a value and control it</li>
-	 * <li><b>Result : </b>Value conforms</li>
-	 * <li><b>Comments : </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public void testAcceptValue()
-	{
-		PredicateMethod< Integer > _ref = new PredicateMethod<>( 5 );
-		assertTrue( _ref.accept( 5 ) );
-	}
-
-	/**
-	 * Test of accept method, of class PredicateMethod. <br>
-	 * <ul>
-	 * <li><b>Description : </b>Sets a value and control it with a bad value</li>
-	 * <li><b>Result : </b>Value not conforms</li>
-	 * <li><b>Comments : </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public void testAcceptValueFalse()
-	{
-		PredicateMethod< Integer > _ref = new PredicateMethod<>( 5 );
-		Assert.assertFalse( _ref.accept( 4 ) );
-	}
-
-	/**
 	 * Test method for {@link PredicateMethod#accept(Object)}.
 	 * <ul>
 	 * <li><b>Description: </b>Controls if the given value is valid or not</li>
@@ -155,27 +125,11 @@ public class PredicateMethodMethodTest
 	 * <li><b>Comments: </b>None.</li>
 	 * </ul>
 	 */
-	@Test
-	public final void testAcceptNull()
-	{
-		PredicateMethod< Object > _ref = new PredicateMethod<>( null );
-		Assert.assertFalse( _ref.accept( new Object() ) );
+	@Test(expected = NullPointerException.class)
+	public final void testAcceptNull() throws InvocationTargetException, IllegalAccessException {
+		new PredicateMethod<>( null, null );
 	}
 
-	/**
-	 * Test method for {@link PredicateMethod#accept(Object)}.
-	 * <ul>
-	 * <li><b>Description: </b>Controls if the given value is not valid</li>
-	 * <li><b>Results: </b>Value not conforms</li>
-	 * <li><b>Comments: </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public final void testAcceptFalseNull()
-	{
-		PredicateMethod< Object > _ref = new PredicateMethod<>( null );
-		Assert.assertTrue( _ref.accept( null ) );
-	}
 }
 
 /**

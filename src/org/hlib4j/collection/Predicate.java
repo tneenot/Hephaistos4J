@@ -24,7 +24,7 @@ package org.hlib4j.collection;
  * A convenience class to compare a reference value with another one.
  * The comparison has validated if and
  * only if the &lt;E&gt; type referenced from the constructor, is equal to the
- * the value type given in the {@link #accept(E)} method. For example,
+ * the value type given in the {@link #accept(Object)} method. For example,
  * suppose we have a class like this:<br>
  * <pre>
  * class A
@@ -36,10 +36,10 @@ package org.hlib4j.collection;
  *   public boolean isFlag() { return aFlag; }
  * }</pre>
  * <br>
- * To use the {@link org.hlib4j.collection.PredicateValue} with this class, implement the following rule:<br>
+ * To use the {@link Predicate} with this class, implement the following rule:<br>
  * <br>
  * <pre>
- * PredicateMethod&lt;int&gt; e = new PredicateMethod&lt;A&gt;(5);
+ * Predicate&lt;int&gt; e = new Predicate&lt;A&gt;(5);
  * ...
  * int another_int = 5;
  * e.accept(another_int);
@@ -52,7 +52,7 @@ package org.hlib4j.collection;
  * @param <E> value type for comparison
  * @author Tioben Neenot
  */
-public class PredicateValue<E> implements Rule<E> {
+public class Predicate<E> implements Rule<E> {
 
     /**
      * The equal clause to gets the referenced value
@@ -65,7 +65,7 @@ public class PredicateValue<E> implements Rule<E> {
      *
      * @param simpleValue Reference value
      */
-    public PredicateValue(E simpleValue) {
+    public Predicate(E simpleValue) {
         this.simpleValue = simpleValue;
     }
 
