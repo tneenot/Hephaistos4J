@@ -196,6 +196,7 @@ public class CollectionsTest
 	 * <li><b>Comments: </b>None.</li>
 	 * </ul>
 	 */
+    @Test
 	public void collectionAddInvalid()
 	{
 		Assert.assertFalse( ref.add( null ) );
@@ -231,6 +232,7 @@ public class CollectionsTest
 	 * <li><b>Comments: </b>None.</li>
 	 * </ul>
 	 */
+    @Test
 	public void collectionAddAllInvalid()
 	{
 		Collection< Integer > _col = new ArrayList<>();
@@ -240,6 +242,46 @@ public class CollectionsTest
 
 		Assert.assertFalse( ref.addAll( _col ) );
 	}
+
+    /**
+     * Adds 2 collections to a filtered list type collection.
+     */
+    @Test
+    public void collectionAddAllValidFromIndex() {
+        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<Integer>(), this.ruleRef);
+        Collection<Integer> _col = new ArrayList<>();
+        _col.add(2);
+        _col.add(4);
+
+        _ref_list.addAll(_col);
+
+        Collection<Integer> _col2 = new ArrayList<>();
+        _col2.add(6);
+        _col2.add(8);
+
+        Assert.assertTrue(_ref_list.addAll(1, _col2));
+    }
+
+    /**
+     * Adds 2 collections to a filtered list type collection. The first one contains only valid data, and the second one contains several data with one invalid.
+     */
+    @Test
+    public void collectionAddAllInvalidFromIndex()
+    {
+        List < Integer > _ref_list = Collections.makeFilteredList( new ArrayList < Integer >(), this.ruleRef );
+        Collection< Integer > _col = new ArrayList<>();
+        _col.add( 2 );
+        _col.add( 4 );
+
+        _ref_list.addAll(_col);
+
+        Collection < Integer > _col2 = new ArrayList<>();
+        _col2.add( 6 );
+        _col2.add( 8 );
+        _col2.add( null );
+
+        Assert.assertFalse(_ref_list.addAll( 1 , _col2));
+    }
 
 	/**
 	 * Test clear method of the collection.
@@ -313,10 +355,7 @@ public class CollectionsTest
 	@Test
 	public void collectionToArray()
 	{
-		Collection< Integer > _invalid_values = Arrays.asList( new Integer[]
-																														 {
-																															 3, 1, 5
-																														 } );
+		Collection< Integer > _invalid_values = Arrays.asList(3, 1, 5);
 		Collection< Integer > _values = new ArrayList<>();
 		_values.add( 4 );
 		_values.add( 6 );
@@ -350,10 +389,7 @@ public class CollectionsTest
 	@Test
 	public void collectionToArrayT()
 	{
-		Collection< Integer > _invalid_values = Arrays.asList( new Integer[]
-																														 {
-																															 3, 1, 5
-																														 } );
+		Collection< Integer > _invalid_values = Arrays.asList(3, 1, 5);
 		Collection< Integer > _values = new ArrayList<>();
 		_values.add( 4 );
 		_values.add( 6 );
@@ -368,7 +404,7 @@ public class CollectionsTest
 			Assert.assertTrue( _cols.contains( _integ ) );
 		}
 
-		List< Integer > _result = Arrays.asList( _cols.toArray( new Integer[ 0 ] ) );
+		List< Integer > _result = Arrays.asList(_cols.toArray(new Integer[_cols.size()]));
 		for ( Integer _raw_value : _invalid_values )
 		{
 			Assert.assertFalse( _result.contains( _raw_value ) );
@@ -387,10 +423,7 @@ public class CollectionsTest
 	@Test
 	public void collectionIterator()
 	{
-		Collection< Integer > _invalid_values = Arrays.asList( new Integer[]
-																														 {
-																															 3, 1, 5
-																														 } );
+		Collection< Integer > _invalid_values = Arrays.asList(3, 1, 5);
 		Collection< Integer > _values = new ArrayList<>();
 		_values.add( 4 );
 		_values.add( 6 );
@@ -405,11 +438,9 @@ public class CollectionsTest
 			Assert.assertTrue( _cols.contains( _integ ) );
 		}
 
-		Iterator< Integer > _it_result = _cols.iterator();
-		while ( _it_result.hasNext() )
-		{
-			Assert.assertFalse( _invalid_values.contains( _it_result.next() ) );
-		}
+        for (Integer _col : _cols) {
+            Assert.assertFalse(_invalid_values.contains(_col));
+        }
 	}
 
 	/**
@@ -424,10 +455,7 @@ public class CollectionsTest
 	@Test
 	public void collectionRetainAll()
 	{
-		Collection< Integer > _invalid_values = Arrays.asList( new Integer[]
-																														 {
-																															 3, null, 5
-																														 } );
+		Collection< Integer > _invalid_values = Arrays.asList(3, null, 5);
 		Collection< Integer > _values = new ArrayList<>();
 		_values.add( 4 );
 		_values.add( 6 );
@@ -457,10 +485,7 @@ public class CollectionsTest
 	@Test
 	public void collectionRetainAllValids()
 	{
-		Collection< Integer > _invalid_values = Arrays.asList( new Integer[]
-																														 {
-																															 3, null, 5
-																														 } );
+		Collection< Integer > _invalid_values = Arrays.asList(3, null, 5);
 		Collection< Integer > _values = new ArrayList<>();
 		_values.add( 4 );
 		_values.add( 6 );
@@ -475,10 +500,7 @@ public class CollectionsTest
 			Assert.assertTrue( _cols.contains( _integ ) );
 		}
 
-		Assert.assertTrue( _cols.retainAll( Arrays.asList( new Integer[]
-																												 {
-																													 4, 8, 16
-																												 } ) ) );
+		Assert.assertTrue( _cols.retainAll( Arrays.asList(4, 8, 16) ) );
 	}
 
 	/**
@@ -488,17 +510,12 @@ public class CollectionsTest
 	public void collectionsEquals()
 	{
 		Collection< Integer > _list = Collections.makeFilteredList( new ArrayList< Integer >(), ruleRef );
-		Assert.assertTrue( _list.equals( ref ) );
-
 		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList< Integer >(), ruleRef );
-		Assert.assertTrue( _col.equals( _col ) );
-
 		Map< Integer, Integer > _map = Collections.makeFilteredMap( new HashMap< Integer, Integer >(), ruleRef );
-		Assert.assertTrue( _map.equals( _map ) );
 
-		Assert.assertFalse( _list.equals( ( Collection< Integer > ) null ) );
-		Assert.assertFalse( _col.equals( ( Collection< Integer > ) null ) );
-		Assert.assertFalse( _map.equals( ( Map< Integer, Integer > ) null ) );
+		Assert.assertFalse( _list.equals(null) );
+		Assert.assertFalse( _col.equals( (  null ) ) );
+		Assert.assertFalse(_map.equals((null)));
 
 		Assert.assertFalse( _list.equals( new Integer( 5 ) ) );
 		Assert.assertFalse( _col.equals( new Integer( 5 ) ) );
@@ -596,7 +613,7 @@ public class CollectionsTest
 		_src.add( 3 );
 		_src.add( 4 );
 
-		Assert.assertTrue( _ccol.containsAll( Arrays.asList( new Integer[] {1, 3 } ) ) );
+		Assert.assertTrue( _ccol.containsAll( Arrays.asList(1, 3) ) );
 	}
 
 	/**
@@ -689,10 +706,7 @@ public class CollectionsTest
 		_src.add( 3 );
 		_src.add( 4 );
 
-		Assert.assertTrue( _ccol.removeAll( Arrays.asList( new Integer[]
-																												 {
-																													 1, 3
-																												 } ) ) );
+		Assert.assertTrue( _ccol.removeAll( Arrays.asList(1, 3) ) );
 	}
 
 	/**
@@ -714,10 +728,7 @@ public class CollectionsTest
 		_src.add( 3 );
 		_src.add( 4 );
 
-		Assert.assertFalse( _sub_col.removeAll( Arrays.asList( new Integer[]
-																														 {
-																															 7, 8
-																														 } ) ) );
+		Assert.assertFalse( _sub_col.removeAll( Arrays.asList(7, 8) ) );
 	}
 
 	/**
@@ -738,7 +749,7 @@ public class CollectionsTest
 		_src.add( 3 );
 		_src.add( 4 );
 
-		Assert.assertTrue( _ccol.removeAll( Arrays.asList( new Integer[] { 1, 2, 3, 4 } ) ) );
+		Assert.assertTrue( _ccol.removeAll( Arrays.asList(1, 2, 3, 4) ) );
 	}
 
 	/**
@@ -789,8 +800,8 @@ public class CollectionsTest
 		_ref.add( 3 );
 		_ref.add( 1 );
 
-		Assert.assertEquals( ( int ) 2, ( int ) _ref.get( 0 ) );
-		Assert.assertEquals( ( int ) 3, ( int ) _ref.get( 1 ) );
+		Assert.assertEquals(2, ( int ) _ref.get( 0 ) );
+		Assert.assertEquals(3, ( int ) _ref.get( 1 ) );
 		Assert.assertEquals( 2, _ref.size() );
 	}
 
@@ -917,7 +928,7 @@ public class CollectionsTest
 		_list.add( 5 );
 		_list.add( 8 );
 
-		Assert.assertEquals( ( int ) 4, ( int ) _list.remove( 2 ) );
+		Assert.assertEquals(4, ( int ) _list.remove( 2 ) );
 
 		ListIterator< Integer > _it = _list.listIterator();
 		Assert.assertEquals( 2, ( int ) _it.next() );
@@ -938,9 +949,9 @@ public class CollectionsTest
 
 		Assert.assertTrue( _it.hasNext() );
 		Assert.assertEquals( 5, ( int ) _it.next() );
-		Assert.assertEquals( 1, ( int ) _it.nextIndex() );
+		Assert.assertEquals( 1, _it.nextIndex());
 		Assert.assertEquals( 5, ( int ) _it.previous() );
-		Assert.assertEquals( -1, ( int ) _it.previousIndex() );
+		Assert.assertEquals( -1, _it.previousIndex());
 		Assert.assertFalse( _it.hasPrevious() );
 	}
 
@@ -1031,7 +1042,7 @@ class AList < E > extends AbstractList< E >
 	/**
 	 * Internal FilteredList class
 	 */
-	private FilteredList< E > list;
+	private final FilteredList< E > list;
 
 	/**
 	 * Builds an instance of AList class.

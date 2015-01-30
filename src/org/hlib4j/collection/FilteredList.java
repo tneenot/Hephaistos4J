@@ -51,6 +51,11 @@ final class FilteredList < ElementType > extends AbstractList< ElementType > imp
 	 */
 	private List< ElementType > managedList = null;
 
+    /**
+     * Internal flag to control some operations on this list
+     */
+    private boolean ctrlFlag = false;
+
 	/**
 	 * Builds an instance of the <code>FilteredList</code>. This class is a wrapper on a real
 	 * collection, and takes the control of the external collection, according to filter definition.
@@ -110,26 +115,37 @@ final class FilteredList < ElementType > extends AbstractList< ElementType > imp
 	@Override
 	public void add( int index, ElementType elementType )
 	{
-		if ( this.filter.accept( elementType ) )
+        this.ctrlFlag = this.filter.accept(elementType);
+		if ( this.ctrlFlag )
 		{
 			this.managedList.add( index, elementType );
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractList#addAll(int, java.util.Collection)
-	 */
+    @Override
+    public boolean addAll(Collection<? extends ElementType> c) {
+        return this.addAll(this.managedList.size(), c);
+    }
+
+    /*
+         * (non-Javadoc)
+         *
+         * @see java.util.AbstractList#addAll(int, java.util.Collection)
+         */
 	@Override
 	public boolean addAll( int index, Collection< ? extends ElementType > c )
 	{
+        boolean internal_ctrl_flag = this.ctrlFlag = true;
+
 		for ( ElementType elementType : c )
 		{
-			add( index, elementType );
+			add( index++, elementType );
+
+            // Retains the cumulative ctrlFlag after each add
+            internal_ctrl_flag &= this.ctrlFlag;
 		}
 
-		return clean() == 0;
+		return internal_ctrl_flag;
 	}
 
 	/*
