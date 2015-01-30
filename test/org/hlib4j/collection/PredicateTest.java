@@ -20,12 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -38,56 +34,7 @@ public class PredicateTest
 {
 
 	/**
-	 * Class reference for tests
-	 */
-	private Predicate< AUT > ref = null;
-
-	/**
-	 * Tests initialisation
-	 */
-	@Before
-	public void setUp()
-	{
-		try
-		{
-			ref = new Predicate<>( new AUT( 5 ), "getValue" );
-		}
-		catch ( IllegalArgumentException | IllegalAccessException | InvocationTargetException e )
-		{
-			Assert.fail( e.getMessage() );
-		}
-	}
-
-	/**
-	 * Tests cleaning
-	 */
-	@After
-	public void tearDown()
-	{
-		ref = null;
-	}
-
-	/**
-	 * Test of exception of class Predicate.<br>
-	 * <ul>
-	 * <li><b>Description: </b>Build a predicate with a bad method name.</li>
-	 * <li><b>Result : </b>Exception throw.</li>
-	 * <li><b>Comments: </b>None.</li>
-	 * </ul>
-	 *
-	 * @throws IllegalAccessException            Exception that must not be ran for the test must be available.
-	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-	 * @see Predicate#Predicate(Object, String)
-	 */
-	@Test( expected = ClassCastException.class )
-	public void testWithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
-		InvocationTargetException
-	{
-		new Predicate<>( new AUT( 1 ), "foo" );
-	}
-
-	/**
-	 * Test of accept method, of class Predicate. <br>
+	 * Test of accept method, of class PredicateMethod. <br>
 	 * <ul>
 	 * <li><b>Description : </b>Sets a value for the {@link Predicate#accept(Object)} and control it</li>
 	 * <li><b>Result : </b>Value conforms</li>
@@ -97,12 +44,12 @@ public class PredicateTest
 	@Test
 	public void testAccept()
 	{
-		AUT e = new AUT( 5 );
-		assertTrue( ref.accept( e ) );
+		Predicate<Integer> ref = new Predicate<>(5);
+		assertTrue( ref.accept( 5 ) );
 	}
 
 	/**
-	 * Test of accept method, of class Predicate. <br>
+	 * Test of accept method, of class PredicateMethod. <br>
 	 * <ul>
 	 * <li><b>Description : </b>Sets a value for the {@link Predicate#accept(Object) } and control a different
 	 * value</li>
@@ -113,42 +60,12 @@ public class PredicateTest
 	@Test
 	public void testAcceptFalse()
 	{
-		AUT e = new AUT( 4 );
-		Assert.assertFalse( ref.accept( e ) );
+        Predicate<Integer> ref = new Predicate<>(4);
+		Assert.assertFalse( ref.accept( 5 ) );
 	}
 
 	/**
-	 * Test of accept method, of class Predicate. <br>
-	 * <ul>
-	 * <li><b>Description : </b>Sets a value and control it</li>
-	 * <li><b>Result : </b>Value conforms</li>
-	 * <li><b>Comments : </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public void testAcceptValue()
-	{
-		Predicate< Integer > _ref = new Predicate<>( 5 );
-		assertTrue( _ref.accept( 5 ) );
-	}
-
-	/**
-	 * Test of accept method, of class Predicate. <br>
-	 * <ul>
-	 * <li><b>Description : </b>Sets a value and control it with a bad value</li>
-	 * <li><b>Result : </b>Value not conforms</li>
-	 * <li><b>Comments : </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public void testAcceptValueFalse()
-	{
-		Predicate< Integer > _ref = new Predicate<>( 5 );
-		Assert.assertFalse( _ref.accept( 4 ) );
-	}
-
-	/**
-	 * Test method for {@link org.hlib4j.collection.Predicate#accept(Object)}.
+	 * Test method for {@link Predicate#accept(Object)}.
 	 * <ul>
 	 * <li><b>Description: </b>Controls if the given value is valid or not</li>
 	 * <li><b>Results: </b>Value conforms</li>
@@ -158,12 +75,12 @@ public class PredicateTest
 	@Test
 	public final void testAcceptNull()
 	{
-		Predicate< Object > _ref = new Predicate<>( null );
+        Predicate< Object > _ref = new Predicate<>( null );
 		Assert.assertFalse( _ref.accept( new Object() ) );
 	}
 
 	/**
-	 * Test method for {@link org.hlib4j.collection.Predicate#accept(Object)}.
+	 * Test method for {@link Predicate#accept(Object)}.
 	 * <ul>
 	 * <li><b>Description: </b>Controls if the given value is not valid</li>
 	 * <li><b>Results: </b>Value not conforms</li>
@@ -173,41 +90,8 @@ public class PredicateTest
 	@Test
 	public final void testAcceptFalseNull()
 	{
-		Predicate< Object > _ref = new Predicate<>( null );
+        Predicate< Object > _ref = new Predicate<>( null );
 		Assert.assertTrue( _ref.accept( null ) );
 	}
 }
 
-/**
- * Class for unit tests
- *
- * @author Tioben Neenot
- */
-class AUT
-{
-
-	/**
-	 * The class value
-	 */
-	private final int value;
-
-	/**
-	 * The class constructor
-	 *
-	 * @param value The value for this class
-	 */
-	AUT( int value )
-	{
-		this.value = value;
-	}
-
-	/**
-	 * Gets the class value
-	 *
-	 * @return The class value
-	 */
-	public int getValue()
-	{
-		return value;
-	}
-}

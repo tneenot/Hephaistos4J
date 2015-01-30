@@ -25,8 +25,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Unit tests for the {@link Not} class.
  *
@@ -85,63 +83,5 @@ public class NotTest
 	{
 		Assert.assertFalse( ref.accept( 5 ) );
 	}
-
-	/**
-	 * Test predicate with a specific method to find<br>
-	 * <ul>
-	 * <li><b>Description : </b>Build a Not predicate with a specific method for
-	 * control value, builds another test instance class and test this last with
-	 * Not predicate.</li>
-	 * <li><b>Result : </b>Predicate builds without error</li>
-	 * <li><b>Comments: </b>None.</li>
-	 * </ul>
-	 *
-	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran during test to be available.
-	 * @throws IllegalAccessException            Exception that must not be ran during test to be available.
-	 * @see Predicate
-	 */
-	@Test
-	public void testNotWithMethod() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
-		Not< ForUTNotTest > _not = new Not<>( new ForUTNotTest( true ), "isFlag" );
-		ForUTNotTest _f1 = new ForUTNotTest( true );
-		ForUTNotTest _f2 = new ForUTNotTest( false );
-
-		Assert.assertTrue( _not.accept( _f2 ) );
-		Assert.assertFalse( _not.accept( _f1 ) );
-	}
 }
 
-/**
- * Class for unit tests usage
- *
- * @author Tioben Neenot
- */
-class ForUTNotTest
-{
-
-	/**
-	 * A flag
-	 */
-	private final boolean aFlag;
-
-	/**
-	 * Constructor for ForUTNotTest
-	 *
-	 * @param aFlag Default value for test
-	 */
-	ForUTNotTest( boolean aFlag )
-	{
-		this.aFlag = aFlag;
-	}
-
-	/**
-	 * Returns current flag value
-	 *
-	 * @return Current flag value
-	 */
-	public boolean isFlag()
-	{
-		return aFlag;
-	}
-}

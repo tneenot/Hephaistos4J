@@ -20,148 +20,62 @@ package org.hlib4j.collection;
 *  
 */
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 /**
- * A convenience class to compare a reference value with a value returns by a
- * method name specified into constructor. The comparison has validated if and
+ * A convenience class to compare a reference value with another one.
+ * The comparison has validated if and
  * only if the &lt;E&gt; type referenced from the constructor, is equal to the
  * the value type given in the {@link #accept(Object)} method. For example,
  * suppose we have a class like this:<br>
- * <pre> 
- * class A 
- * { 
+ * <pre>
+ * class A
+ * {
  *   private boolean aFlag;
- * 
+ *
  *   public A(boolean v) { aFlag = v; }
- * 
+ *
  *   public boolean isFlag() { return aFlag; }
  * }</pre>
  * <br>
  * To use the {@link Predicate} with this class, implement the following rule:<br>
  * <br>
  * <pre>
- * Predicate&lt;A&gt; e = new Predicate&lt;A&gt;(new A(true), "isFlag");
+ * Predicate&lt;int&gt; e = new Predicate&lt;A&gt;(5);
  * ...
- * A another_a = new A(true);
- * e.accept(another_a);
+ * int another_int = 5;
+ * e.accept(another_int);
  * </pre>
  * <br>
- * The method will return <code>true</code> if the other "A" instance has the
- * same value than the first occurrence as reference, and this occurrence has
- * the same method.<br>
+ * The method will return <code>true</code> if the other int has the
+ * same value than the first given as reference into the constructor.<br>
  * <br>
- * <b>Note : </b>if the {@link #accept(Object)} method doesn't receive another
- * type than the model in the constructor, a <code>ClassCastException</code>
- * will be thrown. If the model doesn't implements the method name, a
- * <code>ClassCastException</code> will be thrown. <br>
- * <br>
- * <code>Predicate</code> can be used a simple value as reference thanks to
- * {@link #Predicate(Object)} constructor. In this case only value will be
- * compared during {@link #accept(Object)} method calling.
  *
  * @param <E> value type for comparison
  * @author Tioben Neenot
  */
-public class Predicate < E > implements Rule< E >
-{
+public class Predicate<E> implements Rule<E> {
 
-	/**
-	 * The property to compare a value
-	 */
-	private String methodName = null;
+    /**
+     * The equal clause to gets the referenced value
+     */
+    private E simpleValue = null;
 
-	/**
-	 * The equal clause to gets the referenced value
-	 */
-	private Object simpleValue = null;
 
-	/**
-	 * Builds an instance of the <code>Predicate</code> class.
-	 *
-	 * @param model      Model type of this class
-	 * @param methodName The method's name for the class. The value returned by this
-	 *                   methodName will be compare to the &lt;E&gt; type.
-	 * @throws InvocationTargetException Invocation method error
-	 * @throws IllegalAccessException    Method invocation error
-	 * @throws IllegalArgumentException  Invocation error into given model
-	 *                                   <b>Note: </b> If method not found, a ClassCastException will be thrown.
-	 */
-	public Predicate( E model, String methodName ) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
-		// Control if the property name exists in the element and gets the value
-		// returned by this method, as referenced value
-		this( ( isValid( model, methodName ).invoke( model ) ) );
-		this.methodName = methodName;
-	}
+    /**
+     * Builds an instance of a PredicateMethod with a value only as reference.
+     *
+     * @param simpleValue Reference value
+     */
+    public Predicate(E simpleValue) {
+        this.simpleValue = simpleValue;
+    }
 
-	/**
-	 * Builds an instance of a Predicate with a value only as reference.
-	 *
-	 * @param simpleValue Reference value
-	 */
-	public Predicate( Object simpleValue )
-	{
-		this.simpleValue = simpleValue;
-	}
 
-	/**
-	 * Controls if the propertyName exists in the element
-	 *
-	 * @param element      The element reference
-	 * @param propertyName The property name to find
-	 * @return The field found.
-	 * @throws ClassCastException If <code>propertyName</code> doesn't exist
-	 */
-	private static Method isValid( Object element, String propertyName )
-	{
-		try
-		{
-			return element.getClass().getMethod( propertyName );
-		}
-		catch ( NoSuchMethodException | SecurityException e )
-		{
-			throw new ClassCastException( "The " + propertyName + " doesn't exist in the "
-																			+ ( element == null ? null : element.getClass().getName() ) );
-		}
-	}
+    /**
+     * @see Rule#accept(Object)
+     */
+    @Override
+    public boolean accept(E e) {
 
-	/**
-	 * Controls if the element <code>e</code> is conforming to the {@link Rule}.
-	 * If <code>e</code> element doesn't contains the <code>methodName</code>
-	 * method a <code>ClassCastException</code> will be thrown. If method exist
-	 * and invocation error is occurs, so return <code>false</code>. If
-	 * <code>Predicate</code> was built for a reference value only with
-	 * {@link #Predicate(Object)} constructor , so in this case accept method runs
-	 * only on this value.
-	 *
-	 * @see org.hlib4j.collection.Rule#accept(java.lang.Object)
-	 */
-	@Override
-	public boolean accept( E e )
-	{
-		Object _val2;
-
-		if ( null != this.methodName )
-		{
-			// Controls if the method name exists in the element e
-			Method _target_method = isValid( e, this.methodName );
-
-			try
-			{
-				_val2 = _target_method.invoke( e );
-			}
-			catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
-			{
-				return false;
-			}
-		}
-		else
-		{
-			_val2 = e;
-		}
-
-		return null == this.simpleValue ? null == _val2 : this.simpleValue.equals( _val2 );
-	}
+        return this.simpleValue == e;
+    }
 }
