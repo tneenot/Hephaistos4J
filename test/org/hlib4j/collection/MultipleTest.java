@@ -139,7 +139,7 @@ public class MultipleTest
 		Assert.assertFalse( new Multiple< Float >( new Float( 3.65f ) ).accept( 3 ) );
 		Assert.assertFalse( new Multiple< Long >( 3L ).accept( 3.3f ) );
 		Assert.assertFalse( new Multiple< Short >( ( short ) 3 ).accept( 3 ) );
-		Assert.assertFalse( new Multiple< AtomicInteger >( new AtomicInteger( 3 ) ).accept( new AtomicLong( 3L ) ) );
-		Assert.assertFalse( new Multiple< AtomicLong >( new AtomicLong( 4L ) ).accept( new AtomicInteger( 4 ) ) );
-	}
+        Assert.assertFalse(new Multiple<AtomicInteger>(new AtomicInteger(3)).accept(new AtomicLong(4L)));
+        Assert.assertFalse(new Multiple<AtomicLong>(new AtomicLong(4L)).accept(new AtomicInteger(3)));
+    }
 }
