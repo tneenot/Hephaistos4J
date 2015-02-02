@@ -75,12 +75,8 @@ public abstract class Processing <E> implements Predicate<E> {
     @Override
     public boolean test(E e) {
 
-        if(this.predicate.test(e))
-        {
-           return perform(e);
-        }
+        return this.predicate.test(e) && perform(e);
 
-        return false;
     }
 
     /**
