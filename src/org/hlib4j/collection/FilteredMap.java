@@ -31,14 +31,14 @@ import java.util.function.Predicate;
 /**
  * A
  * <code>Map</code> that's controlling its elements according to a predicate.
- * For this map, all elements according to the predicate, will be added into
- * the map. Otherwise, this element will be rejected. If developer uses the
+ * For this managedMap, all elements according to the predicate, will be added into
+ * the managedMap. Otherwise, this element will be rejected. If developer uses the
  * elements list returned by the {@link #values()} method, all elements will set
  * into a {@link FilteredCollection} class. As defined by the constructor
- * {@link #FilteredMap(java.util.Map, java.util.function.Predicate)}, this class is not a real map itself, but takes
- * the control of an external map. All elements in the map will be managed
- * according to the predicate. If the external map contains forbidden
- * elements yet, this map will delete forbidden elements.
+ * {@link #FilteredMap(java.util.Map, java.util.function.Predicate)}, this class is not a real managedMap itself, but takes
+ * the control of an external managedMap. All elements in the managedMap will be managed
+ * according to the predicate. If the external managedMap contains forbidden
+ * elements yet, this managedMap will delete forbidden elements.
  *
  * @param <K> The key type for this collection
  * @param <V> The value type for this collection
@@ -48,31 +48,31 @@ import java.util.function.Predicate;
 final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
 
     /**
-     * Internal map to manage all records
+     * Internal managedMap to manage all records
      */
-    private Map<K, V> map = null;
+    private Map<K, V> managedMap = null;
     /**
-     * The ruleForThisMap to apply to all map records
+     * The ruleForThisMap to apply to all managedMap records
      */
     private Predicate<V> ruleForThisMap = null;
 
     /**
-     * Build an instance of this map.
+     * Build an instance of this managedMap.
      *
-     * @param originalMap    Map to use for records managing
+     * @param sourceMap    Map to use for records managing
      * @param ruleForThisMap The predicate to use with the Map
      */
-    FilteredMap(Map<K, V> originalMap, Predicate<V> ruleForThisMap) {
+    FilteredMap(Map<K, V> sourceMap, Predicate<V> ruleForThisMap) {
         super();
 
         try {
-            this.map = States.validate(originalMap);
+            this.managedMap = States.validate(sourceMap);
             this.ruleForThisMap = States.validate(ruleForThisMap);
         } catch (AssertionError e) {
             throw new NullPointerException(e.getMessage() + ". Null Map or ruleForThisMap.");
         }
 
-        // Purge all records from the original map that are not conforms with the
+        // Purge all records from the original managedMap that are not conforms with the
         // ruleForThisMap
         clean();
     }
@@ -86,7 +86,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + this.map.hashCode();
+        result = prime * result + this.managedMap.hashCode();
         return result;
     }
 
@@ -105,7 +105,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
             return false;
         }
         final FilteredMap<K, V> other = (FilteredMap<K, V>) obj;
-        if (this.map != other.map && !this.map.equals(other.map)) {
+        if (this.managedMap != other.managedMap && !this.managedMap.equals(other.managedMap)) {
             return false;
         }
         return this.ruleForThisMap == other.ruleForThisMap || this.ruleForThisMap.equals(other.ruleForThisMap);
@@ -118,7 +118,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public Collection<V> values() {
-        return new FilteredCollection<>(this.map.values(), this.ruleForThisMap);
+        return new FilteredCollection<>(this.managedMap.values(), this.ruleForThisMap);
     }
 
     /*
@@ -128,7 +128,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public void clear() {
-        this.map.clear();
+        this.managedMap.clear();
     }
 
     /*
@@ -138,7 +138,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public boolean containsKey(Object key) {
-        return this.map.containsKey(key);
+        return this.managedMap.containsKey(key);
     }
 
     /*
@@ -148,7 +148,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public boolean containsValue(Object value) {
-        return this.map.containsValue(value);
+        return this.managedMap.containsValue(value);
     }
 
     /*
@@ -158,7 +158,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public Set<java.util.Map.Entry<K, V>> entrySet() {
-        return this.map.entrySet();
+        return this.managedMap.entrySet();
     }
 
     /*
@@ -168,7 +168,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public V get(Object key) {
-        return this.map.get(key);
+        return this.managedMap.get(key);
     }
 
     /*
@@ -178,7 +178,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public boolean isEmpty() {
-        return this.map.isEmpty();
+        return this.managedMap.isEmpty();
     }
 
     /*
@@ -188,7 +188,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public Set<K> keySet() {
-        return this.map.keySet();
+        return this.managedMap.keySet();
     }
 
     /*
@@ -202,7 +202,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
             return null;
         }
 
-        return this.map.put(key, value);
+        return this.managedMap.put(key, value);
     }
 
     /*
@@ -224,7 +224,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public V remove(Object key) {
-        return this.map.remove(key);
+        return this.managedMap.remove(key);
     }
 
     /*
@@ -234,7 +234,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public int size() {
-        return this.map.size();
+        return this.managedMap.size();
     }
 
     /*
@@ -244,12 +244,12 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
      */
     @Override
     public int clean() {
-        int _original_size = this.map.size();
+        int _original_size = this.managedMap.size();
 
         // Purge forbidden values according to the ruleForThisMap
         {
-            new FilteredCollection<>(this.map.values(), this.ruleForThisMap);
+            new FilteredCollection<>(this.managedMap.values(), this.ruleForThisMap);
         }
-        return _original_size - this.map.size();
+        return _original_size - this.managedMap.size();
     }
 }
