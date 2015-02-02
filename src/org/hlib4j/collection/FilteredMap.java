@@ -20,6 +20,8 @@
  */
 package org.hlib4j.collection;
 
+import org.hlib4j.util.States;
+
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
@@ -64,13 +66,13 @@ final class FilteredMap < K, V > extends AbstractMap< K, V > implements Cleaner
 	{
 		super();
 
-		if ( null == originalMap || null == filter )
-		{
-			throw new NullPointerException();
-		}
-
-		this.map = originalMap;
-		this.filter = filter;
+        try {
+            this.map = States.validate(originalMap);
+            this.filter = States.validate(filter);
+        } catch(AssertionError e)
+        {
+            throw new NullPointerException(e.getMessage() + ". Null Map or filter.");
+        }
 
 		// Purge all records from the original map that are not conforms with the
 		// filter

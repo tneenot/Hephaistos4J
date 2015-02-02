@@ -42,17 +42,17 @@ public class States
 	/**
 	 * Controls if the object reference is <code>null</code> or empty.
 	 *
-	 * @param objectCollection
+	 * @param o
 	 *          Object reference to test
 	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise. <br>
 	 *         <b>Note: don't use this method on array objects, otherwise the result would be <code>false</code>. Uses the
 	 *         <code>isNullOrEmptyArray(...)</code> in this case.</b>
 	 */
-	public static boolean isNullOrEmpty(Object objectCollection)
+	public static boolean isNullOrEmpty(Object o)
 	{
 		try
 		{
-			return ((Collection<?>) objectCollection).isEmpty();
+			return ((Collection<?>) o).isEmpty();
 		}
 		catch (NullPointerException e1)
 		{
@@ -60,117 +60,24 @@ public class States
 		}
 		catch (ClassCastException e1)
 		{
-			return "".equals(objectCollection.toString().trim());
+			return "".equals(o.toString().trim());
 		}
 	}
 
-	/**
-	 * Controls if an array of <code>Object</code> is <code>null</code> or empty.
-	 *
-	 * @param objectArray
-	 *          Array of Object.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(Object[] objectArray)
-	{
-		return isNullOrEmpty(objectArray) || objectArray.length == 0;
-	}
 
 	/**
-	 * Controls if an array of <code>int</code> is <code>null</code> or empty.
+	 * Controls if an array is <code>null</code> or empty.
 	 *
-	 * @param i
-	 *          Array of integers.
+	 * @param array
+	 *          Array to control
+     * @param <T> Type of array
 	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
 	 */
-	public static boolean isNullOrEmptyArray(int[] i)
-	{
-		return isNullOrEmpty(i) || i.length == 0;
-	}
+    public static <T> boolean isNullOrEmptyArray(T[] array)
+    {
+        return isNullOrEmpty(array) || array.length == 0;
+    }
 
-	/**
-	 * Controls if an array of <code>short</code> is <code>null</code> or empty.
-	 *
-	 * @param shortArray
-	 *          Array of short.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(short[] shortArray)
-	{
-		return isNullOrEmpty(shortArray) || shortArray.length == 0;
-	}
-
-	/**
-	 * Controls if an array of <code>long</code> is <code>null</code> or empty.
-	 *
-	 * @param longArray
-	 *          Array of longs.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(long[] longArray)
-	{
-		return isNullOrEmpty(longArray) || longArray.length == 0;
-	}
-
-	/**
-	 * Controls if an array of <code>boolean</code> is <code>null</code> or empty.
-	 *
-	 * @param booleanArray
-	 *          Array of booleans.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(boolean[] booleanArray)
-	{
-		return isNullOrEmpty(booleanArray) || booleanArray.length == 0;
-	}
-
-	/**
-	 * Controls if an array of <code>float</code> is <code>null</code> or empty.
-	 *
-	 * @param floatArray
-	 *          Array of floats.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(float[] floatArray)
-	{
-		return isNullOrEmpty(floatArray) || floatArray.length == 0;
-	}
-
-	/**
-	 * Controls if an array of <code>double</code> is <code>null</code> or empty.
-	 *
-	 * @param doubleArray
-	 *          Array of doubles.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(double[] doubleArray)
-	{
-		return isNullOrEmpty(doubleArray) || doubleArray.length == 0;
-	}
-
-	/**
-	 * Controls if an array of <code>char</code> is <code>null</code> or empty.
-	 *
-	 * @param charArray
-	 *          Array of chars.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(char[] charArray)
-	{
-		return isNullOrEmpty(charArray) || charArray.length == 0;
-	}
-
-	/**
-	 * Controls if an array of <code>byte</code> is <code>null</code> or empty.
-	 *
-	 * @param byteArray
-	 *          Array of bytes.
-	 * @return <code>true</code> if current condition has been verified, <code>false</code> otherwise.
-	 */
-	public static boolean isNullOrEmptyArray(byte[] byteArray)
-	{
-		return isNullOrEmpty(byteArray) || byteArray.length == 0;
-	}
 
 	/**
 	 * Controls that element given as parameter is not <code>null</code> and not empty. This method returns the tested
@@ -188,163 +95,56 @@ public class States
 	 * @throws AssertionError
 	 *           If element is not valid.
 	 */
-	public static <T> T validate(T element)
-	{
+	public static <T> T validate(T element) throws AssertionError {
 		if (!isNullOrEmpty(element)) { return element; }
 
 		throw new AssertionError("Invalid element");
 	}
 
+    /**
+     * Validate if the given element is not <code>null</code>. This method returns the tested
+     * element if it's valid. This choice allows to chain method calling during variable affectation for example.
+     *
+     * @param element Element to control.
+     * @param <T> Element type.
+     * @return The element if it's valid.
+     * @throws AssertionError If the element is not valid.
+     */
+    public static <T> T validateExcludeNull(T element) throws AssertionError {
+        if(null != element) return element;
+
+        throw new AssertionError("Invalid null element");
+    }
+
 	/**
 	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
 	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
 	 *
-	 * @param objectArray
+	 * @param array
 	 *          Array to control
+     * @param <T> Type of array
 	 * @return The array controlled if it's valid.
 	 * @throws AssertionError
 	 *           If array is not valid.
 	 */
-	public static Object[] validateArray(Object[] objectArray)
-	{
-		if (!isNullOrEmptyArray(objectArray)) { return objectArray; }
+	public static <T> T[] validateArray(T[] array) throws AssertionError {
+		if (!isNullOrEmptyArray(array)) { return array; }
 
-		throw new AssertionError("Invalid array");
+		throw new AssertionError("Invalid null or empty array");
 	}
 
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param intArray
-	 *          Array of <code>int</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static int[] validateArray(int[] intArray)
-	{
-		if (!isNullOrEmptyArray(intArray)) { return intArray; }
+    /**
+     * Controls if the array is not <code>null</code> only. Empty array is accepted. This method returns the tested
+     * array if it's valid. This choice allows to chain method calling during variable affectation for example.
+     *
+     * @param array Array to control
+     * @param <T> Type of array
+     * @return The array controlled if it's valid.
+     * @throws AssertionError If array is not valid.
+     */
+    public static <T> T[] validateArrayExcludeNull(T[] array) throws AssertionError {
+        if(null != array) { return array; }
 
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param shortArray
-	 *          Array of <code>short</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static short[] validateArray(short[] shortArray)
-	{
-		if (!isNullOrEmptyArray(shortArray)) { return shortArray; }
-
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param longArray
-	 *          Array of <code>long</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static long[] validateArray(long[] longArray)
-	{
-		if (!isNullOrEmptyArray(longArray)) { return longArray; }
-
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param booleanArray
-	 *          Array of <code>boolean</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static boolean[] validateArray(boolean[] booleanArray)
-	{
-		if (!isNullOrEmptyArray(booleanArray)) { return booleanArray; }
-
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param floatArray
-	 *          Array of <code>float</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static float[] validateArray(float[] floatArray)
-	{
-		if (!isNullOrEmptyArray(floatArray)) { return floatArray; }
-
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param doubleArray
-	 *          Array of <code>double</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static double[] validateArray(double[] doubleArray)
-	{
-		if (!isNullOrEmptyArray(doubleArray)) { return doubleArray; }
-
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param charArray
-	 *          Array of <code>char</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static char[] validateArray(char[] charArray)
-	{
-		if (!isNullOrEmptyArray(charArray)) { return charArray; }
-
-		throw new AssertionError("Invalid array");
-	}
-
-	/**
-	 * Controls that the array given as parameter is not <code>null</code> and not empty. This method returns the tested
-	 * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-	 *
-	 * @param byteArray
-	 *          Array of <code>char</code> to control
-	 * @return The array controlled if it's valid.
-	 * @throws AssertionError
-	 *           If array is not valid.
-	 */
-	public static byte[] validateArray(byte[] byteArray)
-	{
-		if (!isNullOrEmptyArray(byteArray)) { return byteArray; }
-
-		throw new AssertionError("Invalid array");
-	}
+        throw new AssertionError("Invalid null array");
+    }
 }
