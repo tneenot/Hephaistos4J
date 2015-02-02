@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -45,7 +46,7 @@ public class CollectionsTest
 	/**
 	 * Rule reference for tests
 	 */
-	private Rule< Integer > ruleRef = null;
+	private Predicate< Integer > ruleRef = null;
 
 	/**
 	 * Test initialisation
@@ -53,7 +54,12 @@ public class CollectionsTest
 	@Before
 	public void setUp()
 	{
-		ruleRef = new Not<>( null );
+		ruleRef = new Predicate<Integer>() {
+            @Override
+            public boolean test(Integer integer) {
+                return integer != null;
+            }
+        };
 		ref = Collections.makeFilteredList( new ArrayList< Integer >(), ruleRef );
 	}
 
@@ -82,8 +88,7 @@ public class CollectionsTest
 	public void testCheckedCollection()
 	{
 		Collection< Integer > collection = new ArrayList<>();
-		Rule< Integer > rule = new Not<>( null );
-		assertNotNull( Collections.makeFilteredCollection( collection, rule ) );
+		assertNotNull( Collections.makeFilteredCollection( collection, this.ruleRef ) );
 	}
 
 	/**
@@ -98,8 +103,7 @@ public class CollectionsTest
 	public void testCheckedList()
 	{
 		List< Integer > list = new ArrayList<>();
-		Rule< Integer > rule = new Not<>( null );
-		assertNotNull( Collections.makeFilteredList( list, rule ) );
+		assertNotNull( Collections.makeFilteredList( list, this.ruleRef ) );
 	}
 
 	/**
@@ -114,8 +118,7 @@ public class CollectionsTest
 	public void testCheckedMap()
 	{
 		Map< String, Integer > map = new HashMap<>();
-		Rule< Integer > rule = new Not<>( null );
-		assertNotNull( Collections.makeFilteredMap( map, rule ) );
+		assertNotNull( Collections.makeFilteredMap( map, this.ruleRef ) );
 	}
 
 	/**
@@ -130,7 +133,7 @@ public class CollectionsTest
 	public void testClean_Collection()
 	{
 		Collection< Integer > _col = new ArrayList<>();
-		Collection< ? > _sub_col = Collections.makeFilteredCollection( _col, new Not< Integer >( null ) );
+		Collection< ? > _sub_col = Collections.makeFilteredCollection( _col, this.ruleRef);
 		_col.add( null );
 		assertEquals( 1, Collections.clean( _sub_col ) );
 	}
@@ -158,7 +161,7 @@ public class CollectionsTest
 	public void testClean_Map()
 	{
 		Map< String, Integer > _map = new HashMap<>();
-		Map< ?, ? > _sub_map = Collections.makeFilteredMap( _map, new Not< Integer >( null ) );
+		Map< ?, ? > _sub_map = Collections.makeFilteredMap( _map, this.ruleRef );
 		_map.put( "test", null );
 		assertEquals( 1, Collections.clean( _sub_map ) );
 	}
@@ -217,10 +220,12 @@ public class CollectionsTest
 		_col.add( 2 );
 		_col.add( 4 );
 
-		Collection< Integer > _ref_col = Collections.makeFilteredCollection( new LinkedList< Integer >(), new Not< Integer >( 3 ) );
+        Predicate< Integer > not_3 = (p) -> { return p != 3; };
+
+		Collection< Integer > _ref_col = Collections.makeFilteredCollection( new LinkedList<>(), not_3  );
 		Assert.assertTrue( _ref_col.addAll( _col ) );
 
-		List< Integer > _ref_list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 3 ) );
+		List< Integer > _ref_list = Collections.makeFilteredList( new LinkedList <>(), not_3 );
 		Assert.assertTrue( _ref_list.addAll( 0, _col ) );
 	}
 
@@ -248,7 +253,7 @@ public class CollectionsTest
      */
     @Test
     public void collectionAddAllValidFromIndex() {
-        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<Integer>(), this.ruleRef);
+        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<>(), this.ruleRef);
         Collection<Integer> _col = new ArrayList<>();
         _col.add(2);
         _col.add(4);
@@ -268,7 +273,7 @@ public class CollectionsTest
     @Test
     public void collectionAddAllInvalidFromIndex()
     {
-        List < Integer > _ref_list = Collections.makeFilteredList( new ArrayList < Integer >(), this.ruleRef );
+        List < Integer > _ref_list = Collections.makeFilteredList( new ArrayList < >(), this.ruleRef );
         Collection< Integer > _col = new ArrayList<>();
         _col.add( 2 );
         _col.add( 4 );
@@ -300,7 +305,7 @@ public class CollectionsTest
 		ref.clear();
 		Assert.assertEquals( 0, ref.size() );
 
-		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList< Integer >(), new Not< Integer >( 1 ) );
+		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList<>(), (p) -> p != 1 );
 		_col.add( 2 );
 		Assert.assertEquals( 1, _col.size() );
 		_col.clear();
@@ -361,7 +366,7 @@ public class CollectionsTest
 		_values.add( 6 );
 		_values.add( 8 );
 
-		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, (p) -> p%2 == 0 );
 		Assert.assertEquals( _values.size(), _cols.size() );
 
 		_values.addAll( _invalid_values );
@@ -395,7 +400,7 @@ public class CollectionsTest
 		_values.add( 6 );
 		_values.add( 8 );
 
-		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, (p) -> p%2 == 0 );
 		Assert.assertEquals( _values.size(), _cols.size() );
 
 		_values.addAll( _invalid_values );
@@ -429,7 +434,7 @@ public class CollectionsTest
 		_values.add( 6 );
 		_values.add( 8 );
 
-		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, (p) -> p%2 == 0 );
 		Assert.assertEquals( _values.size(), _cols.size() );
 
 		_values.addAll( _invalid_values );
@@ -461,7 +466,7 @@ public class CollectionsTest
 		_values.add( 6 );
 		_values.add( 8 );
 
-		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, (p) -> p%2 == 0 );
 		Assert.assertEquals( _values.size(), _cols.size() );
 
 		_values.addAll( _invalid_values );
@@ -491,7 +496,7 @@ public class CollectionsTest
 		_values.add( 6 );
 		_values.add( 8 );
 
-		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _cols = Collections.makeFilteredCollection( _values, (p) -> p%2 == 0 );
 		Assert.assertEquals( _values.size(), _cols.size() );
 
 		_values.addAll( _invalid_values );
@@ -509,9 +514,9 @@ public class CollectionsTest
 	@Test
 	public void collectionsEquals()
 	{
-		Collection< Integer > _list = Collections.makeFilteredList( new ArrayList< Integer >(), ruleRef );
-		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList< Integer >(), ruleRef );
-		Map< Integer, Integer > _map = Collections.makeFilteredMap( new HashMap< Integer, Integer >(), ruleRef );
+		Collection< Integer > _list = Collections.makeFilteredList( new ArrayList<>(), ruleRef );
+		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList<>(), ruleRef );
+		Map< Integer, Integer > _map = Collections.makeFilteredMap( new HashMap<>(), ruleRef );
 
 		Assert.assertFalse( _list.equals(null) );
 		Assert.assertFalse( _col.equals( (  null ) ) );
@@ -525,30 +530,32 @@ public class CollectionsTest
 		Assert.assertFalse( _col.equals( _list ) );
 		Assert.assertFalse( _map.equals( _list ) );
 
-		Collection< Integer > _list2 = Collections.makeFilteredList( new ArrayList< Integer >(), new Not< Integer >( null ) );
+        Predicate<Integer> not_null = (p) -> {return p != null;};
+
+		Collection< Integer > _list2 = Collections.makeFilteredList( new ArrayList<>(), not_null );
 		_list2.add( 2 );
 		Assert.assertFalse( _list.equals( _list2 ) );
 
-		Collection< Integer > _col2 = Collections.makeFilteredCollection( new ArrayList< Integer >(), new Not< Integer >( null ) );
+		Collection< Integer > _col2 = Collections.makeFilteredCollection( new ArrayList<>(), not_null);
 		_col2.add( 2 );
 		Assert.assertFalse( _col.equals( _col2 ) );
 
-		Map< Integer, Integer > _map2 = Collections.makeFilteredMap( new HashMap< Integer, Integer >(), new Not< Integer >( null ) );
+		Map< Integer, Integer > _map2 = Collections.makeFilteredMap( new HashMap<>(), not_null );
 		_map2.put( 1, 2 );
 		Assert.assertFalse( _map.equals( _map2 ) );
 
 		ArrayList< Integer > _lref = new ArrayList<>();
-		Collection< Integer > _list3 = new FilteredList<>( _lref, new Not< Integer >( null ) );
-		Collection< Integer > _list4 = new FilteredList<>( _lref, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _list3 = new FilteredList<>( _lref, not_null );
+		Collection< Integer > _list4 = new FilteredList<>( _lref, (p)  -> p%2 == 0);
 		Assert.assertFalse( _list3.equals( _list4 ) );
 
-		Collection< Integer > _col3 = new FilteredCollection<>( _lref, new Multiple< Integer >( 2 ) );
-		Collection< Integer > _col4 = new FilteredCollection<>( _lref, new Not< Integer >( null ) );
+		Collection< Integer > _col3 = new FilteredCollection<>( _lref, (p) -> p%2 == 0 );
+		Collection< Integer > _col4 = new FilteredCollection<>( _lref, not_null );
 		Assert.assertFalse( _col3.equals( _col4 ) );
 
 		Map< Integer, Integer > _mref = new HashMap<>();
-		Map< Integer, Integer > _map3 = new FilteredMap<>( _mref, new Multiple< Integer >( 2 ) );
-		Map< Integer, Integer > _map4 = new FilteredMap<>( _mref, new Not< Integer >( null ) );
+		Map< Integer, Integer > _map3 = new FilteredMap<>( _mref, (p) -> p%2 == 0 );
+		Map< Integer, Integer > _map4 = new FilteredMap<>( _mref, not_null);
 		Assert.assertFalse( _map3.equals( _map4 ) );
 	}
 
@@ -576,7 +583,7 @@ public class CollectionsTest
 	@Test( expected = NullPointerException.class )
 	public void nullCollection()
 	{
-		Collections.makeFilteredCollection( null, new Multiple< Float >( 0.0f ) );
+		Collections.makeFilteredCollection( null, null );
 	}
 
 	/**
@@ -606,7 +613,7 @@ public class CollectionsTest
 	public void collectionContainsAll()
 	{
 		Collection< Integer > _src = new ArrayList<>();
-		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, new Multiple< Integer >( 3 ) );
+		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, (p) -> p%3 == 0 );
 
 		_src.add( 1 );
 		_src.add( 2 );
@@ -628,7 +635,7 @@ public class CollectionsTest
 	{
 		Assert.assertTrue( ref.isEmpty() );
 
-		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList< Integer >(), new Not< Integer >( 1 ) );
+		Collection< Integer > _col = Collections.makeFilteredCollection( new ArrayList< Integer >(), (p) -> p != 1 );
 		Assert.assertTrue( _col.isEmpty() );
 	}
 
@@ -677,7 +684,7 @@ public class CollectionsTest
 	public void collectionRemoveForbiddenValue()
 	{
 		Collection< Integer > _src = new ArrayList<>();
-		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, new Multiple< Integer >( 3 ) );
+		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, (p) -> p%3 == 0 );
 
 		_src.add( 1 );
 		_src.add( 2 );
@@ -699,7 +706,7 @@ public class CollectionsTest
 	public void collectionRemoveAllForbiddenValue()
 	{
 		Collection< Integer > _src = new ArrayList<>();
-		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, (p) -> p%2 == 0 );
 
 		_src.add( 1 );
 		_src.add( 2 );
@@ -721,7 +728,7 @@ public class CollectionsTest
 	public void collectionRemoveAllInvalidValues()
 	{
 		Collection< Integer > _src = new ArrayList<>();
-		Collection< Integer > _sub_col = Collections.makeFilteredCollection( _src, new Multiple< Integer >( 2 ) );
+		Collection< Integer > _sub_col = Collections.makeFilteredCollection( _src, (p) -> p%2 == 0 );
 
 		_src.add( 1 );
 		_src.add( 2 );
@@ -742,7 +749,7 @@ public class CollectionsTest
 	public void collectionRemoveAll()
 	{
 		Collection< Integer > _src = new ArrayList<>();
-		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, new Multiple< Integer >( 1 ) );
+		Collection< Integer > _ccol = Collections.makeFilteredCollection( _src, (p) -> p%1 == 0 );
 
 		_src.add( 1 );
 		_src.add( 2 );
@@ -763,13 +770,15 @@ public class CollectionsTest
 	@Test
 	public void collectionWithMultiples()
 	{
-		Collection< Integer > _multiple_of_2 = Collections.makeFilteredCollection( new ArrayList< Integer >(), new Multiple< Integer >( 2 ) );
+		Collection< Integer > _multiple_of_2 = Collections.makeFilteredCollection( new ArrayList<>(), (p) -> p%2 == 0 );
 		for ( int i = 1; i < 20; ++i )
 		{
 			_multiple_of_2.add( i );
 		}
 
-		Collection< Integer > _not_multiple_of_2 = Collections.makeFilteredCollection( new ArrayList< Integer >(), new Not< Integer >( new Multiple< Integer >( 2 ) ) );
+        Predicate<Integer> multiple = (p) -> {return p%2 == 0;};
+
+		Collection< Integer > _not_multiple_of_2 = Collections.makeFilteredCollection( new ArrayList<>(), multiple.negate() );
 		for ( int i = 1; i < 20; ++i )
 		{
 			_not_multiple_of_2.add( i );
@@ -784,9 +793,9 @@ public class CollectionsTest
 	@Test
 	public void collectionsHashCode()
 	{
-		Assert.assertTrue( 0 != ( Collections.makeFilteredCollection( new ArrayList< Integer >(), new Not< Integer >( 1 ) ) ).hashCode() );
-		Assert.assertTrue( 0 != ( Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) ) ).hashCode() );
-		Assert.assertTrue( 0 != ( Collections.makeFilteredMap( new HashMap< Integer, Integer >(), new Not< Integer >( 1 ) ) ).hashCode() );
+		Assert.assertTrue( 0 != ( Collections.makeFilteredCollection( new ArrayList<Integer>(), (p) -> p != 1 ) ).hashCode() );
+		Assert.assertTrue( 0 != ( Collections.makeFilteredList( new LinkedList< Integer >(), (p) -> p != 1 ) ).hashCode() );
+		Assert.assertTrue( 0 != ( Collections.makeFilteredMap( new HashMap< Integer, Integer >(), (p) -> p != 1 ) ).hashCode() );
 	}
 
 	/**
@@ -795,7 +804,7 @@ public class CollectionsTest
 	@Test
 	public void collectionGet()
 	{
-		List< Integer > _ref = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _ref = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_ref.add( 2 );
 		_ref.add( 3 );
 		_ref.add( 1 );
@@ -811,7 +820,7 @@ public class CollectionsTest
 	@Test
 	public void equalsTrue()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1);
 		Assert.assertTrue( _list.equals( _list ) );
 	}
 
@@ -821,13 +830,13 @@ public class CollectionsTest
 	@Test
 	public void equalsFalse()
 	{
-		List< Integer > _list1 = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
-		List< Integer > _list2 = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 2 ) );
+		List< Integer > _list1 = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
+		List< Integer > _list2 = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 2 );
 		_list2.add( 5 );
 
 		Assert.assertFalse( _list1.equals( _list2 ) );
 
-		Map< Integer, Integer > _list3 = Collections.makeFilteredMap( new HashMap< Integer, Integer >(), new Not< Integer >( 3 ) );
+		Map< Integer, Integer > _list3 = Collections.makeFilteredMap( new HashMap<>(), (p) -> p != 3);
 		Assert.assertFalse( _list1.equals( _list3 ) );
 	}
 
@@ -838,7 +847,7 @@ public class CollectionsTest
 	@Test
 	public void indexOfList()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 2 );
 		_list.add( 3 );
 		_list.add( 4 );
@@ -853,7 +862,7 @@ public class CollectionsTest
 	@Test
 	public void lastIndexOf()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 2 );
 		_list.add( 3 );
 		_list.add( 4 );
@@ -870,7 +879,7 @@ public class CollectionsTest
 	@Test
 	public void listIterator()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 2 );
 		_list.add( 3 );
 		_list.add( 4 );
@@ -891,7 +900,7 @@ public class CollectionsTest
 	@Test
 	public void listIteratorAddingValue()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 5 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 5 );
 		for ( int i = 0; i < 10; ++i )
 		{
 			_list.add( i );
@@ -921,7 +930,7 @@ public class CollectionsTest
 	@Test
 	public void listRemove()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 2 );
 		_list.add( 3 );
 		_list.add( 4 );
@@ -943,7 +952,7 @@ public class CollectionsTest
 	@Test
 	public void listIteratorNext()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 5 );
 		ListIterator< Integer > _it = _list.listIterator();
 
@@ -961,7 +970,7 @@ public class CollectionsTest
 	@Test
 	public void subListIndex()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 2 );
 		_list.add( 3 );
 		_list.add( 4 );
@@ -994,7 +1003,7 @@ public class CollectionsTest
 	@Test
 	public void listSet()
 	{
-		List< Integer > _list = Collections.makeFilteredList( new LinkedList< Integer >(), new Not< Integer >( 1 ) );
+		List< Integer > _list = Collections.makeFilteredList( new LinkedList<>(), (p) -> p != 1 );
 		_list.add( 2 );
 		_list.add( 3 );
 		_list.add( 4 );
@@ -1022,7 +1031,7 @@ public class CollectionsTest
 		_list.add( 5 );
 		_list.add( 8 );
 
-		AList< Integer > _list2 = new AList<>( ( FilteredList< Integer > ) Collections.makeFilteredList( _list, new Not< Integer >( 1 ) ) );
+		AList< Integer > _list2 = new AList<>( ( FilteredList< Integer > ) Collections.makeFilteredList( _list, (p) -> p != 1 ) );
 
 		Assert.assertEquals( 5, _list.size() );
 		_list2.removeRange( 0, 3 );

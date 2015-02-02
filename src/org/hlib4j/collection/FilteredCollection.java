@@ -23,16 +23,17 @@ package org.hlib4j.collection;
 import org.hlib4j.util.States;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * A <code>Collection</code> where elements are filtering according to its  {@link Rule} definition. For this
  * FilteredCollection, only all elements according to the {@link Rule}, will be added.
  * Otherwise, this element will be rejected. If developer uses the elements list returned by the {@link #toArray()}
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
- * collection given as argument to the constructor {@link #FilteredCollection(java.util.Collection, Rule)}} contains
+ * collection given as argument to the constructor {@link #FilteredCollection(java.util.Collection, java.util.function.Predicate)}} contains
  * forbidden elements yet, the <code>FilteredCollection</code> will delete them. <br><br>
  * 
- * This class is using as implementations for {@link org.hlib4j.collection.Collections#makeFilteredCollection(java.util.Collection, Rule)}.
+ * This class is using as implementations for {@link Collections#makeFilteredCollection(java.util.Collection, java.util.function.Predicate)}.
  *
  * @param <ElementType> Elements types of this collection.
  * @author Tioben Neenot
@@ -44,7 +45,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	/**
 	 * The filter to manage all elements in the managedCollection
 	 */
-	private Rule< ElementType > filter = null;
+	private Predicate< ElementType > filter = null;
 
 	/**
 	 * The collection to manage
@@ -54,12 +55,11 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	/**
 	 * Builds an instance of this <code>FilteredCollection</code>. This class is a wrapper on a real
 	 * collection, and takes the control of the external collection, according to filter definition.
-	 *
-	 * @param originalCollection    Collection links with this wrapper for which all elements will be managing by the given
+	 *  @param originalCollection    Collection links with this wrapper for which all elements will be managing by the given
 	 *                              filter.
-	 * @param ruleForThisCollection {@link Rule} to apply on each element of this collection.
-	 */
-	FilteredCollection( Collection< ElementType > originalCollection, Rule< ElementType > ruleForThisCollection )
+	 * @param ruleForThisCollection {@link org.hlib4j.collection.Rule} to apply on each element of this collection.
+     */
+	FilteredCollection( Collection< ElementType > originalCollection, Predicate<ElementType> ruleForThisCollection )
 	{
 		super();
 
@@ -88,7 +88,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 		List< Object > _raw_list = Arrays.asList( this.managedCollection.toArray() );
 		for ( Object _element : _raw_list )
 		{
-			if ( !this.filter.accept( ( ElementType ) _element ) )
+			if ( !this.filter.test( ( ElementType ) _element ) )
 			{
 				this.managedCollection.remove( _element );
 				++_counter;
@@ -107,7 +107,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	public boolean add( ElementType element )
 	{
 
-		if ( !this.filter.accept( element ) )
+		if ( !this.filter.test( element ) )
 		{
 			return false;
 		}
@@ -226,7 +226,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 		// of this collection.
 		for ( Object _element : initialCollection )
 		{
-			if ( !this.filter.accept( ( ElementType ) _element ) )
+			if ( !this.filter.test( ( ElementType ) _element ) )
 			{
 				return false;
 			}

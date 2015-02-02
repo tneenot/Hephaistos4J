@@ -24,6 +24,7 @@ package org.hlib4j.collection;
 import org.hlib4j.util.States;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * A
@@ -31,10 +32,10 @@ import java.util.*;
  * FilteredList, only all elements according to the {@link Rule}, will be added.
  * Otherwise, this element will be rejected. If developer uses the elements managedList returned by the {@link #toArray()}
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
- * collection given as argument to the constructor {@link #FilteredList(List, Rule)}} contains
+ * collection given as argument to the constructor {@link #FilteredList(java.util.List, java.util.function.Predicate)}} contains
  * forbidden elements yet, the <code>FilteredList</code> will delete them. <br><br>
  * <p/>
- * This class is using as implementations for {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)}.
+ * This class is using as implementations for {@link Collections#makeFilteredList(java.util.List, java.util.function.Predicate)}.
  *
  * @param <ElementType> The data type of this managedList
  * @author Tioben Neenot
@@ -45,7 +46,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
     /**
      * The filter links with this managedList
      */
-    private Rule<ElementType> filter = null;
+    private Predicate<ElementType> filter = null;
     /**
      * The elements of this managedList
      */
@@ -59,11 +60,10 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
     /**
      * Builds an instance of the <code>FilteredList</code>. This class is a wrapper on a real
      * collection, and takes the control of the external collection, according to filter definition.
-     *
-     * @param originalList    List links with this wrapper for which all elements will be managing bye the given filter.
-     * @param ruleForThisList {@link Rule} to apply on each element of this list.
+     *  @param originalList    List links with this wrapper for which all elements will be managing bye the given filter.
+     * @param ruleForThisList {@link org.hlib4j.collection.Rule} to apply on each element of this list.
      */
-    FilteredList(List<ElementType> originalList, Rule<ElementType> ruleForThisList) {
+    FilteredList(List<ElementType> originalList, Predicate<ElementType> ruleForThisList) {
         super();
 
         try {
@@ -100,7 +100,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public boolean add(ElementType elementType) {
-        return this.filter.accept(elementType) && this.managedList.add(elementType);
+        return this.filter.test(elementType) && this.managedList.add(elementType);
 
     }
 
@@ -111,7 +111,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public void add(int index, ElementType elementType) {
-        this.ctrlFlag = this.filter.accept(elementType);
+        this.ctrlFlag = this.filter.test(elementType);
         if (this.ctrlFlag) {
             this.managedList.add(index, elementType);
         }
@@ -283,7 +283,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public ElementType set(int index, ElementType elementType) {
-        if (!this.filter.accept(elementType)) {
+        if (!this.filter.test(elementType)) {
             return null;
         }
 
@@ -338,7 +338,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
          */
         @Override
         public void add(ElementType elementType) {
-            if (FilteredList.this.filter.accept(elementType)) {
+            if (FilteredList.this.filter.test(elementType)) {
                 this.realListIterator.add(elementType);
             }
         }
@@ -420,7 +420,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
          */
         @Override
         public void set(ElementType elementType) {
-            if (FilteredList.this.filter.accept(elementType)) {
+            if (FilteredList.this.filter.test(elementType)) {
                 this.realListIterator.set(elementType);
             }
         }

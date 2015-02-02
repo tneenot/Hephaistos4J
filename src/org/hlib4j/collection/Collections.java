@@ -23,6 +23,7 @@ package org.hlib4j.collection;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * This class consists exclusively of static methods that operate on or return collections. It contains methods that
@@ -105,11 +106,11 @@ public class Collections
 	 * @param originalCollection
 	 *          The original collection on which the rule will be applied.
 	 * @param ruleForThisCollection
-	 *          The {@link org.hlib4j.collection.Rule} used to manage all elements in this collection.
+	 *          The {@link Rule} used to manage all elements in this collection.
 	 * @return The collection with a filter rule on collection elements.
 	 */
 	public static <ElementType> Collection<ElementType> makeFilteredCollection(
-			Collection<ElementType> originalCollection, Rule<ElementType> ruleForThisCollection)
+			Collection<ElementType> originalCollection, Predicate<ElementType> ruleForThisCollection)
 	{
 		return new FilteredCollection<>(originalCollection, ruleForThisCollection);
 	}
@@ -122,11 +123,11 @@ public class Collections
 	 * @param originalList
 	 *          The original list on which the rule will be applied.
 	 * @param ruleForThisList
-	 *          The {@link Rule} used to manage all elements of this list.
+	 *          The {@link org.hlib4j.collection.Rule} used to manage all elements of this list.
 	 * @return The list with a filter rule on adding elements.
 	 */
 	public static <ElementType> List<ElementType> makeFilteredList(List<ElementType> originalList,
-			Rule<ElementType> ruleForThisList)
+			Predicate<ElementType> ruleForThisList)
 	{
 		return new FilteredList<>(originalList, ruleForThisList);
 	}
@@ -141,10 +142,10 @@ public class Collections
 	 * @param originalMap
 	 *          The original map on which the rule will be applied.
 	 * @param ruleForThisMap
-	 *          The {@link Rule} used to manage all elements in this map.
+	 *          The {@link org.hlib4j.collection.Rule} used to manage all elements in this map.
 	 * @return The map with a filter rule on adding elements.
 	 */
-	public static <K, V> Map<K, V> makeFilteredMap(Map<K, V> originalMap, Rule<V> ruleForThisMap)
+	public static <K, V> Map<K, V> makeFilteredMap(Map<K, V> originalMap, Predicate<V> ruleForThisMap)
 	{
 		return new FilteredMap<>(originalMap, ruleForThisMap);
 	}

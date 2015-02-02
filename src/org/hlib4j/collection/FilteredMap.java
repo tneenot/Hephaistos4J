@@ -26,6 +26,7 @@ import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * A
@@ -34,7 +35,7 @@ import java.util.Set;
  * the map. Otherwise, this element will be rejected. If developer uses the
  * elements list returned by the {@link #values()} method, all elements will set
  * into a {@link FilteredCollection} class. As defined by the constructor
- * {@link #FilteredMap(Map, Rule)}, this class is not a real map itself, but takes
+ * {@link #FilteredMap(java.util.Map, java.util.function.Predicate)}, this class is not a real map itself, but takes
  * the control of an external map. All elements in the map will be managed
  * according to the {@link Rule}. If the external map contains forbidden
  * elements yet, this map will delete forbidden elements.
@@ -54,15 +55,14 @@ final class FilteredMap < K, V > extends AbstractMap< K, V > implements Cleaner
 	/**
 	 * The filter to apply to all map records
 	 */
-	private Rule< V >   filter = null;
+	private Predicate< V >   filter = null;
 
 	/**
 	 * Build an instance of this map.
-	 *
-	 * @param originalMap Map to use for records managing
-	 * @param filter      {@link Rule} to use with the Map
-	 */
-	FilteredMap( Map< K, V > originalMap, Rule< V > filter )
+	 *  @param originalMap Map to use for records managing
+	 * @param filter      {@link org.hlib4j.collection.Rule} to use with the Map
+     */
+	FilteredMap( Map< K, V > originalMap, Predicate<V> filter )
 	{
 		super();
 
@@ -214,7 +214,7 @@ final class FilteredMap < K, V > extends AbstractMap< K, V > implements Cleaner
 	@Override
 	public V put( K key, V value )
 	{
-		if ( !this.filter.accept( value ) )
+		if ( !this.filter.test( value ) )
 		{
 			return null;
 		}
