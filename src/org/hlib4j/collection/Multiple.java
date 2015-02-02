@@ -285,7 +285,7 @@ public class Multiple<E extends Number> implements Rule<E>
 	}
 
 	/**
-	 * Verify if the AttomicInteger element is valid or not. Ensure that this method will be synchronized during its call.
+	 * Verify if the AtomicInteger element is valid or not. Ensure that this method will be synchronized during its call.
 	 *
 	 * @param anAtomicInteger
 	 *          AtomicInteger element to control.
