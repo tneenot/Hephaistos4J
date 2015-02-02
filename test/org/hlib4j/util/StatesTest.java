@@ -64,7 +64,7 @@ public class StatesTest
 	@Test
 	public void testIsNullOrEmpty()
 	{
-		Assert.assertTrue( States.isNullOrEmpty( null ) );
+		Assert.assertTrue( States.isNullOrEmptyArray(null) );
 	}
 
 	/**
@@ -115,132 +115,6 @@ public class StatesTest
 	}
 
 	/**
-	 * Test: <b>test if an array of <code>long</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>long</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmpty(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayLong()
-	{
-		long[] _larray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _larray1 ) );
-
-		long[] _larray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _larray2 ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>double</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>double</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmpty(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayDouble()
-	{
-		double[] _darray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _darray1 ) );
-
-		double[] _darray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _darray2 ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>float</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>float</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayFloat()
-	{
-		float[] _farray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _farray1 ) );
-
-		float[] _farray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _farray2 ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>short</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>short</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayShort()
-	{
-		short[] _sarray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _sarray1 ) );
-
-		short[] _sarray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _sarray2 ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>byte</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>byte</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayByte()
-	{
-		byte[] _bbarray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _bbarray1 ) );
-
-		byte[] _bbarray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _bbarray2 ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>char</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>char</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayChar()
-	{
-		char[] _carray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _carray1 ) );
-
-		char[] _carray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _carray2 ) );
-	}
-
-	/**
 	 * Test: <b>test if an array of <code>boolean</code> types is <code>null</code> or empty.</b>.<br>
 	 * <ul>
 	 * <li>Input data: empties array of <code>boolean</code> types.</li>
@@ -252,191 +126,13 @@ public class StatesTest
 	@Test
 	public void testNullOrEmptyArrayBoolean()
 	{
-		boolean[] _barray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _barray1 ) );
+		Boolean[] _barray1 = null;
+		Assert.assertTrue(States.isNullOrEmptyArray(_barray1));
 
-		boolean[] _barray2 =
-			{
-			};
+		Boolean[] _barray2 = {};
 		Assert.assertTrue( States.isNullOrEmptyArray( _barray2 ) );
 	}
 
-	/**
-	 * Test: <b>test if an array of <code>int</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>int</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayInt()
-	{
-		int[] _iarray1 = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _iarray1 ) );
-
-		int[] _iarray2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _iarray2 ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of bases types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: non empties array of bases types.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArray2()
-	{
-
-		float[] _farray =
-			{
-				2.1f
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _farray ) );
-
-		double[] _darray =
-			{
-				2.3
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _darray ) );
-
-		long[] _larray =
-			{
-				Long.MIN_VALUE
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _larray ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>short</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: non empties array of <code>short</code> types.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArray2Short()
-	{
-		short[] _sarray =
-			{
-				2
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _sarray ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>byte</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: non empties array of <code>byte</code> types.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArray2Byte()
-	{
-		byte[] _bbarray =
-			{
-				1
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _bbarray ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>char</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: non empties array of <code>char</code> types.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArray2Char()
-	{
-		char[] _carray =
-			{
-				'c'
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _carray ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>boolean</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: non empties array of <code>boolean</code> types.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArray2Boolean()
-	{
-		boolean[] _barray =
-			{
-				false
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _barray ) );
-	}
-
-	/**
-	 * Test: <b>test if an array of <code>int</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: non empties array of <code>int</code> types.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArray2Int()
-	{
-		int[] _iarray =
-			{
-				0
-			};
-		Assert.assertFalse( States.isNullOrEmptyArray( _iarray ) );
-	}
-
-	/**
-	 * Test: <b>Test if an array of objects is null or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: an empty array of different kinds of object.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>Test for all arrays type only.</i>
-	 */
-	@Test
-	public void testIsNullOrEmptyArrayOfObjects()
-	{
-		Object[] o = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( o ) );
-
-		Object[] o2 =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( o2 ) );
-
-		Integer[] _i = null;
-		Assert.assertTrue( States.isNullOrEmptyArray( _i ) );
-
-		Integer[] _iarray =
-			{
-			};
-		Assert.assertTrue( States.isNullOrEmptyArray( _iarray ) );
-	}
 
 	/**
 	 * Test: <b>Test a valid assertion and controls the parameters is correctly returned.</b>.<br>
@@ -540,154 +236,8 @@ public class StatesTest
 	@Test( expected = AssertionError.class )
 	public void testValidateEmptyArray()
 	{
-		Integer[] i =
-			{
-			};
+		Integer[] i = {	};
 		States.validateArray( i );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyIntArray()
-	{
-		int[] i =
-			{
-			};
-		States.validateArray(i);
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyShortArray()
-	{
-		short[] s =
-			{
-			};
-		States.validateArray( s );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyLongArray()
-	{
-		long[] l =
-			{
-			};
-		States.validateArray( l );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyBooleanArray()
-	{
-		boolean[] b =
-			{
-			};
-		States.validateArray( b );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyFloatArray()
-	{
-		float[] f =
-			{
-			};
-		States.validateArray( f );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyDoubleArray()
-	{
-		double[] d =
-			{
-			};
-		States.validateArray( d );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyCharArray()
-	{
-		char[] c =
-			{
-			};
-		States.validateArray( c );
-	}
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateEmptyByteArray()
-	{
-		byte[] b =
-			{
-			};
-		States.validateArray( b );
 	}
 
 	/**
@@ -704,4 +254,17 @@ public class StatesTest
 	{
 		States.validate( null );
 	}
+
+    @Test
+    public void testValidateArrayExcludeNull() throws Exception {
+        Object[] o = {};
+        Assert.assertArrayEquals(o, States.validateArrayExcludeNull(o));
+    }
+
+    @Test
+    public void testValidateExcludeNull() throws Exception {
+
+        Integer i = 4;
+        Assert.assertEquals(i, States.validateExcludeNull(i));
+    }
 }

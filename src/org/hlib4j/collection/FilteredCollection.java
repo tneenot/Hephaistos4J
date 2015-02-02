@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.util.States;
+
 import java.util.*;
 
 /**
@@ -61,13 +63,12 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	{
 		super();
 
-		if ( null == originalCollection || null == ruleForThisCollection )
-		{
-			throw new NullPointerException();
-		}
-
-		this.managedCollection = originalCollection;
-		this.filter = ruleForThisCollection;
+        try {
+            this.filter = States.validate(ruleForThisCollection);
+            this.managedCollection = States.validateExcludeNull(originalCollection);
+        } catch (AssertionError e) {
+            throw new NullPointerException(e.getMessage() + ". Null element.");
+        }
 
 		// Force the cleaning on this collection
 		clean();
