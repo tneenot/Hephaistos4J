@@ -28,8 +28,8 @@ import java.util.function.Predicate;
 
 /**
  * A
- * <code>List</code> where elements are filtering according to its  {@link Rule} definition. For this
- * FilteredList, only all elements according to the {@link Rule}, will be added.
+ * <code>List</code> where elements are filtering according to its predicate definition. For this
+ * FilteredList, only all elements according to the predicate, will be added.
  * Otherwise, this element will be rejected. If developer uses the elements managedList returned by the {@link #toArray()}
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredList(java.util.List, java.util.function.Predicate)}} contains
@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  *
  * @param <ElementType> The data type of this managedList
  * @author Tioben Neenot
- * @see Rule
+ * @see java.util.function.Predicate
  */
 final class FilteredList<ElementType> extends AbstractList<ElementType> implements Cleaner {
 
@@ -61,7 +61,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      * Builds an instance of the <code>FilteredList</code>. This class is a wrapper on a real
      * collection, and takes the control of the external collection, according to filter definition.
      *  @param originalList    List links with this wrapper for which all elements will be managing bye the given filter.
-     * @param ruleForThisList {@link org.hlib4j.collection.Rule} to apply on each element of this list.
+     * @param ruleForThisList The predicate to apply on each element of this list.
      */
     FilteredList(List<ElementType> originalList, Predicate<ElementType> ruleForThisList) {
         super();

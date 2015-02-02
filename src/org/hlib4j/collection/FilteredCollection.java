@@ -26,8 +26,8 @@ import java.util.*;
 import java.util.function.Predicate;
 
 /**
- * A <code>Collection</code> where elements are filtering according to its  {@link Rule} definition. For this
- * FilteredCollection, only all elements according to the {@link Rule}, will be added.
+ * A <code>Collection</code> where elements are filtering according to its  predicate definition. For this
+ * FilteredCollection, only all elements according to the predicate, will be added.
  * Otherwise, this element will be rejected. If developer uses the elements list returned by the {@link #toArray()}
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredCollection(java.util.Collection, java.util.function.Predicate)}} contains
@@ -37,7 +37,7 @@ import java.util.function.Predicate;
  *
  * @param <ElementType> Elements types of this collection.
  * @author Tioben Neenot
- * @see Rule
+ * @see java.util.function.Predicate
  */
 final class FilteredCollection < ElementType > extends AbstractCollection< ElementType > implements Cleaner
 {
@@ -57,7 +57,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	 * collection, and takes the control of the external collection, according to filter definition.
 	 *  @param originalCollection    Collection links with this wrapper for which all elements will be managing by the given
 	 *                              filter.
-	 * @param ruleForThisCollection {@link org.hlib4j.collection.Rule} to apply on each element of this collection.
+	 * @param ruleForThisCollection The predicate to apply on each element of this collection.
      */
 	FilteredCollection( Collection< ElementType > originalCollection, Predicate<ElementType> ruleForThisCollection )
 	{

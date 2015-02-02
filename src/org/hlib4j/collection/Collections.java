@@ -51,7 +51,7 @@ import java.util.function.Predicate;
  * <br>
  * 
  * <pre>
- * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, new Not&lt;Integer&gt;(5));
+ * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, (n) -&gt; n != 5 );
  * </pre>
  * 
  * So each time the developer adds a value like this <code>collectionTest.add(value)</code>, all values equals to
@@ -64,7 +64,7 @@ import java.util.function.Predicate;
  * <br>
  * 
  * <pre>
- * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, new Not&lt;Integer&gt;(5));
+ * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, (n) -&gt; n != 5);
  * ... // Some other operations
  * originalCollection.add(5);
  * int nbDeletedValues = Collections.clean(collectionTest);
@@ -83,7 +83,7 @@ import java.util.function.Predicate;
  * <br>
  * All these rules are valid for a <code>List</code> or a <code>Map</code>. For the <code>List</code> its
  * <code>ListIterator</code> doesn't allow to set a forbidden value in its backed collection, according to its
- * {@link Rule} definition.
+ * predicate definition.
  *
  * @author Tioben Neenot
  */
@@ -99,14 +99,14 @@ public class Collections
 	}
 
 	/**
-	 * Returns a collection for which all elements are managing according to a {@link Rule} definition.
+	 * Returns a collection for which all elements are managing according to the predicate definition.
 	 *
 	 * @param <ElementType>
 	 *          The type of the element in the collection.
 	 * @param originalCollection
 	 *          The original collection on which the rule will be applied.
 	 * @param ruleForThisCollection
-	 *          The {@link Rule} used to manage all elements in this collection.
+	 *          The predicate used to manage all elements in this collection.
 	 * @return The collection with a filter rule on collection elements.
 	 */
 	public static <ElementType> Collection<ElementType> makeFilteredCollection(
@@ -116,14 +116,14 @@ public class Collections
 	}
 
 	/**
-	 * Returns a list for which all elements of this list are managing according to a {@link Rule} definition.
+	 * Returns a list for which all elements of this list are managing according to the predicate definition.
 	 *
 	 * @param <ElementType>
 	 *          The type of the element in the list
 	 * @param originalList
 	 *          The original list on which the rule will be applied.
 	 * @param ruleForThisList
-	 *          The {@link org.hlib4j.collection.Rule} used to manage all elements of this list.
+	 *          The predicate used to manage all elements of this list.
 	 * @return The list with a filter rule on adding elements.
 	 */
 	public static <ElementType> List<ElementType> makeFilteredList(List<ElementType> originalList,
@@ -133,7 +133,7 @@ public class Collections
 	}
 
 	/**
-	 * Returns a map for which all elements of this map are managing according to a {@link Rule} definition.
+	 * Returns a map for which all elements of this map are managing according to the predicate definition.
 	 *
 	 * @param <K>
 	 *          The key of the map
@@ -142,7 +142,7 @@ public class Collections
 	 * @param originalMap
 	 *          The original map on which the rule will be applied.
 	 * @param ruleForThisMap
-	 *          The {@link org.hlib4j.collection.Rule} used to manage all elements in this map.
+	 *          The predicate used to manage all elements in this map.
 	 * @return The map with a filter rule on adding elements.
 	 */
 	public static <K, V> Map<K, V> makeFilteredMap(Map<K, V> originalMap, Predicate<V> ruleForThisMap)
@@ -151,12 +151,12 @@ public class Collections
 	}
 
 	/**
-	 * Delete values from the collection that are not corresponding to a {@link Rule} definition. Values will be deleted
-	 * only if the collection gets a {@link Rule} implementation.
+	 * Delete values from the collection that are not corresponding to a predicate definition. Values will be deleted
+	 * only if the collection gets a predicate implementation.
 	 *
 	 * @param collectionToClean
 	 *          Collection for which all values must be removed according to its underlying rule.
-	 * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the {@link Rule}
+	 * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the <code>Predicate</code>
 	 *         definition.
 	 */
 	public static int clean(Collection<?> collectionToClean)
@@ -167,12 +167,12 @@ public class Collections
 	}
 
 	/**
-	 * Delete values from the map that are not corresponding to a {@link Rule} definition. Values will be deleted only if
-	 * the map gets a {@link Rule} implementation.
+	 * Delete values from the map that are not corresponding to a predicate definition. Values will be deleted only if
+	 * the map gets a predicate implementation.
 	 *
 	 * @param mapToClean
 	 *          Map for which all values must be removed according to its underlying rule..
-	 * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the {@link Rule}
+	 * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the <code>Predicate</code>
 	 *         implementation.
 	 */
 	public static int clean(Map<?, ?> mapToClean)
