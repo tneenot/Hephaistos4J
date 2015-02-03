@@ -89,9 +89,9 @@ public class JF18NBis extends JFrame implements ActionListener, I18n {
         @SuppressWarnings("unchecked")
         JComboBox<Object> _box = (JComboBox<Object>) e.getSource();
         if (_box.getSelectedItem().equals("English")) {
-            i18n.update(new Locale("en", "GB"));
+            i18n.change(new Locale("en", "GB"));
         } else {
-            i18n.update(new Locale("fr", "FR"));
+            i18n.change(new Locale("fr", "FR"));
         }
     }
 

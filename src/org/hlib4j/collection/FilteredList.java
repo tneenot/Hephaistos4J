@@ -68,7 +68,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
 
         try {
             this.filter = States.validate(ruleForThisList);
-            this.managedList = States.validateExcludeNull(originalList);
+            this.managedList = States.validateNotNullOnly(originalList);
         } catch (AssertionError e) {
             throw new NullPointerException(e.getMessage() + ". Null element.");
         }

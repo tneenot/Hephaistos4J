@@ -25,7 +25,7 @@ package org.hlib4j.collection;
  *
  * @author Tioben Neenot
  */
-interface Cleaner
+public interface Cleaner
 {
 
 	/**

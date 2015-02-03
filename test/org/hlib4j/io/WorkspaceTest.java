@@ -103,15 +103,15 @@ public class WorkspaceTest
 	@Test
 	public void testAddUriFile() throws IOException
 	{
-		File f = new File(workspace + File.separator + "foobar");
+		File f = new File(File.separator + "foobar3");
 		Assert.assertNotNull(workspace.addFileByURI(f.toURI()));
 	}
 
 	@Test
 	public void testAddUriAndCompareToString() throws IOException
 	{
-		File ref = new File(File.separator + "foobar");
-		File add_file = workspace.addFileByURI(new File(workspace + File.separator + "foobar").toURI());
+		File ref = new File(File.separator + "foobar2");
+		File add_file = workspace.addFileByURI(new File(File.separator + "foobar2").toURI());
 
 		Assert.assertEquals(ref.toURI(), add_file.toURI());
 	}
@@ -224,7 +224,7 @@ public class WorkspaceTest
 	 * @throws java.io.IOException
 	 *           If file exists<br>
 	 *           <b>Note</b>: this test is as ignore mode due to java bug. While a file had been created with a
-	 *           createNewFile, it's staying in blocking mode onto the operating system. Waits an update of OpenJDK to
+	 *           createNewFile, it's staying in blocking mode onto the operating system. Waits an change of OpenJDK to
 	 *           resolve this problem.
 	 */
 	@Test
@@ -308,4 +308,13 @@ public class WorkspaceTest
 	{
 		new Workspace(new File(File.separator + "tmp" + File.separator + "foo").toURI());
 	}
+
+    @Test
+    public void testGetFileByURI() throws Exception {
+        File add_file = workspace.addFileByURI(new File(File.separator + "foobar").toURI());
+        add_file.createNewFile();
+        File uri_file = workspace.getFileByURI(add_file.toURI());
+
+        Assert.assertEquals(add_file.toURI(), uri_file.toURI());
+    }
 }

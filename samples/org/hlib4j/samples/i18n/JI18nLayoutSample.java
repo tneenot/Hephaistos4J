@@ -103,7 +103,7 @@ public class JI18nLayoutSample extends JFrame implements ActionListener
 	}
 
 	/**
-	 * Applied a new local and update all components.
+	 * Applied a new local and change all components.
 	 *
 	 * @param e Event source
 	 */

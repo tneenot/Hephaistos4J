@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 
 /**
  * Manager for {@link I18n} definition. This manager allows to define the list of {@link I18n} implementation to take
- * account. While a new locale must be applied, a call to {@link #update()} or {@link #update(Locale)} will change all
+ * account. While a new locale must be applied, a call to {@link #update()} or {@link #change(Locale)} will change all
  * locals for each {@link I18n} implementation.<br> <br> Each {@link I18n} implementation will be added by
  * {@link #add(I18n)} method only if {@link I18n} is a valid implementation. A valid implementation means
  * {@link I18n#getBaseName()} musn't be null or empty and must be existing, otherwise the implementation will not be
@@ -148,15 +148,15 @@ public class I18nContainer
 	 */
 	public void update()
 	{
-		update( getLastLocale() );
+		change(getLastLocale());
 	}
 
 	/**
-	 * Updates all I18n implementations with a specific locale. This locale will become the last locale after update.
+	 * Changes all I18n implementations with a specific locale. This locale will become the last locale after change.
 	 *
 	 * @param locale Locale to use for all I18n implementation
 	 */
-	public void update( Locale locale )
+	public void change(Locale locale)
 	{
 		for ( I18n _i18n : i18nCollections )
 		{

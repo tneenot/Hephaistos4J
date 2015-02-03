@@ -27,9 +27,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 /**
- * This class represents a workspace in which all file creates or attach to this workspace will be stored. Thanks to the
- * workspace concept, it's possible to create a private workspace during a session, for example, in which all
- * temporaries files will be saved.
+ * This class represents a workspace in which all file created or attached to this workspace will be stored. Thanks to the workspace concept, it's possible to create a private workspace during a session, for example, in which all temporaries files will be saved.
  *
  * @author Tioben Neenot &lt;tioben.neenot@laposte.net&gt;
  */
@@ -87,22 +85,21 @@ public class Workspace extends File {
     }
 
     /**
-     * Adds a file into the workspace according to its path. If path is given as full absolute path, it will be always
-     * stored into the workspace name. The file adds into the workspace is not created by default.
+     * Adds a file into the workspace according to its path. If path is given as full absolute path, it will be always stored into the workspace name. The file adds into the workspace is not created by default.
      *
-     * @param path WorkspaceUnitFile's path.
+     * @param path File's path.
      * @return The file into the workspace.
      * @throws IOException If file exists into the workspace yet.
      */
     public File addFileByStringPath(String path) throws IOException {
         File _inner_file = new File(getAbsolutePath(), path);
-        if(!_inner_file.exists())
-        {
+        if (!_inner_file.exists()) {
             return new WorkspaceUnitFile(this, path);
         }
 
         throw new IOException("File exists yet");
     }
+
 
     /**
      * Adds a file according to its URI representation.
@@ -135,12 +132,23 @@ public class Workspace extends File {
     /**
      * Gets the file that is corresponding to the given path.
      *
-     * @param path WorkspaceUnitFile's path
-     * @return WorkspaceUnitFile that is corresponding to the given path, or <code>null</code> if not found.
+     * @param path File's path.
+     * @return File that is corresponding to the given path, or <code>null</code> if not found.
      */
     public File getFileByStringPath(String path) {
-        File _inner_file = new File(getAbsolutePath(), path);
+        File _inner_file = new File(this, path);
         return _inner_file.exists() ? new File(path) : null;
+    }
+
+    /**
+     * Gets the file that is corresponding to the given URI.
+     * @param uri URI file
+     * @return File that is corresponding to the URI, or {@code null} if not found.
+     */
+    public File getFileByURI(URI uri)
+    {
+        File _inner_file = new File(this, new File(uri).getName());
+        return _inner_file.exists() ? new File(uri) : null;
     }
 
     /**
@@ -188,7 +196,7 @@ public class Workspace extends File {
          * @see java.io.File
          */
         WorkspaceUnitFile(Workspace workspace, URI uri) {
-            this(workspace, uri.toString());
+            this(workspace, new File(uri).getName());
         }
 
         /*
@@ -233,8 +241,7 @@ public class Workspace extends File {
          */
         @Override
         public String toString() {
-            return super.toString().replace(String.format("%1$1s%2$1s", this.workspace.toString(), File.separator),
-                    File.separator);
+            return super.toString().replace(String.format("%1$1s%2$1s", this.workspace.toString(), File.separator), File.separator);
         }
 
         /**
@@ -245,12 +252,41 @@ public class Workspace extends File {
         @Override
         public URI toURI() {
             try {
-                return new URI(super.toURI().toString().replace(this.workspace.toURI().toString(), ""));
+                return new URI(super.toURI().toString().replace(this.workspace.toString(), ""));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
 
             return null;
+        }
+
+
+        /**
+         * Atomically creates a new, empty file named by this abstract pathname if
+         * and only if a file with this name does not yet exist.  The check for the
+         * existence of the file and the creation of the file if it does not exist
+         * are a single operation that is atomic with respect to all other
+         * filesystem activities that might affect the file.
+         * <p>
+         * Note: this method should <i>not</i> be used for file-locking, as
+         * the resulting protocol cannot be made to work reliably. The
+         * {@link java.nio.channels.FileLock FileLock}
+         * facility should be used instead.
+         *
+         * @return <code>true</code> if the named file does not exist and was
+         * successfully created; <code>false</code> if the named file
+         * already exists
+         * @throws java.io.IOException If an I/O error occurred
+         * @throws SecurityException   If a security manager exists and its <code>{@link
+         *                             SecurityManager#checkWrite(String)}</code>
+         *                             method denies write access to the file
+         * @since 1.2
+         */
+        @Override
+        public boolean createNewFile() throws IOException {
+            File _inner_file = new File(this.getPath());
+
+            return _inner_file.createNewFile();
         }
     }
 }

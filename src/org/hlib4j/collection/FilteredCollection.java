@@ -65,7 +65,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 
         try {
             this.filter = States.validate(ruleForThisCollection);
-            this.managedCollection = States.validateExcludeNull(originalCollection);
+            this.managedCollection = States.validateNotNullOnly(originalCollection);
         } catch (AssertionError e) {
             throw new NullPointerException(e.getMessage() + ". Null element.");
         }
@@ -88,7 +88,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 		List< Object > _raw_list = Arrays.asList( this.managedCollection.toArray() );
 		for ( Object _element : _raw_list )
 		{
-			if ( !this.filter.test( ( ElementType ) _element ) )
+			if ( !this.filter.test((ElementType) _element) )
 			{
 				this.managedCollection.remove( _element );
 				++_counter;
@@ -107,7 +107,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	public boolean add( ElementType element )
 	{
 
-		if ( !this.filter.test( element ) )
+		if ( !this.filter.test(element) )
 		{
 			return false;
 		}
@@ -226,7 +226,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 		// of this collection.
 		for ( Object _element : initialCollection )
 		{
-			if ( !this.filter.test( ( ElementType ) _element ) )
+			if ( !this.filter.test((ElementType) _element) )
 			{
 				return false;
 			}

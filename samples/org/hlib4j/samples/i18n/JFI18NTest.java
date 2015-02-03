@@ -186,11 +186,11 @@ public class JFI18NTest extends JFrame implements ActionListener, I18n
 		Object _item = _box.getSelectedItem();
 		if ( _item.equals( "English" ) )
 		{
-			i18n.update( new Locale( "en", "GB" ) );
+			i18n.change(new Locale("en", "GB"));
 		}
 		else
 		{
-			i18n.update( new Locale( "fr", "FR" ) );
+			i18n.change(new Locale("fr", "FR"));
 		}
 	}
 

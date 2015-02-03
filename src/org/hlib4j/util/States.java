@@ -24,7 +24,7 @@ package org.hlib4j.util;
 import java.util.Collection;
 
 /**
- * Convenient class to test some <code>null</code> or empty states for different types of object.
+ * Convenient class to test some <code>null</code> or empty states for different objects type.
  *
  * @author Tioben Neenot &lt;tioben.neenot@laposte.net&gt;
  */
@@ -110,7 +110,7 @@ public class States
      * @return The element if it's valid.
      * @throws AssertionError If the element is not valid.
      */
-    public static <T> T validateExcludeNull(T element) throws AssertionError {
+    public static <T> T validateNotNullOnly(T element) throws AssertionError {
         if(null != element) return element;
 
         throw new AssertionError("Invalid null element");
@@ -133,18 +133,4 @@ public class States
 		throw new AssertionError("Invalid null or empty array");
 	}
 
-    /**
-     * Controls if the array is not <code>null</code> only. Empty array is accepted. This method returns the tested
-     * array if it's valid. This choice allows to chain method calling during variable affectation for example.
-     *
-     * @param array Array to control
-     * @param <T> Type of array
-     * @return The array controlled if it's valid.
-     * @throws AssertionError If array is not valid.
-     */
-    public static <T> T[] validateArrayExcludeNull(T[] array) throws AssertionError {
-        if(null != array) { return array; }
-
-        throw new AssertionError("Invalid null array");
-    }
 }

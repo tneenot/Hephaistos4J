@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * Inner predicate is specifying with
  * {@link Processing#Processing(java.util.function.Predicate)} constructor.
  * Default constructor is a convenient constructor that implements an internal predicate that returns
- * always true.
+ * always true. That means, the {@link org.hlib4j.collection.Processing#perform(Object)} will apply on all elements of the underlying collection.
  *
  * @param <E> Element of the processing.
  * @author Tioben Neenot
@@ -49,7 +49,7 @@ public abstract class Processing <E> implements Predicate<E> {
 
     /**
      * Default constructor that's implementing a predicate that's returning always
-     * <code>true</code>.
+     * {@code true}.
      */
     public Processing()
     {
@@ -83,8 +83,7 @@ public abstract class Processing <E> implements Predicate<E> {
      * Applies a treatment for the element given as parameter.
      *
      * @param e Element on which the treatment will be applied.
-     * @return <code>true</code> if treatment has been performed,
-     * <code>false</code> if treatment was not necessary.
+     * @return The result of the perform task.
      */
     public abstract boolean perform(E e);
 }

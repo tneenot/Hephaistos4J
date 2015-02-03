@@ -258,13 +258,13 @@ public class StatesTest
     @Test
     public void testValidateArrayExcludeNull() throws Exception {
         Object[] o = {};
-        Assert.assertArrayEquals(o, States.validateArrayExcludeNull(o));
+        Assert.assertArrayEquals(o, States.validateNotNullOnly(o));
     }
 
     @Test
     public void testValidateExcludeNull() throws Exception {
 
         Integer i = 4;
-        Assert.assertEquals(i, States.validateExcludeNull(i));
+        Assert.assertEquals(i, States.validateNotNullOnly(i));
     }
 }
