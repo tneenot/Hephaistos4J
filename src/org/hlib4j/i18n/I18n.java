@@ -23,8 +23,8 @@ package org.hlib4j.i18n;
 import java.util.Locale;
 
 /**
- * Defines the operation to update locale. The user defines its own
- * Initialization operations in the <code>change(Locale )</code> method. This
+ * Defines the operation to change locale. The user defines its own
+ * Initialization operations in the {@link org.hlib4j.i18n.I18n#change(java.util.Locale)} method. This
  * method will call when a locale will changed. All methods defined here can be used for graphical interfaces, text interface or log...
  *
  * @author Tioben Neenot
@@ -33,7 +33,7 @@ public interface I18n
 {
 
 	/**
-	 * Runs the locale change.
+	 * Change the locale with the new one.
 	 *
 	 * @param locale New locale to apply.
 	 */
