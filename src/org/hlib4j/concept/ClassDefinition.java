@@ -82,10 +82,8 @@ public abstract class ClassDefinition
 		UnsupportedOperationException
 	{
 		// Control the argument validity
-		ControlArgumentValidity(name);
-
-		properties.get( name ).setValue( value );
-	}
+        properties.get(ControlArgumentValidity(name)).setValue(value);
+    }
 
 
 	/**
@@ -98,30 +96,20 @@ public abstract class ClassDefinition
 	 */
 	public Object getPropertyValue( String name ) throws IllegalArgumentException, InvocationTargetException
 	{
-		ControlArgumentValidity(name);
+        return properties.get(ControlArgumentValidity(name)).getValue();
+    }
 
-		return properties.get( name ).getValue();
-	}
+    private String ControlArgumentValidity(String name) throws InvocationTargetException {
+        // Control the argument validity
+        try {
+            isPropertyExists(States.validate(name));
+        } catch (AssertionError e) {
+            throw new IllegalArgumentException("Property name can't be null or empty");
+        }
 
-	private void ControlArgumentValidity(String name) throws InvocationTargetException {
-		// Control the argument validity
-		validate( name );
-		isPropertyExists(name);
-	}
+        return name;
+    }
 
-	/**
-	 * Validate the property name
-	 *
-	 * @param propertyName Property name's to validate
-	 * @throws IllegalArgumentException If propertyName is null or empty
-	 */
-	private void validate( String propertyName )
-	{
-		if (States.isNullOrEmpty( propertyName ) )
-		{
-			throw new IllegalArgumentException( "Property name can't be null" );
-		}
-	}
 
 	private void isPropertyExists(String name) throws InvocationTargetException {
 		if ( properties.containsKey( name ) == false )
