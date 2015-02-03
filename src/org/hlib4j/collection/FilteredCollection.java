@@ -65,7 +65,7 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 
         try {
             this.filter = States.validate(ruleForThisCollection);
-            this.managedCollection = States.validateExcludeNull(originalCollection);
+            this.managedCollection = States.validateNotNullOnly(originalCollection);
         } catch (AssertionError e) {
             throw new NullPointerException(e.getMessage() + ". Null element.");
         }
