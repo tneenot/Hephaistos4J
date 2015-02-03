@@ -27,7 +27,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -338,19 +337,19 @@ class PropertyManager extends ClassDefinition {
      */
     public PropertyManager(String name) throws InstantiationException {
         try {
-            this.name = States.validate(name);
-            controlInvalidSpaceInName(name);
+            this.name = controlInvalidSpaceInName(States.validate(name));
         } catch (AssertionError e) {
-            this.name = null;
             throw new InstantiationException("Name can't be null or empty");
         }
     }
 
-    private void controlInvalidSpaceInName(String name)
+    private String controlInvalidSpaceInName(String name)
             throws InstantiationException {
         if (name.indexOf(' ') != -1) {
             throw new InstantiationException("Space in name forbidden");
         }
+
+        return name;
     }
 
     /**
