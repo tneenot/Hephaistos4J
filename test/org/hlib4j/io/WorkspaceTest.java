@@ -73,7 +73,7 @@ public class WorkspaceTest
 		}
 
 		// Destroy the workspace context
-		if(!workspace.delete())
+		if(workspace.exists() && !workspace.delete())
 		{
 			workspace.deleteOnExit();
 		}
@@ -327,5 +327,13 @@ public class WorkspaceTest
     public void test_ToURL_CallException() throws IOException {
         File f = workspace.addFileByStringPath("foo4");
         f.toURL();
+    }
+
+    @Test
+    public void test_Workspace_ControlIfExistsAfterDeletion()
+    {
+        workspace.deleteOnExit();
+
+        Assert.assertFalse(workspace.exists());
     }
 }

@@ -158,6 +158,7 @@ public class Workspace extends File {
     @Override
     public void deleteOnExit() {
         deleteWorkspaceContent(this);
+        delete();
     }
 
     private void deleteWorkspaceContent(File directory) {
