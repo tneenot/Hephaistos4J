@@ -33,7 +33,7 @@ import java.util.*;
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredList(List, Rule)}} contains
  * forbidden elements yet, the <code>FilteredList</code> will delete them. <br><br>
- * <p/>
+ * <p>
  * This class is using as implementations for {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)}.
  *
  * @param <ElementType> The data type of this managedList
@@ -151,11 +151,29 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
         this.managedList.clear();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>This implementation iterates over the specified collection,
+     * checking each element returned by the iterator in turn to see
+     * if it's contained in this collection.  If all elements are so
+     * contained <tt>true</tt> is returned, otherwise <tt>false</tt>.
      *
-     * @see java.lang.Object#hashCode()
+     * @param c
+     * @throws ClassCastException   {@inheritDoc}
+     * @throws NullPointerException {@inheritDoc}
+     * @see #contains(Object)
      */
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return this.managedList.containsAll(c);
+    }
+
+    /*
+         * (non-Javadoc)
+         *
+         * @see java.lang.Object#hashCode()
+         */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -276,11 +294,45 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
         }
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>This implementation iterates over this collection, checking each
+     * element returned by the iterator in turn to see if it's contained
+     * in the specified collection.  If it's not so contained, it's removed
+     * from this collection with the iterator's <tt>remove</tt> method.
+     * <p>
+     * <p>Note that this implementation will throw an
+     * <tt>UnsupportedOperationException</tt> if the iterator returned by the
+     * <tt>iterator</tt> method does not implement the <tt>remove</tt> method
+     * and this collection contains one or more elements not present in the
+     * specified collection.
      *
-     * @see java.util.AbstractList#set(int, java.lang.Object)
+     * @param initialCollection
+     * @throws UnsupportedOperationException {@inheritDoc}
+     * @throws ClassCastException            {@inheritDoc}
+     * @throws NullPointerException          {@inheritDoc}
+     * @see #remove(Object)
+     * @see #contains(Object)
      */
+    @Override
+    public boolean retainAll(Collection<?> initialCollection) {
+        // Here we don't accept this operation if some elements from the initial collection can't be according with the filter
+        // of this collection.
+        for (Object _element : initialCollection) {
+            if (!this.filter.accept((ElementType) _element)) {
+                return false;
+            }
+        }
+
+        return this.managedList.retainAll(initialCollection);
+    }
+
+    /*
+         * (non-Javadoc)
+         *
+         * @see java.util.AbstractList#set(int, java.lang.Object)
+         */
     @Override
     public ElementType set(int index, ElementType elementType) {
         if (!this.filter.accept(elementType)) {
