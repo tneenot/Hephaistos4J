@@ -153,7 +153,8 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
 	@Override
 	public boolean contains( Object element )
 	{
-		return this.managedCollection.contains( element );
+        clean();
+        return this.managedCollection.contains( element );
 	}
 
 	/*

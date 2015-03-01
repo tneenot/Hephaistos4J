@@ -92,7 +92,7 @@ public class CollectionsTest {
     @Test
     public void test_Clean_FilteredSubCollection() {
         Collection<Integer> _col = new ArrayList<>();
-        Collection<?> _sub_col = Collections.makeFilteredCollection(_col, new Not<Integer>(null));
+        Collection<?> _sub_col = Collections.makeFilteredCollection(_col, new Not<>(null));
         _col.add(null);
         assertEquals(1, Collections.clean(_sub_col));
     }
@@ -118,7 +118,7 @@ public class CollectionsTest {
     @Test
     public void test_Clean_FilteredSubMap() {
         Map<String, Integer> _map = new HashMap<>();
-        Map<?, ?> _sub_map = Collections.makeFilteredMap(_map, new Not<Integer>(null));
+        Map<?, ?> _sub_map = Collections.makeFilteredMap(_map, new Not<>(null));
         _map.put("test", null);
         assertEquals(1, Collections.clean(_sub_map));
     }
@@ -173,7 +173,7 @@ public class CollectionsTest {
         _col.add(2);
         _col.add(4);
 
-        Collection<Integer> _ref_col = Collections.makeFilteredCollection(new LinkedList<Integer>(), new Not<Integer>(3));
+        Collection<Integer> _ref_col = Collections.makeFilteredCollection(new LinkedList<>(), new Not<>(3));
         Assert.assertTrue(_ref_col.addAll(_col));
     }
 
@@ -183,7 +183,7 @@ public class CollectionsTest {
         _col.add(2);
         _col.add(4);
 
-        List<Integer> _ref_list = Collections.makeFilteredList(new LinkedList<Integer>(), new Not<Integer>(3));
+        List<Integer> _ref_list = Collections.makeFilteredList(new LinkedList<>(), new Not<>(3));
         Assert.assertTrue(_ref_list.addAll(0, _col));
     }
 
@@ -210,7 +210,7 @@ public class CollectionsTest {
      */
     @Test
     public void test_AddAll_Index_FromValidCollection() {
-        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<Integer>(), this.ruleRef);
+        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<>(), this.ruleRef);
         _ref_list.add(2);
         _ref_list.add(4);
 
@@ -226,7 +226,7 @@ public class CollectionsTest {
      */
     @Test
     public void test_AddAll_Index_FromInvalidCollection() {
-        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<Integer>(), this.ruleRef);
+        List<Integer> _ref_list = Collections.makeFilteredList(new ArrayList<>(), this.ruleRef);
         _ref_list.add(2);
         _ref_list.add(4);
 
@@ -239,45 +239,72 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Add_FilteredCollection_ControlSizeValue() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
+    public void test_FilteredCollection_Add_ControlSizeValue() {
+        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1));
         _col.add(2);
         Assert.assertEquals(1, _col.size());
     }
 
     @Test
-    public void test_Add_FilteredList_ControlSizeValue() {
-        List<Integer> _col = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
+    public void test_FilteredCollection_AddFromExternalCollection_ControlSizeValue() {
+        Collection<Integer> _values = new Vector<>();
+        _values.add(1);
+
+        Collection<Integer> _col = Collections.makeFilteredCollection(_values, new Not<>(1));
+        Assert.assertEquals(0, _col.size());
+    }
+
+    @Test
+    public void test_FilteredList_Add_ControlSizeValue() {
+        List<Integer> _col = Collections.makeFilteredList(new ArrayList<>(), new Not<>(1));
         _col.add(2);
         Assert.assertEquals(1, _col.size());
     }
 
     @Test
-    public void test_Put_FilteredMap_ControlSizeValue() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<Integer>(1));
+    public void test_FilteredList_AddFromExternalList_ControlSizeValue() {
+        List<Integer> _values = new ArrayList<>();
+        _values.add(1);
+
+        List<Integer> _col = Collections.makeFilteredList(_values, new Not<>(1));
+        Assert.assertEquals(0, _col.size());
+    }
+
+    @Test
+    public void test_FilteredMap_Put_ControlSizeValue() {
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
         _map.put(2, 2);
         Assert.assertEquals(1, _map.size());
     }
 
     @Test
-    public void test_Clear_FilteredCollection() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
+    public void test_FilteredMap_PutFromExternalMap_ControlSizeValue() {
+        Map<Integer, Integer> _values = new HashMap<>();
+        _values.put(1, 1);
+
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(_values, new Not<>(1));
+        Assert.assertEquals(0, _map.size());
+    }
+
+    @Test
+    public void test_FilteredCollection_Clear() {
+        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1));
         _col.add(2);
         _col.clear();
         Assert.assertEquals(0, _col.size());
     }
 
     @Test
-    public void test_Clear_FilteredList() {
-        List<Integer> _col = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
+    public void test_FilteredList_Clear() {
+        List<Integer> _col = Collections.makeFilteredList(new ArrayList<>(), new Not<>(1));
         _col.add(2);
         _col.clear();
         Assert.assertEquals(0, _col.size());
     }
 
     @Test
-    public void test_Clear_FilteredMap() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<Integer>(1));
+    public void test_FilteredMap_Clear() {
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
         _map.put(2, 2);
         _map.clear();
         Assert.assertEquals(0, _map.size());
@@ -292,12 +319,88 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void test_Contains_True() {
+    public void test_FilteredList_Contains_True() {
         ref.add(4);
         ref.add(6);
         ref.add(8);
 
         Assert.assertTrue(ref.contains(6));
+    }
+
+    @Test
+    public void test_FilteredList_Contains_FromExternalList_True() {
+        List<Integer> _col = Collections.makeFilteredList((List<Integer>) this.ref, this.ruleRef);
+
+        ref.add(4);
+        ref.add(6);
+        ref.add(8);
+
+        Assert.assertTrue(_col.contains(6));
+    }
+
+
+    @Test
+    public void test_FilteredList_Contains_FromExternalList_False() {
+        List<Integer> _list = new ArrayList<>();
+        List<Integer> _col = Collections.makeFilteredList(_list, new Not<>(1));
+
+        _list.add(4);
+        _list.add(6);
+        _list.add(8);
+        _list.add(1);
+
+        Assert.assertFalse(_col.contains(1));
+    }
+
+    @Test
+    public void test_FilteredCollection_Contains_True() {
+        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), this.ruleRef);
+        _col.add(4);
+        _col.add(6);
+        _col.add(8);
+
+        Assert.assertTrue(_col.contains(6));
+    }
+
+    @Test
+    public void test_FilteredCollection_Contains_FromExternalCollection_True() {
+        Collection<Integer> _col = Collections.makeFilteredCollection(this.ref, this.ruleRef);
+
+        this.ref.add(4);
+        this.ref.add(6);
+        this.ref.add(8);
+
+        Assert.assertTrue(_col.contains(6));
+    }
+
+    @Test
+    public void test_FilteredCollection_Contains_FromExternalCollection_False() {
+        Collection<Integer> _col = Collections.makeFilteredCollection(this.ref, new Not<>(1));
+
+        this.ref.add(4);
+        this.ref.add(6);
+        this.ref.add(8);
+        this.ref.add(1);
+
+        Assert.assertFalse(_col.contains(1));
+    }
+
+    @Test
+    public void test_FilteredMap_ContainsValue_True() {
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
+        _map.put(1, 1);
+        _map.put(4, 4);
+
+        Assert.assertTrue(_map.containsValue(4));
+    }
+
+    @Test
+    public void test_FilteredMap_ContainsKey_True() {
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
+        _map.put(1, 1);
+        _map.put(4, 4);
+
+        Assert.assertTrue(_map.containsKey(4));
     }
 
     /**
@@ -309,12 +412,31 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void test_Contains_False() {
+    public void test_FilteredList_Contains_False() {
         ref.add(4);
         ref.add(6);
         ref.add(8);
 
         Assert.assertFalse(ref.contains(3));
+    }
+
+
+    @Test
+    public void test_FilteredMap_ContainsValue_False() {
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
+        _map.put(1, 1);
+        _map.put(4, 4);
+
+        Assert.assertFalse(_map.containsValue(5));
+    }
+
+    @Test
+    public void test_FilteredMap_ContainsKey_False() {
+        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
+        _map.put(1, 1);
+        _map.put(4, 4);
+
+        Assert.assertFalse(_map.containsKey(5));
     }
 
     /**
@@ -327,14 +449,14 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void test_ToArray_FilteredCollection_RemoveInvalidValues() {
+    public void test_FilteredCollection_ToArray_RemoveInvalidValues() {
         Collection<Integer> _invalid_values = Arrays.asList(3, 1, 5);
         Collection<Integer> _values = new ArrayList<>();
         _values.add(4);
         _values.add(6);
         _values.add(8);
 
-        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<Integer>(2));
+        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<>(2));
 
         _values.addAll(_invalid_values);
 
@@ -345,19 +467,39 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_ToArray_FilteredList_RemoveInvalidValues() {
+    public void test_FilteredList_ToArray_RemoveInvalidValues() {
         List<Integer> _invalid_values = Arrays.asList(3, 1, 5);
         List<Integer> _values = new ArrayList<>();
         _values.add(4);
         _values.add(6);
         _values.add(8);
 
-        List<Integer> _cols = Collections.makeFilteredList(_values, new Multiple<Integer>(2));
+        List<Integer> _cols = Collections.makeFilteredList(_values, new Multiple<>(2));
 
         _values.addAll(_invalid_values);
 
         List<Object> _result = Arrays.asList(_cols.toArray());
         for (Object _raw_value : _invalid_values) {
+            Assert.assertFalse(_result.contains(_raw_value));
+        }
+    }
+
+    @Test
+    public void test_FilteredMap_Values_RemoveInvalidValues() {
+        Map<Integer, Integer> _invalid_values = new HashMap<>();
+        _invalid_values.put(3, 3);
+
+        Map<Integer, Integer> _values = new HashMap<>();
+        _values.put(4, 4);
+        _values.put(6, 6);
+        _values.put(8, 8);
+
+        Map<Integer, Integer> _cols = Collections.makeFilteredMap(_values, new Multiple<>(2));
+
+        _values.putAll(_invalid_values);
+
+        Collection<Integer> _result = _cols.values();
+        for (Integer _raw_value : _invalid_values.values()) {
             Assert.assertFalse(_result.contains(_raw_value));
         }
     }
@@ -372,14 +514,30 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void test_ToArrayT_RemoveInvalidValues() {
+    public void test_FilteredCollection_ToArrayT_RemoveInvalidValues() {
         Collection<Integer> _invalid_values = Arrays.asList(3, 1, 5);
         Collection<Integer> _values = new ArrayList<>();
         _values.add(4);
         _values.add(6);
         _values.add(8);
 
-        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<Integer>(2));
+        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<>(2));
+
+        List<Integer> _result = Arrays.asList(_cols.toArray(new Integer[_cols.size()]));
+        for (Integer _raw_value : _invalid_values) {
+            Assert.assertFalse(_result.contains(_raw_value));
+        }
+    }
+
+    @Test
+    public void test_FilteredList_ToArrayT_RemoveInvalidValues() {
+        List<Integer> _invalid_values = Arrays.asList(3, 1, 5);
+        List<Integer> _values = new ArrayList<>();
+        _values.add(4);
+        _values.add(6);
+        _values.add(8);
+
+        List<Integer> _cols = Collections.makeFilteredList(_values, new Multiple<>(2));
 
         List<Integer> _result = Arrays.asList(_cols.toArray(new Integer[_cols.size()]));
         for (Integer _raw_value : _invalid_values) {
@@ -404,7 +562,7 @@ public class CollectionsTest {
         _values.add(6);
         _values.add(8);
 
-        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<Integer>(2));
+        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<>(2));
 
         for (Integer _col : _cols) {
             Assert.assertFalse(_invalid_values.contains(_col));
@@ -1119,7 +1277,7 @@ public class CollectionsTest {
         _list.add(2);
         _list.add(3);
 
-        Assert.assertNotNull(_list.set(1, 14));
+        _list.set(1, 14);
         Assert.assertTrue(_list.contains(14));
     }
 
@@ -1129,7 +1287,7 @@ public class CollectionsTest {
         _list.add(2);
         _list.add(3);
 
-        Assert.assertNull(_list.set(2, 1));
+        _list.set(2, 1);
         Assert.assertFalse(_list.contains(1));
     }
 
@@ -1181,11 +1339,11 @@ class AList<E> extends AbstractList<E> {
 
     @Override
     public E get(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
