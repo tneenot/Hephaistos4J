@@ -30,41 +30,14 @@ import static org.junit.Assert.assertEquals;
  */
 public class ProcessingTest
 {
-
-	public ProcessingTest()
-	{
-	}
-
-	@BeforeClass
-	public static void setUpClass()
-	{
-	}
-
-	@AfterClass
-	public static void tearDownClass()
-	{
-	}
-
-	@Before
-	public void setUp()
-	{
-	}
-
-	@After
-	public void tearDown()
-	{
-	}
-
 	/**
 	 * Test of accept method, of class Processing.
 	 */
 	@Test
-	public void testAccept()
-	{
-		System.out.println( "accept" );
+    public void test_Accept_ValidValue() {
 		Object e = new Object();
-		Processing< Object > instance = new ProcessingImpl< Object >();
-		boolean expResult = true;
+        Processing<Object> instance = new ProcessingImpl<>();
+        boolean expResult = true;
 		boolean result = instance.accept( e );
 		assertEquals( expResult, result );
 	}
@@ -73,12 +46,10 @@ public class ProcessingTest
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-	public void testPerformTrue()
-	{
-		System.out.println( "perform true" );
+    public void test_Perform_ValidValue() {
 		Object e = new Object();
-		Processing< Object > instance = new ProcessingImpl< Object >();
-		boolean expResult = true;
+        Processing<Object> instance = new ProcessingImpl<>();
+        boolean expResult = true;
 		boolean result = instance.perform( e );
 		assertEquals( expResult, result );
 	}
@@ -87,45 +58,25 @@ public class ProcessingTest
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-	public void testPerformTrue2()
-	{
-		System.out.println( "perform true second form" );
+    public void test_Perform_InverseValue() {
 		True e = new True();
-		Processing< True > instance = new ProcessingImpl<>( new Not< True >( e ) );
-		boolean expResult = false;
+        Processing<True> instance = new ProcessingImpl<>(new Not<>(e));
+        boolean expResult = false;
 		boolean result = instance.accept( e );
 		assertEquals( expResult, result );
-		assertEquals( 0, ( ( ProcessingImpl< True > ) instance ).getCount() );
 	}
 
 	/**
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-	public void testPerformTrue3()
-	{
-		System.out.println( "perform true third form" );
+    public void test_getCount() {
 		Object e = new Object();
-		Processing< Object > instance = new ProcessingImpl< Object >();
-		boolean expResult = true;
-		boolean result = instance.accept( e );
-		assertEquals( expResult, result );
-		assertEquals( 1, ( ( ProcessingImpl< Object > ) instance ).getCount() );
+        Processing<Object> instance = new ProcessingImpl<>();
+        instance.accept(e);
+        assertEquals( 1, ( ( ProcessingImpl< Object > ) instance ).getCount() );
 	}
 
-	/**
-	 * Test of perform method, of class Processing.
-	 */
-	@Test
-	public void testPerformFalse()
-	{
-		System.out.println( "perform false" );
-		Object e = null;
-		Processing< Object > instance = new ProcessingImpl< Object >();
-		boolean expResult = false;
-		boolean result = instance.perform( e );
-		assertEquals( expResult, result );
-	}
 
 	/**
 	 * Implementation class for unit tests.

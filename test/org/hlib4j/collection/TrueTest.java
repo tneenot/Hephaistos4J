@@ -31,37 +31,12 @@ import static org.junit.Assert.assertEquals;
 public class TrueTest
 {
 
-	public TrueTest()
-	{
-	}
-
-	@BeforeClass
-	public static void setUpClass()
-	{
-	}
-
-	@AfterClass
-	public static void tearDownClass()
-	{
-	}
-
-	@Before
-	public void setUp()
-	{
-	}
-
-	@After
-	public void tearDown()
-	{
-	}
 
 	/**
 	 * Test of accept method, of class True.
 	 */
 	@Test
-	public void testAccept()
-	{
-		System.out.println( "accept" );
+    public void test_Accept_ValidValue() {
 		Object e = null;
 		True instance = new True();
 		boolean expResult = true;

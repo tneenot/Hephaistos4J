@@ -80,8 +80,8 @@ public class PredicateMethodTest
 	 * @see PredicateMethod#PredicateMethod(Object, String)
 	 */
 	@Test( expected = ClassCastException.class )
-	public void testWithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
-		InvocationTargetException
+    public void test_WithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
+            InvocationTargetException
 	{
 		new PredicateMethod<>( new AUT( 1 ), "foo" );
 	}
@@ -95,11 +95,10 @@ public class PredicateMethodTest
 	 * </ul>
 	 */
 	@Test
-	public void testAccept()
-	{
+    public void test_Accept_ValidValueAccepted() {
 		AUT e = new AUT( 5 );
-		assertTrue( ref.accept( e ) );
-	}
+        Assert.assertTrue(ref.accept(e));
+    }
 
 	/**
 	 * Test of accept method, of class PredicateMethod. <br>
@@ -111,8 +110,7 @@ public class PredicateMethodTest
 	 * </ul>
 	 */
 	@Test
-	public void testAcceptFalse()
-	{
+    public void test_Accept_InvalidValueNotAccepted() {
 		AUT e = new AUT( 4 );
 		Assert.assertFalse( ref.accept( e ) );
 	}
@@ -126,8 +124,8 @@ public class PredicateMethodTest
 	 * </ul>
 	 */
 	@Test(expected = NullPointerException.class)
-	public final void testAcceptNull() throws InvocationTargetException, IllegalAccessException {
-		new PredicateMethod<>( null, null );
+    public final void test_Accept_NullPointerException() throws InvocationTargetException, IllegalAccessException {
+        new PredicateMethod<>( null, null );
 	}
 
 }

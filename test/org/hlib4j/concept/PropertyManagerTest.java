@@ -37,160 +37,166 @@ import static org.junit.Assert.*;
  * @author Tioben Neenot
  * @see ClassBuilder
  */
-public class PropertyManagerTest
-{
+public class PropertyManagerTest {
 
-	/**
-	 * Class reference for test
-	 */
-	private ClassBuilder instance = null;
+    /**
+     * Class reference for test
+     */
+    private ClassBuilder instance = null;
 
-	/** Reference directory for current tests */
-	private String refDirectory = "test/org/hlib4j/concept/CDef.xml";
+    /**
+     * Reference directory for current tests
+     */
+    private String refDirectory = "test/org/hlib4j/concept/CDef.xml";
 
-	/**
-	 * Test initialization
-	 */
-	@Before
-	public void setUp()
-	{
-		instance = new ClassBuilder( new File( refDirectory ) );
-	}
+    /**
+     * Test initialization
+     */
+    @Before
+    public void setUp() {
+        instance = new ClassBuilder(new File(refDirectory));
+    }
 
-	/**
-	 * Test cleaning
-	 */
-	@After
-	public void tearDown()
-	{
-		instance = null;
-	}
+    /**
+     * Test cleaning
+     */
+    @After
+    public void tearDown() {
+        instance = null;
+    }
 
-	/**
-	 * Test of createInstance method, of class ClassBuilder.
-	 */
-	@Test
-	public void testCreateIntance()
-	{
-		assertNotNull( new ClassBuilder( new File( refDirectory ) ) );
-	}
+    /**
+     * Test of createInstance method, of class ClassBuilder.
+     */
+    @Test
+    public void test_CreateIntance() {
+        assertNotNull(new ClassBuilder(new File(refDirectory)));
+    }
 
-	/**
-	 * Test of createInstance method, of class ClassBuilder.
-	 */
-	@Test
-	public void createInstanceWithValidName()
-	{
-		String name = "ClassRef";
-		ClassDefinition result = instance.createInstance( name );
-		assertNotNull( result );
-	}
+    /**
+     * Test of createInstance method, of class ClassBuilder.
+     */
+    @Test
+    public void test_CreateInstance_ValidName() {
+        String name = "ClassRef";
+        ClassDefinition result = instance.createInstance(name);
+        assertNotNull(result);
+    }
 
-	/**
-	 * Test of createInstance method, of class ClassBuilder.
-	 */
-	@Test
-	public void createInstanceWithInvalidName()
-	{
-		String name = "Toto";
-		assertNull( instance.createInstance( name ) );
-	}
+    /**
+     * Test of createInstance method, of class ClassBuilder.
+     */
+    @Test
+    public void test_CreateInstance_InvalidName() {
+        String name = "Toto";
+        assertNull(instance.createInstance(name));
+    }
 
-	/**
-	 * Test of createInstance method, of class ClassBuilder.
-	 *
-	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-	 */
-	@Test
-	public void createInstanceAndControlProperties() throws IllegalArgumentException, InvocationTargetException
-	{
-		ClassDefinition properties = instance.createInstance( "ClassRef" );
+    @Test
+    public void test_CreateInstance_ControlProperties_ReadOnly() throws IllegalArgumentException, InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ClassRef");
 
-		for ( Property p : properties.getProperties() )
-		{
-			if ( "property_name".equals( p.getName() ) )
-			{
-				assertEquals( "Property value", p.getValue() );
-				assertTrue( p.isReadOnly() );
-			}
-			else
-			{
-				if ( "prop_read_write".equals( p.getName() ) )
-				{
-					assertEquals( "Property value read write", p.getValue() );
-					assertFalse( p.isReadOnly() );
-				}
-				else
-				{
-					if ( "prop_read_write_no_value".equals( p.getName() ) )
-					{
-						assertEquals( "", p.getValue() );
-						assertFalse( p.isReadOnly() );
-					}
-					else
-					{
-						fail( "Property not defined for : " + p.getName() );
-					}
-				}
-			}
-		}
-	}
+        for (Property p : properties.getProperties()) {
+            if ("property_name".equals(p.getName())) {
+                assertEquals("Property value", p.getValue());
+                assertTrue(p.isReadOnly());
+            }
+        }
+    }
 
-	/**
-	 * Test of getAllClasses method, of class ClassBuilder.
-	 */
-	@Test
-	public void testGetAllClasses()
-	{
-		Collection< ClassDefinition > result = instance.getAllClasses();
-		for ( ClassDefinition c : result )
-		{
-			assertTrue( c.getName().equals( "ClassRef" ) || c.getName().equals( "SecondClass" ) || c.getName().equals( "ThirdClass" ) );
-		}
-	}
+    @Test
+    public void test_CreateInstance_ControlProperties_NotReadOnly() throws IllegalArgumentException, InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ClassRef");
 
-	/**
-	 * Test values types given for each property.
-	 *
-	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-	 */
-	@Test
-	public void testCtrlTypes() throws IllegalArgumentException, InvocationTargetException
-	{
-		ClassDefinition properties = instance.createInstance( "ThirdClass" );
-		assertTrue( properties.getPropertyValue( "value.str" ) instanceof String );
-		assertTrue( properties.getPropertyValue( "value.str2" ) instanceof String );
-		assertTrue( properties.getPropertyValue( "value.float" ) instanceof Float );
-		assertTrue( properties.getPropertyValue( "value.double" ) instanceof Double );
-		assertTrue( properties.getPropertyValue( "value.int" ) instanceof Integer );
-		assertTrue( properties.getPropertyValue( "value.hex" ) instanceof Integer );
-		assertTrue( properties.getPropertyValue( "value.date" ) instanceof Date );
-		assertTrue( properties.getPropertyValue( "value.long" ) instanceof Long );
-	}
+        for (Property p : properties.getProperties()) {
+            if ("prop_read_write".equals(p.getName())) {
+                assertEquals("Property value read write", p.getValue());
+                assertFalse(p.isReadOnly());
+            }
+        }
+    }
 
-	/**
-	 * Test of getName method, of class PropertyManager.
-	 *
-	 * @throws InstantiationException If error during test running.
-	 */
-	@Test
-	public void testGetName() throws InstantiationException
-	{
-		System.out.println( "getName" );
-		PropertyManager _instance = new PropertyManager( "foo" );
-		assertEquals( "foo", _instance.getName() );
-	}
 
-	/**
-	 * Test of Add method, of class PropertyManager.
-	 *
-	 * @throws InstantiationException If error during test running.
-	 */
-	@Test
-	public void testAdd() throws InstantiationException
-	{
-		System.out.println( "Add" );
-		PropertyManager _instance = new PropertyManager( "foo" );
-		_instance.Add( new Property( "bar" ) );
-	}
+    /**
+     * Test of getAllClasses method, of class ClassBuilder.
+     */
+    @Test
+    public void test_GetAllClasses() {
+        Collection<ClassDefinition> result = instance.getAllClasses();
+        for (ClassDefinition c : result) {
+            assertTrue(c.getName().equals("ClassRef") || c.getName().equals("SecondClass") || c.getName().equals("ThirdClass"));
+        }
+    }
+
+    @Test
+    public void test_Properties_StringType_1stForm() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.str") instanceof String);
+    }
+
+    @Test
+    public void test_Properties_StringType_2dForm() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.str2") instanceof String);
+    }
+
+    @Test
+    public void test_Properties_FloatType() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.float") instanceof Float);
+    }
+
+    @Test
+    public void test_Properties_DoubleType() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.double") instanceof Double);
+    }
+
+    @Test
+    public void test_Properties_IntegerType() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.int") instanceof Integer);
+    }
+
+    @Test
+    public void test_Properties_IntegerHexType() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.hex") instanceof Integer);
+    }
+
+    @Test
+    public void test_Properties_DateType() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.date") instanceof Date);
+    }
+
+    @Test
+    public void test_Properties_LongType() throws InvocationTargetException {
+        ClassDefinition properties = instance.createInstance("ThirdClass");
+        assertTrue(properties.getPropertyValue("value.long") instanceof Long);
+    }
+
+    /**
+     * Test of getName method, of class PropertyManager.
+     *
+     * @throws InstantiationException If error during test running.
+     */
+    @Test
+    public void test_GetName() throws InstantiationException {
+        System.out.println("getName");
+        PropertyManager _instance = new PropertyManager("foo");
+        assertEquals("foo", _instance.getName());
+    }
+
+    /**
+     * Test of Add method, of class PropertyManager.
+     *
+     * @throws InstantiationException If error during test running.
+     */
+    @Test
+    public void test_Add_ValidProperty() throws InstantiationException {
+        System.out.println("Add");
+        PropertyManager _instance = new PropertyManager("foo");
+        _instance.Add(new Property("bar"));
+    }
 }

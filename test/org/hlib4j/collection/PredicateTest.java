@@ -30,68 +30,30 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Tioben Neenot
  */
-public class PredicateTest
-{
+public class PredicateTest {
 
-	/**
-	 * Test of accept method, of class PredicateMethod. <br>
-	 * <ul>
-	 * <li><b>Description : </b>Sets a value for the {@link Predicate#accept(Object)} and control it</li>
-	 * <li><b>Result : </b>Value conforms</li>
-	 * <li><b>Comments : </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public void testAccept()
-	{
-		Predicate<Integer> ref = new Predicate<>(5);
-		assertTrue( ref.accept( 5 ) );
-	}
+    @Test
+    public void test_Accept_ValidValueAccepted() {
+        Predicate<Integer> ref = new Predicate<>(5);
+        assertTrue(ref.accept(5));
+    }
 
-	/**
-	 * Test of accept method, of class PredicateMethod. <br>
-	 * <ul>
-	 * <li><b>Description : </b>Sets a value for the {@link Predicate#accept(Object) } and control a different
-	 * value</li>
-	 * <li><b>Result : </b>Value not conforms</li>
-	 * <li><b>Comments : </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public void testAcceptFalse()
-	{
+    @Test
+    public void test_Accept_InvalidValueNotAccepted() {
         Predicate<Integer> ref = new Predicate<>(4);
-		Assert.assertFalse( ref.accept( 5 ) );
-	}
+        Assert.assertFalse(ref.accept(5));
+    }
 
-	/**
-	 * Test method for {@link Predicate#accept(Object)}.
-	 * <ul>
-	 * <li><b>Description: </b>Controls if the given value is valid or not</li>
-	 * <li><b>Results: </b>Value conforms</li>
-	 * <li><b>Comments: </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public final void testAcceptNull()
-	{
-        Predicate< Object > _ref = new Predicate<>( null );
-		Assert.assertFalse( _ref.accept( new Object() ) );
-	}
+    @Test
+    public final void test_Accept_InvalidObjectValueNotAccepted() {
+        Predicate<Object> _ref = new Predicate<>(null);
+        Assert.assertFalse(_ref.accept(new Object()));
+    }
 
-	/**
-	 * Test method for {@link Predicate#accept(Object)}.
-	 * <ul>
-	 * <li><b>Description: </b>Controls if the given value is not valid</li>
-	 * <li><b>Results: </b>Value not conforms</li>
-	 * <li><b>Comments: </b>None.</li>
-	 * </ul>
-	 */
-	@Test
-	public final void testAcceptFalseNull()
-	{
-        Predicate< Object > _ref = new Predicate<>( null );
-		Assert.assertTrue( _ref.accept( null ) );
-	}
+    @Test
+    public final void test_Accept_ValidNullValueAccepted() {
+        Predicate<Object> _ref = new Predicate<>(null);
+        Assert.assertTrue(_ref.accept(null));
+    }
 }
 

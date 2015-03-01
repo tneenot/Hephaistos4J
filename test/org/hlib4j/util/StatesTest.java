@@ -38,20 +38,6 @@ import java.util.Date;
 public class StatesTest
 {
 
-	public StatesTest()
-	{
-	}
-
-	@Before
-	public void setUp()
-	{
-	}
-
-	@After
-	public void tearDown()
-	{
-	}
-
 	/**
 	 * Test: <b>Test if an object is <code>null</code> or empty.</b>.<br>
 	 * <ul>
@@ -62,8 +48,7 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-	public void testIsNullOrEmpty()
-	{
+    public void test_IsNullOrEmptyArray_NullValue() {
 		Assert.assertTrue( States.isNullOrEmptyArray(null) );
 	}
 
@@ -77,11 +62,14 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-	public void testIsNullOrEmptyString()
-	{
+    public void test_IsNullOrEmpty_String_1stForm() {
 		Assert.assertTrue( States.isNullOrEmpty( "" ) );
-		Assert.assertTrue( States.isNullOrEmpty( " " ) );
 	}
+
+    @Test
+    public void test_IsNullOrEmpty_String_2dForm() {
+        Assert.assertTrue(States.isNullOrEmpty(" "));
+    }
 
 	/**
 	 * Test: <b>Test an object instance and controls if it's <code>null</code> or empty.</b>.<br>
@@ -93,8 +81,7 @@ public class StatesTest
 	 * Note: <i>Result is <code>false</code> since the {@link Object#toString()} is never empty.</i>
 	 */
 	@Test
-	public void testIsNullOrEmptyObject()
-	{
+    public void test_IsNullOrEmpty_Object() {
 		Assert.assertFalse( States.isNullOrEmpty( new Object() ) );
 	}
 
@@ -108,8 +95,7 @@ public class StatesTest
 	 * Note: <i>None.</i>
 	 */
 	@Test
-	public void testIsNullOrEmptyCollection()
-	{
+    public void test_IsNullOrEmpty_EmptyCollection() {
 		Collection< Object > c = new ArrayList<>();
 		Assert.assertTrue( States.isNullOrEmpty( c ) );
 	}
@@ -124,14 +110,16 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-	public void testNullOrEmptyArrayBoolean()
-	{
+    public void test_NullOrEmptyArray_Boolean_NullValue() {
 		Boolean[] _barray1 = null;
 		Assert.assertTrue(States.isNullOrEmptyArray(_barray1));
-
-		Boolean[] _barray2 = {};
-		Assert.assertTrue( States.isNullOrEmptyArray( _barray2 ) );
 	}
+
+    @Test
+    public void test_NullOrEmptyArray_Boolean_EmptyArray() {
+        Boolean[] _barray2 = {};
+        Assert.assertTrue(States.isNullOrEmptyArray(_barray2));
+    }
 
 
 	/**
@@ -144,14 +132,20 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-	public void testValidate()
-	{
+    public void test_Validate_SameInstances() {
 		Date d = Calendar.getInstance().getTime();
 		Date r = States.validate( d );
 
 		Assert.assertSame( d, r );
-		Assert.assertEquals( d, r );
 	}
+
+    @Test
+    public void test_Validate_EqualsInstances() {
+        Date d = Calendar.getInstance().getTime();
+        Date r = States.validate(d);
+
+        Assert.assertEquals(d, r);
+    }
 
 	/**
 	 * Test: <b>Test a valid assertion for a primary type.</b>.<br>
@@ -163,8 +157,7 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-	public void testValidatePrimaryType()
-	{
+    public void test_Validate_PrimaryType() {
 		int i = Integer.MAX_VALUE;
 		int r = States.validate( i );
 
@@ -181,8 +174,7 @@ public class StatesTest
 	 * Note: <i>None.</i>
 	 */
 	@Test
-	public void testValidatePrimaryArrayType()
-	{
+    public void test_Validate_PrimaryArrayType() {
 		int[] i =
 			{
 				1, 2, 3, 4
@@ -202,27 +194,11 @@ public class StatesTest
 	 * Note: <i>None.</i>
 	 */
 	@Test( expected = AssertionError.class )
-	public void testValidateNullArray()
-	{
+    public void test_Validate_NullArray_AssertionError() {
 		int[] i = null;
 		States.validate( i );
 	}
 
-	/**
-	 * Test: <b>Test assert for a <code>null</code> array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: null primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
-	public void testValidateArrayNull()
-	{
-		int[] i = null;
-		States.validate( i );
-	}
 
 	/**
 	 * Test: <b>Test assert for an empty array.</b>.<br>
@@ -234,8 +210,7 @@ public class StatesTest
 	 * Note: <i>None.</i>
 	 */
 	@Test( expected = AssertionError.class )
-	public void testValidateEmptyArray()
-	{
+    public void test_Validate_EmptyArray_AssertionError() {
 		Integer[] i = {	};
 		States.validateArray( i );
 	}
@@ -250,19 +225,18 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test( expected = AssertionError.class )
-	public void testValidateError()
-	{
+    public void test_Validate_NullValue_AssertionError() {
 		States.validate( null );
 	}
 
     @Test
-    public void testValidateArrayExcludeNull() throws Exception {
+    public void test_Validate_ArrayExcludeNull() throws Exception {
         Object[] o = {};
         Assert.assertArrayEquals(o, States.validateNotNullOnly(o));
     }
 
     @Test
-    public void testValidateExcludeNull() throws Exception {
+    public void test_Validate_ExcludeNull() throws Exception {
 
         Integer i = 4;
         Assert.assertEquals(i, States.validateNotNullOnly(i));

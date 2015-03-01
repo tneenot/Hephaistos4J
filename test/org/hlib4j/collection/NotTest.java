@@ -65,8 +65,7 @@ public class NotTest
 	 * </ul>
 	 */
 	@Test
-	public void testAccept()
-	{
+    public void test_Accept_ValidValueAccepted() {
 		Assert.assertTrue( ref.accept( 4 ) );
 	}
 
@@ -79,8 +78,7 @@ public class NotTest
 	 * </ul>
 	 */
 	@Test
-	public void testAcceptFalse()
-	{
+    public void test_Accept_InvalidValueNotAccepted() {
 		Assert.assertFalse( ref.accept( 5 ) );
 	}
 }

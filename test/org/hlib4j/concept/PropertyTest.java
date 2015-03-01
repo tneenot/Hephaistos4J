@@ -75,8 +75,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-	public final void getName()
-	{
+    public final void test_GetName() {
 		Assert.assertEquals( "PropertyRead", readOnly.getName() );
 	}
 
@@ -89,8 +88,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-	public final void getValue()
-	{
+    public final void test_GetValue() {
 		Assert.assertNull( readWrite.getValue() );
 	}
 
@@ -105,8 +103,7 @@ public class PropertyTest
 	 * @throws UnsupportedOperationException Exception awaiting for the test
 	 */
 	@Test( expected = UnsupportedOperationException.class )
-	public final void SetValueReadOnly() throws UnsupportedOperationException
-	{
+    public final void test_SetValue_ReadOnly_UnsupporedOperationException() throws UnsupportedOperationException {
 		readOnly.setValue( "Toto" );
 	}
 
@@ -121,8 +118,7 @@ public class PropertyTest
 	 * @throws UnsupportedOperationException If set a readonly value.
 	 */
 	@Test
-	public final void setValueReadWrite() throws UnsupportedOperationException
-	{
+    public final void test_SetValue_ReadWrite() throws UnsupportedOperationException {
 		readWrite.setValue( "Toto" );
 
 		Assert.assertEquals( "Toto", readWrite.getValue() );
@@ -137,8 +133,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-	public final void equalsSameObject()
-	{
+    public final void test_Equals_SameInstanceType() {
 		Property read = new Property( "PropertyRead", true );
 
 		Assert.assertTrue( readOnly.equals( read ) );
@@ -153,8 +148,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-	public final void isReadOnlyTrue()
-	{
+    public final void test_isReadOnly_True() {
 		Assert.assertTrue( new Property( "Toto", true ).isReadOnly() );
 	}
 
@@ -167,8 +161,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-	public final void isReadOnlyReadWrite()
-	{
+    public final void test_isReadOnly_False() {
 		Assert.assertFalse( new Property( "Toto", false ).isReadOnly() );
 	}
 }
