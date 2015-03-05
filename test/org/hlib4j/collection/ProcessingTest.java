@@ -11,11 +11,10 @@ public class ProcessingTest {
      * Test of test method, of class Processing.
      */
     @Test
-    public void testTest()
+    public void test_Test_True()
     {
-        System.out.println( "test" );
         Object e = new Object();
-        Processing< Object > instance = new ProcessingImpl< Object >();
+        Processing< Object > instance = new ProcessingFake< Object >();
         boolean expResult = true;
         boolean result = instance.test( e );
         Assert.assertEquals(expResult, result);
@@ -25,11 +24,10 @@ public class ProcessingTest {
      * Test of perform method, of class Processing.
      */
     @Test
-    public void testPerformTrue()
+    public void test_Perform_True()
     {
-        System.out.println( "perform true" );
         Object e = new Object();
-        Processing< Object > instance = new ProcessingImpl< Object >();
+        Processing< Object > instance = new ProcessingFake< Object >();
         boolean expResult = true;
         boolean result = instance.perform( e );
         Assert.assertEquals( expResult, result );
@@ -39,11 +37,10 @@ public class ProcessingTest {
      * Test of perform method, of class Processing.
      */
     @Test
-    public void testPerformFalse()
+    public void test_Perform_False()
     {
-        System.out.println( "perform false" );
         Object e = null;
-        Processing< Object > instance = new ProcessingImpl< Object >();
+        Processing< Object > instance = new ProcessingFake< Object >();
         boolean expResult = false;
         boolean result = instance.perform( e );
         Assert.assertEquals( expResult, result );
@@ -53,7 +50,7 @@ public class ProcessingTest {
     /**
      * Implementation class for unit tests.
      */
-    class ProcessingImpl < E > extends Processing< E >
+    class ProcessingFake< E > extends Processing< E >
     {
 
         /**
@@ -61,12 +58,12 @@ public class ProcessingTest {
          */
         private int count = 0;
 
-        public ProcessingImpl()
+        public ProcessingFake()
         {
             super();
         }
 
-        public ProcessingImpl(Predicate<E> r)
+        public ProcessingFake(Predicate<E> r)
         {
             super(r);
         }
