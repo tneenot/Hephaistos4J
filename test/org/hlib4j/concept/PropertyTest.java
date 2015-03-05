@@ -75,7 +75,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-    public final void test_GetName() {
+    public final void test_GetName_ValidName() {
 		Assert.assertEquals( "PropertyRead", readOnly.getName() );
 	}
 
@@ -88,7 +88,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-    public final void test_GetValue() {
+    public final void test_GetValue_NullValue() {
 		Assert.assertNull( readWrite.getValue() );
 	}
 

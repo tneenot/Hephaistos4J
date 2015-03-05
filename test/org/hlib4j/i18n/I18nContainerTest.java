@@ -77,7 +77,7 @@ public class I18nContainerTest {
     @Test
     public final void test_Add_ValidI18nType_True() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         assertTrue(_manager.add(_ref));
     }
 
@@ -87,7 +87,7 @@ public class I18nContainerTest {
     @Test
     public final void test_Add_ValidI18nType_FalseSinceTwice() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
         assertFalse(_manager.add(_ref));
     }
@@ -97,7 +97,7 @@ public class I18nContainerTest {
      */
     @Test(expected = NullPointerException.class)
     public final void test_Add_NullBaseName() {
-        new I18nContainer().add(new I18nInvalid());
+        new I18nContainer().add(new I18nInvalidFake());
     }
 
     /**
@@ -105,7 +105,7 @@ public class I18nContainerTest {
      */
     @Test(expected = MissingResourceException.class)
     public final void test_Add_EmptyBaseName() {
-        new I18nContainer().add(new I18nInvalid(0));
+        new I18nContainer().add(new I18nInvalidFake(0));
     }
 
     /**
@@ -123,10 +123,10 @@ public class I18nContainerTest {
     @Test
     public final void test_Remove_True() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
         assertTrue(_manager.remove(_ref));
-        assertFalse(_manager.remove(new I18nBisForUT()));
+        assertFalse(_manager.remove(new I18nBisFake()));
     }
 
     /**
@@ -135,9 +135,9 @@ public class I18nContainerTest {
     @Test
     public final void test_Remove_False_NotExist() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
-        assertFalse(_manager.remove(new I18nBisForUT()));
+        assertFalse(_manager.remove(new I18nBisFake()));
     }
 
     /**
@@ -146,7 +146,7 @@ public class I18nContainerTest {
     @Test
     public final void test_Contains_True() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
         assertTrue(_manager.contains(_ref));
     }
@@ -154,9 +154,9 @@ public class I18nContainerTest {
     @Test
     public final void test_Contains_False_NotExist() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
-        assertFalse(_manager.contains(new I18nBisForUT()));
+        assertFalse(_manager.contains(new I18nBisFake()));
     }
 
     /**
@@ -165,10 +165,10 @@ public class I18nContainerTest {
     @Test
     public final void test_Size_With2SameReferencesAddedTwice() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
         _manager.add(_ref);
-        _manager.add(new I18nBisForUT());
+        _manager.add(new I18nBisFake());
 
         assertEquals(2, _manager.size());
     }
@@ -179,7 +179,7 @@ public class I18nContainerTest {
     @Test
     public final void test_Update_WithoutError() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
+        I18nFake _ref = new I18nFake();
         _manager.add(_ref);
         _manager.update();
     }
@@ -190,12 +190,12 @@ public class I18nContainerTest {
     @Test(expected = NullPointerException.class)
     public final void test_Add_InvalidI18nBaseName_NullPointerException() {
         I18nContainer _manager = new I18nContainer();
-        I18nForUT _ref = new I18nForUT();
-        _manager.add(new I18nInvalid());
+        I18nFake _ref = new I18nFake();
+        _manager.add(new I18nInvalidFake());
     }
 }
 
-class I18nForUT implements I18n {
+class I18nFake implements I18n {
     /*
    * (non-Javadoc)
    * 
@@ -218,7 +218,7 @@ class I18nForUT implements I18n {
     }
 }
 
-class I18nBisForUT implements I18n {
+class I18nBisFake implements I18n {
   /*
    * (non-Javadoc)
    * 
@@ -246,15 +246,15 @@ class I18nBisForUT implements I18n {
  *
  * @author Tioben Neenot
  */
-class I18nInvalid implements I18n {
+class I18nInvalidFake implements I18n {
 
     private final String baseName;
 
-    public I18nInvalid() {
+    public I18nInvalidFake() {
         this.baseName = null;
     }
 
-    public I18nInvalid(int v) {
+    public I18nInvalidFake(int v) {
         this.baseName = "";
     }
 

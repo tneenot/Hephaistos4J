@@ -70,7 +70,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_createInstanceWithNullName_InstantiationException() throws InstantiationException {
+    public void test_Constructor_NullName_InstantiationException() throws InstantiationException {
 		new PropertyManager( null );
 	}
 
@@ -80,7 +80,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_createInstanceWithEmptyName_1stForm_InstantiationException() throws InstantiationException {
+    public void test_Constructor_EmptyName_NaturalForm_InstantiationException() throws InstantiationException {
 		new PropertyManager( "" );
 	}
 
@@ -90,7 +90,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Awaiting exception
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_createInstanceWithEmptyName_2dForm_InstantiationException() throws InstantiationException {
+    public void test_Constructor_EmptyName_VariantForm_InstantiationException() throws InstantiationException {
 		new PropertyManager( "  " );
 	}
 
@@ -100,7 +100,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_createInstanceWithSpaceInName_InstantiationException() throws InstantiationException {
+    public void test_Constructor_SpaceInName_InstantiationException() throws InstantiationException {
 		new PropertyManager( "Class Ref" );
 	}
 
@@ -108,7 +108,7 @@ public class ClassImplementationTest
 	 * Test of getName method, of class PropertyManager.
 	 */
 	@Test
-    public void test_GetName() {
+    public void test_GetName_ValidName() {
 		String expResult = "ClassRef";
 		String result = instance.getName();
 		assertEquals( expResult, result );

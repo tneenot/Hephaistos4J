@@ -1303,7 +1303,7 @@ public class CollectionsTest {
         _list.add(5);
         _list.add(8);
 
-        AList<Integer> _list2 = new AList<>((FilteredList<Integer>) Collections.makeFilteredList(_list, new Not<>(1)));
+        AListFake<Integer> _list2 = new AListFake<>((FilteredList<Integer>) Collections.makeFilteredList(_list, new Not<>(1)));
 
         _list2.removeRange(0, 3);
         Assert.assertEquals(2, _list.size());
@@ -1316,7 +1316,7 @@ public class CollectionsTest {
  * @param <E> Type of date
  * @author Tioben Neenot
  */
-class AList<E> extends AbstractList<E> {
+class AListFake<E> extends AbstractList<E> {
 
     /**
      * Internal FilteredList class
@@ -1328,7 +1328,7 @@ class AList<E> extends AbstractList<E> {
      *
      * @param l Reference to a sub list
      */
-    AList(FilteredList<E> l) {
+    AListFake(FilteredList<E> l) {
         list = l;
     }
 

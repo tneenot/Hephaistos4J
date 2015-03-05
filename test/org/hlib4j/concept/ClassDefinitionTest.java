@@ -38,13 +38,13 @@ public class ClassDefinitionTest
 	/**
 	 * Properties list
 	 */
-	private PropertiesFactorImplTest properties = null;
+	private PropertiesFactorFake properties = null;
 
 
 	@Before
 	public void setUp() throws Exception
 	{
-		properties = new PropertiesFactorImplTest();
+		properties = new PropertiesFactorFake();
 	}
 
 
@@ -87,7 +87,7 @@ public class ClassDefinitionTest
     public final void test_SetProperty_EmptyName_1stForm() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException
 	{
-		properties.setPropertyValue( "", null );
+		properties.setPropertyValue("", null);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ClassDefinitionTest
     public final void test_SetProperty_UnknownName() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException
 	{
-		properties.setPropertyValue( "toto", 1 );
+		properties.setPropertyValue("toto", 1);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class ClassDefinitionTest
 	{
 		properties.setPropertyValue( "age", 10 );
 
-		Assert.assertEquals( 10, properties.getPropertyValue( "age" ) );
+		Assert.assertEquals(10, properties.getPropertyValue("age"));
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class ClassDefinitionTest
     public final void test_SetProperty_ValidReadOnly() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException
 	{
-		properties.setPropertyValue( "numSecu", "999" );
+		properties.setPropertyValue("numSecu", "999");
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class ClassDefinitionTest
 	 */
 	@Test
     public final void test_GetProperty_ValidName() throws IllegalArgumentException, InvocationTargetException {
-		Assert.assertEquals( "1234567890", properties.getPropertyValue( "numSecu" ) );
+		Assert.assertEquals("1234567890", properties.getPropertyValue("numSecu"));
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class ClassDefinitionTest
 	 */
 	@Test( expected = IllegalArgumentException.class )
     public final void test_GetProperty_NullName() throws IllegalArgumentException, InvocationTargetException {
-		properties.getPropertyValue( null );
+		properties.getPropertyValue(null);
 	}
 
 	/**
@@ -292,8 +292,8 @@ public class ClassDefinitionTest
 	 * Test of toString method, of class ClassDefinition.
 	 */
 	@Test
-    public void test_ToString() {
-		ClassDefinition instance = new PropertiesFactorImplTest();
+    public void test_ToString_DescriptionClass() {
+		ClassDefinition instance = new PropertiesFactorFake();
 		String expResult = "ClassName";
 		String result = instance.toString();
 		Assert.assertEquals( expResult, result );
@@ -308,10 +308,10 @@ public class ClassDefinitionTest
 	 *
 	 * @author Tioben Neenot
 	 */
-	class PropertiesFactorImplTest extends ClassDefinition
+	class PropertiesFactorFake extends ClassDefinition
 	{
 
-		PropertiesFactorImplTest()
+		PropertiesFactorFake()
 		{
 			properties.put( "age", new Property( "age", false ) );
 			properties.put( "name", new Property( "name", false ) );

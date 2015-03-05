@@ -20,7 +20,10 @@ package org.hlib4j.io;
 *  
 */
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +91,7 @@ public class WorkspaceTest
 	 *           If file exists
 	 */
 	@Test
-	public void test_AddFileByStringPath() throws IOException
+	public void test_AddFileByStringPath_FileNotExists() throws IOException
 	{
 		File f = workspace.addFileByStringPath("foo");
 		Assert.assertFalse(f.exists());
@@ -101,7 +104,7 @@ public class WorkspaceTest
 	 *           If error during file adding or creation
 	 */
 	@Test
-	public void test_AddFileByURI() throws IOException
+	public void test_AddFileByURI_FileAccepted() throws IOException
 	{
 		File f = new File(File.separator + "foobar3");
 		Assert.assertNotNull(workspace.addFileByURI(f.toURI()));
@@ -235,7 +238,7 @@ public class WorkspaceTest
 	 *           If file exists.
 	 */
 	@Test
-	public void test_RenameTo() throws IOException
+	public void test_RenameTo_FileNameUpdated() throws IOException
 	{
 		File f = workspace.addFileByStringPath("foo");
 		f.createNewFile();

@@ -69,7 +69,7 @@ public class PropertyManagerTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateIntance() {
+    public void test_Constructor_ValidDirectory() {
         assertNotNull(new ClassBuilder(new File(refDirectory)));
     }
 
@@ -121,7 +121,7 @@ public class PropertyManagerTest {
      * Test of getAllClasses method, of class ClassBuilder.
      */
     @Test
-    public void test_GetAllClasses() {
+    public void test_GetAllClasses_ValidClasses() {
         Collection<ClassDefinition> result = instance.getAllClasses();
         for (ClassDefinition c : result) {
             assertTrue(c.getName().equals("ClassRef") || c.getName().equals("SecondClass") || c.getName().equals("ThirdClass"));
@@ -182,7 +182,7 @@ public class PropertyManagerTest {
      * @throws InstantiationException If error during test running.
      */
     @Test
-    public void test_GetName() throws InstantiationException {
+    public void test_GetName_ValidName() throws InstantiationException {
         System.out.println("getName");
         PropertyManager _instance = new PropertyManager("foo");
         assertEquals("foo", _instance.getName());

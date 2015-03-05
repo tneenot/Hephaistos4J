@@ -19,7 +19,8 @@ package org.hlib4j.collection;
 *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 *  
 */
-import org.junit.*;
+
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +37,7 @@ public class ProcessingTest
 	@Test
     public void test_Accept_ValidValue() {
 		Object e = new Object();
-        Processing<Object> instance = new ProcessingImpl<>();
+        Processing<Object> instance = new ProcessingFake<>();
         boolean expResult = true;
 		boolean result = instance.accept( e );
 		assertEquals( expResult, result );
@@ -48,7 +49,7 @@ public class ProcessingTest
 	@Test
     public void test_Perform_ValidValue() {
 		Object e = new Object();
-        Processing<Object> instance = new ProcessingImpl<>();
+        Processing<Object> instance = new ProcessingFake<>();
         boolean expResult = true;
 		boolean result = instance.perform( e );
 		assertEquals( expResult, result );
@@ -60,7 +61,7 @@ public class ProcessingTest
 	@Test
     public void test_Perform_InverseValue() {
 		True e = new True();
-        Processing<True> instance = new ProcessingImpl<>(new Not<>(e));
+        Processing<True> instance = new ProcessingFake<>(new Not<>(e));
         boolean expResult = false;
 		boolean result = instance.accept( e );
 		assertEquals( expResult, result );
@@ -70,18 +71,18 @@ public class ProcessingTest
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-    public void test_getCount() {
+    public void test_getCount_AddAndCount() {
 		Object e = new Object();
-        Processing<Object> instance = new ProcessingImpl<>();
+        Processing<Object> instance = new ProcessingFake<>();
         instance.accept(e);
-        assertEquals( 1, ( ( ProcessingImpl< Object > ) instance ).getCount() );
+        assertEquals(1, ((ProcessingFake<Object>) instance).getCount());
 	}
 
 
 	/**
 	 * Implementation class for unit tests.
 	 */
-	class ProcessingImpl < E > extends Processing< E >
+	class ProcessingFake< E > extends Processing< E >
 	{
 
 		/**
@@ -89,12 +90,12 @@ public class ProcessingTest
 		 */
 		private int count = 0;
 
-		public ProcessingImpl()
+		public ProcessingFake()
 		{
 			super();
 		}
 
-		public ProcessingImpl( Rule< E > r )
+		public ProcessingFake(Rule<E> r)
 		{
 			super( r );
 		}

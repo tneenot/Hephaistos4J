@@ -27,8 +27,6 @@ import org.junit.Test;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * Unit tests for {@link PredicateMethod} class.
  *
@@ -40,7 +38,7 @@ public class PredicateMethodTest
 	/**
 	 * Class reference for tests
 	 */
-	private PredicateMethod< AUT > ref = null;
+	private PredicateMethod<AUTFake> ref = null;
 
 	/**
 	 * Tests initialisation
@@ -50,7 +48,7 @@ public class PredicateMethodTest
 	{
 		try
 		{
-			ref = new PredicateMethod<>( new AUT( 5 ), "getValue" );
+			ref = new PredicateMethod<>( new AUTFake( 5 ), "getValue" );
 		}
 		catch ( IllegalArgumentException | IllegalAccessException | InvocationTargetException e )
 		{
@@ -83,7 +81,7 @@ public class PredicateMethodTest
     public void test_WithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
             InvocationTargetException
 	{
-		new PredicateMethod<>( new AUT( 1 ), "foo" );
+		new PredicateMethod<>( new AUTFake( 1 ), "foo" );
 	}
 
 	/**
@@ -96,7 +94,7 @@ public class PredicateMethodTest
 	 */
 	@Test
     public void test_Accept_ValidValueAccepted() {
-		AUT e = new AUT( 5 );
+		AUTFake e = new AUTFake( 5 );
         Assert.assertTrue(ref.accept(e));
     }
 
@@ -111,7 +109,7 @@ public class PredicateMethodTest
 	 */
 	@Test
     public void test_Accept_InvalidValueNotAccepted() {
-		AUT e = new AUT( 4 );
+		AUTFake e = new AUTFake( 4 );
 		Assert.assertFalse( ref.accept( e ) );
 	}
 
@@ -135,7 +133,7 @@ public class PredicateMethodTest
  *
  * @author Tioben Neenot
  */
-class AUT
+class AUTFake
 {
 
 	/**
@@ -148,7 +146,7 @@ class AUT
 	 *
 	 * @param value The value for this class
 	 */
-	AUT( int value )
+	AUTFake(int value)
 	{
 		this.value = value;
 	}

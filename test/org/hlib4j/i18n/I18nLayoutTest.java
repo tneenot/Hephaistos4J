@@ -49,7 +49,7 @@ public class I18nLayoutTest {
      * Test of getBaseName method, of class I18nLayout.
      */
     @Test
-    public void test_GetBaseName() {
+    public void test_GetBaseName_ValidValue() {
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
         String expResult = "org.hlib4j.i18n.messages";
         String result = instance.getBaseName();

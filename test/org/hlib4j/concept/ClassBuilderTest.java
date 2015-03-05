@@ -61,7 +61,7 @@ public class ClassBuilderTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_GetInstance() {
+    public void test_GetInstance_ValidInstance() {
         File xmlFile = new File("test/org/hlib4j/concept/CDef.xml");
         assertNotNull(new ClassBuilder(xmlFile));
     }
@@ -70,7 +70,7 @@ public class ClassBuilderTest {
      * Test of getAllClasses method, of class ClassBuilder.
      */
     @Test
-    public void test_GetAllClasses() {
+    public void test_GetAllClasses_ValidClasses() {
         ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
         Collection<String> expResult;
         expResult = Arrays.asList(new String[]{"ClassRef", "SecondClass", "ThirdClass"});
@@ -84,7 +84,7 @@ public class ClassBuilderTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateInvalidInstance() {
+    public void test_CreateInstance_InvalidInstance() {
         ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
         assertNull(instance.createInstance("foo"));
 
@@ -96,7 +96,7 @@ public class ClassBuilderTest {
      * @throws Exception If exception test running.
      */
     @Test
-    public void test_Parse_ResourceBundle() throws Exception {
+    public void test_Parse_ValidResourceBundle() throws Exception {
         File result = ClassBuilder.parse(ResourceBundle.getBundle(getClass().getPackage().getName() + ".bundle_test", Locale.ENGLISH));
         assertNotNull(result);
     }
