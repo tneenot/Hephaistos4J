@@ -22,8 +22,10 @@ package org.hlib4j.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 
 /**
@@ -127,6 +129,53 @@ public class Workspace extends File {
         }
 
         throw new IOException("File exists or created yet");
+    }
+
+    /**
+     * Requests that the file or directory denoted by this abstract
+     * pathname be deleted when the virtual machine terminates.
+     * Files (or directories) are deleted in the reverse order that
+     * they are registered. Invoking this method to delete a file or
+     * directory that is already registered for deletion has no effect.
+     * Deletion will be attempted only for normal termination of the
+     * virtual machine, as defined by the Java Language Specification.
+     * <p>
+     * <p> Once deletion has been requested, it is not possible to cancel the
+     * request.  This method should therefore be used with care.
+     * <p>
+     * <p>
+     * Note: this method should <i>not</i> be used for file-locking, as
+     * the resulting protocol cannot be made to work reliably. The
+     * {@link java.nio.channels.FileLock FileLock}
+     * facility should be used instead.
+     *
+     * @throws SecurityException If a security manager exists and its <code>{@link
+     *                           SecurityManager#checkDelete}</code> method denies
+     *                           delete access to the file
+     * @see #delete
+     * @since 1.2
+     */
+    @Override
+    public void deleteOnExit() {
+        deleteWorkspaceContent(this);
+        delete();
+    }
+
+    private void deleteWorkspaceContent(File directory) {
+        File[] _files = directory.listFiles();
+
+        for(File f : _files)
+        {
+            if(f.isDirectory())
+            {
+                deleteWorkspaceContent(f);
+            }
+
+            if(f.delete() == false)
+            {
+                f.deleteOnExit();
+            }
+        }
     }
 
     /**
@@ -287,6 +336,12 @@ public class Workspace extends File {
             File _inner_file = new File(this.getPath());
 
             return _inner_file.createNewFile();
+        }
+
+        @Override
+        @SuppressWarnings(value="deprecated")
+        public URL toURL() throws MalformedURLException {
+            throw new UnsupportedOperationException("This class is deprecated and forbidden now");
         }
     }
 }

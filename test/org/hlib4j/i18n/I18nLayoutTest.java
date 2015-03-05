@@ -20,7 +20,7 @@ package org.hlib4j.i18n;
 *  
 */
 
-import org.junit.*;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,135 +33,94 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Tioben Neenot
  */
-public class I18nLayoutTest
-{
+public class I18nLayoutTest {
 
-	public I18nLayoutTest()
-	{
-	}
+    /**
+     * Test of change method, of class I18nLayout. Uses an empty component.
+     */
+    @Test
+    public void test_Change_WithoutError() {
+        Locale l = new Locale("fr", "FR_EURO");
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
+        instance.change(l);
+    }
 
-	@BeforeClass
-	public static void setUpClass() throws Exception
-	{
-	}
+    /**
+     * Test of getBaseName method, of class I18nLayout.
+     */
+    @Test
+    public void test_GetBaseName_ValidValue() {
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
+        String expResult = "org.hlib4j.i18n.messages";
+        String result = instance.getBaseName();
+        assertEquals(expResult, result);
+    }
 
-	@AfterClass
-	public static void tearDownClass() throws Exception
-	{
-	}
+    /**
+     * Test of addLayoutComponent method, of class I18nLayout.
+     */
+    @Test
+    public void test_AddLayoutComponent_WithoutError() {
+        String name = "btnTest";
+        Component comp = new JButton("testing");
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
+        instance.addLayoutComponent(name, comp);
+    }
 
-	@Before
-	public void setUp()
-	{
-	}
+    /**
+     * Test of removeLayoutComponent method, of class I18nLayout.
+     */
+    @Test
+    public void test_RemoveLayoutComponent_WithoutError() {
+        Component comp = new JButton("testing");
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.test", new JPanel());
+        instance.addLayoutComponent("btnTest", comp);
+        instance.removeLayoutComponent(comp);
+    }
 
-	@After
-	public void tearDown()
-	{
-	}
+    /**
+     * Test of preferredLayoutSize method, of class I18nLayout.
+     */
+    @Test
+    public void test_PreferredLayoutSize() {
+        Container parent = new JPanel();
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
+        parent.setLayout(instance);
+        Dimension expResult = new Dimension(10, 10);
+        Dimension result = instance.preferredLayoutSize(parent);
+        assertEquals(expResult, result);
+    }
 
-	/**
-	 * Test of change method, of class I18nLayout. Uses an empty component.
-	 */
-	@Test
-	public void testChange()
-	{
-		System.out.println( "change" );
-		Locale l = new Locale( "fr", "FR_EURO" );
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", new JPanel() );
-		instance.change( l );
-	}
+    /**
+     * Test of minimumLayoutSize method, of class I18nLayout.
+     */
+    @Test
+    public void test_MinimumLayoutSize() {
+        Container parent = new JPanel();
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
+        parent.setLayout(instance);
+        Dimension expResult = new Dimension(10, 10);
+        Dimension result = instance.minimumLayoutSize(parent);
+        assertEquals(expResult, result);
+    }
 
-	/**
-	 * Test of getBaseName method, of class I18nLayout.
-	 */
-	@Test
-	public void testGetBaseName()
-	{
-		System.out.println( "getBaseName" );
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", new JPanel() );
-		String expResult = "org.hlib4j.i18n.messages";
-		String result = instance.getBaseName();
-		assertEquals( expResult, result );
-	}
+    /**
+     * Test of layoutContainer method, of class I18nLayout.
+     */
+    @Test
+    public void test_LayoutContainer_WithoutError() {
+        Container parent = new Panel();
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
+        instance.layoutContainer(parent);
+    }
 
-	/**
-	 * Test of addLayoutComponent method, of class I18nLayout.
-	 */
-	@Test
-	public void testAddLayoutComponent()
-	{
-		System.out.println( "addLayoutComponent" );
-		String name = "btnTest";
-		Component comp = new JButton( "testing" );
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", new JPanel() );
-		instance.addLayoutComponent( name, comp );
-	}
-
-	/**
-	 * Test of removeLayoutComponent method, of class I18nLayout.
-	 */
-	@Test
-	public void testRemoveLayoutComponent()
-	{
-		System.out.println( "removeLayoutComponent" );
-		Component comp = new JButton( "testing" );
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.test", new JPanel() );
-		instance.addLayoutComponent( "btnTest", comp );
-		instance.removeLayoutComponent( comp );
-	}
-
-	/**
-	 * Test of preferredLayoutSize method, of class I18nLayout.
-	 */
-	@Test
-	public void testPreferredLayoutSize()
-	{
-		System.out.println( "preferredLayoutSize" );
-		Container parent = new JPanel();
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", new JPanel() );
-		parent.setLayout( instance );
-		Dimension expResult = new Dimension( 10, 10 );
-		Dimension result = instance.preferredLayoutSize( parent );
-		assertEquals( expResult, result );
-	}
-
-	/**
-	 * Test of minimumLayoutSize method, of class I18nLayout.
-	 */
-	@Test
-	public void testMinimumLayoutSize()
-	{
-		System.out.println( "minimumLayoutSize" );
-		Container parent = new JPanel();
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", new JPanel() );
-		parent.setLayout( instance );
-		Dimension expResult = new Dimension( 10, 10 );
-		Dimension result = instance.minimumLayoutSize( parent );
-		assertEquals( expResult, result );
-	}
-
-	/**
-	 * Test of layoutContainer method, of class I18nLayout.
-	 */
-	@Test
-	public void testLayoutContainer()
-	{
-		System.out.println( "layoutContainer" );
-		Container parent = new Panel();
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", new JPanel() );
-		instance.layoutContainer( parent );
-	}
-
-	/**
-	 * Test of layoutContainer method, of class I18nLayout. Takes a null target container
-	 */
-	@Test( expected = NullPointerException.class )
-	public void testLayoutContainerNull()
-	{
-		System.out.println( "layoutContainer" );
-		Container parent = new Panel();
-		I18nLayout instance = new I18nLayout( "org.hlib4j.i18n.messages", null );
-		instance.layoutContainer( parent );
-	}
+    /**
+     * Test of layoutContainer method, of class I18nLayout. Takes a null target container
+     */
+    @Test(expected = NullPointerException.class)
+    public void test_LayoutContainer_NullPointerException() {
+        Container parent = new Panel();
+        I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", null);
+        instance.layoutContainer(parent);
+    }
 }

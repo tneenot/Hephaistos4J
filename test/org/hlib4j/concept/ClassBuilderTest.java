@@ -21,11 +21,12 @@ package org.hlib4j.concept;
 */
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -33,121 +34,124 @@ import static org.junit.Assert.*;
 /**
  * @author Tioben Neenot
  */
-public class ClassBuilderTest
-{
+public class ClassBuilderTest {
+    /**
+     * Test cleaning
+     */
+    @After
+    public void tearDown() {
+        File _tmp = System.getenv("TEMP") == null ? new File("/tmp") : new File(System.getenv("TEMP"));
+        File[] _for_deleting;
+        _for_deleting = _tmp.listFiles(new FileFilter() {
 
-	public ClassBuilderTest()
-	{
-	}
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getAbsolutePath().contains("DefXML");
+            }
+        });
 
-	/**
-	 * Test initializing.
-	 */
-	@Before
-	public void setUp()
-	{
-	}
+        for (File f : _for_deleting) {
+            if (!f.delete()) {
+                f.deleteOnExit();
+            }
+        }
+    }
 
-	/**
-	 * Test cleaning
-	 */
-	@After
-	public void tearDown()
-	{
-		File _tmp = System.getenv( "TEMP" ) == null ? new File( "/tmp" ) : new File( System.getenv( "TEMP" ) );
-		File[] _for_deleting;
-		_for_deleting = _tmp.listFiles( new FileFilter()
-		{
+    /**
+     * Test of createInstance method, of class ClassBuilder.
+     */
+    @Test
+    public void test_GetInstance_ValidInstance() {
+        File xmlFile = new File("test/org/hlib4j/concept/CDef.xml");
+        assertNotNull(new ClassBuilder(xmlFile));
+    }
 
-			@Override
-			public boolean accept( File pathname )
-			{
-				return pathname.getAbsolutePath().contains( "DefXML" );
-			}
-		} );
+    /**
+     * Test of getAllClasses method, of class ClassBuilder.
+     */
+    @Test
+    public void test_GetAllClasses_ValidClasses() {
+        ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
+        Collection<String> expResult;
+        expResult = Arrays.asList(new String[]{"ClassRef", "SecondClass", "ThirdClass"});
+        Collection<ClassDefinition> result = instance.getAllClasses();
+        for (ClassDefinition d : result) {
+            assertTrue(expResult.contains(d.getName()));
+        }
+    }
 
-		for ( File f : _for_deleting )
-		{
-			if ( !f.delete() )
-			{
-				f.deleteOnExit();
-			}
-		}
-	}
+    /**
+     * Test of createInstance method, of class ClassBuilder.
+     */
+    @Test
+    public void test_CreateInstance_InvalidInstance() {
+        ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
+        assertNull(instance.createInstance("foo"));
 
-	/**
-	 * Test of createInstance method, of class ClassBuilder.
-	 */
-	@Test
-	public void testGetInstance()
-	{
-		System.out.println( "getInstance" );
-		File xmlFile = new File( "test/org/hlib4j/concept/CDef.xml" );
-		assertNotNull( new ClassBuilder( xmlFile ) );
-	}
+    }
 
-	/**
-	 * Test of getAllClasses method, of class ClassBuilder.
-	 */
-	@Test
-	public void testGetAllClasses()
-	{
-		System.out.println( "getAllClasses" );
-		ClassBuilder instance = new ClassBuilder( new File( "test/org/hlib4j/concept/CDef.xml" ) );
-		Collection< String > expResult;
-		expResult = Arrays.asList( new String[] { "ClassRef", "SecondClass", "ThirdClass" } );
-		Collection< ClassDefinition > result = instance.getAllClasses();
-		for ( ClassDefinition d : result )
-		{
-			assertTrue( expResult.contains( d.getName() ) );
-		}
-	}
+    /**
+     * Test of parse method, of class ClassBuilder.
+     *
+     * @throws Exception If exception test running.
+     */
+    @Test
+    public void test_Parse_ValidResourceBundle() throws Exception {
+        File result = ClassBuilder.parse(ResourceBundle.getBundle(getClass().getPackage().getName() + ".bundle_test", Locale.ENGLISH));
+        assertNotNull(result);
+    }
 
-	/**
-	 * Test of createInstance method, of class ClassBuilder.
-	 */
-	@Test
-	public void testCreateInstance()
-	{
-		System.out.println( "createInstance" );
-		ClassBuilder instance = new ClassBuilder( new File( "test/org/hlib4j/concept/CDef.xml" ) );
-		assertNull( instance.createInstance( "foo" ) );
+    @Test
+    public void test_Parse_ResourceBundleFile_1stString() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.str.1") instanceof String);
+    }
 
-	}
+    @Test
+    public void test_Parse_ResourceBundleFile_2dString() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.str.2") instanceof String);
+    }
 
-	/**
-	 * Test of parse method, of class ClassBuilder.
-	 *
-	 * @throws Exception If exception test running.
-	 */
-	@Test
-	public void testParse_ResourceBundle() throws Exception
-	{
-		System.out.println( "parse" );
-		System.out.println( "parseBundle" );
-		File result = ClassBuilder.parse( ResourceBundle.getBundle( getClass().getPackage().getName() + ".bundle_test", Locale.ENGLISH ) );
-		assertNotNull( result );
-	}
+    @Test
+    public void test_Parse_ResourceBundleFile_FloatType() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.float") instanceof Float);
+    }
 
-	/**
-	 * Test of parse method, of class ClassBuilder.
-	 *
-	 * @throws Exception If exception during test.
-	 */
-	@Test
-	public void testParse_ResourceBundle_File() throws Exception
-	{
-		System.out.println( "parse" );
-		ClassBuilder _cb = new ClassBuilder( ClassBuilder.parse( ResourceBundle.getBundle( getClass().getPackage().getName() + ".bundle_test", Locale.ENGLISH ) ) );
-		ClassDefinition _ci = _cb.createInstance( "Bundle" );
-		assertTrue( _ci.getPropertyValue( "value.str.1" ) instanceof String );
-		assertTrue( _ci.getPropertyValue( "value.str.2" ) instanceof String );
-		assertTrue( _ci.getPropertyValue( "value.float" ) instanceof Float );
-		assertTrue( _ci.getPropertyValue( "value.double" ) instanceof Double );
-		assertTrue( _ci.getPropertyValue( "value.int" ) instanceof Integer );
-		assertTrue( _ci.getPropertyValue( "value.hex" ) instanceof Integer );
-		assertTrue( _ci.getPropertyValue( "value.date" ) instanceof Date );
-		assertTrue( _ci.getPropertyValue( "value.long" ) instanceof Long );
-	}
+    @Test
+    public void test_Parse_ResourceBundleFile_DoubleType() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.double") instanceof Double);
+    }
+
+    @Test
+    public void test_Parse_ResourceBundleFile_IntegerType() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.int") instanceof Integer);
+    }
+
+    @Test
+    public void test_Parse_ResourceBundleFile_IntegerHexType() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.hex") instanceof Integer);
+    }
+
+    @Test
+    public void test_Parse_ResourceBundleFile_LongType() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.long") instanceof Long);
+    }
+
+    @Test
+    public void test_Parse_ResourceBundleFile_DateType() throws IOException, InvocationTargetException {
+        ClassDefinition _ci = getClassDefinition();
+        assertTrue(_ci.getPropertyValue("value.date") instanceof Date);
+    }
+
+    private ClassDefinition getClassDefinition() throws IOException {
+        ClassBuilder _cb = new ClassBuilder(ClassBuilder.parse(ResourceBundle.getBundle(getClass().getPackage().getName() + ".bundle_test", Locale.ENGLISH)));
+        return _cb.createInstance("Bundle");
+    }
 
 }
