@@ -238,7 +238,7 @@ public class CollectionsTest
 	 * </ul>
 	 */
     @Test
-	public void collectionAddAllInvalid()
+	public void test_AddAll_InvalidCollection()
 	{
 		Collection< Integer > _col = new ArrayList<>();
 		_col.add( 2 );
@@ -1031,7 +1031,7 @@ public class CollectionsTest
 		_list.add( 5 );
 		_list.add( 8 );
 
-		AList< Integer > _list2 = new AList<>( ( FilteredList< Integer > ) Collections.makeFilteredList( _list, (p) -> p != 1 ) );
+		AListFake< Integer > _list2 = new AListFake<>( ( FilteredList< Integer > ) Collections.makeFilteredList( _list, (p) -> p != 1 ) );
 
 		Assert.assertEquals( 5, _list.size() );
 		_list2.removeRange( 0, 3 );
@@ -1045,7 +1045,7 @@ public class CollectionsTest
  * @param <E> Type of date
  * @author Tioben Neenot
  */
-class AList < E > extends AbstractList< E >
+class AListFake< E > extends AbstractList< E >
 {
 
 	/**
@@ -1058,7 +1058,7 @@ class AList < E > extends AbstractList< E >
 	 *
 	 * @param l Reference to a sub list
 	 */
-	AList( FilteredList< E > l )
+	AListFake(FilteredList<E> l)
 	{
 		list = l;
 	}
