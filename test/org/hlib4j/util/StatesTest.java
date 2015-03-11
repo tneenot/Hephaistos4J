@@ -46,7 +46,7 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-    public void test_IsNullOrEmptyArray_NullValue() {
+    public void test_IsNullOrEmptyArray_NullValue_True() {
 		Assert.assertTrue( States.isNullOrEmptyArray(null) );
 	}
 
@@ -60,12 +60,12 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-    public void test_IsNullOrEmpty_String_1stForm() {
+    public void test_IsNullOrEmpty_String_NaturalForm_True() {
 		Assert.assertTrue( States.isNullOrEmpty( "" ) );
 	}
 
     @Test
-    public void test_IsNullOrEmpty_String_2dForm() {
+    public void test_IsNullOrEmpty_String_VariantForm_True() {
         Assert.assertTrue(States.isNullOrEmpty(" "));
     }
 
@@ -79,7 +79,7 @@ public class StatesTest
 	 * Note: <i>Result is <code>false</code> since the {@link Object#toString()} is never empty.</i>
 	 */
 	@Test
-    public void test_IsNullOrEmpty_Object() {
+    public void test_IsNullOrEmpty_WithNewObjectType_False() {
 		Assert.assertFalse( States.isNullOrEmpty( new Object() ) );
 	}
 
@@ -93,7 +93,7 @@ public class StatesTest
 	 * Note: <i>None.</i>
 	 */
 	@Test
-    public void test_IsNullOrEmpty_EmptyCollection() {
+    public void test_IsNullOrEmpty_EmptyCollection_True() {
 		Collection< Object > c = new ArrayList<>();
 		Assert.assertTrue( States.isNullOrEmpty( c ) );
 	}
@@ -108,13 +108,13 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-    public void test_NullOrEmptyArray_Boolean_NullValue() {
+    public void test_NullOrEmptyArray_NullBooleanArray_True() {
 		Boolean[] _barray1 = null;
 		Assert.assertTrue(States.isNullOrEmptyArray(_barray1));
 	}
 
     @Test
-    public void test_NullOrEmptyArray_Boolean_EmptyArray() {
+    public void test_NullOrEmptyArray_EmptyBooleanArray_True() {
         Boolean[] _barray2 = {};
         Assert.assertTrue(States.isNullOrEmptyArray(_barray2));
     }
@@ -130,7 +130,7 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-    public void test_Validate_SameInstances() {
+    public void test_Validate_SameInstances_True() {
 		Date d = Calendar.getInstance().getTime();
 		Date r = States.validate( d );
 
@@ -138,7 +138,7 @@ public class StatesTest
 	}
 
     @Test
-    public void test_Validate_EqualsInstances() {
+    public void test_Validate_EqualsInstances_True() {
         Date d = Calendar.getInstance().getTime();
         Date r = States.validate(d);
 
@@ -155,7 +155,7 @@ public class StatesTest
 	 * Note: <i>None</i>
 	 */
 	@Test
-    public void test_Validate_PrimaryType() {
+    public void test_Validate_WithPrimaryType_True() {
 		int i = Integer.MAX_VALUE;
 		int r = States.validate( i );
 
@@ -172,7 +172,7 @@ public class StatesTest
 	 * Note: <i>None.</i>
 	 */
 	@Test
-    public void test_Validate_PrimaryArrayType() {
+    public void test_Validate_PrimaryArrayType_Equals() {
 		int[] i =
 			{
 				1, 2, 3, 4
@@ -228,13 +228,13 @@ public class StatesTest
 	}
 
     @Test
-    public void test_Validate_ArrayExcludeNull() throws Exception {
+    public void test_ValidateNotNullOnly_ArrayExcludeNull_True() throws Exception {
         Object[] o = {};
         Assert.assertArrayEquals(o, States.validateNotNullOnly(o));
     }
 
     @Test
-    public void test_Validate_ExcludeNull() throws Exception {
+    public void test_ValidateNotNullOnly_ExcludeNull_True() throws Exception {
 
         Integer i = 4;
         Assert.assertEquals(i, States.validateNotNullOnly(i));

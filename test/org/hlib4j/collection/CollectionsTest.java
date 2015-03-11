@@ -83,7 +83,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void testCheckedCollection() {
+    public void test_MakeFilteredCollection_NotNull() {
         Collection<Integer> collection = new ArrayList<>();
         assertNotNull(Collections.makeFilteredCollection(collection, this.ruleRef));
     }
@@ -97,7 +97,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void testCheckedList() {
+    public void test_MakeFilteredList_NotNull() {
         List<Integer> list = new ArrayList<>();
         assertNotNull(Collections.makeFilteredList(list, this.ruleRef));
     }
@@ -111,7 +111,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void testCheckedMap() {
+    public void test_MakeFilteredMap_NotNull() {
         Map<String, Integer> map = new HashMap<>();
         assertNotNull(Collections.makeFilteredMap(map, this.ruleRef));
     }
@@ -125,7 +125,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void testClean_Collection() {
+    public void test_Clean_Collection() {
         Collection<Integer> _col = new ArrayList<>();
         Collection<?> _sub_col = Collections.makeFilteredCollection(_col, this.ruleRef);
         _col.add(null);
@@ -136,7 +136,7 @@ public class CollectionsTest {
      * Test of clean method, of class Collections with a classical collection that doesn't implements a Rule.
      */
     @Test
-    public void testClean_ClassicalCollection() {
+    public void test_Clean_ClassicalCollection() {
         Collection<Integer> _col = new ArrayList<>();
         _col.add(2);
         assertEquals(-1, Collections.clean(_col));
@@ -151,7 +151,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void testClean_Map() {
+    public void test_Clean_Map() {
         Map<String, Integer> _map = new HashMap<>();
         Map<?, ?> _sub_map = Collections.makeFilteredMap(_map, this.ruleRef);
         _map.put("test", null);
@@ -162,7 +162,7 @@ public class CollectionsTest {
      * Test of clean method, of class Collections on a classical Map that doesn't implements a Rule.
      */
     @Test
-    public void testClean_ClassicalMap() {
+    public void test_Clean_ClassicalMap() {
         Map<Integer, String> _map = new HashMap<>();
         _map.put(Integer.SIZE, "Hi");
         assertEquals(-1, Collections.clean(_map));
@@ -177,7 +177,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void collectionAddValid() {
+    public void test_Add_ValiData_Collection_True() {
         Assert.assertTrue(ref.add(4));
     }
 
@@ -190,7 +190,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void collectionAddInvalid() {
+    public void test_Add_InvalidData_Collection_False() {
         Assert.assertFalse(ref.add(null));
     }
 
@@ -203,7 +203,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void collectionAddAllValid() {
+    public void test_AddAll_ValidCollection_True() {
         Collection<Integer> _col = new ArrayList<>();
         _col.add(2);
         _col.add(4);
@@ -228,7 +228,7 @@ public class CollectionsTest {
      * </ul>
      */
     @Test
-    public void test_AddAll_InvalidCollection() {
+    public void test_AddAll_InvalidCollection_False() {
         Collection<Integer> _col = new ArrayList<>();
         _col.add(2);
         _col.add(4);

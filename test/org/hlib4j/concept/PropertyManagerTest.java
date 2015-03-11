@@ -77,7 +77,7 @@ public class PropertyManagerTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateInstance_ValidName() {
+    public void test_CreateInstance_ValidName_NotNull() {
         String name = "ClassRef";
         ClassDefinition result = instance.createInstance(name);
         assertNotNull(result);
@@ -87,30 +87,28 @@ public class PropertyManagerTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateInstance_InvalidName() {
+    public void test_CreateInstance_InvalidName_Null() {
         String name = "Toto";
         assertNull(instance.createInstance(name));
     }
 
     @Test
-    public void test_CreateInstance_ControlProperties_ReadOnly() throws IllegalArgumentException, InvocationTargetException {
+    public void test_IsReadOnly_ControlPropertiesReadOnly_True() throws IllegalArgumentException, InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ClassRef");
 
         for (Property p : properties.getProperties()) {
             if ("property_name".equals(p.getName())) {
-                assertEquals("Property value", p.getValue());
                 assertTrue(p.isReadOnly());
             }
         }
     }
 
     @Test
-    public void test_CreateInstance_ControlProperties_NotReadOnly() throws IllegalArgumentException, InvocationTargetException {
+    public void test_IsReadOnly_ControlPropertiesNotReadOnly_False() throws IllegalArgumentException, InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ClassRef");
 
         for (Property p : properties.getProperties()) {
             if ("prop_read_write".equals(p.getName())) {
-                assertEquals("Property value read write", p.getValue());
                 assertFalse(p.isReadOnly());
             }
         }
@@ -121,7 +119,7 @@ public class PropertyManagerTest {
      * Test of getAllClasses method, of class ClassBuilder.
      */
     @Test
-    public void test_GetAllClasses_ValidClasses() {
+    public void test_GetAllClasses_ValidClasses_True() {
         Collection<ClassDefinition> result = instance.getAllClasses();
         for (ClassDefinition c : result) {
             assertTrue(c.getName().equals("ClassRef") || c.getName().equals("SecondClass") || c.getName().equals("ThirdClass"));
@@ -129,49 +127,49 @@ public class PropertyManagerTest {
     }
 
     @Test
-    public void test_Properties_StringType_1stForm() throws InvocationTargetException {
+    public void test_GetPropertyValue_StringType_NaturalForm_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.str") instanceof String);
     }
 
     @Test
-    public void test_Properties_StringType_2dForm() throws InvocationTargetException {
+    public void test_GetPropertyValue_StringType_VariantForm_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.str2") instanceof String);
     }
 
     @Test
-    public void test_Properties_FloatType() throws InvocationTargetException {
+    public void test_GetPropertyValue_FloatType_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.float") instanceof Float);
     }
 
     @Test
-    public void test_Properties_DoubleType() throws InvocationTargetException {
+    public void test_GetPropertyValue_DoubleType_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.double") instanceof Double);
     }
 
     @Test
-    public void test_Properties_IntegerType() throws InvocationTargetException {
+    public void test_GetPropertyValue_IntegerType_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.int") instanceof Integer);
     }
 
     @Test
-    public void test_Properties_IntegerHexType() throws InvocationTargetException {
+    public void test_GetPropertyValue_IntegerHexType_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.hex") instanceof Integer);
     }
 
     @Test
-    public void test_Properties_DateType() throws InvocationTargetException {
+    public void test_GetPropertyValue_DateType_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.date") instanceof Date);
     }
 
     @Test
-    public void test_Properties_LongType() throws InvocationTargetException {
+    public void test_GetPropertyValue_LongType_True() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.long") instanceof Long);
     }
@@ -182,7 +180,7 @@ public class PropertyManagerTest {
      * @throws InstantiationException If error during test running.
      */
     @Test
-    public void test_GetName_ValidName() throws InstantiationException {
+    public void test_GetName_ValidName_Equals() throws InstantiationException {
         System.out.println("getName");
         PropertyManager _instance = new PropertyManager("foo");
         assertEquals("foo", _instance.getName());
@@ -194,7 +192,7 @@ public class PropertyManagerTest {
      * @throws InstantiationException If error during test running.
      */
     @Test
-    public void test_Add_ValidProperty() throws InstantiationException {
+    public void test_Add_ValidProperty_NoError() throws InstantiationException {
         System.out.println("Add");
         PropertyManager _instance = new PropertyManager("foo");
         _instance.Add(new Property("bar"));

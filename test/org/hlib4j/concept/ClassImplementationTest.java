@@ -108,7 +108,7 @@ public class ClassImplementationTest
 	 * Test of getName method, of class PropertyManager.
 	 */
 	@Test
-    public void test_GetName_ValidName() {
+    public void test_GetName_WithValidName_Equals() {
 		String expResult = "ClassRef";
 		String result = instance.getName();
 		assertEquals( expResult, result );
@@ -120,7 +120,7 @@ public class ClassImplementationTest
 	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
 	 */
 	@Test
-    public void test_Add_ValidPropertyValue() throws IllegalArgumentException, InvocationTargetException {
+    public void test_Add_ValidPropertyValue_NotNull() throws IllegalArgumentException, InvocationTargetException {
 		Property p = new Property( "prop", 1, false );
 		instance.Add( p );
 
