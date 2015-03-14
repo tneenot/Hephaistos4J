@@ -359,6 +359,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public int size() {
+        this.clean();
         return this.managedList.size();
     }
 

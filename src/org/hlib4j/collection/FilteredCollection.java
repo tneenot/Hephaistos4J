@@ -31,37 +31,35 @@ import java.util.*;
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredCollection(java.util.Collection, Rule)}} contains
  * forbidden elements yet, the <code>FilteredCollection</code> will delete them. <br><br>
- * 
+ * <p>
  * This class is using as implementations for {@link org.hlib4j.collection.Collections#makeFilteredCollection(java.util.Collection, Rule)}.
  *
  * @param <ElementType> Elements types of this collection.
  * @author Tioben Neenot
  * @see Rule
  */
-final class FilteredCollection < ElementType > extends AbstractCollection< ElementType > implements Cleaner
-{
+final class FilteredCollection<ElementType> extends AbstractCollection<ElementType> implements Cleaner {
 
-	/**
-	 * The filter to manage all elements in the managedCollection
-	 */
-	private Rule< ElementType > filter = null;
+    /**
+     * The filter to manage all elements in the managedCollection
+     */
+    private Rule<ElementType> filter = null;
 
-	/**
-	 * The collection to manage
-	 */
-	private Collection< ElementType > managedCollection = null;
+    /**
+     * The collection to manage
+     */
+    private Collection<ElementType> managedCollection = null;
 
-	/**
-	 * Builds an instance of this <code>FilteredCollection</code>. This class is a wrapper on a real
-	 * collection, and takes the control of the external collection, according to filter definition.
-	 *
-	 * @param originalCollection    Collection links with this wrapper for which all elements will be managing by the given
-	 *                              filter.
-	 * @param ruleForThisCollection {@link Rule} to apply on each element of this collection.
-	 */
-	FilteredCollection( Collection< ElementType > originalCollection, Rule< ElementType > ruleForThisCollection )
-	{
-		super();
+    /**
+     * Builds an instance of this <code>FilteredCollection</code>. This class is a wrapper on a real
+     * collection, and takes the control of the external collection, according to filter definition.
+     *
+     * @param originalCollection    Collection links with this wrapper for which all elements will be managing by the given
+     *                              filter.
+     * @param ruleForThisCollection {@link Rule} to apply on each element of this collection.
+     */
+    FilteredCollection(Collection<ElementType> originalCollection, Rule<ElementType> ruleForThisCollection) {
+        super();
 
         try {
             this.filter = States.validate(ruleForThisCollection);
@@ -70,254 +68,228 @@ final class FilteredCollection < ElementType > extends AbstractCollection< Eleme
             throw new NullPointerException(e.getMessage() + ". Null element.");
         }
 
-		// Force the cleaning on this collection
-		clean();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 *  @see org.hlib4j.collection.Cleaner#clean()
-	 */
-	@SuppressWarnings( "unchecked" )
-	@Override
-	public int clean()
-	{
-		int _counter = 0;
-		// Control the collection contents. Here remove all elements that contains forbidden value.
-		List< Object > _raw_list = Arrays.asList( this.managedCollection.toArray() );
-		for ( Object _element : _raw_list )
-		{
-			if ( !this.filter.accept( ( ElementType ) _element ) )
-			{
-				this.managedCollection.remove( _element );
-				++_counter;
-			}
-		}
-
-		return _counter;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#add(java.lang.Object)
-	 */
-	@Override
-	public boolean add( ElementType element )
-	{
-
-		if ( !this.filter.accept( element ) )
-		{
-			return false;
-		}
-
-		return this.managedCollection.add( element );
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#addAll(java.util.Collection)
-	 */
-	@Override
-	public boolean addAll( Collection< ? extends ElementType > otherCollection )
-	{
-		boolean _is_all_added = true;
-
-		for ( ElementType e : otherCollection )
-		{
-			// If once add is false, so isAllAdded will be false
-			_is_all_added &= add( e );
-		}
-
-		return _is_all_added;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#clear()
-	 */
-	@Override
-	public void clear()
-	{
-		this.managedCollection.clear();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#contains(java.lang.Object)
-	 */
-	@Override
-	public boolean contains( Object element )
-	{
+        // Force the cleaning on this collection
         clean();
-        return this.managedCollection.contains( element );
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#containsAll(java.util.Collection)
-	 */
-	@Override
-	public boolean containsAll( Collection< ? > otherCollection )
-	{
-		return this.managedCollection.containsAll( otherCollection );
-	}
+    /*
+     * (non-Javadoc)
+     *
+     *  @see org.hlib4j.collection.Cleaner#clean()
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public int clean() {
+        int _counter = 0;
+        // Control the collection contents. Here remove all elements that contains forbidden value.
+        List<Object> _raw_list = Arrays.asList(this.managedCollection.toArray());
+        for (Object _element : _raw_list) {
+            if (!this.filter.accept((ElementType) _element)) {
+                this.managedCollection.remove(_element);
+                ++_counter;
+            }
+        }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#isEmpty()
-	 */
-	@Override
-	public boolean isEmpty()
-	{
-		return this.managedCollection.isEmpty();
-	}
+        return _counter;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#iterator()
-	 */
-	@Override
-	public Iterator< ElementType > iterator()
-	{
-		// Clean all element of the link collection, in case of element would be added by the last one.
-		clean();
-		return this.managedCollection.iterator();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#add(java.lang.Object)
+     */
+    @Override
+    public boolean add(ElementType element) {
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#remove(java.lang.Object)
-	 */
-	@Override
-	public boolean remove( Object element )
-	{
-		return this.managedCollection.remove( element );
-	}
+        if (!this.filter.accept(element)) {
+            return false;
+        }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#removeAll(java.util.Collection)
-	 */
-	@Override
-	public boolean removeAll( Collection< ? > otherCollection )
-	{
-		return this.managedCollection.removeAll( otherCollection );
-	}
+        return this.managedCollection.add(element);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#retainAll(java.util.Collection)
-	 */
-	@SuppressWarnings( "unchecked" )
-	@Override
-	public boolean retainAll( Collection< ? > initialCollection )
-	{
-		// Here we don't accept this operation if some elements from the initial collection can't be according with the filter
-		// of this collection.
-		for ( Object _element : initialCollection )
-		{
-			if ( !this.filter.accept( ( ElementType ) _element ) )
-			{
-				return false;
-			}
-		}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#addAll(java.util.Collection)
+     */
+    @Override
+    public boolean addAll(Collection<? extends ElementType> otherCollection) {
+        boolean _is_all_added = true;
 
-		return this.managedCollection.retainAll( initialCollection );
-	}
+        for (ElementType e : otherCollection) {
+            // If once add is false, so isAllAdded will be false
+            _is_all_added &= add(e);
+        }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#size()
-	 */
-	@Override
-	public int size()
-	{
-		return this.managedCollection.size();
-	}
+        return _is_all_added;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#toArray()
-	 */
-	@Override
-	public Object[] toArray()
-	{
-		// Clean all element of the link collection, in case of element would be added by the last one.
-		clean();
-		return this.managedCollection.toArray();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#clear()
+     */
+    @Override
+    public void clear() {
+        this.managedCollection.clear();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.util.AbstractCollection#toArray(T[])
-	 */
-	@Override
-	public < T > T[] toArray( T[] a )
-	{
-		// Clean all element of the link collection, in case of element would be added by the last one.
-		clean();
-		return this.managedCollection.toArray( a );
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#contains(java.lang.Object)
+     */
+    @Override
+    public boolean contains(Object element) {
+        clean();
+        return this.managedCollection.contains(element);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + this.managedCollection.hashCode();
-		result = prime * result + this.filter.hashCode();
-		return result;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#containsAll(java.util.Collection)
+     */
+    @Override
+    public boolean containsAll(Collection<?> otherCollection) {
+        return this.managedCollection.containsAll(otherCollection);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals( Object obj )
-	{
-		if ( this == obj )
-		{
-			return true;
-		}
-		if ( obj == null )
-		{
-			return false;
-		}
-		if ( !super.equals( obj ) )
-		{
-			return false;
-		}
-		if ( !( obj instanceof FilteredCollection< ? > ) )
-		{
-			return false;
-		}
-		FilteredCollection< ? > other = ( FilteredCollection< ? > ) obj;
-		if ( !this.managedCollection.equals( other.managedCollection ) )
-		{
-			return false;
-		}
-		return this.filter.equals(other.filter);
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#isEmpty()
+     */
+    @Override
+    public boolean isEmpty() {
+        return this.managedCollection.isEmpty();
+    }
 
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#iterator()
+     */
+    @Override
+    public Iterator<ElementType> iterator() {
+        // Clean all element of the link collection, in case of element would be added by the last one.
+        clean();
+        return this.managedCollection.iterator();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#remove(java.lang.Object)
+     */
+    @Override
+    public boolean remove(Object element) {
+        return this.managedCollection.remove(element);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#removeAll(java.util.Collection)
+     */
+    @Override
+    public boolean removeAll(Collection<?> otherCollection) {
+        return this.managedCollection.removeAll(otherCollection);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#retainAll(java.util.Collection)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean retainAll(Collection<?> initialCollection) {
+        // Here we don't accept this operation if some elements from the initial collection can't be according with the filter
+        // of this collection.
+        for (Object _element : initialCollection) {
+            if (!this.filter.accept((ElementType) _element)) {
+                return false;
+            }
+        }
+
+        return this.managedCollection.retainAll(initialCollection);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#size()
+     */
+    @Override
+    public int size() {
+        this.clean();
+        return this.managedCollection.size();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#toArray()
+     */
+    @Override
+    public Object[] toArray() {
+        // Clean all element of the link collection, in case of element would be added by the last one.
+        clean();
+        return this.managedCollection.toArray();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractCollection#toArray(T[])
+     */
+    @Override
+    public <T> T[] toArray(T[] a) {
+        // Clean all element of the link collection, in case of element would be added by the last one.
+        clean();
+        return this.managedCollection.toArray(a);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + this.managedCollection.hashCode();
+        result = prime * result + this.filter.hashCode();
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof FilteredCollection<?>)) {
+            return false;
+        }
+        FilteredCollection<?> other = (FilteredCollection<?>) obj;
+        if (!this.managedCollection.equals(other.managedCollection)) {
+            return false;
+        }
+        return this.filter.equals(other.filter);
+
+    }
 }
