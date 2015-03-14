@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Unit tests on a collection List managed by {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)} with valid data.
  */
-public class FilteredListTCWithDataTest {
+public class FilteredListTest {
 
     private List<Integer> sourceListRef;
 
@@ -83,21 +83,21 @@ public class FilteredListTCWithDataTest {
      * <code>listIterator.add(E e)</code> to control if forbidden element is managing or not.
      */
     @Test
-    public void test_Add_ListIterator_ValidValueAdded() {
+    public void test_ListIterator_Add_ValidValueAdded() {
         this.filteredListRef.listIterator().add(12);
 
         Assert.assertTrue(this.filteredListRef.contains(12));
     }
 
     @Test
-    public void test_Add_ListIterator_InvalidValueNotAdded() {
+    public void test_ListIterator_Add_InvalidValueNotAdded() {
         this.filteredListRef.listIterator().add(1);
 
         Assert.assertFalse(this.filteredListRef.contains(1));
     }
 
     @Test
-    public void test_Set_ListIterator_ValidValueSetted() {
+    public void test_ListIterator_Set_ValidValueSetted() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
         _it.next();
         _it.set(28);
@@ -106,7 +106,7 @@ public class FilteredListTCWithDataTest {
     }
 
     @Test
-    public void test_Set_ListIterator_InvalidValueNotSetted() {
+    public void test_ListIterator_Set_InvalidValueNotSetted() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
         _it.next();
         _it.set(1);
@@ -114,11 +114,8 @@ public class FilteredListTCWithDataTest {
         Assert.assertFalse(this.filteredListRef.contains(1));
     }
 
-    /**
-     * Test remove method
-     */
     @Test
-    public void test_Remove_ListIterator_ValueRemoved() {
+    public void test_ListIterator_Remove_ValueRemoved() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
         _it.next();
         _it.remove();
@@ -126,25 +123,22 @@ public class FilteredListTCWithDataTest {
         Assert.assertFalse(this.filteredListRef.contains(2));
     }
 
-    /**
-     * Test next(), hasPrevious(), nextIndex()... from ListIterator.
-     */
     @Test
-    public void test_HasNext_ListIterator_HasNextValue() {
+    public void test_ListIterator_HasNext_HasNextValue() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
 
         Assert.assertTrue(_it.hasNext());
     }
 
     @Test
-    public void test_Next_ListIterator_ValidNextIndex() {
+    public void test_ListIterator_Next_ValidNextIndex() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
 
         Assert.assertEquals(2, (int) _it.next());
     }
 
     @Test
-    public void test_NextIndex_ListIterator_ValidNextIndex() {
+    public void test_ListIterator_NextIndex_ValidNextIndex() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
         _it.next();
 
@@ -152,7 +146,7 @@ public class FilteredListTCWithDataTest {
     }
 
     @Test
-    public void test_Previous_ListIterator_ValidPreviousValue() {
+    public void test_ListIterator_Previous_ValidPreviousValue() {
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
         _it.next();
 
@@ -290,13 +284,13 @@ public class FilteredListTCWithDataTest {
     }
 
     @Test
-    public void test_IsEmpty_ForEmptyList() {
+    public void test_IsEmpty_ValidForEmptyList() {
         List<Integer> _col = Collections.makeFilteredList(new ArrayList<>(), new Not<>(1));
         Assert.assertTrue(_col.isEmpty());
     }
 
     @Test
-    public void test_IsEmpty_ForNonEmptyList() {
+    public void test_IsEmpty_UnvalidForNonEmptyList() {
         Assert.assertFalse(this.filteredListRef.isEmpty());
     }
 
@@ -437,5 +431,20 @@ public class FilteredListTCWithDataTest {
     @Test(expected = NullPointerException.class)
     public void test_MakeFilteredList_NullRuleParameter() {
         assertNotNull(Collections.makeFilteredList(new ArrayList<>(), null));
+    }
+
+    @Test
+    public void test_Size_FromExternalListWithInvalidValue() {
+        List<Integer> _col = Collections.makeFilteredList(this.sourceListRef, new Not<>(1));
+
+        // Note: this.sourceListRef was contained 7 elements before to be added to a new filtered list type.
+        Assert.assertEquals(6, _col.size());
+    }
+
+    @Test
+    public void test_Equals_NotEqualsWithDifferentListDefinition() {
+        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<>(), new Not<>(2));
+
+        Assert.assertFalse(this.filteredListRef.equals(_list2));
     }
 }

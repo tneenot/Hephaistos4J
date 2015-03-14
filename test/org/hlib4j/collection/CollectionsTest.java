@@ -198,15 +198,6 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Size_FilteredList_FromExternalList_ControlSizeValue() {
-        List<Integer> _values = new ArrayList<>();
-        _values.add(2);
-
-        List<Integer> _col = Collections.makeFilteredList(_values, new Not<>(1));
-        Assert.assertEquals(1, _col.size());
-    }
-
-    @Test
     public void test_Size_FilteredMap_ControlSizeValue_Ok() {
         Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
         _map.put(2, 2);
@@ -544,30 +535,13 @@ public class CollectionsTest {
         Assert.assertTrue(_col.isEmpty());
     }
 
-    /**
-     * <ul>
-     * <li><b>Description: </b>Remove valid value from the collection.</li>
-     * <li><b>Results: </b>Value removed</li>
-     * <li><b>Comments: </b>None.</li>
-     * </ul>
-     */
     @Test
-    public void test_Remove_FilteredList_ValidValue_True() {
+    public void test_Remove_FilteredCollection_ValidValue_True() {
         ref.add(4);
         ref.add(6);
         ref.add(8);
 
         Assert.assertTrue(ref.remove(6));
-    }
-
-    @Test
-    public void test_Remove_FilteredCollection_ValidValue_True() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), this.ruleRef);
-        _col.add(4);
-        _col.add(6);
-        _col.add(8);
-
-        Assert.assertTrue(_col.remove(6));
     }
 
     @Test
@@ -581,22 +555,12 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Remove_FilteredList_BadValue_False() {
+    public void test_Remove_FilteredCollection_BadValue_False() {
         ref.add(4);
         ref.add(6);
         ref.add(8);
 
         Assert.assertFalse(ref.remove(3));
-    }
-
-    @Test
-    public void test_Remove_FilteredCollection_BadValue_False() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), this.ruleRef);
-        _col.add(4);
-        _col.add(6);
-        _col.add(8);
-
-        Assert.assertFalse(_col.remove(3));
     }
 
     @Test
@@ -675,21 +639,6 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_ContainsAll_FilteredList_TwoDifferentsCollection_False() {
-        List<Integer> _multiple_of_2 = Collections.makeFilteredList(new ArrayList<>(), new Multiple<>(2));
-        for (int i = 1; i < 20; ++i) {
-            _multiple_of_2.add(i);
-        }
-
-        List<Integer> _not_multiple_of_2 = Collections.makeFilteredList(new ArrayList<>(), new Not<>(new Multiple<>(2)));
-        for (int i = 1; i < 20; ++i) {
-            _not_multiple_of_2.add(i);
-        }
-
-        Assert.assertFalse(_multiple_of_2.containsAll(_not_multiple_of_2));
-    }
-
-    @Test
     public void test_HashCode_FilteredCollection_Valid() {
         Assert.assertTrue(0 != (Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1))).hashCode());
     }
@@ -717,17 +666,6 @@ public class CollectionsTest {
         Assert.assertTrue(_list.equals(_list));
     }
 
-    /**
-     * Compare a collection to another one.
-     */
-    @Test
-    public void test_Equals_FilteredList_NotEqualsWithDifferentListDefinition() {
-        List<Integer> _list1 = Collections.makeFilteredList(new LinkedList<>(), new Not<>(1));
-        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<>(), new Not<>(2));
-        _list2.add(5);
-
-        Assert.assertFalse(_list1.equals(_list2));
-    }
 
     @Test
     public void test_Equals_FilteredCollection_NotEqualsWithDifferentListDefinition() {
