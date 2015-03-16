@@ -10,7 +10,7 @@ import java.util.*;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Unit tests on a collection List managed by {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)} with valid data.
+ * Unit tests on a collection List managed by {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)} with data.
  */
 public class FilteredListTest {
 

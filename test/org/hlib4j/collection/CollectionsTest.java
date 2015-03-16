@@ -69,13 +69,6 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_MakeFilteredMap_ValidMap_NotNull() {
-        Map<String, Integer> map = new HashMap<>();
-        Rule<Integer> rule = new Not<>(null);
-        assertNotNull(Collections.makeFilteredMap(map, rule));
-    }
-
-    @Test
     public void test_Clean_OnFilteredCollection_Ok() {
         Collection<Integer> _col = new ArrayList<>();
         Collection<?> _sub_col = Collections.makeFilteredCollection(_col, new Not<>(null));
@@ -198,35 +191,11 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Size_FilteredMap_ControlSizeValue_Ok() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
-        _map.put(2, 2);
-        Assert.assertEquals(1, _map.size());
-    }
-
-    @Test
-    public void test_Size_FilteredMap_FromExternalMap_ControlSizeValue_Ok() {
-        Map<Integer, Integer> _values = new HashMap<>();
-        _values.put(2, 2);
-
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(_values, new Not<>(1));
-        Assert.assertEquals(1, _map.size());
-    }
-
-    @Test
     public void test_Clear_FilteredCollection_Ok() {
         Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1));
         _col.add(2);
         _col.clear();
         Assert.assertEquals(0, _col.size());
-    }
-
-    @Test
-    public void test_Clear_FilteredMap_Ok() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
-        _map.put(2, 2);
-        _map.clear();
-        Assert.assertEquals(0, _map.size());
     }
 
     @Test
@@ -262,42 +231,6 @@ public class CollectionsTest {
         Assert.assertFalse(_col.contains(1));
     }
 
-    @Test
-    public void test_ContainsValue_FilteredMap_True() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
-        _map.put(1, 1);
-        _map.put(4, 4);
-
-        Assert.assertTrue(_map.containsValue(4));
-    }
-
-    @Test
-    public void test_ContainsKey_FilteredMap_True() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
-        _map.put(1, 1);
-        _map.put(4, 4);
-
-        Assert.assertTrue(_map.containsKey(4));
-    }
-
-    @Test
-    public void test_ContainsValue_FilteredMap_False() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
-        _map.put(1, 1);
-        _map.put(4, 4);
-
-        Assert.assertFalse(_map.containsValue(5));
-    }
-
-    @Test
-    public void test_ContainsKey_FilteredMap_False() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
-        _map.put(1, 1);
-        _map.put(4, 4);
-
-        Assert.assertFalse(_map.containsKey(5));
-    }
-
     /**
      * <ul>
      * <li><b>Description: </b>Build a checked collection from a source collection. Adds invalid values into the source
@@ -321,26 +254,6 @@ public class CollectionsTest {
 
         List<Object> _result = Arrays.asList(_cols.toArray());
         for (Object _raw_value : _invalid_values) {
-            Assert.assertFalse(_result.contains(_raw_value));
-        }
-    }
-
-    @Test
-    public void test_Contains_FilteredMap_Values_RemoveInvalidValues() {
-        Map<Integer, Integer> _invalid_values = new HashMap<>();
-        _invalid_values.put(3, 3);
-
-        Map<Integer, Integer> _values = new HashMap<>();
-        _values.put(4, 4);
-        _values.put(6, 6);
-        _values.put(8, 8);
-
-        Map<Integer, Integer> _cols = Collections.makeFilteredMap(_values, new Multiple<>(2));
-
-        _values.putAll(_invalid_values);
-
-        Collection<Integer> _result = _cols.values();
-        for (Integer _raw_value : _invalid_values.values()) {
             Assert.assertFalse(_result.contains(_raw_value));
         }
     }
@@ -426,12 +339,6 @@ public class CollectionsTest {
         Assert.assertFalse(_col.equals((null)));
     }
 
-    @Test
-    public void test_Equals_FilteredMap_WithNull_False() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), ruleRef);
-        Assert.assertFalse(_map.equals((null)));
-    }
-
 
     @Test
     public void test_Equals_FilteredCollection_EqualsWithInteger_False() {
@@ -440,27 +347,11 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Equals_FilteredMap_EqualsWithInteger_False() {
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), ruleRef);
-        Assert.assertFalse(_map.equals(new Integer(5)));
-    }
-
-
-
-    @Test
     public void test_Equals_FilteredCollection_EqualsWithAListType_False() {
         List<Integer> _list = Collections.makeFilteredList(new ArrayList<>(), ruleRef);
         Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), ruleRef);
         Assert.assertFalse(_col.equals(_list));
     }
-
-    @Test
-    public void test_Equals_FilteredMap_EqualsWithAListType_False() {
-        List<Integer> _list = Collections.makeFilteredList(new ArrayList<>(), ruleRef);
-        Map<Integer, Integer> _map = Collections.makeFilteredMap(new HashMap<>(), ruleRef);
-        Assert.assertFalse(_map.equals(_list));
-    }
-
 
     /**
      * <ul>
@@ -513,8 +404,6 @@ public class CollectionsTest {
         Assert.assertTrue(_ccol.containsAll(Arrays.asList(1, 3)));
     }
 
-
-
     /**
      * <ul>
      * <li><b>Description: </b>Control the default value for the property.</li>
@@ -528,13 +417,6 @@ public class CollectionsTest {
         Assert.assertTrue(_col.isEmpty());
     }
 
-
-    @Test
-    public void test_IsEmpty_FilteredMap_True() {
-        Map<Integer, Integer> _col = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
-        Assert.assertTrue(_col.isEmpty());
-    }
-
     @Test
     public void test_Remove_FilteredCollection_ValidValue_True() {
         ref.add(4);
@@ -545,16 +427,6 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Remove_FilteredMap_ValidValue_True() {
-        Map<Integer, Integer> _col = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
-        _col.put(1, 4);
-        _col.put(2, 6);
-        _col.put(3, 8);
-
-        Assert.assertEquals(new Integer(4), _col.remove(1));
-    }
-
-    @Test
     public void test_Remove_FilteredCollection_BadValue_False() {
         ref.add(4);
         ref.add(6);
@@ -562,17 +434,6 @@ public class CollectionsTest {
 
         Assert.assertFalse(ref.remove(3));
     }
-
-    @Test
-    public void test_Remove_FilteredMap_BadValue_Null() {
-        Map<Integer, Integer> _col = Collections.makeFilteredMap(new HashMap<>(), this.ruleRef);
-        _col.put(1, 4);
-        _col.put(2, 6);
-        _col.put(3, 8);
-
-        Assert.assertNull(_col.remove(4));
-    }
-
 
     @Test
     public void test_RemoveAll_FilteredCollection_BadList_False() {
@@ -653,34 +514,10 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_HashCode_FilteredMap_Valid() {
-        Assert.assertTrue(0 != (Collections.makeFilteredMap(new HashMap<>(), new Not<>(1))).hashCode());
-    }
-
-    /**
-     * Compare a collection to itself. Basic test to control if equals method is implemented with a minimum of valid rules.
-     */
-    @Test
-    public void test_Equals_FilteredMap_ToItSelf_True() {
-        Map<Integer, Integer> _list = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
-        Assert.assertTrue(_list.equals(_list));
-    }
-
-
-    @Test
     public void test_Equals_FilteredCollection_NotEqualsWithDifferentListDefinition() {
         Collection<Integer> _list1 = Collections.makeFilteredCollection(new LinkedList<>(), new Not<>(1));
         Collection<Integer> _list2 = Collections.makeFilteredCollection(new LinkedList<>(), new Not<>(2));
         _list2.add(5);
-
-        Assert.assertFalse(_list1.equals(_list2));
-    }
-
-    @Test
-    public void test_Equals_FilteredMap_NotEqualsWithDifferentMapDefinition() {
-        Map<Integer, Integer> _list1 = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
-        Map<Integer, Integer> _list2 = Collections.makeFilteredMap(new HashMap<>(), new Not<>(2));
-        _list2.put(5, 5);
 
         Assert.assertFalse(_list1.equals(_list2));
     }
