@@ -7,10 +7,8 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
-
 /**
- * Unit tests on a collection map managed by {@link org.hlib4j.collection.Collections#makeFilteredMap(java.util.Map, Rule)} with data.
+ * Unit tests on a map managed by {@link org.hlib4j.collection.Collections#makeFilteredMap(java.util.Map, Rule)} with data.
  */
 public class FilteredMapTest {
 
