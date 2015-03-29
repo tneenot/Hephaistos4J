@@ -50,7 +50,7 @@ public class FilteredMapTest {
     }
 
     @Test
-    public void test_Equals_FilteredMap_ToItSelf_True() {
+    public void test_Equals_ToItSelf_True() {
         Assert.assertTrue(this.refFilteredMap.equals(this.refFilteredMap));
     }
 
