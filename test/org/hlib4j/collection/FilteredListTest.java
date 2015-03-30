@@ -214,7 +214,7 @@ public class FilteredListTest {
 
     @Test
     public void test_RemoveRange_ValuesRemoved() {
-        AListFake<Integer> _list2 = new AListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<>(1)));
+        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<>(1)));
         _list2.removeRange(0, 3);
 
         Assert.assertEquals(3, this.filteredListRef.size());

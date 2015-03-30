@@ -8,7 +8,7 @@ import java.util.AbstractList;
  * @param <E> Type of date
  * @author Tioben Neenot
  */
-class AListFake<E> extends AbstractList<E> {
+class ListFake<E> extends AbstractList<E> {
 
     /**
      * Internal FilteredList class
@@ -20,7 +20,7 @@ class AListFake<E> extends AbstractList<E> {
      *
      * @param l Reference to a sub list
      */
-    AListFake(FilteredList<E> l) {
+    ListFake(FilteredList<E> l) {
         list = l;
     }
 

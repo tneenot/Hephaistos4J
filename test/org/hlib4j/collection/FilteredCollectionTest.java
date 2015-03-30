@@ -12,7 +12,6 @@ import java.util.*;
  */
 public class FilteredCollectionTest {
 
-
     private Collection<Integer> refFilteredCollection = null;
 
     private Collection<Integer> refSourceCollection = null;
