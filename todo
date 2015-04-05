@@ -1,0 +1,7 @@
+org.hlib4j.collection (src):
+ - there is a problem with the hierarchy for FilteredList. It would be inherit of a FilteredCollection and AbstractList to avoid redundancy code! But it's impossible with Java. So is it necessary to create an AbstractFilteredList and an AbstractFilteredCollection ?
+ - about methods into Collections class. Try to build methods with template, rather than to have 3 createFiltered like methods.
+
+ org.hlib4j.collection (test):
+ - create template tests to test each kind of collections type.
+ - build a random valid data test split into to kind of elements: valid values and invalid values.
