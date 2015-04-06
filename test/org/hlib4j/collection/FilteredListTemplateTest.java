@@ -192,7 +192,7 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Test
     public void test_RemoveRange_ValuesRemoved() {
-        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<>(1)));
+        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<Integer>(1)));
         _list2.removeRange(0, 3);
 
         Assert.assertEquals(3, this.filteredListRef.size());
@@ -261,20 +261,20 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Test
     public void test_Equals_NotEqualsWithDifferentListDefinition() {
-        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<>(), new Not<>(2));
+        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<Integer>(), new Not<Integer>(2));
 
         Assert.assertFalse(this.filteredListRef.equals(_list2));
     }
 
     @Test
     public void test_IsEmpty_ValidForEmptyList() {
-        List<Integer> _col = Collections.makeFilteredList(new ArrayList<>(), new Not<>(1));
+        List<Integer> _col = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
         Assert.assertTrue(_col.isEmpty());
     }
 
     @Test
     public void test_Equals_NotEqualsWithACollectionType() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1));
+        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertFalse(this.filteredListRef.equals(_col));
     }

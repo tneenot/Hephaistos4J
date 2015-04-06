@@ -148,7 +148,7 @@ public class FilteredCollectionTest {
         _values.add(6);
         _values.add(8);
 
-        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<>(2));
+        Collection<Integer> _cols = Collections.makeFilteredCollection(_values, new Multiple<Integer>(2));
 
         List<Integer> _result = Arrays.asList(_cols.toArray(new Integer[_cols.size()]));
         for (Integer _raw_value : _invalid_values) {
@@ -188,7 +188,7 @@ public class FilteredCollectionTest {
 
     @Test
     public void test_Equals_NotEqualsWithAListType() {
-        List<Integer> _list = Collections.makeFilteredList(new ArrayList<>(), ruleRef);
+        List<Integer> _list = Collections.makeFilteredList(new ArrayList<Integer>(), ruleRef);
 
         Assert.assertFalse(this.refFilteredCollection.equals(_list));
     }
@@ -210,7 +210,7 @@ public class FilteredCollectionTest {
 
     @Test
     public void test_IsEmpty_WithEmptyCollection() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1));
+        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertTrue(_col.isEmpty());
     }
@@ -243,7 +243,7 @@ public class FilteredCollectionTest {
     @Test
     public void test_ContainsAll_FromADifferentCollection() {
         // Test fixture
-        Collection<Integer> _not_multiple_of_2 = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(new Multiple<>(2)));
+        Collection<Integer> _not_multiple_of_2 = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(new Multiple<>(2)));
         for (int i = 1; i < 20; ++i) {
             _not_multiple_of_2.add(i);
         }

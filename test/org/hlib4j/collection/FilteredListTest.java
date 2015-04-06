@@ -24,7 +24,7 @@ public class FilteredListTest {
     public void setUp() {
         this.sourceListRef = new LinkedList<>();
 
-        this.filteredListRef = Collections.makeFilteredList(this.sourceListRef, new Not<>(1));
+        this.filteredListRef = Collections.makeFilteredList(this.sourceListRef, new Not<Integer>(1));
         this.filteredListRef.add(2);
         this.filteredListRef.add(3);
         this.filteredListRef.add(4);
@@ -214,7 +214,7 @@ public class FilteredListTest {
 
     @Test
     public void test_RemoveRange_ValuesRemoved() {
-        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<>(1)));
+        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<Integer>(1)));
         _list2.removeRange(0, 3);
 
         Assert.assertEquals(3, this.filteredListRef.size());
@@ -237,7 +237,7 @@ public class FilteredListTest {
 
     @Test
     public void test_Equals_NotEqualsWithACollectionType() {
-        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<>(), new Not<>(1));
+        Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertFalse(this.filteredListRef.equals(_col));
     }
@@ -285,7 +285,7 @@ public class FilteredListTest {
 
     @Test
     public void test_IsEmpty_ValidForEmptyList() {
-        List<Integer> _col = Collections.makeFilteredList(new ArrayList<>(), new Not<>(1));
+        List<Integer> _col = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
         Assert.assertTrue(_col.isEmpty());
     }
 
@@ -435,7 +435,7 @@ public class FilteredListTest {
 
     @Test
     public void test_Size_FromExternalListWithInvalidValue() {
-        List<Integer> _col = Collections.makeFilteredList(this.sourceListRef, new Not<>(1));
+        List<Integer> _col = Collections.makeFilteredList(this.sourceListRef, new Not<Integer>(1));
 
         // Note: this.sourceListRef was contained 7 elements before to be added to a new filtered list type.
         Assert.assertEquals(6, _col.size());
@@ -443,7 +443,7 @@ public class FilteredListTest {
 
     @Test
     public void test_Equals_NotEqualsWithDifferentListDefinition() {
-        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<>(), new Not<>(2));
+        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<Integer>(), new Not<Integer>(2));
 
         Assert.assertFalse(this.filteredListRef.equals(_list2));
     }

@@ -39,7 +39,7 @@ public class CollectionsTest {
     @Test
     public void test_Clean_OnFilteredCollection() {
         Collection<Integer> _col = new ArrayList<>();
-        Collection<?> _sub_col = Collections.makeFilteredCollection(_col, new Not<>(null));
+        Collection<?> _sub_col = Collections.makeFilteredCollection(_col, new Not<Integer>(null));
         _col.add(null);
 
         assertEquals(1, Collections.clean(_sub_col));
@@ -56,7 +56,7 @@ public class CollectionsTest {
     @Test
     public void test_Clean_OnFilteredMap() {
         Map<String, Integer> _map = new HashMap<>();
-        Map<?, ?> _sub_map = Collections.makeFilteredMap(_map, new Not<>(null));
+        Map<?, ?> _sub_map = Collections.makeFilteredMap(_map, new Not<Integer>(null));
         _map.put("test", null);
 
         assertEquals(1, Collections.clean(_sub_map));

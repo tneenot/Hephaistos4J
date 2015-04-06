@@ -61,8 +61,8 @@ public class ProcessingTest
 	@Test
     public void test_Perform_InverseValue() {
 		True e = new True();
-        Processing<True> instance = new ProcessingFake<>(new Not<>(e));
-        boolean expResult = false;
+		Processing<True> instance = new ProcessingFake<>(new Not<True>(e));
+		boolean expResult = false;
 		boolean result = instance.accept( e );
 		assertEquals( expResult, result );
 	}

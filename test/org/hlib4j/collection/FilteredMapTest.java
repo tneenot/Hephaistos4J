@@ -20,7 +20,7 @@ public class FilteredMapTest {
     public void setUp() {
         this.refSourceMap = new HashMap<>();
 
-        this.refFilteredMap = Collections.makeFilteredMap(this.refSourceMap, new Not<>(1));
+        this.refFilteredMap = Collections.makeFilteredMap(this.refSourceMap, new Not<Integer>(1));
         this.refFilteredMap.put(2, 4);
         this.refFilteredMap.put(4, 6);
         this.refFilteredMap.put(6, 8);
@@ -56,14 +56,14 @@ public class FilteredMapTest {
 
     @Test
     public void test_Equals_NotEqualsWithDifferentMapDefinition() {
-        Map<Integer, Integer> _list2 = Collections.makeFilteredMap(new HashMap<>(), new Not<>(2));
+        Map<Integer, Integer> _list2 = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<Integer>(2));
 
         Assert.assertFalse(this.refFilteredMap.equals(_list2));
     }
 
     @Test
     public void test_Equals_NotEqualsWithAListType() {
-        List<Integer> _list = Collections.makeFilteredList(new ArrayList<>(), new Not<>(1));
+        List<Integer> _list = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertFalse(this.refFilteredMap.equals(_list));
     }
@@ -80,7 +80,7 @@ public class FilteredMapTest {
 
     @Test
     public void test_IsEmpty_WithAnEmptyMap() {
-        Map<Integer, Integer> _col = Collections.makeFilteredMap(new HashMap<>(), new Not<>(1));
+        Map<Integer, Integer> _col = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<Integer>(1));
 
         Assert.assertTrue(_col.isEmpty());
     }
