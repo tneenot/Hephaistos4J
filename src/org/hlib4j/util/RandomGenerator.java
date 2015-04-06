@@ -51,4 +51,20 @@ public class RandomGenerator {
     public List<Integer> getRandomElements() {
         return this.randomElements;
     }
+
+    public List<Integer> getSubList(int nbSubListElements) {
+        return getSubListFromList(this.getRandomElements(), nbSubListElements);
+    }
+
+    public List<Integer> getSubListFromList(List<Integer> referenceList, int nbSubListElements) {
+        List<Integer> _sub_list = new ArrayList<>();
+
+        if (nbSubListElements >= 0 && nbSubListElements < referenceList.size()) {
+            for (int i = 0; i < nbSubListElements; ++i) {
+                _sub_list.add(getOnceValue());
+            }
+        }
+
+        return _sub_list;
+    }
 }

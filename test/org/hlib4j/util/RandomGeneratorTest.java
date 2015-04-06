@@ -28,8 +28,24 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_Generate_ListOfRandomValues() {
+    public void test_Generate_ListOfRandomValuesSizeValid() {
         Assert.assertEquals(10, this.randomGenerator.getRandomElements().size());
+    }
+
+    @Test
+    public void test_Generate_InvalidListSizeElements() {
+        RandomGenerator _random_generator = new RandomGenerator();
+        _random_generator.generateValues(-1);
+
+        Assert.assertTrue(_random_generator.getRandomElements().isEmpty());
+    }
+
+    @Test
+    public void test_Generate_ZeroListSizeElements() {
+        RandomGenerator _random_generator = new RandomGenerator();
+        _random_generator.generateValues(0);
+
+        Assert.assertTrue(_random_generator.getRandomElements().isEmpty());
     }
 
     @Test
@@ -44,7 +60,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GenerateValues_NoRedundancesElements() {
+    public void test_GenerateValues_NoRedundantElements() {
         // Setup
         List<Integer> _copy = new ArrayList<>();
         Collections.copy(this.randomGenerator.getRandomElements(), _copy);
@@ -65,5 +81,47 @@ public class RandomGeneratorTest {
         int _value = this.randomGenerator.getOnceValue();
 
         Assert.assertTrue(this.randomGenerator.getRandomElements().contains(_value));
+    }
+
+    @Test
+    public void test_GetSubList_ValidSubListSize() {
+        List<Integer> _sub_list = this.randomGenerator.getSubList(3);
+
+        Assert.assertEquals(3, _sub_list.size());
+    }
+
+    @Test
+    public void test_GetSubList_ValidSubListElement() {
+        List<Integer> _sub_list = this.randomGenerator.getSubList(3);
+
+        Assert.assertTrue(this.randomGenerator.getRandomElements().containsAll(_sub_list));
+    }
+
+    @Test
+    public void test_GetSubList_NegativeNumberOfElements() {
+        List<Integer> _sub_list = this.randomGenerator.getSubList(-1);
+
+        Assert.assertTrue(_sub_list.isEmpty());
+    }
+
+    @Test
+    public void test_GetSubList_SoMuchElements() {
+        List<Integer> _sub_list = this.randomGenerator.getSubList(this.randomGenerator.getRandomElements().size() + 1);
+
+        Assert.assertTrue(_sub_list.isEmpty());
+    }
+
+    @Test
+    public void test_GetSubList_SameSizeThanInnerList() {
+        List<Integer> _sub_list = this.randomGenerator.getSubList(this.randomGenerator.getRandomElements().size());
+
+        Assert.assertTrue(_sub_list.isEmpty());
+    }
+
+    @Test
+    public void test_GetSubList_ZeroListSize() {
+        List<Integer> _sub_list = this.randomGenerator.getSubList(0);
+
+        Assert.assertTrue(_sub_list.isEmpty());
     }
 }

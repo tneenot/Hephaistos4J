@@ -1,11 +1,12 @@
 package org.hlib4j.collection;
 
+import org.hlib4j.util.RandomGenerator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,9 +19,13 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     protected C filteredListRef;
 
+    protected C invalidListRef;
+
     protected int filteredListRefSize = 0;
 
     protected R ruleRef = null;
+
+    protected RandomGenerator randomGenerator;
 
     @Before
     public void setUp() {
@@ -32,16 +37,15 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
     protected abstract void initializeElementsReferences();
 
     protected void createTestData() {
-        this.filteredListRef.add(2);
-        this.filteredListRef.add(3);
-        this.filteredListRef.add(4);
-        this.filteredListRef.add(6);
-        this.filteredListRef.add(8);
+        List<Integer> _elements_list = this.randomGenerator.getRandomElements();
 
-        this.sourceListRef.add(1);
-        this.sourceListRef.add(10);
+        for (Integer i : _elements_list) {
+            if (this.filteredListRef.add(i) == false) {
+                this.invalidListRef.add(i);
+            }
+        }
 
-        filteredListRefSize = this.filteredListRef.size();
+        this.filteredListRefSize = this.filteredListRef.size();
     }
 
     @After
@@ -55,6 +59,9 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         this.filteredListRef.clear();
         this.sourceListRef.clear();
         this.filteredListRefSize = 0;
+
+        this.randomGenerator.getRandomElements().clear();
+        this.randomGenerator = null;
     }
 
     protected abstract void destroyElementsReferences();
@@ -82,24 +89,27 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     @Test
     public void test_RemoveAll_NoValidValues() {
-        Assert.assertFalse(this.filteredListRef.removeAll(Arrays.asList(7, 9)));
+        Assert.assertFalse(this.filteredListRef.removeAll(this.invalidListRef));
     }
 
     @Test
     public void test_RemoveAll_NoValidValues_ReferencesValuesNotRemoved() {
-        this.filteredListRef.removeAll(Arrays.asList(7, 9));
+        this.filteredListRef.removeAll(this.invalidListRef);
 
         Assert.assertEquals(this.filteredListRefSize, this.filteredListRef.size());
     }
 
     @Test
     public void test_RemoveAll_AllGivenValidValues() {
-        Assert.assertTrue(this.filteredListRef.removeAll(Arrays.asList(2, 4, 6)));
+        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+
+        Assert.assertTrue(this.filteredListRef.removeAll(this.randomGenerator.getSubListFromList(_list, 3)));
     }
 
     @Test
     public void test_RemoveAll_AllGivenValidValues_ReferencesValuesRemoved() {
-        this.filteredListRef.removeAll(Arrays.asList(2, 4, 6));
+        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+        this.filteredListRef.removeAll(_list);
 
         Assert.assertNotEquals(this.filteredListRefSize, this.filteredListRef.size());
     }
@@ -118,54 +128,85 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     @Test
     public void test_ContainsAll_AwaitingValidValues() {
-        Assert.assertTrue(this.filteredListRef.containsAll(Arrays.asList(2, 4)));
+        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+
+        Assert.assertTrue(this.filteredListRef.containsAll(this.randomGenerator.getSubListFromList(_list, 2)));
     }
 
     @Test
     public void test_RetainAll_WithValidValues() {
-        Assert.assertTrue(this.filteredListRef.retainAll(Arrays.asList(2, 4, 8)));
+        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+
+        Assert.assertTrue(this.filteredListRef.retainAll(this.randomGenerator.getSubListFromList(_list, 3)));
     }
 
 
     @Test
     public void test_RetainAll_WithInvalidValues() {
-        Assert.assertFalse(this.filteredListRef.retainAll(Arrays.asList(1, 1, 1)));
+        Assert.assertFalse(this.filteredListRef.retainAll(this.invalidListRef));
     }
 
     @Test
     public void test_RetainAll_WithInvalidValues_NotContainsBadValues() {
-        List<Integer> _invalid_values = Arrays.asList(1, 1, 1);
+        this.filteredListRef.retainAll(this.invalidListRef);
 
-        this.filteredListRef.retainAll(_invalid_values);
-
-        for (Integer i : _invalid_values) {
+        for (Integer i : this.invalidListRef) {
             Assert.assertFalse(this.filteredListRef.contains(i));
         }
     }
 
     @Test
     public void test_ToArray_RemoveInvalidValues() {
+        // Setup
+        this.sourceListRef.addAll(this.invalidListRef);
+        int _invalid_value = getAnInvalidValue();
+
+        // Exercise
         Object[] _result = this.filteredListRef.toArray();
 
+        // Assert - Control if the invalid value exists into the final array
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
             Integer i = (Integer) _result[_cpt];
-            Assert.assertNotEquals(1, i.intValue());
+            Assert.assertNotEquals(_invalid_value, i.intValue());
         }
+    }
+
+    private int getAnInvalidValue() {
+        List<Integer> _parsing_list = new ArrayList<>(this.invalidListRef);
+        return this.randomGenerator.getOnceValueFrom(_parsing_list);
     }
 
     @Test
     public void test_Contains_InvalidValue() {
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        // Setup
+        int _invalid_value = getAnInvalidValue();
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.contains(_invalid_value));
     }
 
     @Test
     public void test_Contains_FromExternalCollectionWithInvalidData() {
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        // Setup
+        int _invalid_value = getAnInvalidValue();
+
+        // Exercise
+        this.sourceListRef.addAll(this.invalidListRef);
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.contains(_invalid_value));
     }
 
     @Test
     public void test_Contains_FromExternalCollectionWithValidData() {
-        Assert.assertTrue(this.filteredListRef.contains(10));
+        int _valid_value = getAValidValue();
+
+        Assert.assertTrue(this.filteredListRef.contains(_valid_value));
+    }
+
+    private int getAValidValue() {
+        List<Integer> _parsing_list = new ArrayList<>(this.sourceListRef);
+        return this.randomGenerator.getOnceValueFrom(_parsing_list);
     }
 
     @Test
@@ -175,26 +216,40 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     @Test
     public void test_Add_ValidData() {
-        Assert.assertTrue(this.filteredListRef.add(12));
+        int _valid_value = getAValidValue();
+
+        Assert.assertTrue(this.filteredListRef.add(_valid_value));
     }
 
     @Test
     public void test_Add_ValidData_ControlIsInCollection() {
-        this.filteredListRef.add(12);
+        // Setup
+        int _valid_value = getAValidValue();
 
-        Assert.assertTrue(this.filteredListRef.contains(12));
+        // Remove old value to be sure while it will be added, there will be only one first occurence of this value
+        this.filteredListRef.remove(_valid_value);
+
+        // Exercise
+        this.filteredListRef.add(_valid_value);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.contains(_valid_value));
     }
 
     @Test
     public void test_Add_InvalidData() {
-        Assert.assertFalse(this.filteredListRef.add(1));
+        int _invalid_value = getAnInvalidValue();
+
+        Assert.assertFalse(this.filteredListRef.add(_invalid_value));
     }
 
     @Test
     public void test_Add_InvalidData_ControlIsNotInCollection() {
-        this.filteredListRef.add(1);
+        int _invalid_value = getAnInvalidValue();
 
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        this.filteredListRef.add(_invalid_value);
+
+        Assert.assertFalse(this.filteredListRef.contains(_invalid_value));
     }
 
     @Test(expected = NullPointerException.class)
@@ -214,8 +269,13 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     @Test
     public void test_Iterator_NoInvalidValue_FromExternalCollection() {
-        this.sourceListRef.add(1);
+        // Setup
+        int _invalid_value = getAnInvalidValue();
 
+        // Exercise
+        this.sourceListRef.add(_invalid_value);
+
+        // Assert
         Iterator<Integer> _it = this.filteredListRef.iterator();
         while (_it.hasNext()) {
             Assert.assertNotEquals(1, _it.next().intValue());
@@ -224,17 +284,21 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     @Test
     public void test_Remove_ValidValue() {
-        Assert.assertTrue(this.filteredListRef.remove(2));
+        Assert.assertTrue(this.filteredListRef.remove(getAValidValue()));
     }
 
     @Test
     public void test_Remove_InvalidValue() {
-        Assert.assertFalse(this.filteredListRef.remove(1));
+        Assert.assertFalse(this.filteredListRef.remove(getAnInvalidValue()));
     }
 
     @Test
     public void test_Remove_InvalidValue_FromExternalCollection() {
-        this.sourceListRef.add(1);
-        Assert.assertFalse(this.filteredListRef.remove(1));
+        // Setup
+        int _invalid_value = getAnInvalidValue();
+        this.sourceListRef.add(_invalid_value);
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.remove(_invalid_value));
     }
 }
