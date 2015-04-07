@@ -24,9 +24,11 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Override
     protected void destroyElementsReferences() {
-        this.sourceListRef = null;
+        this.invalidListRef = null;
         this.filteredListRef = null;
+        this.sourceListRef = null;
         this.ruleRef = null;
+        this.randomGenerator = null;
     }
 
     /**
@@ -35,7 +37,14 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
      */
     @Test
     public void test_IndexOf_ValueExistsForValidIndex() {
-        Assert.assertEquals(1, this.filteredListRef.indexOf(3));
+        // Setup
+        int _idx = this.randomGenerator.getOnceIndexFrom(this.filteredListRef);
+
+        // Exercise
+        int _value = this.filteredListRef.indexOf(_idx);
+
+        // Assert
+        Assert.assertEquals(_value, this.filteredListRef.indexOf(_idx));
     }
 
     /**
@@ -44,7 +53,12 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
      */
     @Test
     public void test_LastIndexOf_ValueExistsForValidIndex() {
-        Assert.assertEquals(1, this.filteredListRef.lastIndexOf(3));
+        // Setup
+        int _idx = this.randomGenerator.getOnceIndexFrom(this.filteredListRef);
+        int _value = this.sourceListRef.lastIndexOf(_idx);
+
+        // Assert
+        Assert.assertEquals(_value, this.filteredListRef.lastIndexOf(_idx));
     }
 
     /**
@@ -67,43 +81,70 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
      */
     @Test
     public void test_ListIterator_Add_ValidValueAdded() {
-        this.filteredListRef.listIterator().add(12);
+        // Setup
+        int _valid_value = getAValidValue();
+        purgeAValueFromCollection(this.filteredListRef, _valid_value);
 
-        Assert.assertTrue(this.filteredListRef.contains(12));
+        // Exercise
+        this.filteredListRef.listIterator().add(_valid_value);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.contains(_valid_value));
     }
 
     @Test
     public void test_ListIterator_Add_InvalidValueNotAdded() {
-        this.filteredListRef.listIterator().add(1);
+        // Setup
+        int _invalid_value = getAnInvalidValue();
 
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        // Exercise
+        this.filteredListRef.listIterator().add(_invalid_value);
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.contains(_invalid_value));
     }
 
     @Test
     public void test_ListIterator_Set_ValidValueSetted() {
+        // Setup
+        int _valid_value = getAValidValue();
+        purgeAValueFromCollection(this.filteredListRef, _valid_value);
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
-        _it.next();
-        _it.set(28);
 
-        Assert.assertTrue(this.filteredListRef.contains(28));
+        // Exercise
+        _it.next();
+        _it.set(_valid_value);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.contains(_valid_value));
     }
 
     @Test
     public void test_ListIterator_Set_InvalidValueNotSetted() {
+        // Setup
+        int _invalid_value = getAnInvalidValue();
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
-        _it.next();
-        _it.set(1);
 
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        // Exercise
+        _it.next();
+        _it.set(_invalid_value);
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.contains(_invalid_value));
     }
 
     @Test
-    public void test_ListIterator_Remove_ValueRemoved() {
+    public void test_ListIterator_Remove_ValidValueRemoved() {
+        // Setup
+        int _valid_value = this.filteredListRef.get(0);
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
+
+        // Exercise
         _it.next();
         _it.remove();
 
-        Assert.assertFalse(this.filteredListRef.contains(2));
+        // Assert
+        Assert.assertFalse(this.filteredListRef.contains(_valid_value));
     }
 
     @Test
@@ -115,25 +156,39 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Test
     public void test_ListIterator_Next_ValidNextIndex() {
+        // Setup
+        int _valid_value = this.filteredListRef.get(0);
+
+        // Exercise
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
 
-        Assert.assertEquals(2, (int) _it.next());
+        // Assert
+        Assert.assertEquals(_valid_value, (int) _it.next());
     }
 
     @Test
     public void test_ListIterator_NextIndex_ValidNextIndex() {
+        // Setup
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
+
+        // Exercise
         _it.next();
 
+        // Assert
         Assert.assertEquals(1, _it.nextIndex());
     }
 
     @Test
     public void test_ListIterator_Previous_ValidPreviousValue() {
+        // Setup
+        int _valid_value = this.filteredListRef.get(0);
         ListIterator<Integer> _it = this.filteredListRef.listIterator();
+
+        // Exercise
         _it.next();
 
-        Assert.assertEquals(2, (int) _it.previous());
+        // Assert
+        Assert.assertEquals(_valid_value, (int) _it.previous());
     }
 
     @Test
@@ -155,12 +210,13 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
      */
     @Test
     public void test_SubList_AwaitingData_Include() {
-        List<Integer> _list2 = this.filteredListRef.subList(0, 2);
-        int[] _ref =
-                {
-                        2, 3
-                };
+        // Setup
+        List<Integer> _ref = this.sourceListRef.subList(0, 2);
 
+        // Exercise
+        List<Integer> _list2 = this.filteredListRef.subList(0, 2);
+
+        // Assert
         for (int i : _ref) {
             Assert.assertTrue(_list2.contains(i));
         }
@@ -168,13 +224,15 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Test
     public void test_SubList_NotAwaitingData_Exclude() {
+        // Setup
+        List<Integer> _ref2 = this.randomGenerator.getSubListFromList(this.invalidListRef, this.invalidListRef.size() - 1);
+
+        // Exercise
         List<Integer> _list2 = this.filteredListRef.subList(0, 2);
-        int[] _ref2 =
-                {
-                        4, 6, 8
-                };
+
+        // Assert
         for (int i : _ref2) {
-            Assert.assertFalse(_list2.contains(i));
+            Assert.assertFalse(String.format("Invalid data found into the collection: %d", i), _list2.contains(i));
         }
     }
 
@@ -183,24 +241,38 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
      */
     @Test
     public void test_Set_Index_ValidValue_Setted() {
-        this.filteredListRef.set(1, 14);
+        // Setup
+        int _valid_value = getAValidValue();
+        purgeAValueFromCollection(this.filteredListRef, _valid_value);
 
-        Assert.assertTrue(this.filteredListRef.contains(14));
+        // Exercise
+        this.filteredListRef.set(1, _valid_value);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.contains(_valid_value));
     }
 
     @Test
     public void test_Set_Index_InvalidValue_NotSetted() {
-        this.filteredListRef.set(2, 1);
+        // Setup
+        int _invalid_value = getAnInvalidValue();
 
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        // Exercise
+        this.filteredListRef.set(2, _invalid_value);
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.contains(_invalid_value));
     }
 
     @Test
     public void test_RemoveRange_ValuesRemoved() {
-        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, new Not<Integer>(1)));
+        // Setup
+        ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.filteredListRef, this.ruleRef));
+
+        // Exercise
         _list2.removeRange(0, 3);
 
-        Assert.assertEquals(3, this.filteredListRef.size());
+        Assert.assertEquals(this.filteredListRefSize - 3, this.filteredListRef.size());
     }
 
     @Test
@@ -210,63 +282,88 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Test
     public void test_Get_Int_ValidValue() {
-        Assert.assertEquals(3, (int) this.filteredListRef.get(1));
+        // Setup
+        int _idx = this.randomGenerator.getOnceIndexFrom(this.filteredListRef);
+        int _value = this.filteredListRef.get(_idx);
+
+        // Assert
+        Assert.assertEquals(_value, (int) this.filteredListRef.get(_idx));
     }
 
     @Test
     public void test_ToArrayT_RemoveInvalidValues() {
+        // Setup
+        int _invalid_value = getAnInvalidValue();
+        this.sourceListRef.addAll(this.invalidListRef);
+
+        // Exercise
         Integer[] _result = this.filteredListRef.toArray(new Integer[this.filteredListRef.size()]);
 
+        // Assert
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
-            Assert.assertNotEquals(1, _result[_cpt].intValue());
+            Assert.assertNotEquals(_invalid_value, _result[_cpt].intValue());
         }
     }
 
     @Test
     public void test_ToArray_RemoveInvalidValues() {
+        // Setup
+        int _invalid_value = getAnInvalidValue();
+        this.sourceListRef.addAll(this.invalidListRef);
+
+        // Exercise
         Object[] _result = this.filteredListRef.toArray();
 
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
             Integer i = (Integer) _result[_cpt];
-            Assert.assertNotEquals(1, i.intValue());
+            Assert.assertNotEquals(_invalid_value, i.intValue());
         }
     }
 
     @Test
     public void test_AddAll_Index_FromInvalidList_NotAdded() {
-        Assert.assertFalse(this.filteredListRef.addAll(1, Arrays.asList(1, 1, 1)));
+        Assert.assertFalse(this.filteredListRef.addAll(1, this.invalidListRef));
     }
 
     @Test
     public void test_AddAll_Index_FromInvalidList_NoInvalidValueAdded() {
-        this.filteredListRef.addAll(1, Arrays.asList(1, 1, 1));
+        this.filteredListRef.addAll(1, this.invalidListRef);
 
-        Assert.assertFalse(this.filteredListRef.contains(1));
+        Assert.assertFalse(this.filteredListRef.contains(getAnInvalidValue()));
     }
 
     @Test
     public void test_AddAll_Index_FromValidCollection() {
-        Assert.assertTrue(this.filteredListRef.addAll(1, Arrays.asList(12, 12, 12)));
+        // Setup
+        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.addAll(1, _list));
     }
 
     @Test
     public void test_AddAll_Index_FromValidCollection_ValidValueAdded() {
-        this.filteredListRef.addAll(1, Arrays.asList(12, 12, 12));
+        // Setup
+        List<Integer> _list = new ArrayList<>(this.sourceListRef);
 
-        Assert.assertTrue(this.filteredListRef.contains(12));
+        // Exercise
+        this.filteredListRef.addAll(1, _list);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.contains(getAValidValue()));
     }
 
     @Test
     public void test_Size_FromExternalListWithInvalidValue() {
         List<Integer> _col = Collections.makeFilteredList(this.sourceListRef, this.ruleRef);
 
-        // Note: this.sourceListRef was contained 7 elements before to be added to a new filtered list type.
-        Assert.assertEquals(6, _col.size());
+        // Note: this.sourceListRef was contained n elements + 1 before to be added to a new filtered list type.
+        Assert.assertEquals(this.filteredListRefSize, _col.size());
     }
 
     @Test
     public void test_Equals_NotEqualsWithDifferentListDefinition() {
-        List<Integer> _list2 = Collections.makeFilteredList(new LinkedList<Integer>(), new Not<Integer>(2));
+        List<Character> _list2 = Collections.makeFilteredList(new LinkedList<Character>(), new Not<Character>('r'));
 
         Assert.assertFalse(this.filteredListRef.equals(_list2));
     }

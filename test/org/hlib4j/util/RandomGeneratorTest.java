@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -123,5 +124,39 @@ public class RandomGeneratorTest {
         List<Integer> _sub_list = this.randomGenerator.getSubList(0);
 
         Assert.assertTrue(_sub_list.isEmpty());
+    }
+
+    @Test
+    public void test_GetOnceIndexFrom_ValidList() {
+        // Setup
+        List<Integer> _list = Arrays.asList(3, 2, 1);
+
+        // Exercise
+        int _idx = this.randomGenerator.getOnceIndexFrom(_list);
+
+        // Assert
+        Assert.assertTrue(_idx >= 0 && _idx <= 2);
+    }
+
+    @Test
+    public void test_GetOnceIndexFrom_EmptyList() {
+        // Exercise
+        int _idx = this.randomGenerator.getOnceIndexFrom(new ArrayList<Integer>());
+
+        // Assert
+        Assert.assertEquals(-1, _idx);
+    }
+
+    @Test
+    public void test_GetOnceIndexFrom_NullList() {
+        Assert.assertEquals(-1, this.randomGenerator.getOnceIndexFrom(null));
+    }
+
+    @Test
+    public void test_GetOnceIndex_ValidIndex() {
+        // Exercise
+        int _idx = this.randomGenerator.getOnceIndex();
+
+        Assert.assertTrue(_idx >= 0 && _idx <= this.randomGenerator.getRandomElements().size());
     }
 }

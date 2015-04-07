@@ -37,15 +37,28 @@ public class RandomGenerator {
     }
 
     public int getOnceValue() {
-        return getOnceValueFrom(this.randomElements);
+        return this.getOnceValueFrom(this.randomElements);
     }
 
     public int getOnceValueFrom(List<Integer> elements) {
+
+        return elements.get(getOnceIndexFrom(elements));
+    }
+
+    public int getOnceIndexFrom(List<Integer> elements) {
+        try {
+            States.validate(elements);
+        } catch (AssertionError e) {
+            return -1;
+        }
+
         Random _random = getRandom();
 
-        int _index = _random.nextInt(elements.size());
+        return _random.nextInt(elements.size());
+    }
 
-        return elements.get(_index);
+    public int getOnceIndex() {
+        return this.getOnceIndexFrom(this.randomElements);
     }
 
     public List<Integer> getRandomElements() {

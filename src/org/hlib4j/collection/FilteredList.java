@@ -349,6 +349,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public List<ElementType> subList(int fromIndex, int toIndex) {
+        clean();
         return new FilteredList<>(this.managedList.subList(fromIndex, toIndex), this.filter);
     }
 

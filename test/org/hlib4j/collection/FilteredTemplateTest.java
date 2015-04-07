@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +42,8 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
         for (Integer i : _elements_list) {
             if (this.filteredListRef.add(i) == false) {
+                // Adds twice to get an invalid elements list with at least more than one element
+                this.invalidListRef.add(i);
                 this.invalidListRef.add(i);
             }
         }
@@ -61,11 +64,16 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         this.filteredListRefSize = 0;
 
         this.randomGenerator.getRandomElements().clear();
-        this.randomGenerator = null;
     }
 
     protected abstract void destroyElementsReferences();
 
+
+    protected void purgeAValueFromCollection(Collection<Integer> sourceList, Object value) {
+        while (sourceList.remove(value)) {
+            // Do nothing else
+        }
+    }
 
     @Test
     public void test_HashCode_Valid() {
@@ -171,7 +179,7 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         }
     }
 
-    private int getAnInvalidValue() {
+    protected int getAnInvalidValue() {
         List<Integer> _parsing_list = new ArrayList<>(this.invalidListRef);
         return this.randomGenerator.getOnceValueFrom(_parsing_list);
     }
@@ -204,7 +212,7 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         Assert.assertTrue(this.filteredListRef.contains(_valid_value));
     }
 
-    private int getAValidValue() {
+    protected int getAValidValue() {
         List<Integer> _parsing_list = new ArrayList<>(this.sourceListRef);
         return this.randomGenerator.getOnceValueFrom(_parsing_list);
     }
@@ -227,7 +235,7 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         int _valid_value = getAValidValue();
 
         // Remove old value to be sure while it will be added, there will be only one first occurence of this value
-        this.filteredListRef.remove(_valid_value);
+        purgeAValueFromCollection(this.filteredListRef, _valid_value);
 
         // Exercise
         this.filteredListRef.add(_valid_value);

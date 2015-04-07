@@ -185,6 +185,7 @@ final class FilteredCollection<ElementType> extends AbstractCollection<ElementTy
      */
     @Override
     public boolean remove(Object element) {
+        clean();
         return this.managedCollection.remove(element);
     }
 
