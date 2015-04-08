@@ -38,7 +38,7 @@ import java.util.*;
  * @author Tioben Neenot
  * @see Rule
  */
-final class FilteredCollection<ElementType> extends AbstractCollection<ElementType> implements Cleaner {
+class FilteredCollection<ElementType> extends AbstractCollection<ElementType> implements Cleaner {
 
     /**
      * The filter to manage all elements in the managedCollection
@@ -62,14 +62,27 @@ final class FilteredCollection<ElementType> extends AbstractCollection<ElementTy
         super();
 
         try {
-            this.filter = States.validate(ruleForThisCollection);
-            this.managedCollection = States.validateNotNullOnly(originalCollection);
+            this.setFilter(ruleForThisCollection);
+            this.setManagedCollection(originalCollection);
         } catch (AssertionError e) {
             throw new NullPointerException(e.getMessage() + ". Null element.");
         }
 
         // Force the cleaning on this collection
         clean();
+    }
+
+    protected void setManagedCollection(Collection<ElementType> originalCollection) {
+        this.managedCollection = States.validateNotNullOnly(originalCollection);
+    }
+
+    protected Rule<ElementType> getFilter() {
+        return this.filter;
+    }
+
+    protected void setFilter(Rule<ElementType> ruleForThisCollection) {
+        this.filter = States.validate(ruleForThisCollection);
+        ;
     }
 
     /*

@@ -21,35 +21,31 @@
 
 package org.hlib4j.collection;
 
-import org.hlib4j.util.States;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A
  * <code>List</code> where elements are filtering according to its  {@link Rule} definition. For this
  * FilteredList, only all elements according to the {@link Rule}, will be added.
- * Otherwise, this element will be rejected. If developer uses the elements managedList returned by the {@link #toArray()}
+ * Otherwise, this element will be rejected. If developer uses the elements undergroundList returned by the {@link #toArray()}
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredList(List, Rule)}} contains
  * forbidden elements yet, the <code>FilteredList</code> will delete them. <br><br>
  * <p/>
  * This class is using as implementations for {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)}.
  *
- * @param <ElementType> The data type of this managedList
+ * @param <ElementType> The data type of this undergroundList
  * @author Tioben Neenot
  * @see Rule
  */
-final class FilteredList<ElementType> extends AbstractList<ElementType> implements Cleaner {
+final class FilteredList<ElementType> extends FilteredCollection<ElementType> implements List<ElementType> {
 
     /**
-     * The filter links with this managedList
+     * The elements of this underground list
      */
-    private Rule<ElementType> filter = null;
-    /**
-     * The elements of this managedList
-     */
-    private List<ElementType> managedList = null;
+    private List<ElementType> undergroundList = null;
 
     /**
      * Internal flag to control some operations on this list
@@ -64,44 +60,15 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      * @param ruleForThisList {@link Rule} to apply on each element of this list.
      */
     FilteredList(List<ElementType> originalList, Rule<ElementType> ruleForThisList) {
-        super();
+        super(originalList, ruleForThisList);
 
         try {
-            this.filter = States.validate(ruleForThisList);
-            this.managedList = States.validateNotNullOnly(originalList);
+            this.setFilter(ruleForThisList);
+            this.setManagedCollection(originalList);
+            this.undergroundList = originalList;
         } catch (AssertionError e) {
             throw new NullPointerException(e.getMessage() + ". Null element.");
         }
-
-        // Force the cleaning on this filter
-        clean();
-    }
-
-    /*
- * (non-Javadoc)
- *
- * @see org.hlib4j.collection.Cleaner#clean()
- */
-    @Override
-    public int clean() {
-        int _original_size = this.managedList.size();
-
-        {
-            new FilteredCollection<>(this.managedList, this.filter);
-        }
-
-        return _original_size - this.managedList.size();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.AbstractList#add(java.lang.Object)
-     */
-    @Override
-    public boolean add(ElementType elementType) {
-        return this.filter.accept(elementType) && this.managedList.add(elementType);
-
     }
 
     /*
@@ -109,24 +76,18 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      *
      * @see java.util.AbstractList#add(int, java.lang.Object)
      */
-    @Override
     public void add(int index, ElementType elementType) {
-        this.ctrlFlag = this.filter.accept(elementType);
+        this.ctrlFlag = this.getFilter().accept(elementType);
         if (this.ctrlFlag) {
-            this.managedList.add(index, elementType);
+            this.undergroundList.add(index, elementType);
         }
     }
 
-    @Override
-    public boolean addAll(Collection<? extends ElementType> c) {
-        return this.addAll(this.managedList.size(), c);
-    }
-
     /*
-         * (non-Javadoc)
-         *
-         * @see java.util.AbstractList#addAll(int, java.util.Collection)
-         */
+     * (non-Javadoc)
+     *
+     * @see java.util.AbstractList#addAll(int, java.util.Collection)
+     */
     @Override
     public boolean addAll(int index, Collection<? extends ElementType> c) {
         boolean _is_all_added = this.ctrlFlag = true;
@@ -141,34 +102,6 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
         return _is_all_added;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.AbstractList#clear()
-     */
-    @Override
-    public void clear() {
-        this.managedList.clear();
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * <p>This implementation iterates over the specified collection,
-     * checking each element returned by the iterator in turn to see
-     * if it's contained in this collection.  If all elements are so
-     * contained <tt>true</tt> is returned, otherwise <tt>false</tt>.
-     *
-     * @param c
-     * @throws ClassCastException   {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     * @see #contains(Object)
-     */
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return this.managedList.containsAll(c);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -176,17 +109,14 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
         if (!super.equals(o)) return false;
 
         FilteredList<?> that = (FilteredList<?>) o;
-
-        if (!filter.equals(that.filter)) return false;
-        return managedList.equals(that.managedList);
+        return undergroundList.equals(that.undergroundList);
 
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + filter.hashCode();
-        result = 31 * result + managedList.hashCode();
+        result = 31 * result + undergroundList.hashCode();
         return result;
     }
 
@@ -197,7 +127,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
          */
     @Override
     public ElementType get(int index) {
-        return this.managedList.get(index);
+        return this.undergroundList.get(index);
     }
 
     /*
@@ -207,19 +137,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public int indexOf(Object o) {
-        return this.managedList.indexOf(o);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.AbstractList#iterator()
-     */
-    @Override
-    public Iterator<ElementType> iterator() {
-        // Clean collection in case of link collection to this one is a reference
-        clean();
-        return this.managedList.iterator();
+        return this.undergroundList.indexOf(o);
     }
 
     /*
@@ -229,7 +147,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public int lastIndexOf(Object o) {
-        return this.managedList.lastIndexOf(o);
+        return this.undergroundList.lastIndexOf(o);
     }
 
     /*
@@ -241,7 +159,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
     public ListIterator<ElementType> listIterator() {
         // Clean collection in case of link collection to this one is a reference
         clean();
-        return new RestrainListIterator(this.managedList.listIterator());
+        return new RestrainListIterator(this.undergroundList.listIterator());
     }
 
     /*
@@ -253,8 +171,9 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
     public ListIterator<ElementType> listIterator(int index) {
         // Clean collection in case of link collection to this one is a reference
         clean();
-        return new RestrainListIterator(this.managedList.listIterator(index));
+        return new RestrainListIterator(this.undergroundList.listIterator(index));
     }
+
 
     /*
      * (non-Javadoc)
@@ -263,7 +182,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      */
     @Override
     public ElementType remove(int index) {
-        return this.managedList.remove(index);
+        return this.undergroundList.remove(index);
     }
 
     /*
@@ -271,59 +190,24 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
      *
      * @see java.util.AbstractList#removeRange(int, int)
      */
-    @Override
     protected void removeRange(int fromIndex, int toIndex) {
         for (int i = fromIndex; i < toIndex; ++i) {
             remove(i);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * <p>This implementation iterates over this collection, checking each
-     * element returned by the iterator in turn to see if it's contained
-     * in the specified collection.  If it's not so contained, it's removed
-     * from this collection with the iterator's <tt>remove</tt> method.
-     * <p/>
-     * <p>Note that this implementation will throw an
-     * <tt>UnsupportedOperationException</tt> if the iterator returned by the
-     * <tt>iterator</tt> method does not implement the <tt>remove</tt> method
-     * and this collection contains one or more elements not present in the
-     * specified collection.
+    /*
+     * (non-Javadoc)
      *
-     * @param initialCollection
-     * @throws UnsupportedOperationException {@inheritDoc}
-     * @throws ClassCastException            {@inheritDoc}
-     * @throws NullPointerException          {@inheritDoc}
-     * @see #remove(Object)
-     * @see #contains(Object)
+     * @see java.util.AbstractList#set(int, java.lang.Object)
      */
     @Override
-    public boolean retainAll(Collection<?> initialCollection) {
-        // Here we don't accept this operation if some elements from the initial collection can't be according with the filter
-        // of this collection.
-        for (Object _element : initialCollection) {
-            if (!this.filter.accept((ElementType) _element)) {
-                return false;
-            }
-        }
-
-        return this.managedList.retainAll(initialCollection);
-    }
-
-    /*
-         * (non-Javadoc)
-         *
-         * @see java.util.AbstractList#set(int, java.lang.Object)
-         */
-    @Override
     public ElementType set(int index, ElementType elementType) {
-        if (!this.filter.accept(elementType)) {
+        if (!this.getFilter().accept(elementType)) {
             return null;
         }
 
-        return this.managedList.set(index, elementType);
+        return this.undergroundList.set(index, elementType);
     }
 
     /*
@@ -334,29 +218,18 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
     @Override
     public List<ElementType> subList(int fromIndex, int toIndex) {
         this.clean();
-        return new FilteredList<>(this.managedList.subList(fromIndex, toIndex), this.filter);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.AbstractCollection#size()
-     */
-    @Override
-    public int size() {
-        this.clean();
-        return this.managedList.size();
+        return new FilteredList<>(this.undergroundList.subList(fromIndex, toIndex), this.getFilter());
     }
 
     /**
-     * An iterator controlled by the own filter of this managedList.
+     * An iterator controlled by the own filter of this undergroundList.
      *
      * @author Tioben Neenot
      */
     private class RestrainListIterator implements ListIterator<ElementType> {
 
         /**
-         * Real managedList iterator of this managedList
+         * Real undergroundList iterator of this undergroundList
          */
         private ListIterator<ElementType> realListIterator = null;
 
@@ -376,7 +249,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
          */
         @Override
         public void add(ElementType elementType) {
-            if (FilteredList.this.filter.accept(elementType)) {
+            if (FilteredList.this.getFilter().accept(elementType)) {
                 this.realListIterator.add(elementType);
             }
         }
@@ -458,7 +331,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
          */
         @Override
         public void set(ElementType elementType) {
-            if (FilteredList.this.filter.accept(elementType)) {
+            if (FilteredList.this.getFilter().accept(elementType)) {
                 this.realListIterator.set(elementType);
             }
         }
