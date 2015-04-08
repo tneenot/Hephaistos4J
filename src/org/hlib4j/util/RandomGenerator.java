@@ -74,7 +74,7 @@ public class RandomGenerator {
 
         if (nbSubListElements >= 0 && nbSubListElements < referenceList.size()) {
             for (int i = 0; i < nbSubListElements; ++i) {
-                _sub_list.add(getOnceValue());
+                _sub_list.add(getOnceValueFrom(referenceList));
             }
         }
 
