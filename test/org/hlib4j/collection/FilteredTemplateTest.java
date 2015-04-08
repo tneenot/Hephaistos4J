@@ -96,6 +96,11 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
     }
 
     @Test
+    public void test_Equals_EqualsWithObjectType() {
+        Assert.assertFalse(this.filteredListRef.equals(new Object()));
+    }
+
+    @Test
     public void test_RemoveAll_NoValidValues() {
         Assert.assertFalse(this.filteredListRef.removeAll(this.invalidListRef));
     }
@@ -160,6 +165,21 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
         for (Integer i : this.invalidListRef) {
             Assert.assertFalse(this.filteredListRef.contains(i));
+        }
+    }
+
+    @Test
+    public void test_ToArrayT_RemoveInvalidValues() {
+        // Setup
+        int _invalid_value = getAnInvalidValue();
+        this.sourceListRef.addAll(this.invalidListRef);
+
+        // Exercise
+        Integer[] _result = this.filteredListRef.toArray(new Integer[this.filteredListRef.size()]);
+
+        // Assert
+        for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
+            Assert.assertNotEquals(_invalid_value, _result[_cpt].intValue());
         }
     }
 
@@ -242,6 +262,20 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
         // Assert
         Assert.assertTrue(this.filteredListRef.contains(_valid_value));
+    }
+
+    @Test
+    public void test_AddAll_ValidData() {
+        // Setup
+        Collection<Integer> _copy = new ArrayList<>(this.filteredListRef);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.addAll(_copy));
+    }
+
+    @Test
+    public void test_AddAll_InvalidData() {
+        Assert.assertFalse(this.filteredListRef.addAll(this.invalidListRef));
     }
 
     @Test

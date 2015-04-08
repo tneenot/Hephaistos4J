@@ -76,45 +76,32 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
         clean();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        FilteredMap<?, ?> that = (FilteredMap<?, ?>) o;
+
+        if (!map.equals(that.map)) return false;
+        return filter.equals(that.filter);
+
+    }
+
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + this.map.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + map.hashCode();
+        result = 31 * result + filter.hashCode();
         return result;
     }
 
     /*
-     * (non javadoc)
-     *
-     * @see java.lang.Object#equals(Object)
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final FilteredMap<K, V> other = (FilteredMap<K, V>) obj;
-        if (this.map != other.map && !this.map.equals(other.map)) {
-            return false;
-        }
-        return this.filter == other.filter || this.filter.equals(other.filter);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.util.AbstractMap#values()
-     */
+         * (non-Javadoc)
+         *
+         * @see java.util.AbstractMap#values()
+         */
     @Override
     public Collection<V> values() {
         return new FilteredCollection<>(this.map.values(), this.filter);

@@ -291,36 +291,6 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
     }
 
     @Test
-    public void test_ToArrayT_RemoveInvalidValues() {
-        // Setup
-        int _invalid_value = getAnInvalidValue();
-        this.sourceListRef.addAll(this.invalidListRef);
-
-        // Exercise
-        Integer[] _result = this.filteredListRef.toArray(new Integer[this.filteredListRef.size()]);
-
-        // Assert
-        for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
-            Assert.assertNotEquals(_invalid_value, _result[_cpt].intValue());
-        }
-    }
-
-    @Test
-    public void test_ToArray_RemoveInvalidValues() {
-        // Setup
-        int _invalid_value = getAnInvalidValue();
-        this.sourceListRef.addAll(this.invalidListRef);
-
-        // Exercise
-        Object[] _result = this.filteredListRef.toArray();
-
-        for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
-            Integer i = (Integer) _result[_cpt];
-            Assert.assertNotEquals(_invalid_value, i.intValue());
-        }
-    }
-
-    @Test
     public void test_AddAll_Index_FromInvalidList_NotAdded() {
         Assert.assertFalse(this.filteredListRef.addAll(1, this.invalidListRef));
     }
@@ -379,5 +349,10 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
         Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertFalse(this.filteredListRef.equals(_col));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void test_Constructor_NullListParameter_NullPointerException() {
+        Collections.makeFilteredList(null, this.ruleRef);
     }
 }

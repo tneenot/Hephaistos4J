@@ -33,7 +33,7 @@ import java.util.*;
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredList(List, Rule)}} contains
  * forbidden elements yet, the <code>FilteredList</code> will delete them. <br><br>
- * <p>
+ * <p/>
  * This class is using as implementations for {@link org.hlib4j.collection.Collections#makeFilteredList(java.util.List, Rule)}.
  *
  * @param <ElementType> The data type of this managedList
@@ -153,7 +153,7 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
 
     /**
      * {@inheritDoc}
-     * <p>
+     * <p/>
      * <p>This implementation iterates over the specified collection,
      * checking each element returned by the iterator in turn to see
      * if it's contained in this collection.  If all elements are so
@@ -169,51 +169,35 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
         return this.managedList.containsAll(c);
     }
 
-    /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#hashCode()
-         */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        FilteredList<?> that = (FilteredList<?>) o;
+
+        if (!filter.equals(that.filter)) return false;
+        return managedList.equals(that.managedList);
+
+    }
+
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + this.managedList.hashCode();
+        int result = super.hashCode();
+        result = 31 * result + filter.hashCode();
+        result = 31 * result + managedList.hashCode();
         return result;
     }
 
     /*
-     * (non-Javadoc)
-     *
-     * @see java.util.AbstractList#get(int)
-     */
+         * (non-Javadoc)
+         *
+         * @see java.util.AbstractList#get(int)
+         */
     @Override
     public ElementType get(int index) {
         return this.managedList.get(index);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (!(obj instanceof FilteredList)) {
-            return false;
-        }
-        FilteredList<?> other = (FilteredList<?>) obj;
-        return this.managedList.equals(other.managedList) && this.filter.equals(other.filter);
-
     }
 
     /*
@@ -296,12 +280,12 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
 
     /**
      * {@inheritDoc}
-     * <p>
+     * <p/>
      * <p>This implementation iterates over this collection, checking each
      * element returned by the iterator in turn to see if it's contained
      * in the specified collection.  If it's not so contained, it's removed
      * from this collection with the iterator's <tt>remove</tt> method.
-     * <p>
+     * <p/>
      * <p>Note that this implementation will throw an
      * <tt>UnsupportedOperationException</tt> if the iterator returned by the
      * <tt>iterator</tt> method does not implement the <tt>remove</tt> method

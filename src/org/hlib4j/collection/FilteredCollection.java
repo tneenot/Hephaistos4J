@@ -253,44 +253,22 @@ final class FilteredCollection<ElementType> extends AbstractCollection<ElementTy
         return this.managedCollection.toArray(a);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + this.managedCollection.hashCode();
-        result = prime * result + this.filter.hashCode();
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FilteredCollection<?> that = (FilteredCollection<?>) o;
+
+        if (filter != null ? !filter.equals(that.filter) : that.filter != null) return false;
+        return !(managedCollection != null ? !managedCollection.equals(that.managedCollection) : that.managedCollection != null);
+
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (!(obj instanceof FilteredCollection<?>)) {
-            return false;
-        }
-        FilteredCollection<?> other = (FilteredCollection<?>) obj;
-        if (!this.managedCollection.equals(other.managedCollection)) {
-            return false;
-        }
-        return this.filter.equals(other.filter);
-
+    public int hashCode() {
+        int result = filter != null ? filter.hashCode() : 0;
+        result = 31 * result + (managedCollection != null ? managedCollection.hashCode() : 0);
+        return result;
     }
 }

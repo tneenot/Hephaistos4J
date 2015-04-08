@@ -1,6 +1,7 @@
 package org.hlib4j.collection;
 
 import org.hlib4j.util.RandomGenerator;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Vector;
@@ -31,6 +32,22 @@ public class FilteredCollectionTemplateTest extends FilteredTemplateTest<java.ut
     }
 
     @Test
-    public void test_RunAllInheritsTest() {
+    public void test_Equals_EqualsWithSameCollectionType_SameData() {
+        // Setup
+        Vector<Integer> _copy = new Vector<>(this.filteredListRef);
+
+        FilteredCollection<Integer> _col = (FilteredCollection) Collections.makeFilteredCollection(_copy, this.ruleRef);
+
+        // Assert
+        Assert.assertTrue(this.filteredListRef.equals(_col));
+    }
+
+    @Test
+    public void test_Equals_NotEqualsWithAnotherCollectionType_NoData() {
+        // Setup
+        FilteredCollection<Integer> _col = (FilteredCollection) Collections.makeFilteredCollection(new Vector<Integer>(), new Multiple<Integer>(2));
+
+        // Assert
+        Assert.assertFalse(this.filteredListRef.equals(_col));
     }
 }
