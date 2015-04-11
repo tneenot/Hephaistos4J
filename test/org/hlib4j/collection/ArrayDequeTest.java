@@ -19,14 +19,6 @@ public class ArrayDequeTest extends FilteredTTemplateTest<Collection<Integer>, N
 
     }
 
-    @Override
-    protected void destroyElementsReferences() {
-        this.invalidListRef = null;
-        this.filteredListRef = null;
-        this.ruleRef = null;
-        this.sourceListRef = null;
-    }
-
     // Used only to force all running tests
     @Test
     public void test_RunAllUnitTests() {

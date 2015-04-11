@@ -38,7 +38,7 @@ public abstract class FilteredTTemplateTest<C extends java.util.Collection<Integ
     }
 
 
-    protected void buildRandomTestValues() {
+    private void buildRandomTestValues() {
         this.randomGenerator = new RandomGenerator();
         this.randomGenerator.generateValues(10);
     }
@@ -68,7 +68,7 @@ public abstract class FilteredTTemplateTest<C extends java.util.Collection<Integ
         this.randomGenerator = null;
     }
 
-    protected void deleteTestData() {
+    private void deleteTestData() {
         this.filteredListRef.clear();
         this.sourceListRef.clear();
         this.filteredListRefSize = 0;
@@ -76,7 +76,7 @@ public abstract class FilteredTTemplateTest<C extends java.util.Collection<Integ
         this.randomGenerator.getRandomElements().clear();
     }
 
-    protected void destroyElementsReferences() {
+    private void destroyElementsReferences() {
         this.invalidListRef = null;
         this.filteredListRef = null;
         this.sourceListRef = null;
