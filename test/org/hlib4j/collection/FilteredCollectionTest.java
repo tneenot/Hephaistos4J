@@ -3,12 +3,13 @@ package org.hlib4j.collection;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.Vector;
 
 /**
  * Created by tneenot on 03/04/15.
  */
-public class FilteredCollectionTemplateTest extends FilteredTemplateTest<java.util.Collection<Integer>, Not<Integer>> {
+public class FilteredCollectionTest extends FilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
 
     @Override
     protected void initializeElementsReferences() {

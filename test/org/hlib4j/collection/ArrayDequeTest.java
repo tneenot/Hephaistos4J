@@ -2,19 +2,20 @@ package org.hlib4j.collection;
 
 import org.junit.Test;
 
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.ArrayDeque;
+import java.util.Collection;
 
 /**
- * Unit tests based on template for ConcurrentLinkedDeque type.
+ * Unit tests based on template for ArrayDeque type.
  */
-public class FilteredConcurrentLinkedDequeTest extends FilteredTemplateTest<java.util.Collection<Integer>, Not<Integer>> {
+public class ArrayDequeTest extends FilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
     protected void initializeElementsReferences() {
-        this.sourceListRef = new ConcurrentLinkedDeque<>();
+        this.sourceListRef = new ArrayDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 
         this.filteredListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
-        this.invalidListRef = new ConcurrentLinkedDeque<>();
+        this.invalidListRef = new ArrayDeque<>();
 
     }
 
