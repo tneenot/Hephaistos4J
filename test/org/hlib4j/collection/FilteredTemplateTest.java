@@ -30,9 +30,17 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
 
     @Before
     public void setUp() {
+        buildRandomTestValues();
+
         initializeElementsReferences();
 
         createTestData();
+    }
+
+
+    protected void buildRandomTestValues() {
+        this.randomGenerator = new RandomGenerator();
+        this.randomGenerator.generateValues(10);
     }
 
     protected abstract void initializeElementsReferences();
@@ -56,6 +64,8 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         deleteTestData();
 
         destroyElementsReferences();
+
+        this.randomGenerator = null;
     }
 
     protected void deleteTestData() {

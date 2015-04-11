@@ -1,6 +1,5 @@
 package org.hlib4j.collection;
 
-import org.hlib4j.util.RandomGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,9 +12,6 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
 
     @Override
     protected void initializeElementsReferences() {
-        this.randomGenerator = new RandomGenerator();
-        this.randomGenerator.generateValues(10);
-
         this.sourceListRef = new LinkedList<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
         this.filteredListRef = Collections.makeFilteredList(this.sourceListRef, this.ruleRef);
@@ -28,7 +24,6 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
         this.filteredListRef = null;
         this.sourceListRef = null;
         this.ruleRef = null;
-        this.randomGenerator = null;
     }
 
     /**
