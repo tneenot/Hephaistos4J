@@ -102,9 +102,9 @@ public class PredicateMethod< E > implements Rule < E >
 	 * @param element      The element reference
 	 * @param propertyName The property name to find
 	 * @return The field found.
-	 * @throws ClassCastException If <code>propertyName</code> doesn't exist
+	 * @throws InvocationTargetException If <code>propertyName</code> doesn't exist
 	 */
-	private static Method isValid( Object element, String propertyName )
+	private static Method isValid(Object element, String propertyName) throws InvocationTargetException
 	{
 		try
 		{
@@ -112,7 +112,7 @@ public class PredicateMethod< E > implements Rule < E >
 		}
 		catch ( NoSuchMethodException | SecurityException e )
 		{
-			throw new ClassCastException( "The " + propertyName + " doesn't exist in the "
+			throw new InvocationTargetException(null, "The " + propertyName + " doesn't exist in the "
 																			+ ( element == null ? null : element.getClass().getName() ) );
 		}
 	}
@@ -133,13 +133,13 @@ public class PredicateMethod< E > implements Rule < E >
 	{
 		Object _val2;
 
-        // Controls if the method name exists in the element e
-        Method _target_method = isValid( e, this.methodName );
-
         try
         {
-            _val2 = _target_method.invoke( e );
-        }
+			// Controls if the method name exists in the element e
+			Method _target_method = isValid(e, this.methodName);
+
+			_val2 = _target_method.invoke(e);
+		}
         catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
         {
             return false;

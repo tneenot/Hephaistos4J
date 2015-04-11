@@ -20,7 +20,10 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.util.RandomGenerator;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -32,16 +35,34 @@ import static org.junit.Assert.assertTrue;
  */
 public class PredicateTest {
 
+    private RandomGenerator randomData;
+
+    private int randomValue;
+
+    private Predicate<Integer> refOccurrenceTested;
+
+    @Before
+    public void setUp() {
+        this.randomData = new RandomGenerator();
+        this.randomValue = this.randomData.getIsolatedValue();
+        this.refOccurrenceTested = new Predicate<>(this.randomValue);
+    }
+
+    @After
+    public void tearDown() {
+        this.refOccurrenceTested = null;
+        this.randomValue = 0;
+        this.randomData = null;
+    }
+
     @Test
     public void test_Accept_ValidValueAccepted() {
-        Predicate<Integer> ref = new Predicate<>(5);
-        assertTrue(ref.accept(5));
+        assertTrue(this.refOccurrenceTested.accept(this.randomValue));
     }
 
     @Test
     public void test_Accept_InvalidValueNotAccepted() {
-        Predicate<Integer> ref = new Predicate<>(4);
-        Assert.assertFalse(ref.accept(5));
+        Assert.assertFalse(this.refOccurrenceTested.accept(this.randomData.getIsolatedValue()));
     }
 
     @Test
@@ -54,6 +75,11 @@ public class PredicateTest {
     public final void test_Accept_ValidNullValueAccepted() {
         Predicate<Object> _ref = new Predicate<>(null);
         Assert.assertTrue(_ref.accept(null));
+    }
+
+    @Test
+    public final void test_Accept_NullValueNotAccepted() {
+        Assert.assertFalse(this.refOccurrenceTested.accept(null));
     }
 }
 

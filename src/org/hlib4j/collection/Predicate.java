@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.util.States;
+
 /**
  * A convenience class to compare a reference value with another one.
  * The comparison has validated if and
@@ -39,7 +41,7 @@ package org.hlib4j.collection;
  * To use the {@link Predicate} with this class, implement the following rule:<br>
  * <br>
  * <pre>
- * Predicate&lt;int&gt; e = new Predicate&lt;A&gt;(5);
+ * Predicate&lt;Integer&gt; e = new Predicate&lt;A&gt;(5);
  * ...
  * int another_int = 5;
  * e.accept(another_int);
@@ -76,6 +78,6 @@ public class Predicate<E> implements Rule<E> {
     @Override
     public boolean accept(E e) {
 
-        return this.simpleValue == e;
+        return States.isNullOrEmpty(this.simpleValue) ? this.simpleValue == e : this.simpleValue.equals(e);
     }
 }

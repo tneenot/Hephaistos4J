@@ -14,7 +14,7 @@ public class FilteredCollectionTest extends FilteredTTemplateTest<Collection<Int
     @Override
     protected void initializeElementsReferences() {
         this.sourceListRef = new Vector<>();
-        this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
+        this.ruleRef = new Not<>(this.randomGenerator.getOnceValueFromInnerList());
         this.filteredListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
         this.invalidListRef = new Vector<>();
 

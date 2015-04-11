@@ -42,9 +42,8 @@ public class NotTest
 	 * Test initialisation
 	 */
 	@Before
-	public void setUp()
-	{
-		ref = new Not<>( 5 );
+	public void setUp() {
+		this.ref = new Not<>(5);
 	}
 
 	/**
@@ -53,7 +52,7 @@ public class NotTest
 	@After
 	public void tearDown()
 	{
-		ref = null;
+		this.ref = null;
 	}
 
 	/**
@@ -66,7 +65,7 @@ public class NotTest
 	 */
 	@Test
     public void test_Accept_ValidValueAccepted() {
-		Assert.assertTrue( ref.accept( 4 ) );
+		Assert.assertTrue(this.ref.accept(4));
 	}
 
 	/**
@@ -79,7 +78,12 @@ public class NotTest
 	 */
 	@Test
     public void test_Accept_InvalidValueNotAccepted() {
-		Assert.assertFalse( ref.accept( 5 ) );
+		Assert.assertFalse(this.ref.accept(5));
+	}
+
+	@Test
+	public void test_Accept_NullAccepted() {
+		Assert.assertTrue(this.ref.accept(null));
 	}
 }
 

@@ -77,9 +77,9 @@ public class PredicateMethodTest
 	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
 	 * @see PredicateMethod#PredicateMethod(Object, String)
 	 */
-	@Test( expected = ClassCastException.class )
-    public void test_WithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException
+	@Test(expected = InvocationTargetException.class)
+	public void test_Constructor_WithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException
 	{
 		new PredicateMethod<>( new AUTFake( 1 ), "foo" );
 	}

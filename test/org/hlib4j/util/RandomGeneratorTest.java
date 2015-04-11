@@ -79,7 +79,7 @@ public class RandomGeneratorTest {
 
     @Test
     public void test_GetOnceValue_ValueReturnedFromList() {
-        int _value = this.randomGenerator.getOnceValue();
+        int _value = this.randomGenerator.getOnceValueFromInnerList();
 
         Assert.assertTrue(this.randomGenerator.getRandomElements().contains(_value));
     }
@@ -158,5 +158,22 @@ public class RandomGeneratorTest {
         int _idx = this.randomGenerator.getOnceIndex();
 
         Assert.assertTrue(_idx >= 0 && _idx <= this.randomGenerator.getRandomElements().size());
+    }
+
+    @Test
+    public void test_GetIsolatedValue_ValidIsolatedValue() {
+        int _nb_loop = 10000;
+
+        System.out.println("Nb of loops: " + _nb_loop);
+
+        int _previous_value = this.randomGenerator.getIsolatedValue();
+
+        for (int i = 0; i < _nb_loop; ++i) {
+            int _isolated_value = this.randomGenerator.getIsolatedValue();
+
+            Assert.assertNotEquals(String.format("The current value is not an isolated value: {0}", _isolated_value), _previous_value, _isolated_value);
+
+            _previous_value = _isolated_value;
+        }
     }
 }

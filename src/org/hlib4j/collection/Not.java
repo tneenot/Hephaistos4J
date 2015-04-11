@@ -58,7 +58,7 @@ public class Not<E> implements Rule<E>
         }
 
         // Otherwise, compare the parameter with the reference value
-        return !theValue.equals(this.refValue);
-	}
+        return !this.refValue.equals(theValue);
+    }
 
 }

@@ -90,6 +90,11 @@ public class MultipleTest
 		Assert.assertFalse( ref.accept( 3 ) );
 	}
 
+    @Test(expected = NullPointerException.class)
+    public void test_Accept_NullValueNotAccepted() {
+        this.ref.accept((Integer) null);
+    }
+
     @Test
     public void test_Multiple_ForValidAtomicLongValue() {
         Assert.assertTrue(new Multiple<AtomicLong>(new AtomicLong(4L)).accept(new AtomicLong(4l)));

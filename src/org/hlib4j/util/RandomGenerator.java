@@ -36,7 +36,11 @@ public class RandomGenerator {
         return new Random(_seed_value + counterCalling);
     }
 
-    public int getOnceValue() {
+    public int getIsolatedValue() {
+        return getRandom().nextInt();
+    }
+
+    public int getOnceValueFromInnerList() {
         return this.getOnceValueFrom(this.randomElements);
     }
 

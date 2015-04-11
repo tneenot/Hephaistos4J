@@ -148,7 +148,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-    public final void test_isReadOnly_True() {
+	public final void test_isReadOnly_ValidReadOnly() {
 		Assert.assertTrue( new Property( "Toto", true ).isReadOnly() );
 	}
 
@@ -161,7 +161,7 @@ public class PropertyTest
 	 * </ul>
 	 */
 	@Test
-    public final void test_isReadOnly_False() {
+	public final void test_isReadOnly_InvalidReadOnly() {
 		Assert.assertFalse( new Property( "Toto", false ).isReadOnly() );
 	}
 }
