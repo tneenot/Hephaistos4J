@@ -18,13 +18,6 @@ public class FilteredListTemplateTest extends FilteredTemplateTest<List<Integer>
         this.invalidListRef = new ArrayList<>();
     }
 
-    @Override
-    protected void destroyElementsReferences() {
-        this.invalidListRef = null;
-        this.filteredListRef = null;
-        this.sourceListRef = null;
-        this.ruleRef = null;
-    }
 
     /**
      * Test

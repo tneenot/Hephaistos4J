@@ -19,14 +19,6 @@ public class FilteredCollectionTemplateTest extends FilteredTemplateTest<java.ut
 
     }
 
-    @Override
-    protected void destroyElementsReferences() {
-        this.invalidListRef = null;
-        this.filteredListRef = null;
-        this.sourceListRef = null;
-        this.ruleRef = null;
-    }
-
     @Test
     public void test_Equals_EqualsWithSameCollectionType_SameData() {
         // Setup

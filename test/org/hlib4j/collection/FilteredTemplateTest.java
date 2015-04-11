@@ -76,7 +76,11 @@ public abstract class FilteredTemplateTest<C extends java.util.Collection<Intege
         this.randomGenerator.getRandomElements().clear();
     }
 
-    protected abstract void destroyElementsReferences();
+    protected void destroyElementsReferences() {
+        this.invalidListRef = null;
+        this.filteredListRef = null;
+        this.sourceListRef = null;
+    }
 
 
     protected void purgeAValueFromCollection(Collection<Integer> sourceList, Object value) {
