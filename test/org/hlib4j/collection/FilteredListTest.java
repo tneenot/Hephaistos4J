@@ -13,7 +13,7 @@ public class FilteredListTest extends FilteredTTemplateTest<List<Integer>, Not<I
     @Override
     protected void initializeElementsReferences() {
         this.sourceListRef = new LinkedList<>();
-        this.ruleRef = new Not<>(this.randomGenerator.getOnceValueFromInnerList());
+        this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
         this.filteredListRef = Collections.makeFilteredList(this.sourceListRef, this.ruleRef);
         this.invalidListRef = new ArrayList<>();
     }

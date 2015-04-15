@@ -12,7 +12,7 @@ public class ConcurrentLinkedDequeTest extends FilteredTTemplateTest<Collection<
     @Override
     protected void initializeElementsReferences() {
         this.sourceListRef = new ConcurrentLinkedDeque<>();
-        this.ruleRef = new Not<>(this.randomGenerator.getOnceValueFromInnerList());
+        this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 
         this.filteredListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
         this.invalidListRef = new ConcurrentLinkedDeque<>();

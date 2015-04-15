@@ -20,7 +20,7 @@ public class RandomGeneratorTest {
     @Before
     public void setUp() {
         this.randomGenerator = new RandomGenerator();
-        this.randomGenerator.generateValues(10);
+        this.randomGenerator.generateRandomValues(10);
     }
 
     @After
@@ -29,39 +29,39 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_Generate_ListOfRandomValuesSizeValid() {
+    public void test_GenerateRandomValues_ListOfRandomValuesSizeValid() {
         Assert.assertEquals(10, this.randomGenerator.getRandomElements().size());
     }
 
     @Test
-    public void test_Generate_InvalidListSizeElements() {
+    public void test_GenerateRandomValues_InvalidListSizeElements() {
         RandomGenerator _random_generator = new RandomGenerator();
-        _random_generator.generateValues(-1);
+        _random_generator.generateRandomValues(-1);
 
         Assert.assertTrue(_random_generator.getRandomElements().isEmpty());
     }
 
     @Test
-    public void test_Generate_ZeroListSizeElements() {
+    public void test_GenerateRandomValues_ZeroListSizeElements() {
         RandomGenerator _random_generator = new RandomGenerator();
-        _random_generator.generateValues(0);
+        _random_generator.generateRandomValues(0);
 
         Assert.assertTrue(_random_generator.getRandomElements().isEmpty());
     }
 
     @Test
-    public void test_Generate_Compare2Lists() {
+    public void test_GenerateRandomValues_Compare2ListsAlwaysDifferents() {
         RandomGenerator otherRandomGenerator = new RandomGenerator();
 
         for (int i = 0; i < 100; ++i) {
-            otherRandomGenerator.generateValues(10);
+            otherRandomGenerator.generateRandomValues(10);
 
             Assert.assertNotEquals(this.randomGenerator.getRandomElements(), otherRandomGenerator.getRandomElements());
         }
     }
 
     @Test
-    public void test_GenerateValues_NoRedundantElements() {
+    public void test_GenerateRandomValues_NoRedundantElements() {
         // Setup
         List<Integer> _copy = new ArrayList<>();
         Collections.copy(this.randomGenerator.getRandomElements(), _copy);
@@ -79,7 +79,7 @@ public class RandomGeneratorTest {
 
     @Test
     public void test_GetOnceValue_ValueReturnedFromList() {
-        int _value = this.randomGenerator.getOnceValueFromInnerList();
+        int _value = this.randomGenerator.getOnceValue();
 
         Assert.assertTrue(this.randomGenerator.getRandomElements().contains(_value));
     }

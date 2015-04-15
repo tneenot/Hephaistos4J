@@ -20,7 +20,7 @@ public class RandomGenerator {
         this.randomElements = new ArrayList<>();
     }
 
-    public void generateValues(int NbElements) {
+    public void generateRandomValues(int NbElements) {
         Random _random = getRandom();
 
         this.randomElements.clear();
@@ -40,7 +40,7 @@ public class RandomGenerator {
         return getRandom().nextInt();
     }
 
-    public int getOnceValueFromInnerList() {
+    public int getOnceValue() {
         return this.getOnceValueFrom(this.randomElements);
     }
 

@@ -40,7 +40,7 @@ public abstract class FilteredTTemplateTest<C extends java.util.Collection<Integ
 
     private void buildRandomTestValues() {
         this.randomGenerator = new RandomGenerator();
-        this.randomGenerator.generateValues(10);
+        this.randomGenerator.generateRandomValues(10);
     }
 
     protected abstract void initializeElementsReferences();
