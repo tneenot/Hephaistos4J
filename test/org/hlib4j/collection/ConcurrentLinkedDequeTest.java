@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class ConcurrentLinkedDequeTest extends FilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
-    protected void initializeElementsReferences() {
+    protected void instanciateReferencesTestData() {
         this.sourceListRef = new ConcurrentLinkedDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 

@@ -12,7 +12,7 @@ import java.util.Vector;
 public class FilteredCollectionTest extends FilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
 
     @Override
-    protected void initializeElementsReferences() {
+    protected void instanciateReferencesTestData() {
         this.sourceListRef = new Vector<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
         this.filteredListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);

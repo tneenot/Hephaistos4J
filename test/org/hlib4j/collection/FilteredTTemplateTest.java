@@ -32,7 +32,7 @@ public abstract class FilteredTTemplateTest<C extends java.util.Collection<Integ
     public void setUp() {
         buildRandomTestValues();
 
-        initializeElementsReferences();
+        instanciateReferencesTestData();
 
         createTestData();
     }
@@ -43,7 +43,7 @@ public abstract class FilteredTTemplateTest<C extends java.util.Collection<Integ
         this.randomGenerator.generateRandomValues(10);
     }
 
-    protected abstract void initializeElementsReferences();
+    protected abstract void instanciateReferencesTestData();
 
     protected void createTestData() {
         List<Integer> _elements_list = this.randomGenerator.getRandomElements();

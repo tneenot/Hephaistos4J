@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public class ArrayDequeTest extends FilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
-    protected void initializeElementsReferences() {
+    protected void instanciateReferencesTestData() {
         this.sourceListRef = new ArrayDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 

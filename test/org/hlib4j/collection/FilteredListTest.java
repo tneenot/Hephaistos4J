@@ -11,7 +11,7 @@ import java.util.*;
 public class FilteredListTest extends FilteredTTemplateTest<List<Integer>, Not<Integer>> {
 
     @Override
-    protected void initializeElementsReferences() {
+    protected void instanciateReferencesTestData() {
         this.sourceListRef = new LinkedList<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
         this.filteredListRef = Collections.makeFilteredList(this.sourceListRef, this.ruleRef);
