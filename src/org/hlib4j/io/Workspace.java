@@ -267,7 +267,11 @@ public class Workspace extends File {
         public File getParentFile() {
             File _parent_file = super.getParentFile();
 
-            return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getAbsolutePath());
+            try {
+                return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getCanonicalPath());
+            } catch(IOException e) {
+                return null;
+            }
         }
 
         /**
