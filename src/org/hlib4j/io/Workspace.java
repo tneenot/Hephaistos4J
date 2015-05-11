@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
 
 /**
  * This class represents a workspace in which all file created or attached to this workspace will be stored. Thanks to the workspace concept, it's possible to create a private workspace during a session, for example, in which all temporaries files will be saved.
@@ -305,7 +306,7 @@ public class Workspace extends File {
         @Override
         public URI toURI() {
             try {
-                return new URI(super.toURI().toString().replace(this.workspace.toString(), ""));
+                return new URI(super.toURI().toString().replace(this.workspace.toString().replaceAll(Matcher.quoteReplacement(File.separator),"/"), ""));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

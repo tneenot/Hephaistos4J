@@ -108,11 +108,11 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void test_ToURI_ControlURIFormatAccordingIfInWorkspace() throws IOException {
-        File ref = new File(File.separator + "foobar2");
-        File add_file = workspace.addFileByURI(new File(workspace + File.separator + "foobar2").toURI());
+    public void test_ToURI_ControlURIFormatIfInWorkspace() throws IOException {
+        File _ref = new File(File.separator + "foobar2");
+        File _uri_file = workspace.addFileByURI(new File(File.separator + "foobar2").toURI());
 
-        Assert.assertEquals(ref.toURI(), add_file.toURI());
+        Assert.assertEquals(_ref.toURI(), _uri_file.toURI());
     }
 
     /**
