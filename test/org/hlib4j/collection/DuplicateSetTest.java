@@ -20,14 +20,13 @@ public class DuplicateSetTest {
     @Before
     public void setUp() {
         this.duplicateSetTesting = new DuplicateSet<>();
-        this.duplicateSetTesting.add(1);
     }
 
 
     @Test
     public void test_remove_InvalidNullValue_NotRemoved() {
 
-        DuplicateSet<Integer> _local_set = new DuplicateSet<>(makeCollectionWithRedundantValues());
+        DuplicateSet<Integer> _local_set = new DuplicateSet<>(this.makeCollectionWithRedundantValues());
         Assert.assertFalse(_local_set.remove(null));
     }
 
@@ -84,69 +83,95 @@ public class DuplicateSetTest {
         this.setupWithDifferentValues();
 
         // SUT
-        this.removeSameValueTwice();
+        this.removeAllSameValues();
 
         // Assert
         Assert.assertEquals(0, this.duplicateSetTesting.countElementFor(1));
     }
 
-    private void removeSameValueTwice() {
-        this.duplicateSetTesting.remove(1);
-        this.duplicateSetTesting.remove(1);
+    private int removeAllSameValues() {
+        int _nb_removed_values = 3;
+
+        for (int i = 0; i < _nb_removed_values; ++i) {
+            this.duplicateSetTesting.remove(1);
+        }
+
+        return _nb_removed_values;
     }
 
-    private void setupWithDifferentValues() {
-        this.duplicateSetTesting.add(1);
+    private int setupWithDifferentValues() {
+        int _nb_added_values = 2;
+
         this.duplicateSetTesting.add(2);
-    }
+        this.duplicateSetTesting.add(3);
 
-    public void test_size_AfterAllRedundantValuesRemoved_ValidSize() {
-        // Setup
-        this.setupWithDifferentValues();
-
-        // SUT
-        this.removeSameValueTwice();
-
-        // Assert
-        Assert.assertEquals(1, this.duplicateSetTesting.size());
+        return _nb_added_values;
     }
 
     @Test
-    public void test_remove_AllRedundantValues_Valid() {
+    public void test_size_AfterAllRedundantValuesRemoved_ValidSize() {
         // Setup
-        this.addAndRemoveSameValue();
+        int _added_values = this.setupWitSameValues();
+        _added_values += this.setupWithDifferentValues();
 
+        // SUT
+        _added_values -= this.removeAllSameValues();
 
         // Assert
-        Assert.assertTrue(duplicateSetTesting.remove(1));
+        Assert.assertEquals(_added_values, this.duplicateSetTesting.size());
     }
 
-    private void addAndRemoveSameValue() {
+    private int setupWitSameValues() {
+        int _nb_added_values = 3;
+        for (int i = 0; i < _nb_added_values; ++i) {
+            this.duplicateSetTesting.add(1);
+        }
+
+        return _nb_added_values;
+    }
+
+    @Test
+    public void test_remove_OneValueAmongRedundantValues_Valid() {
+        // Setup
         this.duplicateSetTesting.add(1);
-        this.duplicateSetTesting.remove(1);
+        this.addAndRemoveSameValue(1);
+
+        // Assert
+        Assert.assertTrue(this.duplicateSetTesting.remove(1));
+    }
+
+    private void addAndRemoveSameValue(int value) {
+        this.duplicateSetTesting.add(value);
+        this.duplicateSetTesting.remove(value);
     }
 
     @Test
     public void test_remove_ValidValue() {
+        // Setup
+        this.duplicateSetTesting.add(1);
+
+        // Assert
         Assert.assertTrue(this.duplicateSetTesting.remove(1));
     }
 
     @Test
     public void test_countElementFor_RemoveRedundantValue_ValidDataLeft() {
         // Setup
-        this.addAndRemoveSameValue();
+        this.duplicateSetTesting.add(5);
+        this.addAndRemoveSameValue(5);
 
         // Assert
-        Assert.assertEquals(1, this.duplicateSetTesting.countElementFor(1));
+        Assert.assertEquals(1, this.duplicateSetTesting.countElementFor(5));
     }
 
     @Test
     public void test_size_RemoveRendudantValue_ValidCollectionSize() {
         // Setup
-        this.addAndRemoveSameValue();
+        this.setupWitSameValues();
+        this.addAndRemoveSameValue(5);
 
         // Assert
-        Assert.assertEquals(2, this.duplicateSetTesting.size());
+        Assert.assertEquals(3, this.duplicateSetTesting.size());
     }
 
     @Test
@@ -160,10 +185,10 @@ public class DuplicateSetTest {
     @Test
     public void test_size_twice_SameValues() {
         // Setup
-        this.setupWitSameValues();
+        int _nb_values = this.setupWitSameValues();
 
         // SUT
-        Assert.assertEquals(1, this.duplicateSetTesting.size());
+        Assert.assertEquals(_nb_values, this.duplicateSetTesting.size());
     }
 
     @Test
@@ -175,18 +200,13 @@ public class DuplicateSetTest {
         Assert.assertEquals(0, _local_set.size());
     }
 
-    private void setupWitSameValues() {
-        this.duplicateSetTesting.add(1);
-        this.duplicateSetTesting.add(1);
-    }
-
     @Test
     public void test_countElementFor_sameValues() {
         // Setup
         this.setupWitSameValues();
 
         // SUT
-        Assert.assertEquals(2, this.duplicateSetTesting.countElementFor(1));
+        Assert.assertEquals(3, this.duplicateSetTesting.countElementFor(1));
     }
 
     @Test
@@ -199,9 +219,20 @@ public class DuplicateSetTest {
     }
 
     @Test
-    public void test_countElementFor_allValues_added() {
+    public void test_add_twice_SizeIsValid() {
         // Setup
-        DuplicateSet<Integer> _local_set = new DuplicateSet<>(this.makeCollectionWithRedundantValues());
+        this.setupWitSameValues();
+
+        // SUT
+        Assert.assertEquals(3, this.duplicateSetTesting.size());
+    }
+
+    @Test
+    public void test_countElementFor_allRedundantValues_added() {
+        // Setup
+        Collection<Integer> _src_collection = this.makeCollectionWithRedundantValues();
+        DuplicateSet<Integer> _local_set = new DuplicateSet<>(_src_collection);
+        _local_set.addAll(_src_collection);
 
         // SUT
         for (Integer i : _local_set) {
@@ -345,6 +376,7 @@ public class DuplicateSetTest {
     public void test_addAll_SameCollectionContent_CountElementForUpdated() {
         // Setup
         Collection<Integer> _other_collection = Arrays.asList(1);
+        this.duplicateSetTesting.add(1);
 
         // SUT
         this.duplicateSetTesting.addAll(_other_collection);
@@ -378,6 +410,7 @@ public class DuplicateSetTest {
     public void test_addAll_DifferentCollection_SizeUpdated() {
         // Setup
         Collection<Integer> _other_collection = Arrays.asList(5);
+        this.duplicateSetTesting.add(1);
 
         // SUT
         this.duplicateSetTesting.addAll(_other_collection);
@@ -542,8 +575,7 @@ public class DuplicateSetTest {
 
     @After
     public void tearDown() {
-        // TODO: remove after the first implementation
-//        this.duplicateSetTesting.clear();
+        this.duplicateSetTesting.clear();
         this.duplicateSetTesting = null;
     }
 
