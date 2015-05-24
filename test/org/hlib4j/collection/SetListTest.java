@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -435,6 +436,15 @@ public class SetListTest {
     }
 
     @Test
+    public void test_toArray_WithNoDuplicateValues_ArrayWitNoDuplicatesValues() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // SUT
+        Assert.assertEquals(this.setTesting.size(), this.setTesting.toArray().length);
+    }
+
+    @Test
     public void test_toArrayT_OnEmptySetList_EmptyArray() {
         // Setup
         SetList<Integer> _set_local = new SetList<>();
@@ -471,9 +481,68 @@ public class SetListTest {
         }
     }
 
+    @Test
+    public void test_toArrayT_WithNoDuplicateValues_ArrayWitNoDuplicatesValues() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // SUT
+        Assert.assertEquals(this.setTesting.size(), this.setTesting.toArray(new Integer[this.setTesting.size()]).length);
+    }
+
+    @Test
+    public void test_Iterator_WithDuplicateValues_DuplicateValuesAreExisting() {
+        // Setup
+        this.setupWitSameValues();
+
+        // Assert
+        for (Integer i : this.setTesting) {
+            Assert.assertEquals(1, i.intValue());
+        }
+    }
+
+    @Test
+    public void test_Iterator_WithNoDuplicateValues_NoDuplicateValuesAreExisting() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // Assert
+        int _previous = 0;
+        for (Integer i : this.setTesting) {
+            Assert.assertNotEquals(_previous, i.intValue());
+            _previous = i.intValue();
+        }
+    }
+
+    @Test
+    public void test_CopyConstructor_MoveSetListIntoAnotherCollection_SameSize() {
+        // Setup
+        this.setupWitSameValues();
+
+        // SUT
+        Collection<Integer> _other_collection = new ArrayList<>(this.setTesting);
+
+        // Assert
+        Assert.assertEquals(_other_collection.size(), this.setTesting.size());
+    }
+
+    @Test
+    public void test_CopyConstructor_MoveSetListIntoAnotherCollection_NewCollectionWithDuplicateValues() {
+        // Setup
+        this.setupWitSameValues();
+
+        // SUT
+        Collection<Integer> _other_collection = new ArrayList<>(this.setTesting);
+
+        // Assert
+        for (Integer i : _other_collection) {
+            Assert.assertEquals(1, i.intValue());
+        }
+    }
+
     @After
     public void tearDown() {
-        // TODO: remove after first implementation
+        // TODO: remove after the first implementation
 //        this.setTesting.clear();
         this.setTesting = null;
     }
