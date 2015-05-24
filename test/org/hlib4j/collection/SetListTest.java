@@ -47,10 +47,10 @@ public class SetListTest {
     @Test
     public void test_size_NullValueTwice_ValidSize() {
         // Setup
-        setupWithNullValueTwice();
+        this.setupWithNullValueTwice();
 
         // SUT
-        Assert.assertEquals(1, this.setTesting.size());
+        Assert.assertEquals(2, this.setTesting.size());
     }
 
     private void setupWithNullValueTwice() {
@@ -61,7 +61,7 @@ public class SetListTest {
     @Test
     public void test_countElementFor_NullValueTwice_ValidSize() {
         // Setup
-        setupWithNullValueTwice();
+        this.setupWithNullValueTwice();
 
         // SUT
         Assert.assertEquals(2, this.setTesting.countElementFor(null));
@@ -80,10 +80,10 @@ public class SetListTest {
     @Test
     public void test_countElementFor_AfterAllRedundantValuesRemoved_NoValueLeft() {
         // Setup
-        setupWithDifferentValues();
+        this.setupWithDifferentValues();
 
         // SUT
-        removeSameValueTwice();
+        this.removeSameValueTwice();
 
         // Assert
         Assert.assertEquals(0, this.setTesting.countElementFor(1));
@@ -101,10 +101,10 @@ public class SetListTest {
 
     public void test_size_AfterAllRedundantValuesRemoved_ValidSize() {
         // Setup
-        setupWithDifferentValues();
+        this.setupWithDifferentValues();
 
         // SUT
-        removeSameValueTwice();
+        this.removeSameValueTwice();
 
         // Assert
         Assert.assertEquals(1, this.setTesting.size());
@@ -112,7 +112,8 @@ public class SetListTest {
 
     @Test
     public void test_remove_AllRedundantValues_Valid() {
-        addAndRemoveSameValue();
+        // Setup
+        this.addAndRemoveSameValue();
 
 
         // Assert
@@ -120,10 +121,7 @@ public class SetListTest {
     }
 
     private void addAndRemoveSameValue() {
-        // Setup
         this.setTesting.add(1);
-
-        // SUT
         this.setTesting.remove(1);
     }
 
@@ -135,7 +133,7 @@ public class SetListTest {
     @Test
     public void test_countElementFor_RemoveRedundantValue_ValidDataLeft() {
         // Setup
-        addAndRemoveSameValue();
+        this.addAndRemoveSameValue();
 
         // Assert
         Assert.assertEquals(1, this.setTesting.countElementFor(1));
@@ -144,7 +142,7 @@ public class SetListTest {
     @Test
     public void test_size_RemoveRendudantValue_ValidCollectionSize() {
         // Setup
-        addAndRemoveSameValue();
+        this.addAndRemoveSameValue();
 
         // Assert
         Assert.assertEquals(2, this.setTesting.size());
@@ -153,7 +151,7 @@ public class SetListTest {
     @Test
     public void test_countElementFor_MiscellaneaousValues_Valid() {
         // Setup
-        setupWithDifferentValues();
+        this.setupWithDifferentValues();
 
         Assert.assertEquals(1, this.setTesting.countElementFor(2));
     }
@@ -161,10 +159,19 @@ public class SetListTest {
     @Test
     public void test_size_twice_SameValues() {
         // Setup
-        setupWitSameValues();
+        this.setupWitSameValues();
 
         // SUT
         Assert.assertEquals(1, this.setTesting.size());
+    }
+
+    @Test
+    public void test_size_OnEmptyList() {
+        // Setup
+        SetList<Integer> _local_set = new SetList<>();
+
+        // SUT
+        Assert.assertEquals(0, _local_set.size());
     }
 
     private void setupWitSameValues() {
@@ -175,7 +182,7 @@ public class SetListTest {
     @Test
     public void test_countElementFor_sameValues() {
         // Setup
-        setupWitSameValues();
+        this.setupWitSameValues();
 
         // SUT
         Assert.assertEquals(2, this.setTesting.countElementFor(1));
@@ -193,7 +200,7 @@ public class SetListTest {
     @Test
     public void test_countElementFor_allValues_added() {
         // Setup
-        SetList<Integer> _local_set = new SetList<>(makeCollectionWithRedundantValues());
+        SetList<Integer> _local_set = new SetList<>(this.makeCollectionWithRedundantValues());
 
         // SUT
         for (Integer i : _local_set) {
@@ -204,7 +211,7 @@ public class SetListTest {
     @Test
     public void test_size_allValues_added() {
         // Setup
-        SetList<Integer> _local_set = new SetList<>(makeCollectionWithRedundantValues());
+        SetList<Integer> _local_set = new SetList<>(this.makeCollectionWithRedundantValues());
         int _counter = 0;
         for (Integer i : _local_set) ++_counter;
 
@@ -215,7 +222,7 @@ public class SetListTest {
     @Test
     public void test_removeAll_SameCollectionsContents_SomeValuesRemoved() {
         // Setup
-        Collection<Integer> _other_collection = makeCollectionWithRedundantValues();
+        Collection<Integer> _other_collection = this.makeCollectionWithRedundantValues();
         SetList<Integer> _set_ref = new SetList<>(_other_collection);
 
         // SUT
@@ -225,7 +232,7 @@ public class SetListTest {
     @Test
     public void test_removeAll_SameCollectionsContents_NoValuesLeft() {
         // Setup
-        Collection<Integer> _other_collection = makeCollectionWithRedundantValues();
+        Collection<Integer> _other_collection = this.makeCollectionWithRedundantValues();
         SetList<Integer> _set_ref = new SetList<>(_other_collection);
 
         // SUT
@@ -238,7 +245,7 @@ public class SetListTest {
     @Test
     public void test_removeAll_DifferentCollectionContents_SomeNotValuesRemoved() {
         // Setup
-        Collection<Integer> _other_collection = makeCollectionWithRedundantValues();
+        Collection<Integer> _other_collection = this.makeCollectionWithRedundantValues();
         SetList<Integer> _set_ref = new SetList<>();
 
         // SUT
@@ -261,7 +268,7 @@ public class SetListTest {
     @Test
     public void test_retainAll_SameCollectionsContents_ValuesRetains() {
         // Setup
-        Collection<Integer> _other_collection = makeCollectionWithRedundantValues();
+        Collection<Integer> _other_collection = this.makeCollectionWithRedundantValues();
         SetList<Integer> _set_ref = new SetList<>(_other_collection);
 
         // SUT
@@ -271,7 +278,7 @@ public class SetListTest {
     @Test
     public void test_retainAll_SameCollectionsContent_SizeNotUpdated() {
         // Setup
-        Collection<Integer> _other_collection = makeCollectionWithRedundantValues();
+        Collection<Integer> _other_collection = this.makeCollectionWithRedundantValues();
         SetList<Integer> _set_ref = new SetList<>(_other_collection);
         int _original_size = _set_ref.size();
 
@@ -390,11 +397,84 @@ public class SetListTest {
         Assert.assertEquals(1, this.setTesting.countElementFor(5));
     }
 
-    // TODO: toArray() methods
+    @Test
+    public void test_toArray_OnEmptySetList_EmptyArray() {
+        // Setup
+        SetList<Integer> _set_local = new SetList<>();
+
+        // SUT
+        Assert.assertEquals(0, _set_local.toArray().length);
+    }
+
+    @Test
+    public void test_toArray_NonEmptyArray() {
+        Assert.assertEquals(1, this.setTesting.toArray().length);
+    }
+
+    @Test
+    public void test_toArray_WithDuplicateValues_ValidArrayLength() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // SUT
+        Assert.assertEquals(3, this.setTesting.toArray().length);
+    }
+
+    @Test
+    public void test_toArray_WithDuplicateValues_ArrayWithDuplicatesValues() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // SUT
+        Object[] _raw_values = this.setTesting.toArray();
+
+        // Assert
+        for (Object _value : _raw_values) {
+            Assert.assertTrue(this.setTesting.contains(_value));
+        }
+    }
+
+    @Test
+    public void test_toArrayT_OnEmptySetList_EmptyArray() {
+        // Setup
+        SetList<Integer> _set_local = new SetList<>();
+
+        // SUT
+        Assert.assertEquals(0, _set_local.toArray(new Integer[0]));
+    }
+
+    @Test
+    public void test_toArrayT_NonEmptyArray() {
+        Assert.assertEquals(1, this.setTesting.toArray(new Integer[this.setTesting.size()]));
+    }
+
+    @Test
+    public void test_toArrayT_WithDuplicateValues_ValidArrayLength() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // SUT
+        Assert.assertEquals(3, this.setTesting.toArray(new Integer[this.setTesting.size()]).length);
+    }
+
+    @Test
+    public void test_toArrayT_WithDuplicateValues_ArrayWithDuplicatesValues() {
+        // Setup
+        this.setupWithDifferentValues();
+
+        // SUT
+        Integer[] _raw_values = this.setTesting.toArray(new Integer[this.setTesting.size()]);
+
+        // Assert
+        for (Object _value : _raw_values) {
+            Assert.assertTrue(this.setTesting.contains(_value));
+        }
+    }
 
     @After
     public void tearDown() {
-        this.setTesting.clear();
+        // TODO: remove after first implementation
+//        this.setTesting.clear();
         this.setTesting = null;
     }
 

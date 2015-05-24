@@ -12,7 +12,7 @@ public class SetList<T> extends AbstractSet<T> {
     }
 
     public SetList() {
-
+        super();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class SetList<T> extends AbstractSet<T> {
 
     @Override
     public int size() {
-        return 0;
+        return -1;
     }
 
     public boolean add(T i) {
@@ -31,5 +31,15 @@ public class SetList<T> extends AbstractSet<T> {
 
     public int countElementFor(T i) {
         return -1;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return null;
+    }
+
+    @Override
+    public <T1> T1[] toArray(T1[] a) {
+        return null;
     }
 }
