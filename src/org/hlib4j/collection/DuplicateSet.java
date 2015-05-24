@@ -7,11 +7,12 @@ import java.util.Iterator;
 /**
  * Created by tneenot on 5/23/15.
  */
-public class SetList<T> extends AbstractSet<T> {
-    public SetList(Collection<T> integers) {
+public class DuplicateSet<T> extends AbstractSet<T> {
+
+    public DuplicateSet(Collection<T> integers) {
     }
 
-    public SetList() {
+    public DuplicateSet() {
         super();
     }
 
