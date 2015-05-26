@@ -550,6 +550,24 @@ public class RedundantSetTest {
     }
 
     @Test
+    public void test_Iterator_WithDuplicateValues_DuplicateValuesAreExistingWithClassicalWay() {
+        // Setup
+        int _nb_of_elements = this.setupWitSameValues();
+        int _counter = 0;
+
+        // SUT
+        Iterator<Integer> _it = this.redundantSetTesting.iterator();
+        while (_it.hasNext()) {
+            ++_counter;
+            _it.next();
+        }
+
+        // Assert
+        Assert.assertEquals(_nb_of_elements, this.redundantSetTesting.size());
+
+    }
+
+    @Test
     public void test_CopyConstructor_MoveSetListIntoAnotherCollection_SameSize() {
         // Setup
         this.setupWitSameValues();
