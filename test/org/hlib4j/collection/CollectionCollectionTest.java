@@ -9,13 +9,13 @@ import java.util.Vector;
 /**
  * Created by tneenot on 03/04/15.
  */
-public class FilteredCollectionTest extends FilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
+public class CollectionCollectionTest extends CollectionTTemplateTest<Collection<Integer>, Not<Integer>> {
 
     @Override
     protected void instanciateReferencesTestData() {
         this.sourceListRef = new Vector<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
-        this.filteredListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
+        this.collectionListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
         this.invalidListRef = new Vector<>();
 
     }
@@ -23,12 +23,12 @@ public class FilteredCollectionTest extends FilteredTTemplateTest<Collection<Int
     @Test
     public void test_Equals_EqualsWithSameCollectionType_SameData() {
         // Setup
-        Vector<Integer> _copy = new Vector<>(this.filteredListRef);
+        Vector<Integer> _copy = new Vector<>(this.collectionListRef);
 
         FilteredCollection<Integer> _col = (FilteredCollection) Collections.makeFilteredCollection(_copy, this.ruleRef);
 
         // Assert
-        Assert.assertTrue(this.filteredListRef.equals(_col));
+        Assert.assertTrue(this.collectionListRef.equals(_col));
     }
 
     @Test
@@ -37,6 +37,6 @@ public class FilteredCollectionTest extends FilteredTTemplateTest<Collection<Int
         FilteredCollection<Integer> _col = (FilteredCollection) Collections.makeFilteredCollection(new Vector<Integer>(), new Multiple<Integer>(2));
 
         // Assert
-        Assert.assertFalse(this.filteredListRef.equals(_col));
+        Assert.assertFalse(this.collectionListRef.equals(_col));
     }
 }
