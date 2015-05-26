@@ -485,21 +485,25 @@ public class RedundantSetTest {
         RedundantSet<Integer> _set_local = new RedundantSet<>();
 
         // SUT
-        Assert.assertEquals(0, _set_local.toArray(new Integer[0]));
+        Assert.assertEquals(0, _set_local.toArray(new Integer[0]).length);
     }
 
     @Test
     public void test_toArrayT_NonEmptyArray() {
-        Assert.assertEquals(1, this.redundantSetTesting.toArray(new Integer[this.redundantSetTesting.size()]));
+        // Setup
+        this.redundantSetTesting.add(1);
+
+        // SUT
+        Assert.assertEquals(1, this.redundantSetTesting.toArray(new Integer[0]).length);
     }
 
     @Test
     public void test_toArrayT_WithDuplicateValues_ValidArrayLength() {
         // Setup
-        this.setupWithDifferentValues();
+        int _nb_of_elements = this.setupWithDifferentValues();
 
         // SUT
-        Assert.assertEquals(3, this.redundantSetTesting.toArray(new Integer[this.redundantSetTesting.size()]).length);
+        Assert.assertEquals(_nb_of_elements, this.redundantSetTesting.toArray(new Integer[0]).length);
     }
 
     @Test
@@ -508,7 +512,7 @@ public class RedundantSetTest {
         this.setupWithDifferentValues();
 
         // SUT
-        Integer[] _raw_values = this.redundantSetTesting.toArray(new Integer[this.redundantSetTesting.size()]);
+        Integer[] _raw_values = this.redundantSetTesting.toArray(new Integer[0]);
 
         // Assert
         for (Object _value : _raw_values) {
@@ -522,7 +526,7 @@ public class RedundantSetTest {
         this.setupWithDifferentValues();
 
         // SUT
-        Assert.assertEquals(this.redundantSetTesting.size(), this.redundantSetTesting.toArray(new Integer[this.redundantSetTesting.size()]).length);
+        Assert.assertEquals(this.redundantSetTesting.size(), this.redundantSetTesting.toArray(new Integer[0]).length);
     }
 
     @Test

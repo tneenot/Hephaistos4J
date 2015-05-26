@@ -32,7 +32,6 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     @Override
     public Iterator<T> iterator() {
-        // Reads each value and loop on the same value according to the occurrences number
         return new RedundantSetIterator(this.internalRedundantValues);
     }
 
@@ -115,8 +114,23 @@ public class RedundantSet<T> extends AbstractSet<T> {
     }
 
     @Override
-    public <T1> T1[] toArray(T1[] a) {
-        return null;
+    public <T1> T1[] toArray(T1[] externalArray) {
+
+        if (externalArray.length < this.size()) {
+            externalArray = (T1[]) java.lang.reflect.Array.newInstance(externalArray.getClass().getComponentType(), this.size());
+
+            Iterator<T> _it = this.iterator();
+            int _counter = 0;
+            while (_it.hasNext()) {
+                externalArray[_counter++] = (T1) _it.next();
+            }
+        }
+
+        if (externalArray.length > this.size()) {
+            externalArray[this.size()] = null;
+        }
+
+        return externalArray;
     }
 
     @Override
@@ -124,16 +138,27 @@ public class RedundantSet<T> extends AbstractSet<T> {
         this.internalRedundantValues.clear();
     }
 
+    /**
+     * This class reads each value and loop on the same value according to the occurrences number.
+     */
     private class RedundantSetIterator implements Iterator<T> {
 
+        // The current collection on which the iterator will be setted
         private final Map<T, Integer> redundatSetCollection;
+
+        // The iterator on keys of the current collection
         private final Iterator<T> keySetIterator;
+
+        // The current element gets from current collection keySetIterator
         private T currentElement = null;
-        private int occurrenceCounter = 0;
+
+        // The occurence counter on the currentElement
+        private int occurrenceCounter;
 
         public RedundantSetIterator(Map<T, Integer> internalRedundantValues) {
             this.redundatSetCollection = internalRedundantValues;
             this.keySetIterator = this.redundatSetCollection.keySet().iterator();
+            this.occurrenceCounter = 0;
         }
 
         @Override
