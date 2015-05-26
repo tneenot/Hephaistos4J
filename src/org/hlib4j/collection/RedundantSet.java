@@ -110,7 +110,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     @Override
     public Object[] toArray() {
-        return null;
+        return this.toArray(new Object[0]);
     }
 
     @Override
