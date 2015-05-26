@@ -3,7 +3,7 @@ package org.hlib4j.collection;
 import java.util.*;
 
 /**
- * Collection of elements with duplicate elements authorized. This collection doesn't each duplicate element as an specific
+ * Collection of elements with redudant elements authorized. This collection doesn't each duplicate element as an specific
  * instance, but register only the first instance as reference element. All other same elements are counted as a supplementary
  * instance without recorded them. That's meaning in the internal representation, the element is recorded once. Other elements
  * are counted as supplementary instance, but the effective instance will not be setting into the collection.<br><br>
@@ -11,23 +11,23 @@ import java.util.*;
  * To know the number of redundant elements, use the {@link #countElementFor(Object)}. The method {@link #size()} is taking account
  * of redundant elements for its size.
  */
-public class DuplicateSet<T> extends AbstractSet<T> {
+public class RedundantSet<T> extends AbstractSet<T> {
 
     // TODO: replace Integer by a new class: Counter => Increment(), Decrement(). Counter gets the inital value and the default step for value counting.
-    private Map<T, Integer> internalDuplicateValues;
+    private Map<T, Integer> internalRedundantValues;
 
-    public DuplicateSet(Collection<T> values) {
+    public RedundantSet(Collection<T> values) {
         this();
 
         addAll(values);
     }
 
     /**
-     * Build an empty collection for the DuplicateSet class.
+     * Build an empty collection for the RedundantSet class.
      */
-    public DuplicateSet() {
+    public RedundantSet() {
         super();
-        this.internalDuplicateValues = new HashMap<>();
+        this.internalRedundantValues = new HashMap<>();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DuplicateSet<T> extends AbstractSet<T> {
     public int size() {
         int _real_size = 0;
 
-        for (T _element : this.internalDuplicateValues.keySet()) {
+        for (T _element : this.internalRedundantValues.keySet()) {
             _real_size += this.countElementFor(_element);
         }
 
@@ -47,11 +47,11 @@ public class DuplicateSet<T> extends AbstractSet<T> {
     }
 
     public boolean add(T value) {
-        if (this.internalDuplicateValues.containsKey(value)) {
-            Integer _occurrence_counter = this.internalDuplicateValues.get(value);
-            this.internalDuplicateValues.put(value, new Integer(_occurrence_counter.intValue() + 1));
+        if (this.internalRedundantValues.containsKey(value)) {
+            Integer _occurrence_counter = this.internalRedundantValues.get(value);
+            this.internalRedundantValues.put(value, new Integer(_occurrence_counter.intValue() + 1));
         } else {
-            this.internalDuplicateValues.put(value, 1);
+            this.internalRedundantValues.put(value, 1);
         }
 
         return true;
@@ -59,12 +59,12 @@ public class DuplicateSet<T> extends AbstractSet<T> {
 
     @Override
     public boolean remove(Object value) {
-        if (this.internalDuplicateValues.containsKey(value)) {
-            Integer _occurrence_counter = this.internalDuplicateValues.get(value);
+        if (this.internalRedundantValues.containsKey(value)) {
+            Integer _occurrence_counter = this.internalRedundantValues.get(value);
             if (_occurrence_counter.intValue() > 1) {
-                this.internalDuplicateValues.put((T) value, new Integer(_occurrence_counter - 1));
+                this.internalRedundantValues.put((T) value, new Integer(_occurrence_counter - 1));
             } else {
-                this.internalDuplicateValues.remove(value);
+                this.internalRedundantValues.remove(value);
             }
 
             return true;
@@ -95,7 +95,7 @@ public class DuplicateSet<T> extends AbstractSet<T> {
     }
 
     public int countElementFor(T element) {
-        return this.internalDuplicateValues.containsKey(element) ? this.internalDuplicateValues.get(element).intValue() : 0;
+        return this.internalRedundantValues.containsKey(element) ? this.internalRedundantValues.get(element).intValue() : 0;
     }
 
     @Override
@@ -110,6 +110,6 @@ public class DuplicateSet<T> extends AbstractSet<T> {
 
     @Override
     public void clear() {
-        this.internalDuplicateValues.clear();
+        this.internalRedundantValues.clear();
     }
 }
