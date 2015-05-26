@@ -14,7 +14,7 @@ import java.util.*;
 public class RedundantSet<T> extends AbstractSet<T> {
 
     // TODO: replace Integer by a new class: Counter => Increment(), Decrement(). Counter gets the inital value and the default step for value counting.
-    private Map<T, Integer> internalRedundantValues;
+    private final Map<T, Integer> internalRedundantValues;
 
     public RedundantSet(Collection<T> values) {
         this();
@@ -32,7 +32,8 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        // Reads each value and loop on the same value according to the occurrences number
+        return new RedundantSetIterator(this.internalRedundantValues);
     }
 
     @Override
@@ -86,10 +87,11 @@ public class RedundantSet<T> extends AbstractSet<T> {
     @Override
     public boolean retainAll(Collection<?> otherCollection) {
         boolean _are_some_retaining = false;
-        List<T> _duplicate_for_loop = (List<T>) Arrays.asList(this.internalRedundantValues.values());
+        List<T> _duplicate_for_loop = (List<T>) Arrays.asList(this.internalRedundantValues.keySet().toArray());
         for (Object _element : _duplicate_for_loop) {
-            if (otherCollection.contains(_element) == false) {
+            if (!otherCollection.contains(_element)) {
                 this.internalRedundantValues.remove(_element);
+            } else {
                 _are_some_retaining = true;
             }
         }
@@ -120,5 +122,46 @@ public class RedundantSet<T> extends AbstractSet<T> {
     @Override
     public void clear() {
         this.internalRedundantValues.clear();
+    }
+
+    private class RedundantSetIterator implements Iterator<T> {
+
+        private final Map<T, Integer> redundatSetCollection;
+        private final Iterator<T> keySetIterator;
+        private T currentElement = null;
+        private int occurrenceCounter = 0;
+
+        public RedundantSetIterator(Map<T, Integer> internalRedundantValues) {
+            this.redundatSetCollection = internalRedundantValues;
+            this.keySetIterator = this.redundatSetCollection.keySet().iterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+
+            return this.keySetIterator.hasNext() || this.isAnotherOccurenceExist();
+
+        }
+
+        private boolean isAnotherOccurenceExist() {
+            return this.currentElement != null && this.redundatSetCollection.get(this.currentElement).intValue() > this.occurrenceCounter;
+        }
+
+        @Override
+        public T next() {
+            if (this.isAnotherOccurenceExist()) {
+                ++this.occurrenceCounter;
+                return this.currentElement;
+            }
+
+            this.occurrenceCounter = 1;
+            this.currentElement = this.keySetIterator.next();
+            return this.currentElement;
+        }
+
+        @Override
+        public void remove() {
+            throw new IllegalStateException("Operation not allowed");
+        }
     }
 }

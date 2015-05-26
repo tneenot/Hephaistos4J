@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Tests class for RedundantSet class.
@@ -572,6 +573,20 @@ public class RedundantSetTest {
         for (Integer i : _other_collection) {
             Assert.assertEquals(1, i.intValue());
         }
+    }
+
+    @Test(expected = java.lang.IllegalStateException.class)
+    public void test_Remove_FromIterator_IllegalStateException() {
+        // Setup
+        this.redundantSetTesting = new RedundantSet<>(this.makeCollectionWithRedundantValues());
+
+        // SUT
+        Iterator<Integer> _it = this.redundantSetTesting.iterator();
+
+        // Assert by invoking internal exception
+        _it.next();
+        _it.remove();
+
     }
 
     @After
