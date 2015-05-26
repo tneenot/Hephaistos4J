@@ -2,19 +2,21 @@ package org.hlib4j.collection;
 
 import org.junit.Test;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 
 /**
- * Created by tneenot on 5/26/15.
+ * Unit tests based on template for ArrayDeque type.
  */
-public class RedundantSetWithFilteredCollection extends CollectionTTemplateTest<Collection<Integer>, Not<Integer>> {
-
+public class ArrayDequeTestFiltered extends CollectionFilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
     protected void instanciateReferencesTestData() {
-        this.sourceListRef = new RedundantSet<>();
+        this.sourceListRef = new ArrayDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
+
         this.collectionListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
-        this.invalidListRef = new RedundantSet<>();
+        this.invalidListRef = new ArrayDeque<>();
+
     }
 
     // Used only to force all running tests

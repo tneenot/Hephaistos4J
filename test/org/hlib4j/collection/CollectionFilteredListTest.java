@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Unit tests on a collection List managed by {@link Collections#makeFilteredList(List, Rule)} with data.
  */
-public class CollectionListTest extends CollectionTTemplateTest<List<Integer>, Not<Integer>> {
+public class CollectionFilteredListTest extends CollectionFilteredTTemplateTest<List<Integer>, Not<Integer>> {
 
     @Override
     protected void instanciateReferencesTestData() {

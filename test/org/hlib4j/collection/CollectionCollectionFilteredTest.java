@@ -9,7 +9,7 @@ import java.util.Vector;
 /**
  * Created by tneenot on 03/04/15.
  */
-public class CollectionCollectionTest extends CollectionTTemplateTest<Collection<Integer>, Not<Integer>> {
+public class CollectionCollectionFilteredTest extends CollectionFilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
 
     @Override
     protected void instanciateReferencesTestData() {

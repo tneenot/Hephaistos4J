@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Unit tests on a collection List managed by {@link Collections#makeFilteredList(List, Rule)} with data.
  */
-public abstract class CollectionTTemplateTest<C extends java.util.Collection<Integer>, R extends Rule> {
+public abstract class CollectionFilteredTTemplateTest<C extends java.util.Collection<Integer>, R extends Rule> {
 
     protected C sourceListRef;
 

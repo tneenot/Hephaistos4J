@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 /**
  * Unit tests based on template for ConcurrentLinkedDeque type.
  */
-public class ConcurrentLinkedDequeTest extends CollectionTTemplateTest<Collection<Integer>, Not<Integer>> {
+public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
     protected void instanciateReferencesTestData() {
         this.sourceListRef = new ConcurrentLinkedDeque<>();
