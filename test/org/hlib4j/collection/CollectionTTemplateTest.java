@@ -189,7 +189,7 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         this.sourceListRef.addAll(this.invalidListRef);
 
         // Exercise
-        Integer[] _result = this.collectionListRef.toArray(new Integer[this.collectionListRef.size()]);
+        Integer[] _result = this.collectionListRef.toArray(new Integer[0]);
 
         // Assert
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
