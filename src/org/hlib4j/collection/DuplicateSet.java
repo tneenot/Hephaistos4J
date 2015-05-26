@@ -74,8 +74,13 @@ public class DuplicateSet<T> extends AbstractSet<T> {
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public boolean removeAll(Collection<?> otherCollection) {
+        boolean _are_some_removing = true;
+        for (Object _element : otherCollection) {
+            _are_some_removing &= this.remove(_element);
+        }
+
+        return _are_some_removing;
     }
 
     @Override
@@ -90,11 +95,7 @@ public class DuplicateSet<T> extends AbstractSet<T> {
     }
 
     public int countElementFor(T element) {
-        if (this.internalDuplicateValues.containsKey(element)) {
-            return this.internalDuplicateValues.get(element).intValue();
-        }
-
-        return 0;
+        return this.internalDuplicateValues.containsKey(element) ? this.internalDuplicateValues.get(element).intValue() : 0;
     }
 
     @Override

@@ -288,13 +288,14 @@ public class DuplicateSetTest {
     public void test_removeAll_DifferentCollectionContents_SizeNotUpdated() {
         // Setup
         Collection<Integer> _other_collection = Arrays.asList(5, 6, 7);
-        setupWithDifferentValues();
+        int _nb_elements = this.setupWithDifferentValues();
+        _nb_elements += this.setupWitSameValues();
 
         // SUT
         this.duplicateSetTesting.removeAll(_other_collection);
 
         // Assert
-        Assert.assertEquals(3, this.duplicateSetTesting.size());
+        Assert.assertEquals(_nb_elements, this.duplicateSetTesting.size());
     }
 
     @Test
