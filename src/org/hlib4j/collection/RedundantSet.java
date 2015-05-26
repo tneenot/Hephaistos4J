@@ -84,8 +84,17 @@ public class RedundantSet<T> extends AbstractSet<T> {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public boolean retainAll(Collection<?> otherCollection) {
+        boolean _are_some_retaining = false;
+        List<T> _duplicate_for_loop = (List<T>) Arrays.asList(this.internalRedundantValues.values());
+        for (Object _element : _duplicate_for_loop) {
+            if (otherCollection.contains(_element) == false) {
+                this.internalRedundantValues.remove(_element);
+                _are_some_retaining = true;
+            }
+        }
+
+        return _are_some_retaining;
     }
 
     @Override

@@ -340,7 +340,7 @@ public class RedundantSetTest {
     public void test_retainAll_SameCollectionContent_CountElementForSameValueNotUpdated() {
         // Setup
         Collection<Integer> _other_collection = Arrays.asList(5);
-        RedundantSet<Integer> _set_ref = new RedundantSet<>(_other_collection);
+        RedundantSet<Integer> _set_ref = new RedundantSet<>();
         _set_ref.add(5);
 
         // SUT
@@ -354,7 +354,7 @@ public class RedundantSetTest {
     public void test_retainAll_SameCollectionContent_SizeValueNotUpdated() {
         // Setup
         Collection<Integer> _other_collection = Arrays.asList(5);
-        RedundantSet<Integer> _set_ref = new RedundantSet<>(_other_collection);
+        RedundantSet<Integer> _set_ref = new RedundantSet<>();
         _set_ref.add(5);
 
         // SUT
