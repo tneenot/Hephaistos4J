@@ -444,16 +444,19 @@ public class RedundantSetTest {
 
     @Test
     public void test_toArray_NonEmptyArray() {
+        // Setup
+        this.redundantSetTesting.add(1);
+
         Assert.assertEquals(1, this.redundantSetTesting.toArray().length);
     }
 
     @Test
     public void test_toArray_WithDuplicateValues_ValidArrayLength() {
         // Setup
-        this.setupWithDifferentValues();
+        int _nb_of_elements = this.setupWithDifferentValues();
 
         // SUT
-        Assert.assertEquals(3, this.redundantSetTesting.toArray().length);
+        Assert.assertEquals(_nb_of_elements, this.redundantSetTesting.toArray().length);
     }
 
     @Test
