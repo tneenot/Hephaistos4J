@@ -73,7 +73,7 @@ public class ClassBuilderTest {
     public void test_GetAllClasses_ValidClasses() {
         ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
         Collection<String> expResult;
-        expResult = Arrays.asList(new String[]{"ClassRef", "SecondClass", "ThirdClass"});
+        expResult = Arrays.asList("ClassRef", "SecondClass", "ThirdClass");
         Collection<ClassDefinition> result = instance.getAllClasses();
         for (ClassDefinition d : result) {
             assertTrue(expResult.contains(d.getName()));

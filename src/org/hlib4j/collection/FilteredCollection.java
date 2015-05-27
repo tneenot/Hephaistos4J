@@ -82,7 +82,6 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
 
     protected void setFilter(Rule<ElementType> ruleForThisCollection) {
         this.filter = States.validate(ruleForThisCollection);
-        ;
     }
 
     /*

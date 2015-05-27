@@ -19,7 +19,8 @@ package org.hlib4j.collection;
 *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 *  
 */
-import org.junit.*;
+
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
