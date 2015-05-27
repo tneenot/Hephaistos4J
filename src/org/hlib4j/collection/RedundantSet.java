@@ -75,9 +75,9 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     @Override
     public boolean removeAll(Collection<?> otherCollection) {
-        boolean _are_some_removing = true;
+        boolean _are_some_removing = false;
         for (Object _element : otherCollection) {
-            _are_some_removing &= this.remove(_element);
+            _are_some_removing |= this.remove(_element);
         }
 
         return _are_some_removing;
