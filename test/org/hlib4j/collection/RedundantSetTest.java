@@ -483,6 +483,21 @@ public class RedundantSetTest {
     }
 
     @Test
+    public void test_toArray_WithEmptyCollection_ArrayWithZeroLength() {
+
+        Assert.assertEquals(0, this.redundantSetTesting.toArray().length);
+    }
+
+    @Test
+    public void test_toArrayT_InvalidArraySize_FirstCellWithNull() {
+        // Setup
+        int _nb_of_elements = this.setupWithDifferentValues();
+
+        // SUT
+        Assert.assertNull(this.redundantSetTesting.toArray(new Integer[_nb_of_elements + 1])[0]);
+    }
+
+    @Test
     public void test_toArrayT_OnEmptySetList_EmptyArray() {
         // Setup
         RedundantSet<Integer> _set_local = new RedundantSet<>();
@@ -530,6 +545,12 @@ public class RedundantSetTest {
 
         // SUT
         Assert.assertEquals(this.redundantSetTesting.size(), this.redundantSetTesting.toArray(new Integer[0]).length);
+    }
+
+    @Test
+    public void test_toArrayT_WithEmptyCollection_ArrayWithZeroLength() {
+
+        Assert.assertEquals(0, this.redundantSetTesting.toArray(new Integer[0]).length);
     }
 
     @Test
