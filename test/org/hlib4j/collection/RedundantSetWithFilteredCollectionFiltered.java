@@ -17,8 +17,8 @@ public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilter
         this.invalidListRef = new RedundantSet<>();
     }
 
-    // Used only to force all running tests
     @Test
     public void test_RunAllUnitTests() {
+
     }
 }

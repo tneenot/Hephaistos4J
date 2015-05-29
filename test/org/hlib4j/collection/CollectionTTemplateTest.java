@@ -38,17 +38,14 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     protected abstract void instanciateReferencesTestData();
 
     protected void createTestData() {
-        List<Integer> _elements_list = this.randomGenerator.getRandomElements();
-
-        for (Integer i : _elements_list) {
-            if (this.collectionListRef.add(i) == false) {
-                // Adds twice to get an invalid elements list with at least more than one element
-                this.invalidListRef.add(i);
-                this.invalidListRef.add(i);
-            }
-        }
-
+        this.sourceListRef.addAll(this.randomGenerator.getRandomElements());
+        this.collectionListRef.addAll(this.randomGenerator.getRandomElements());
         this.collectionListRefSize = this.collectionListRef.size();
+
+        RandomGenerator _invalid_values = new RandomGenerator();
+        _invalid_values.generateRandomValues(10);
+
+        this.invalidListRef.addAll(_invalid_values.getRandomElements());
     }
 
     @After

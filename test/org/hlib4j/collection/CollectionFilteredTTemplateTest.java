@@ -11,6 +11,20 @@ public abstract class CollectionFilteredTTemplateTest<C extends java.util.Collec
 
     protected R ruleRef = null;
 
+    @Override
+    protected void createTestData() {
+        List<Integer> _elements_list = this.randomGenerator.getRandomElements();
+
+        for (Integer i : _elements_list) {
+            if (this.collectionListRef.add(i) == false) {
+                // Adds twice to get an invalid elements list with at least more than one element
+                this.invalidListRef.add(i);
+                this.invalidListRef.add(i);
+            }
+        }
+
+        this.collectionListRefSize = this.collectionListRef.size();
+    }
 
     @Test(expected = NullPointerException.class)
     public void test_Constructor_NullCollectionParameter_NullPointerException() {
