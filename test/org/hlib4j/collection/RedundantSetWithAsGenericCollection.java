@@ -1,7 +1,7 @@
 package org.hlib4j.collection;
 
 /**
- * Created by beonnet on 29/05/15.
+ * Unit tests for the {@link RedundantSet} include into the {@link CollectionTTemplateTest} to control the Liskov principle.
  */
 public class RedundantSetWithAsGenericCollection extends CollectionTTemplateTest<java.util.Collection<Integer>> {
 

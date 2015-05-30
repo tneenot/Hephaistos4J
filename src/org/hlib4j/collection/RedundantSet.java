@@ -116,7 +116,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
     @Override
     public <T1> T1[] toArray(T1[] externalArray) {
 
-        if (externalArray.length < this.size()) {
+        if (externalArray.length < this.size())
             externalArray = (T1[]) java.lang.reflect.Array.newInstance(externalArray.getClass().getComponentType(), this.size());
 
             Iterator<T> _it = this.iterator();
@@ -124,7 +124,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
             while (_it.hasNext()) {
                 externalArray[_counter++] = (T1) _it.next();
             }
-        }
+
 
         if (externalArray.length > this.size()) {
             externalArray[this.size()] = null;

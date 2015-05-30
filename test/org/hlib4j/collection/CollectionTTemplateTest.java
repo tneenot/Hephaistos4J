@@ -12,7 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by beonnet on 29/05/15.
+ * This template class groups the common unit tests for all Collection type classes. Inherit of this template abstract class into your self unit
+ * tests classes to ensure that the Liskov principle is respected.
  */
 public abstract class CollectionTTemplateTest<C extends java.util.Collection<Integer>> {
     protected C sourceListRef;
@@ -71,6 +72,7 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         this.sourceListRef = null;
     }
 
+    @SuppressWarnings({"StatementWithEmptyBody", "SuspiciousMethodCalls"})
     protected void purgeAValueFromCollection(Collection<Integer> sourceList, Object value) {
         while (sourceList.remove(value)) {
             // Do nothing else
@@ -82,16 +84,19 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         Assert.assertTrue(0 != this.collectionListRef.hashCode());
     }
 
+    @SuppressWarnings("EqualsWithItself")
     @Test
     public void test_Equals_ToItSelf() {
         Assert.assertTrue(this.collectionListRef.equals(this.collectionListRef));
     }
 
+    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     @Test
     public void test_Equals_NotEqualsWithAnIntegerType() {
         Assert.assertFalse(this.collectionListRef.equals(new Integer(5)));
     }
 
+    @SuppressWarnings("ObjectEqualsNull")
     @Test
     public void test_Equals_NotEqualsWithNullValue() {
         Assert.assertFalse(this.collectionListRef.equals(null));
@@ -176,7 +181,7 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         this.sourceListRef.addAll(this.invalidListRef);
 
         // Exercise
-        Integer[] _result = this.collectionListRef.toArray(new Integer[0]);
+        Integer[] _result = this.collectionListRef.toArray(new Integer[this.collectionListRef.size()]);
 
         // Assert
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {

@@ -494,7 +494,7 @@ public class RedundantSetTest {
         int _nb_of_elements = this.setupWithDifferentValues();
 
         // SUT
-        Assert.assertNull(this.redundantSetTesting.toArray(new Integer[_nb_of_elements + 1])[0]);
+        Assert.assertNull(this.redundantSetTesting.toArray(new Integer[_nb_of_elements + 1])[_nb_of_elements]);
     }
 
     @Test
