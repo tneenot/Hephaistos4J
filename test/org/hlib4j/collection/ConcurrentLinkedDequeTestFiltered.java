@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
     protected void instanciateReferencesTestData() {
-        this.sourceListRef = new ConcurrentLinkedDeque<>();
+        this.collectionOfThisTemplate = new ConcurrentLinkedDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 
-        this.collectionListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
-        this.invalidListRef = new ConcurrentLinkedDeque<>();
+        this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
+        this.invalidCollectionValues = new ConcurrentLinkedDeque<>();
 
     }
 

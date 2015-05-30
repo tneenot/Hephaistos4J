@@ -12,10 +12,10 @@ public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilter
 
     @Override
     protected void instanciateReferencesTestData() {
-        this.sourceListRef = new RedundantSet<>();
+        this.collectionOfThisTemplate = new RedundantSet<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
-        this.collectionListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
-        this.invalidListRef = new RedundantSet<>();
+        this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
+        this.invalidCollectionValues = new RedundantSet<>();
     }
 
     @Test

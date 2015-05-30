@@ -7,9 +7,9 @@ public class RedundantSetWithAsGenericCollection extends CollectionTTemplateTest
 
     @Override
     protected void instanciateReferencesTestData() {
-        this.sourceListRef = new RedundantSet<>();
-        this.invalidListRef = new RedundantSet<>();
-        this.collectionListRef = new RedundantSet<>();
+        this.collectionOfThisTemplate = new RedundantSet<>();
+        this.invalidCollectionValues = new RedundantSet<>();
+        this.testingCollection = new RedundantSet<>();
     }
 
     @Override

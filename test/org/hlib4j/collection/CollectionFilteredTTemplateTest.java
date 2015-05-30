@@ -16,14 +16,14 @@ public abstract class CollectionFilteredTTemplateTest<C extends java.util.Collec
         List<Integer> _elements_list = this.randomGenerator.getRandomElements();
 
         for (Integer i : _elements_list) {
-            if (this.collectionListRef.add(i) == false) {
+            if (this.testingCollection.add(i) == false) {
                 // Adds twice to get an invalid elements list with at least more than one element
-                this.invalidListRef.add(i);
-                this.invalidListRef.add(i);
+                this.invalidCollectionValues.add(i);
+                this.invalidCollectionValues.add(i);
             }
         }
 
-        this.collectionListRefSize = this.collectionListRef.size();
+        this.testingCollectionOriginalSize = this.testingCollection.size();
     }
 
     @Test(expected = NullPointerException.class)
@@ -33,7 +33,7 @@ public abstract class CollectionFilteredTTemplateTest<C extends java.util.Collec
 
     @Test(expected = NullPointerException.class)
     public void test_Constructor_NullRuleParameter_NullPointerException() {
-        Collections.makeFilteredCollection(this.sourceListRef, null);
+        Collections.makeFilteredCollection(this.collectionOfThisTemplate, null);
     }
 
 }

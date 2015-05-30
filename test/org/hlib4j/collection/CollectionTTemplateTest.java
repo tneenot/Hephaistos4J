@@ -16,10 +16,10 @@ import java.util.List;
  * tests classes to ensure that the Liskov principle is respected.
  */
 public abstract class CollectionTTemplateTest<C extends java.util.Collection<Integer>> {
-    protected C sourceListRef;
-    protected C collectionListRef;
-    protected C invalidListRef;
-    protected int collectionListRefSize = 0;
+    protected C collectionOfThisTemplate;
+    protected C testingCollection;
+    protected C invalidCollectionValues;
+    protected int testingCollectionOriginalSize = 0;
     protected RandomGenerator randomGenerator;
 
     @Before
@@ -39,14 +39,14 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     protected abstract void instanciateReferencesTestData();
 
     protected void createTestData() {
-        this.sourceListRef.addAll(this.randomGenerator.getRandomElements());
-        this.collectionListRef.addAll(this.randomGenerator.getRandomElements());
-        this.collectionListRefSize = this.collectionListRef.size();
+        this.collectionOfThisTemplate.addAll(this.randomGenerator.getRandomElements());
+        this.testingCollection.addAll(this.randomGenerator.getRandomElements());
+        this.testingCollectionOriginalSize = this.testingCollection.size();
 
         RandomGenerator _invalid_values = new RandomGenerator();
         _invalid_values.generateRandomValues(10);
 
-        this.invalidListRef.addAll(_invalid_values.getRandomElements());
+        this.invalidCollectionValues.addAll(_invalid_values.getRandomElements());
     }
 
     @After
@@ -59,17 +59,17 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     }
 
     private void deleteTestData() {
-        this.collectionListRef.clear();
-        this.sourceListRef.clear();
-        this.collectionListRefSize = 0;
+        this.testingCollection.clear();
+        this.collectionOfThisTemplate.clear();
+        this.testingCollectionOriginalSize = 0;
 
         this.randomGenerator.getRandomElements().clear();
     }
 
     private void destroyElementsReferences() {
-        this.invalidListRef = null;
-        this.collectionListRef = null;
-        this.sourceListRef = null;
+        this.invalidCollectionValues = null;
+        this.testingCollection = null;
+        this.collectionOfThisTemplate = null;
     }
 
     @SuppressWarnings({"StatementWithEmptyBody", "SuspiciousMethodCalls"})
@@ -81,96 +81,96 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
 
     @Test
     public void test_HashCode_Valid() {
-        Assert.assertTrue(0 != this.collectionListRef.hashCode());
+        Assert.assertTrue(0 != this.testingCollection.hashCode());
     }
 
     @SuppressWarnings("EqualsWithItself")
     @Test
     public void test_Equals_ToItSelf() {
-        Assert.assertTrue(this.collectionListRef.equals(this.collectionListRef));
+        Assert.assertTrue(this.testingCollection.equals(this.testingCollection));
     }
 
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     @Test
     public void test_Equals_NotEqualsWithAnIntegerType() {
-        Assert.assertFalse(this.collectionListRef.equals(new Integer(5)));
+        Assert.assertFalse(this.testingCollection.equals(new Integer(5)));
     }
 
     @SuppressWarnings("ObjectEqualsNull")
     @Test
     public void test_Equals_NotEqualsWithNullValue() {
-        Assert.assertFalse(this.collectionListRef.equals(null));
+        Assert.assertFalse(this.testingCollection.equals(null));
     }
 
     @Test
     public void test_Equals_EqualsWithObjectType() {
-        Assert.assertFalse(this.collectionListRef.equals(new Object()));
+        Assert.assertFalse(this.testingCollection.equals(new Object()));
     }
 
     @Test
     public void test_RemoveAll_NoValidValues() {
-        Assert.assertFalse(this.collectionListRef.removeAll(this.invalidListRef));
+        Assert.assertFalse(this.testingCollection.removeAll(this.invalidCollectionValues));
     }
 
     @Test
     public void test_RemoveAll_NoValidValues_ReferencesValuesNotRemoved() {
-        this.collectionListRef.removeAll(this.invalidListRef);
+        this.testingCollection.removeAll(this.invalidCollectionValues);
 
-        Assert.assertEquals(this.collectionListRefSize, this.collectionListRef.size());
+        Assert.assertEquals(this.testingCollectionOriginalSize, this.testingCollection.size());
     }
 
     @Test
     public void test_RemoveAll_AllGivenValidValues() {
-        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+        List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
-        Assert.assertTrue(this.collectionListRef.removeAll(this.randomGenerator.getSubListFromList(_list, 3)));
+        Assert.assertTrue(this.testingCollection.removeAll(this.randomGenerator.getSubListFromList(_list, 3)));
     }
 
     @Test
     public void test_RemoveAll_AllGivenValidValues_ReferencesValuesRemoved() {
-        List<Integer> _list = new ArrayList<>(this.sourceListRef);
-        this.collectionListRef.removeAll(_list);
+        List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
+        this.testingCollection.removeAll(_list);
 
-        Assert.assertNotEquals(this.collectionListRefSize, this.collectionListRef.size());
+        Assert.assertNotEquals(this.testingCollectionOriginalSize, this.testingCollection.size());
     }
 
     @Test
     public void test_Clear_NoValuesLeft() {
-        this.collectionListRef.clear();
+        this.testingCollection.clear();
 
-        Assert.assertEquals(0, this.collectionListRef.size());
+        Assert.assertEquals(0, this.testingCollection.size());
     }
 
     @Test
     public void test_IsEmpty_InvalidForNonEmptyCollection() {
-        Assert.assertFalse(this.collectionListRef.isEmpty());
+        Assert.assertFalse(this.testingCollection.isEmpty());
     }
 
     @Test
     public void test_ContainsAll_AwaitingValidValues() {
-        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+        List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
-        Assert.assertTrue(this.collectionListRef.containsAll(this.randomGenerator.getSubListFromList(_list, 2)));
+        Assert.assertTrue(this.testingCollection.containsAll(this.randomGenerator.getSubListFromList(_list, 2)));
     }
 
     @Test
     public void test_RetainAll_WithValidValues() {
-        List<Integer> _list = new ArrayList<>(this.sourceListRef);
+        List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
-        Assert.assertTrue(this.collectionListRef.retainAll(this.randomGenerator.getSubListFromList(_list, 3)));
+        Assert.assertTrue(this.testingCollection.retainAll(this.randomGenerator.getSubListFromList(_list, 3)));
     }
 
     @Test
     public void test_RetainAll_WithInvalidValues() {
-        Assert.assertFalse(this.collectionListRef.retainAll(this.invalidListRef));
+        Assert.assertFalse(this.testingCollection.retainAll(this.invalidCollectionValues));
     }
 
     @Test
     public void test_RetainAll_WithInvalidValues_NotContainsBadValues() {
-        this.collectionListRef.retainAll(this.invalidListRef);
+        this.testingCollection.retainAll(this.invalidCollectionValues);
 
-        for (Integer i : this.invalidListRef) {
-            Assert.assertFalse(this.collectionListRef.contains(i));
+        for (Integer i : this.invalidCollectionValues) {
+            Assert.assertFalse(this.testingCollection.contains(i));
         }
     }
 
@@ -178,10 +178,10 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     public void test_ToArrayT_RemoveInvalidValues() {
         // Setup
         int _invalid_value = getAnInvalidValue();
-        this.sourceListRef.addAll(this.invalidListRef);
+        this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
 
         // Exercise
-        Integer[] _result = this.collectionListRef.toArray(new Integer[this.collectionListRef.size()]);
+        Integer[] _result = this.testingCollection.toArray(new Integer[this.testingCollection.size()]);
 
         // Assert
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
@@ -192,11 +192,11 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     @Test
     public void test_ToArray_RemoveInvalidValues() {
         // Setup
-        this.sourceListRef.addAll(this.invalidListRef);
+        this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
         int _invalid_value = getAnInvalidValue();
 
         // Exercise
-        Object[] _result = this.collectionListRef.toArray();
+        Object[] _result = this.testingCollection.toArray();
 
         // Assert - Control if the invalid value exists into the final array
         for (int _cpt = 0; _cpt < _result.length; ++_cpt) {
@@ -206,7 +206,7 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     }
 
     protected int getAnInvalidValue() {
-        List<Integer> _parsing_list = new ArrayList<>(this.invalidListRef);
+        List<Integer> _parsing_list = new ArrayList<>(this.invalidCollectionValues);
         return this.randomGenerator.getOnceValueFrom(_parsing_list);
     }
 
@@ -216,7 +216,7 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         int _invalid_value = getAnInvalidValue();
 
         // Assert
-        Assert.assertFalse(this.collectionListRef.contains(_invalid_value));
+        Assert.assertFalse(this.testingCollection.contains(_invalid_value));
     }
 
     @Test
@@ -225,34 +225,34 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         int _invalid_value = getAnInvalidValue();
 
         // Exercise
-        this.sourceListRef.addAll(this.invalidListRef);
+        this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
 
         // Assert
-        Assert.assertFalse(this.collectionListRef.contains(_invalid_value));
+        Assert.assertFalse(this.testingCollection.contains(_invalid_value));
     }
 
     @Test
     public void test_Contains_FromExternalCollectionWithValidData() {
         int _valid_value = getAValidValue();
 
-        Assert.assertTrue(this.collectionListRef.contains(_valid_value));
+        Assert.assertTrue(this.testingCollection.contains(_valid_value));
     }
 
     protected int getAValidValue() {
-        List<Integer> _parsing_list = new ArrayList<>(this.sourceListRef);
+        List<Integer> _parsing_list = new ArrayList<>(this.collectionOfThisTemplate);
         return this.randomGenerator.getOnceValueFrom(_parsing_list);
     }
 
     @Test
     public void test_Size_ControlSizeValue() {
-        Assert.assertEquals(this.collectionListRefSize, this.collectionListRef.size());
+        Assert.assertEquals(this.testingCollectionOriginalSize, this.testingCollection.size());
     }
 
     @Test
     public void test_Add_ValidData() {
         int _valid_value = getAValidValue();
 
-        Assert.assertTrue(this.collectionListRef.add(_valid_value));
+        Assert.assertTrue(this.testingCollection.add(_valid_value));
     }
 
     @Test
@@ -261,48 +261,48 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         int _valid_value = getAValidValue();
 
         // Remove old value to be sure while it will be added, there will be only one first occurence of this value
-        purgeAValueFromCollection(this.collectionListRef, _valid_value);
+        purgeAValueFromCollection(this.testingCollection, _valid_value);
 
         // Exercise
-        this.collectionListRef.add(_valid_value);
+        this.testingCollection.add(_valid_value);
 
         // Assert
-        Assert.assertTrue(this.collectionListRef.contains(_valid_value));
+        Assert.assertTrue(this.testingCollection.contains(_valid_value));
     }
 
     @Test
     public void test_AddAll_ValidData() {
         // Setup
-        Collection<Integer> _copy = new ArrayList<>(this.collectionListRef);
+        Collection<Integer> _copy = new ArrayList<>(this.testingCollection);
 
         // Assert
-        Assert.assertTrue(this.collectionListRef.addAll(_copy));
+        Assert.assertTrue(this.testingCollection.addAll(_copy));
     }
 
     @Test
     public void test_AddAll_InvalidData() {
-        Assert.assertFalse(this.collectionListRef.addAll(this.invalidListRef));
+        Assert.assertFalse(this.testingCollection.addAll(this.invalidCollectionValues));
     }
 
     @Test
     public void test_Add_InvalidData() {
         int _invalid_value = getAnInvalidValue();
 
-        Assert.assertFalse(this.collectionListRef.add(_invalid_value));
+        Assert.assertFalse(this.testingCollection.add(_invalid_value));
     }
 
     @Test
     public void test_Add_InvalidData_ControlIsNotInCollection() {
         int _invalid_value = getAnInvalidValue();
 
-        this.collectionListRef.add(_invalid_value);
+        this.testingCollection.add(_invalid_value);
 
-        Assert.assertFalse(this.collectionListRef.contains(_invalid_value));
+        Assert.assertFalse(this.testingCollection.contains(_invalid_value));
     }
 
     @Test
     public void test_Iterator_NotNull() {
-        Assert.assertNotNull(this.collectionListRef.iterator());
+        Assert.assertNotNull(this.testingCollection.iterator());
     }
 
     @Test
@@ -311,10 +311,10 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
         int _invalid_value = getAnInvalidValue();
 
         // Exercise
-        this.sourceListRef.add(_invalid_value);
+        this.collectionOfThisTemplate.add(_invalid_value);
 
         // Assert
-        Iterator<Integer> _it = this.collectionListRef.iterator();
+        Iterator<Integer> _it = this.testingCollection.iterator();
         while (_it.hasNext()) {
             Assert.assertNotEquals(1, _it.next().intValue());
         }
@@ -322,21 +322,21 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
 
     @Test
     public void test_Remove_ValidValue() {
-        Assert.assertTrue(this.collectionListRef.remove(getAValidValue()));
+        Assert.assertTrue(this.testingCollection.remove(getAValidValue()));
     }
 
     @Test
     public void test_Remove_InvalidValue() {
-        Assert.assertFalse(this.collectionListRef.remove(getAnInvalidValue()));
+        Assert.assertFalse(this.testingCollection.remove(getAnInvalidValue()));
     }
 
     @Test
     public void test_Remove_InvalidValue_FromExternalCollection() {
         // Setup
         int _invalid_value = getAnInvalidValue();
-        this.sourceListRef.add(_invalid_value);
+        this.collectionOfThisTemplate.add(_invalid_value);
 
         // Assert
-        Assert.assertFalse(this.collectionListRef.remove(_invalid_value));
+        Assert.assertFalse(this.testingCollection.remove(_invalid_value));
     }
 }

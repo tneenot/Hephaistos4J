@@ -6,16 +6,16 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 
 /**
- * Unit tests based on template for ArrayDeque type.
+ * Unit tests based on template for {@link ArrayDeque} type.
  */
 public class ArrayDequeTestFiltered extends CollectionFilteredTTemplateTest<Collection<Integer>, Not<Integer>> {
     @Override
     protected void instanciateReferencesTestData() {
-        this.sourceListRef = new ArrayDeque<>();
+        this.collectionOfThisTemplate = new ArrayDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 
-        this.collectionListRef = Collections.makeFilteredCollection(this.sourceListRef, this.ruleRef);
-        this.invalidListRef = new ArrayDeque<>();
+        this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
+        this.invalidCollectionValues = new ArrayDeque<>();
 
     }
 
