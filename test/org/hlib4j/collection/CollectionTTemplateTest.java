@@ -147,6 +147,15 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     }
 
     @Test
+    public void test_IsEmpty_EmptyAfterCollectionClearing() {
+        // Setup
+        this.testingCollection.clear();
+
+        // Assert
+        Assert.assertTrue(this.testingCollection.isEmpty());
+    }
+
+    @Test
     public void test_ContainsAll_AwaitingValidValues() {
         List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
@@ -175,7 +184,7 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     }
 
     @Test
-    public void test_ToArrayT_RemoveInvalidValues() {
+    public void test_toArrayT_RemoveInvalidValues() {
         // Setup
         int _invalid_value = getAnInvalidValue();
         this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
@@ -190,7 +199,16 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
     }
 
     @Test
-    public void test_ToArray_RemoveInvalidValues() {
+    public void test_toArrayT_RemoveValues_EmptyArray() {
+        // Setup
+        this.testingCollection.clear();
+
+        // Assert
+        Assert.assertNull(this.testingCollection.toArray(new Integer[2])[0]);
+    }
+
+    @Test
+    public void test_toArray_RemoveInvalidValues() {
         // Setup
         this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
         int _invalid_value = getAnInvalidValue();
@@ -203,6 +221,15 @@ public abstract class CollectionTTemplateTest<C extends java.util.Collection<Int
             Integer i = (Integer) _result[_cpt];
             Assert.assertNotEquals(_invalid_value, i.intValue());
         }
+    }
+
+    @Test
+    public void test_toArray_RemoveValues_EmptyArray() {
+        // Setup
+        this.testingCollection.clear();
+
+        // Asset
+        Assert.assertEquals(0, this.testingCollection.toArray().length);
     }
 
     protected int getAnInvalidValue() {
