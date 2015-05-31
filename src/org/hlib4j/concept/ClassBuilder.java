@@ -42,10 +42,10 @@ import java.util.logging.Logger;
 /**
  * This factory create a class according to a name that's corresponding into a XML definition. It's possible to know all
  * available classes by using the <code>getAllClasses()</code> method.
- * <p>
+ *
  * <h2>Description</h2>
  * Classes definitions are specifying in a XML file whose format contents is describing here after.
- * <p>
+ *
  * <h2>XML file format</h2>
  * The XML file format is defining like following: <br>
  * <pre>
@@ -67,7 +67,7 @@ import java.util.logging.Logger;
  *  &lt;/class&gt;
  * &lt;/classes&gt;
  * </pre>
- * <br>
+ *
  * This XML file is loading with <code>ClassBuilder</code> that allows to create an instance of {@link ClassDefinition}
  * type according to a class name that's corresponding to XML description file. The {@link ClassDefinition} instance is
  * created with {@link #createInstance(java.lang.String)} method. If an invalid name or non existent name is given as

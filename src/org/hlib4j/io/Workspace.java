@@ -141,15 +141,14 @@ public class Workspace extends File {
      * Deletion will be attempted only for normal termination of the
      * virtual machine, as defined by the Java Language Specification.
      * <p>
-     * <p> Once deletion has been requested, it is not possible to cancel the
+     * Once deletion has been requested, it is not possible to cancel the
      * request.  This method should therefore be used with care.
-     * <p>
-     * <p>
+     *
      * Note: this method should <i>not</i> be used for file-locking, as
      * the resulting protocol cannot be made to work reliably. The
      * {@link java.nio.channels.FileLock FileLock}
      * facility should be used instead.
-     *
+     * </p>
      * @throws SecurityException If a security manager exists and its <code>{@link
      *                           SecurityManager#checkDelete}</code> method denies
      *                           delete access to the file
