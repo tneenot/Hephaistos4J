@@ -51,7 +51,11 @@ public abstract class DefinitionDomainTTemplateTest<D extends DefinitionDomain<T
     public abstract void tearDown() throws Exception;
 }
 
-class FakeDefinitionDomainAlwaysTrue implements DefinitionDomain<Integer> {
+/**
+ * This class is using for {@link DefinitionDomainTTemplateTest} self tests. It's allowing to control that tests of template are conforms
+ * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation.
+ */
+class FakeDefinitionDomain implements DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(Integer value) {
         if (value < 0) {
@@ -69,8 +73,23 @@ class FakeDefinitionDomainAlwaysTrue implements DefinitionDomain<Integer> {
 
         return true;
     }
+
+    @Override
+    public Integer getLowerLimitValue() {
+        return 0;
+    }
+
+    @Override
+    public Integer getUpperLimitValue() {
+        return 3;
+    }
 }
 
+/**
+ * This class is using for {@link DefinitionDomainTTemplateTest} self tests. It's allowing to control that tests of template are conforms
+ * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation. This class return always false for
+ * its methods, for self {@link DefinitionDomainTTemplateTest} self control.
+ */
 class FakeDefinitionDomainAlwaysFalse implements DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(Integer value) {
@@ -80,5 +99,15 @@ class FakeDefinitionDomainAlwaysFalse implements DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(DefinitionDomain<Integer> otherDefinitionDomain) {
         return false;
+    }
+
+    @Override
+    public Integer getLowerLimitValue() {
+        return 0;
+    }
+
+    @Override
+    public Integer getUpperLimitValue() {
+        return 3;
     }
 }

@@ -22,4 +22,18 @@ public interface DefinitionDomain<Type> {
      * @return <code>True</code> if the domain is include into the current one.
      */
     boolean isInclude(DefinitionDomain<Type> otherDefinitionDomain);
+
+    /**
+     * Gets the lower limit value of the definition domain.
+     *
+     * @return Lower limit value of the definition domain.
+     */
+    Type getLowerLimitValue();
+
+    /**
+     * Gets the upper limit value of the definition domain.
+     *
+     * @return Upper limit value of the definition domain.
+     */
+    Type getUpperLimitValue();
 }

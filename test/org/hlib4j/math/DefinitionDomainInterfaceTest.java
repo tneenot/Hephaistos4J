@@ -9,7 +9,7 @@ import org.junit.Test;
 public class DefinitionDomainInterfaceTest extends DefinitionDomainTTemplateTest<DefinitionDomain<Integer>, Integer> {
     @Override
     public void setUp() throws Exception {
-        this.definitionDomainTesting = new FakeDefinitionDomainAlwaysTrue();
+        this.definitionDomainTesting = new FakeDefinitionDomain();
         this.invalidDefinitionDomainInclude = new FakeDefinitionDomainAlwaysFalse();
         this.validDataInclude = 1;
         this.invalidDataInclude = -2;
