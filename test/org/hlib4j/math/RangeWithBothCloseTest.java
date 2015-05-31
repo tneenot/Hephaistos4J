@@ -21,7 +21,7 @@ public class RangeWithBothCloseTest {
         RandomGenerator _random = new RandomGenerator();
         validValue = _random.getIsolatedValue();
 
-        rangeInTest = new Range(Range.RangeType.BOTH_CLOSE, validValue, validValue + RANGE_VALUES);
+        rangeInTest = new Range(DefinitionDomain.LimitType.BOTH_CLOSE, validValue, validValue + RANGE_VALUES);
         validValue += 1;
     }
 
@@ -66,7 +66,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_isInclude_ValidSubRange_RangeInclude() throws RangeException {
         // Setup
-        Range<Integer> _sub_range = new Range<>(this.rangeInTest.getRangeType(), this.rangeInTest.getLowerLimitValue() + 1, this
+        Range<Integer> _sub_range = new Range<>(this.rangeInTest.getLimitType(), this.rangeInTest.getLowerLimitValue() + 1, this
                 .rangeInTest.getUpperLimitValue() - 1);
 
         // Assert
@@ -76,7 +76,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_isInclude_InvalidSubRange_RangeNotInclude() throws RangeException {
         // Setup
-        Range<Integer> _sub_range = new Range<>(this.rangeInTest.getRangeType(), this.rangeInTest.getLowerLimitValue() - 1, this
+        Range<Integer> _sub_range = new Range<>(this.rangeInTest.getLimitType(), this.rangeInTest.getLowerLimitValue() - 1, this
                 .rangeInTest.getUpperLimitValue() + 1);
 
         // Assert
@@ -86,7 +86,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_isInclude_BothOpenRangeDefinition_RangeNotInclude() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<Integer>(Range.RangeType.BOTH_OPEN, this.rangeInTest.getLowerLimitValue(), this
+        Range<Integer> _other_range = new Range<Integer>(DefinitionDomain.LimitType.BOTH_OPEN, this.rangeInTest.getLowerLimitValue(), this
                 .rangeInTest.getUpperLimitValue(), validValue + 1);
 
         // Asset
@@ -96,7 +96,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_isInclude_OpenCloseRangeDefinition_RangeNotInclude() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<Integer>(Range.RangeType.OPEN_CLOSE, this.rangeInTest.getLowerLimitValue(), this
+        Range<Integer> _other_range = new Range<Integer>(DefinitionDomain.LimitType.OPEN_CLOSE, this.rangeInTest.getLowerLimitValue(), this
                 .rangeInTest.getUpperLimitValue());
 
         // Assert
@@ -106,7 +106,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_isInclude_CloseOpenRangeDefinition_RangeNotInclude() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<Integer>(Range.RangeType.CLOSE_OPEN, this.rangeInTest.getLowerLimitValue(), this
+        Range<Integer> _other_range = new Range<Integer>(DefinitionDomain.LimitType.CLOSE_OPEN, this.rangeInTest.getLowerLimitValue(), this
                 .rangeInTest.getUpperLimitValue());
 
         // Assert
@@ -154,7 +154,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_Equals_WithBothOpenRange_NotEquals() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<Integer>(Range.RangeType.BOTH_OPEN, this.rangeInTest.getLowerLimitValue(), this
+        Range<Integer> _other_range = new Range<Integer>(DefinitionDomain.LimitType.BOTH_OPEN, this.rangeInTest.getLowerLimitValue(), this
                 .rangeInTest.getUpperLimitValue(), validValue + 1);
 
         // Assert
@@ -164,7 +164,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_Equals_WithCloseOpenRange_NotEquals() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<>(Range.RangeType.CLOSE_OPEN, this.rangeInTest.getLowerLimitValue(), this.rangeInTest
+        Range<Integer> _other_range = new Range<>(DefinitionDomain.LimitType.CLOSE_OPEN, this.rangeInTest.getLowerLimitValue(), this.rangeInTest
                 .getUpperLimitValue());
 
         // Assert
@@ -174,7 +174,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_Equals_WithOpenCloseRange_NotEquals() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<>(Range.RangeType.OPEN_CLOSE, this.rangeInTest.getLowerLimitValue(), this.rangeInTest
+        Range<Integer> _other_range = new Range<>(DefinitionDomain.LimitType.OPEN_CLOSE, this.rangeInTest.getLowerLimitValue(), this.rangeInTest
                 .getUpperLimitValue());
 
         // Assert
@@ -184,7 +184,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_Equals_WithSubRange_NotEquals() throws RangeException {
         // Setup
-        Range<Integer> _sub_range = new Range<Integer>(this.rangeInTest.getRangeType(), this.rangeInTest.getLowerLimitValue() + 1, this
+        Range<Integer> _sub_range = new Range<Integer>(this.rangeInTest.getLimitType(), this.rangeInTest.getLowerLimitValue() + 1, this
                 .rangeInTest.getUpperLimitValue() - 1);
 
         // Assert
@@ -199,7 +199,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_HashCode_DifferentRange_HashCodeNotEquals() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<Integer>(this.rangeInTest.getRangeType(), this.rangeInTest.getLowerLimitValue() - 1, this
+        Range<Integer> _other_range = new Range<Integer>(this.rangeInTest.getLimitType(), this.rangeInTest.getLowerLimitValue() - 1, this
                 .rangeInTest.getUpperLimitValue() + 1);
 
         // Assert
@@ -209,7 +209,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_HashCode_SameRangeValues_HashCodeEquals() throws RangeException {
         // Setup
-        Range<Integer> _same_range = new Range<Integer>(this.rangeInTest.getRangeType(), this.rangeInTest.getLowerLimitValue(), this
+        Range<Integer> _same_range = new Range<Integer>(this.rangeInTest.getLimitType(), this.rangeInTest.getLowerLimitValue(), this
                 .rangeInTest.getUpperLimitValue());
 
         // Assert
@@ -229,7 +229,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_toString_DifferentRange_DescriptionNotEquals() throws RangeException {
         // Setup
-        Range<Integer> _other_range = new Range<Integer>(this.rangeInTest.getRangeType(), this.rangeInTest.getLowerLimitValue() - 1, this
+        Range<Integer> _other_range = new Range<Integer>(this.rangeInTest.getLimitType(), this.rangeInTest.getLowerLimitValue() - 1, this
                 .rangeInTest.getUpperLimitValue() + 1);
 
         // Assert
@@ -238,33 +238,33 @@ public class RangeWithBothCloseTest {
 
     @Test(expected = RangeException.class)
     public void test_Constructor_SwitchUpperAndLowerLimit_RangeException() throws RangeException {
-        new Range<Integer>(Range.RangeType.BOTH_OPEN, 1, -1);
+        new Range<Integer>(DefinitionDomain.LimitType.BOTH_OPEN, 1, -1);
     }
 
     @Test(expected = RangeException.class)
     public void test_Constructor_InvalidCurrentValue_RangeException() throws RangeException {
-        new Range<Integer>(Range.RangeType.BOTH_CLOSE, 1, 2, 3);
+        new Range<Integer>(DefinitionDomain.LimitType.BOTH_CLOSE, 1, 2, 3);
     }
 
     @Test
     public void test_Constructor_ValidCurrentValue() throws RangeException {
-        new Range<Integer>(Range.RangeType.BOTH_CLOSE, 1, 3, 2);
+        new Range<Integer>(DefinitionDomain.LimitType.BOTH_CLOSE, 1, 3, 2);
     }
 
     @Test
     public void test_Constructor_BothCloseWithSameLimits_ValidCurrentValue() throws RangeException {
-        new Range<Integer>(Range.RangeType.BOTH_CLOSE, 1, 1, 1);
+        new Range<Integer>(DefinitionDomain.LimitType.BOTH_CLOSE, 1, 1, 1);
     }
 
     @Test(expected = RangeException.class)
     public void test_Constructor_BothCloseWithSameLimitsAndInvalidCurrentValue_RangeException() throws RangeException {
-        new Range<Integer>(Range.RangeType.BOTH_CLOSE, 0, 0, 1);
+        new Range<Integer>(DefinitionDomain.LimitType.BOTH_CLOSE, 0, 0, 1);
     }
 
     @Test
     public void test_Constructor_OpenCloseNotSameLimits_CurrentValueIsGreaterThanLimitValue() throws RangeException {
         // Setup
-        Range<Integer> _range = new Range<Integer>(Range.RangeType.OPEN_CLOSE, 0, 1);
+        Range<Integer> _range = new Range<Integer>(DefinitionDomain.LimitType.OPEN_CLOSE, 0, 1);
 
         // Assert
         Assert.assertEquals(_range.getCurrentValue(), _range.getUpperLimitValue());
@@ -273,7 +273,7 @@ public class RangeWithBothCloseTest {
     @Test
     public void test_Constructor_CloseOpenNotSameLimits_CurrentValueIsEqualsToLowerLimitValue() throws RangeException {
         // Setup
-        Range<Integer> _range = new Range<>(Range.RangeType.CLOSE_OPEN, 0, 1);
+        Range<Integer> _range = new Range<>(DefinitionDomain.LimitType.CLOSE_OPEN, 0, 1);
 
         // Assert
         Assert.assertEquals(_range.getCurrentValue(), _range.getLowerLimitValue());
@@ -282,12 +282,12 @@ public class RangeWithBothCloseTest {
     @Test(expected = RangeException.class)
     public void test_Constructor_BothOpenNotSameLimitsWithSufficentRange_ImpossibleToSetDefaultValue_RangeException() throws
             RangeException {
-        new Range<>(Range.RangeType.BOTH_OPEN, 1, 3);
+        new Range<>(DefinitionDomain.LimitType.BOTH_OPEN, 1, 3);
     }
 
     @Test(expected = RangeException.class)
     public void test_Constructor_BothOpenNotSameLimitsWithInsufficentRange_RangeException() throws RangeException {
-        new Range<Integer>(Range.RangeType.BOTH_OPEN, 0, 1);
+        new Range<Integer>(DefinitionDomain.LimitType.BOTH_OPEN, 0, 1);
     }
 
     @After

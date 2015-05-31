@@ -55,7 +55,7 @@ public abstract class DefinitionDomainTTemplateTest<D extends DefinitionDomain<T
  * This class is using for {@link DefinitionDomainTTemplateTest} self tests. It's allowing to control that tests of template are conforms
  * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation.
  */
-class FakeDefinitionDomain implements DefinitionDomain<Integer> {
+class FakeDefinitionDomain extends DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(Integer value) {
         if (value < 0) {
@@ -90,7 +90,7 @@ class FakeDefinitionDomain implements DefinitionDomain<Integer> {
  * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation. This class return always false for
  * its methods, for self {@link DefinitionDomainTTemplateTest} self control.
  */
-class FakeDefinitionDomainAlwaysFalse implements DefinitionDomain<Integer> {
+class FakeDefinitionDomainAlwaysFalse extends DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(Integer value) {
         return false;
