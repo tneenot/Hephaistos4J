@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link Range} class.
  */
-public class RangeWithBothCloseTest {
+public class RangeTest {
 
     private static final int RANGE_VALUES = 10;
 

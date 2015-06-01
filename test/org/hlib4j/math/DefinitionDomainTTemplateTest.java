@@ -30,7 +30,9 @@ public abstract class DefinitionDomainTTemplateTest<D extends DefinitionDomain<T
     }
 
     @Test
-    public abstract void test_isInclude_SelfDataFromDefinitionDomain_DataInclude();
+    public void test_isInclude_SelfDataFromDefinitionDomain_DataInclude() {
+        Assert.assertTrue(this.definitionDomainTesting.isInclude(this.validDataInclude));
+    }
 
     @Test
     public void test_isInclude_ValidDefinitionDomain_DefinitionDomainInclude() {
@@ -48,7 +50,8 @@ public abstract class DefinitionDomainTTemplateTest<D extends DefinitionDomain<T
     }
 
     @After
-    public abstract void tearDown() throws Exception;
+    public void tearDown() throws Exception {
+    }
 }
 
 /**
