@@ -129,7 +129,7 @@ public class RangeWithBothCloseTest {
     }
 
     @Test
-    public void test_SetCurrentValue_ValidValue_ValueUpdated() throws Exception {
+    public void test_SetCurrentValue_ValidValue_ValueUpdated() throws RangeException {
         // SUT
         rangeInTest.setCurrentValue(validValue);
 
@@ -223,7 +223,7 @@ public class RangeWithBothCloseTest {
                 rangeInTest.getCurrentValue();
 
         // Assert
-        Assert.assertEquals(_awaiting_description.toString(), rangeInTest.toString());
+        Assert.assertEquals(_awaiting_description, rangeInTest.toString());
     }
 
     @Test

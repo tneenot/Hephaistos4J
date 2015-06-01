@@ -14,16 +14,16 @@ public class RedundantSetWithAsGenericCollection extends CollectionTTemplateTest
 
     @Override
     public void test_Add_InvalidData() {
-        // Not available for this collection type. Test skip.
+        // Not available for this collection type. Skip test.
     }
 
     @Override
     public void test_AddAll_InvalidData() {
-        // Not available for this collection type. Test skip.
+        // Not available for this collection type. Skip test.
     }
 
     @Override
     public void test_Add_InvalidData_ControlIsNotInCollection() {
-        // Not available for this collection type. Test skip.
+        // Not available for this collection type. Skip test.
     }
 }
