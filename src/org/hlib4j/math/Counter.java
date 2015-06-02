@@ -38,7 +38,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after increment.
      * @throws RangeException If the value is reaching the counter upper limit.
      */
-    int increment() throws RangeException {
+    public int increment() throws RangeException {
         return incrementByStep(1);
     }
 
@@ -50,7 +50,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after increment.
      * @throws RangeException If the value is reaching the counter upper limit.
      */
-    int incrementByStep(int step) throws RangeException {
+    public int incrementByStep(int step) throws RangeException {
         this.setCurrentValue(this.getCurrentValue() + step);
 
         return this.getCurrentValue();
@@ -62,7 +62,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after decrement.
      * @throws RangeException If the value is reaching the counter lower limit.
      */
-    int decrement() throws RangeException {
+    public int decrement() throws RangeException {
         return decrementByStep(1);
     }
 
@@ -74,7 +74,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after decrement.
      * @throws RangeException If the value is reaching the counter low limit.
      */
-    int decrementByStep(int step) throws RangeException {
+    public int decrementByStep(int step) throws RangeException {
         this.setCurrentValue(this.getCurrentValue() - step);
 
         return this.getCurrentValue();
@@ -85,7 +85,7 @@ public class Counter extends Range<Integer> {
      *
      * @return Value of the counter step.
      */
-    int getCounterStep() {
+    public int getCounterStep() {
         return counterStep;
     }
 
@@ -95,7 +95,7 @@ public class Counter extends Range<Integer> {
      * @param counterStep Counter step value (can be negative).
      * @throws RangeException If the counterStep value overload one of the counter limits.
      */
-    void setCounterStep(int counterStep) throws RangeException {
+    public void setCounterStep(int counterStep) throws RangeException {
         int _hypothetic_value = this.getCurrentValue() + counterStep;
 
         if (_hypothetic_value >= this.getUpperLimitValue() || _hypothetic_value <= this.getLowerLimitValue()) {

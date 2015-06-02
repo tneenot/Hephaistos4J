@@ -1,5 +1,8 @@
 package org.hlib4j.collection;
 
+import org.hlib4j.math.Counter;
+import org.hlib4j.math.RangeException;
+
 import java.util.*;
 
 /**
@@ -13,8 +16,7 @@ import java.util.*;
  */
 public class RedundantSet<T> extends AbstractSet<T> {
 
-    // TODO: replace Integer by a new class: Counter => Increment(), Decrement(). Counter gets the inital value and the default step for value counting.
-    private final Map<T, Integer> internalRedundantValues;
+    private final Map<T, Counter> internalRedundantValues;
 
     public RedundantSet(Collection<T> values) {
         this();
@@ -47,11 +49,14 @@ public class RedundantSet<T> extends AbstractSet<T> {
     }
 
     public boolean add(T value) {
+        try {
         if (this.internalRedundantValues.containsKey(value)) {
-            Integer _occurrence_counter = this.internalRedundantValues.get(value);
-            this.internalRedundantValues.put(value, new Integer(_occurrence_counter.intValue() + 1));
+            this.internalRedundantValues.get(value).increment();
         } else {
-            this.internalRedundantValues.put(value, 1);
+            this.internalRedundantValues.put(value, new Counter(1, Integer.MAX_VALUE));
+        }
+        } catch (RangeException e) {
+            return false;
         }
 
         return true;
@@ -59,15 +64,18 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     @Override
     public boolean remove(Object value) {
-        if (this.internalRedundantValues.containsKey(value)) {
-            Integer _occurrence_counter = this.internalRedundantValues.get(value);
-            if (_occurrence_counter.intValue() > 1) {
-                this.internalRedundantValues.put((T) value, new Integer(_occurrence_counter - 1));
-            } else {
-                this.internalRedundantValues.remove(value);
-            }
+        try {
+            if (this.internalRedundantValues.containsKey(value)) {
+                if (this.internalRedundantValues.get(value).getCurrentValue() > 1) {
+                    this.internalRedundantValues.get(value).decrement();
+                } else {
+                    this.internalRedundantValues.remove(value);
+                }
 
-            return true;
+                return true;
+            }
+        } catch (RangeException e) {
+            // Do nothing. Will return false;
         }
 
         return false;
@@ -105,7 +113,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
     }
 
     public int countElementFor(T element) {
-        return this.internalRedundantValues.containsKey(element) ? this.internalRedundantValues.get(element).intValue() : 0;
+        return this.internalRedundantValues.containsKey(element) ? this.internalRedundantValues.get(element).getCurrentValue() : 0;
     }
 
     @Override
@@ -144,7 +152,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
     private class RedundantSetIterator implements Iterator<T> {
 
         // The current collection on which the iterator will be setted
-        private final Map<T, Integer> redundatSetCollection;
+        private final Map<T, Counter> redundatSetCollection;
 
         // The iterator on keys of the current collection
         private final Iterator<T> keySetIterator;
@@ -155,7 +163,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
         // The occurence counter on the currentElement
         private int occurrenceCounter;
 
-        public RedundantSetIterator(Map<T, Integer> internalRedundantValues) {
+        public RedundantSetIterator(Map<T, Counter> internalRedundantValues) {
             this.redundatSetCollection = internalRedundantValues;
             this.keySetIterator = this.redundatSetCollection.keySet().iterator();
             this.occurrenceCounter = 0;
@@ -169,7 +177,8 @@ public class RedundantSet<T> extends AbstractSet<T> {
         }
 
         private boolean isAnotherOccurenceExist() {
-            return this.currentElement != null && this.redundatSetCollection.get(this.currentElement).intValue() > this.occurrenceCounter;
+            return this.currentElement != null && this.redundatSetCollection.get(this.currentElement).getCurrentValue() > this
+                    .occurrenceCounter;
         }
 
         @Override
