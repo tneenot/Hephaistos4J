@@ -8,7 +8,7 @@ package org.hlib4j.math;
  * Limits are defining with the {@link LimitType} enumeration where the {@link org.hlib4j.math.Range
  * .LimitType#RIGHT} definition is the <b>[</b> character and {@link LimitType#LEFT} is the <b>]</b> character.
  */
-public class Range<T extends Comparable<T>> extends DefinitionDomain<T> {
+public class Range<T> extends DefinitionDomain<T> {
 
     private T lowerLimitValue;
     private T upperLimitValue;
@@ -26,7 +26,7 @@ public class Range<T extends Comparable<T>> extends DefinitionDomain<T> {
     }
 
     private void setCommonMembers(LimitType limitType, T lowerLimitValue, T upperLimitValue) throws RangeException {
-        if (lowerLimitValue.compareTo(upperLimitValue) > 0) {
+        if (lowerLimitValue.hashCode() > upperLimitValue.hashCode()) {
             throw new RangeException("Lower limit can't be greater than upper limit");
         }
 
@@ -51,20 +51,17 @@ public class Range<T extends Comparable<T>> extends DefinitionDomain<T> {
     public boolean isInclude(T value) {
         // Control of current value is realizing according to lower and upper limits in one hand and the LimitType limits definition in
         // other hand.
-        if ((this.limitType.getLeft().equals(LimitType.BOTH_CLOSE.getLeft()) && value.compareTo(this.lowerLimitValue) < 0) || (this.limitType.getRight().equals(LimitType.BOTH_CLOSE.getRight()) && value.compareTo(this.upperLimitValue) > 0)) {
+        if ((this.limitType.getLeft().equals(LimitType.BOTH_CLOSE.getLeft()) && value.hashCode() < this.lowerLimitValue.hashCode()) || (this.limitType.getRight().equals(LimitType.BOTH_CLOSE.getRight()) && value.hashCode() > this.upperLimitValue.hashCode())) {
             return false;
         }
 
-        if ((this.limitType.getLeft().equals(LimitType.BOTH_OPEN.getLeft()) && value.compareTo(this.lowerLimitValue) <= 0) || (this
-                .limitType.getRight().equals(LimitType.BOTH_OPEN.getRight()) && value.compareTo(this.upperLimitValue) >= 0)) {
+        if ((this.limitType.getLeft().equals(LimitType.BOTH_OPEN.getLeft()) && value.hashCode() <= this.lowerLimitValue.hashCode()) || (this
+                .limitType.getRight().equals(LimitType.BOTH_OPEN.getRight()) && value.hashCode() >= this.upperLimitValue.hashCode())) {
             return false;
         }
 
-        if (value.compareTo(this.lowerLimitValue) < 0 || value.compareTo(this.upperLimitValue) > 0) {
-            return false;
-        }
+        return !(value.hashCode() < this.lowerLimitValue.hashCode() || value.hashCode() > this.upperLimitValue.hashCode());
 
-        return true;
     }
 
     @Override
@@ -82,10 +79,10 @@ public class Range<T extends Comparable<T>> extends DefinitionDomain<T> {
             // Pass 3: compare limits definition
             Range<T> _other_definition = (Range<T>) otherDefinitionDomain;
 
-            _are_valid_limits &= this.lowerLimitValue.compareTo(_other_definition.getLowerLimitValue()) <= 0 && this.limitType.getLeft()
+            _are_valid_limits &= this.lowerLimitValue.hashCode() <= _other_definition.getLowerLimitValue().hashCode() && this.limitType.getLeft()
                     .equals
-                            (_other_definition.getLimitType().getLeft()) && this.upperLimitValue.compareTo(_other_definition.getUpperLimitValue())
-                    >= 0 && this.limitType.getRight().equals(_other_definition.getLimitType().getRight());
+                            (_other_definition.getLimitType().getLeft()) && this.upperLimitValue.hashCode() >= _other_definition.getUpperLimitValue().hashCode()
+                    && this.limitType.getRight().equals(_other_definition.getLimitType().getRight());
         }
 
         return _are_valid_limits;
@@ -125,9 +122,8 @@ public class Range<T extends Comparable<T>> extends DefinitionDomain<T> {
         if (!lowerLimitValue.equals(range.lowerLimitValue)) return false;
         if (!upperLimitValue.equals(range.upperLimitValue)) return false;
         if (!currentValue.equals(range.currentValue)) return false;
-        if (limitType != range.limitType) return false;
+        return limitType == range.limitType;
 
-        return true;
     }
 
     @Override
