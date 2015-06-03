@@ -112,4 +112,17 @@ public class CounterTest {
         // Inner assert
         _local_counter.setCounterStep(3);
     }
+
+    @Test
+    public void test_Increment_IncrementAndDecrement_OrignalValueRetreive() throws RangeException {
+        // Setup
+        int _original_value = this.counterTesting.getCurrentValue();
+
+        // SUT
+        this.counterTesting.increment();
+        this.counterTesting.decrement();
+
+        // Assert
+        Assert.assertEquals(_original_value, this.counterTesting.getCurrentValue().intValue());
+    }
 }
