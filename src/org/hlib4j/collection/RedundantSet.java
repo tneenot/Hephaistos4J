@@ -195,7 +195,7 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
         @Override
         public void remove() {
-            throw new IllegalStateException("Operation not allowed");
+            throw new UnsupportedOperationException("Unsupported operation");
         }
     }
 }

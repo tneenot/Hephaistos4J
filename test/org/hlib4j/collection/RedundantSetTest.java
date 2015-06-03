@@ -621,7 +621,7 @@ public class RedundantSetTest {
         }
     }
 
-    @Test(expected = java.lang.IllegalStateException.class)
+    @Test(expected = java.lang.UnsupportedOperationException.class)
     public void test_Remove_FromIterator_IllegalStateException() {
         // Setup
         this.redundantSetTesting = new RedundantSet<>(this.makeCollectionWithRedundantValues());
