@@ -39,7 +39,7 @@ public class Counter extends Range<Integer> {
      * @throws RangeException If the value is reaching the counter upper limit.
      */
     public int increment() throws RangeException {
-        return incrementByStep(1);
+        return incrementByStep(this.counterStep);
     }
 
     /**

@@ -80,6 +80,18 @@ public class CounterTest {
     }
 
     @Test
+    public void test_SetCounterStep_SetNewValue_NextIncrementValueUpdated() throws Exception {
+        // Setup
+        int _value = this.counterTesting.getCurrentValue();
+
+        // SUT
+        this.counterTesting.setCounterStep(3);
+
+        // Assert
+        Assert.assertEquals(_value + 3, this.counterTesting.increment());
+    }
+
+    @Test
     public void test_GetCounterStep_DefaultValue_AwaitingDefaultStep() throws Exception {
         Assert.assertEquals(1, this.counterTesting.getCounterStep());
     }
