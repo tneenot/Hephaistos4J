@@ -1,13 +1,15 @@
 package org.hlib4j.math;
 
 /**
- * Class to perform a counter according to limits defined thru constructors.
+ * Class that's allowing a counter according to limits defined with its constructors.
  *
  * @author Tioben Neenot
  */
 public class Counter extends Range<Integer> {
 
     private int counterStep = 1;
+
+    private boolean isValidCounter;
 
     /**
      * Builds an instance of the Counter by defining the counter limits and its specific default value.
@@ -18,7 +20,9 @@ public class Counter extends Range<Integer> {
      * @throws RangeException If counter is not valid due to its parameters.
      */
     public Counter(Integer lowLimit, Integer highLimit, Integer defaultValue) throws RangeException {
-        super(LimitType.BOTH_CLOSE, lowLimit, highLimit, defaultValue);
+        super(LimitType.CLOSE_OPEN, lowLimit, highLimit, defaultValue);
+
+        this.isValidCounter = true;
     }
 
     /**
@@ -29,16 +33,15 @@ public class Counter extends Range<Integer> {
      * @throws RangeException If counter parameters are not valid
      */
     public Counter(Integer lowLimit, Integer highLimit) throws RangeException {
-        super(LimitType.BOTH_CLOSE, lowLimit, highLimit);
+        this(lowLimit, highLimit, lowLimit);
     }
 
     /**
      * Increments the counter internal value by step value defined with {@link #setCounterStep(int)}.
      *
      * @return The new value after increment.
-     * @throws RangeException If the value is reaching the counter upper limit.
      */
-    public int increment() throws RangeException {
+    public int increment() {
         return incrementByStep(this.counterStep);
     }
 
@@ -48,11 +51,18 @@ public class Counter extends Range<Integer> {
      *
      * @param step Incrementation step value.
      * @return The new value after increment.
-     * @throws RangeException If the value is reaching the counter upper limit.
      */
-    public int incrementByStep(int step) throws RangeException {
-        this.setCurrentValue(this.getCurrentValue() + step);
+    public int incrementByStep(int step) {
+        return computeNewValue(this.getCurrentValue() + step);
+    }
 
+    private int computeNewValue(int currentValue) {
+        try {
+            this.setCurrentValue(currentValue);
+        } catch (RangeException e) {
+            // No value available.
+            this.isValidCounter = false;
+        }
         return this.getCurrentValue();
     }
 
@@ -60,9 +70,8 @@ public class Counter extends Range<Integer> {
      * Decrements the counter internal value by step value defined with {@link #setCounterStep(int)}.
      *
      * @return The new value after decrement.
-     * @throws RangeException If the value is reaching the counter lower limit.
      */
-    public int decrement() throws RangeException {
+    public int decrement() {
         return decrementByStep(1);
     }
 
@@ -70,14 +79,11 @@ public class Counter extends Range<Integer> {
      * Decrements the counter internal value by the specific step. This step can not be correspond to the last one
      * definied with {@link #setCounterStep(int)}.
      *
-     * @param step Decrementation step value.
+     * @param step Decrementing step value.
      * @return The new value after decrement.
-     * @throws RangeException If the value is reaching the counter low limit.
      */
-    public int decrementByStep(int step) throws RangeException {
-        this.setCurrentValue(this.getCurrentValue() - step);
-
-        return this.getCurrentValue();
+    public int decrementByStep(int step) {
+        return computeNewValue(this.getCurrentValue() - step);
     }
 
     /**
@@ -96,12 +102,30 @@ public class Counter extends Range<Integer> {
      * @throws RangeException If the counterStep value overload one of the counter limits.
      */
     public void setCounterStep(int counterStep) throws RangeException {
-        int _hypothetic_value = this.getCurrentValue() + counterStep;
+        int _hypothetical_value = this.getCurrentValue() + counterStep;
 
-        if (_hypothetic_value >= this.getUpperLimitValue() || _hypothetic_value <= this.getLowerLimitValue()) {
+        if (_hypothetical_value >= this.getUpperLimitValue() || _hypothetical_value < this.getLowerLimitValue()) {
             throw new RangeException("Impossible to set counter step value that overload counter limits");
         }
 
         this.counterStep = counterStep;
+    }
+
+    /**
+     * Gets the counter validity status.
+     *
+     * @return <code>true</code> means the counter can be incremented or decremented again. <code>False</code> means {@link #increment()
+     * }, {@link #incrementByStep(int)}, {@link #decrement()} or {@link #decrementByStep(int)} don't change the current value, since this
+     * counter is not valid again.
+     */
+    public boolean isValid() {
+        return this.isValidCounter;
+    }
+
+    @Override
+    public void setCurrentValue(Integer currentValue) throws RangeException {
+        this.isValidCounter = false;
+        super.setCurrentValue(currentValue);
+        this.isValidCounter = true;
     }
 }

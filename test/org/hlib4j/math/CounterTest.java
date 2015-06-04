@@ -20,12 +20,6 @@ public class CounterTest {
 
     }
 
-    @After
-    public void tearDown() throws Exception {
-        initialValue = null;
-        counterTesting = null;
-    }
-
     @Test
     public void test_Increment_ValidValue_ValueUpdated() throws Exception {
         Assert.assertEquals(initialValue + 1, counterTesting.increment());
@@ -45,9 +39,13 @@ public class CounterTest {
         Assert.assertEquals(initialValue + 5, counterTesting.incrementByStep(5));
     }
 
-    @Test(expected = RangeException.class)
-    public void test_IncrementByStep_MoreThanUpperLimit_RangeException() throws RangeException {
-        counterTesting.incrementByStep(counterTesting.getUpperLimitValue() + 1);
+    @Test
+    public void test_IncrementByStep_MoreThanUpperLimit_ValueNotUpdated() {
+        // Setup
+        int _value = counterTesting.incrementByStep(counterTesting.getUpperLimitValue() + 1);
+
+        // Assert
+        Assert.assertEquals(_value, this.counterTesting.incrementByStep(this.counterTesting.getUpperLimitValue() + 1));
     }
 
     @Test
@@ -59,9 +57,13 @@ public class CounterTest {
         Assert.assertEquals(-1, _local_counter.decrement());
     }
 
-    @Test(expected = RangeException.class)
-    public void test_Decrement_LessThanLowerLimit_RangeException() throws RangeException {
-        this.counterTesting.decrement();
+    @Test
+    public void test_Decrement_LessThanLowerLimit_ValueNotUpdated() {
+        // Setup
+        int _value = this.counterTesting.decrement();
+
+        // Assert
+        Assert.assertEquals(_value, this.counterTesting.decrement());
     }
 
     @Test
@@ -124,5 +126,53 @@ public class CounterTest {
 
         // Assert
         Assert.assertEquals(_original_value, this.counterTesting.getCurrentValue().intValue());
+    }
+
+    @Test
+    public void test_IsValid_DefaultValue_CounterIsValid() {
+        Assert.assertTrue(this.counterTesting.isValid());
+    }
+
+    @Test
+    public void test_IsValid_LimitsNotReached_CounterIsValid() throws RangeException {
+        // Setup
+        this.counterTesting.increment();
+
+        // Assert
+        Assert.assertTrue(this.counterTesting.isValid());
+    }
+
+    @Test
+    public void test_IsValid_UpperLimitReached_CounterNotValid() {
+        // Setup
+        try {
+            this.counterTesting.setCurrentValue(this.counterTesting.getUpperLimitValue());
+            Assert.fail("This point couldn't be reached");
+        } catch (RangeException e) {
+            // Awaiting point due to setup constraint
+        }
+
+        // Assert
+        Assert.assertFalse(this.counterTesting.isValid());
+    }
+
+    @Test
+    public void test_IsValid_LowerLimitReached_CounterNotValid() {
+        // Setup
+        try {
+            this.counterTesting.setCurrentValue(this.counterTesting.getLowerLimitValue() - 1);
+            Assert.fail("This point couldn't be reached");
+        } catch (RangeException e) {
+            // Awaiting point due to setup constraint
+        }
+
+        // Assert
+        Assert.assertFalse(this.counterTesting.isValid());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        initialValue = null;
+        counterTesting = null;
     }
 }

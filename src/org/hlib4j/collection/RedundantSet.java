@@ -64,18 +64,14 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     @Override
     public boolean remove(Object value) {
-        try {
-            if (this.internalRedundantValues.containsKey(value)) {
-                if (this.internalRedundantValues.get(value).getCurrentValue() > 1) {
-                    this.internalRedundantValues.get(value).decrement();
-                } else {
-                    this.internalRedundantValues.remove(value);
-                }
-
-                return true;
+        if (this.internalRedundantValues.containsKey(value)) {
+            if (this.internalRedundantValues.get(value).getCurrentValue() > 1) {
+                this.internalRedundantValues.get(value).decrement();
+            } else {
+                this.internalRedundantValues.remove(value);
             }
-        } catch (RangeException e) {
-            // Do nothing. Will return false;
+
+            return true;
         }
 
         return false;
