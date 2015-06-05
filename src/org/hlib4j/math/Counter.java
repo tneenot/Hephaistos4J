@@ -1,13 +1,42 @@
+/*
+ * Hephaistos 4 Java library: a library with facilities to get more concise code.
+ *
+ * Copyright (C) 2015 Tioben Neenot
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
+
 package org.hlib4j.math;
 
+
 /**
- * Class that's allowing a counter according to limits defined with its constructors.
+ * Class that's allowing a counter according to limits defined with its constructors. Limits management are defined with {@link org
+ * .hlib4j.math.DefinitionDomain.LimitType#CLOSE_OPEN}, that's meaning the counter is managing as zero based values. So, the low limit is
+ * taking account and not the upper limit. While the one of the <code>increment...(...)</code> or <code>decrement...(...)</code> like
+ * methods reached the upper or lower limit, {@link #isValid()} return <code>false</code>, and the new call to these increment/decrement
+ * methods don't update any value. To reinitialize the counter to its original default value, used [@link #rearm()] method. You can set a
+ * specific value thanks to {@link #setCurrentValue(Integer)} method. If the new value is not allowing due to counter limit, the {@link
+ * #isValid()} return <code>false</code>.
  *
  * @author Tioben Neenot
  */
 public class Counter extends Range<Integer> {
 
     private int counterStep = 1;
+    private int initialValue = -1;
 
     private boolean isValidCounter;
 
@@ -22,6 +51,7 @@ public class Counter extends Range<Integer> {
     public Counter(Integer lowLimit, Integer highLimit, Integer defaultValue) throws RangeException {
         super(LimitType.CLOSE_OPEN, lowLimit, highLimit, defaultValue);
 
+        this.initialValue = defaultValue;
         this.isValidCounter = true;
     }
 
@@ -127,5 +157,15 @@ public class Counter extends Range<Integer> {
         this.isValidCounter = false;
         super.setCurrentValue(currentValue);
         this.isValidCounter = true;
+    }
+
+    public boolean rearm() {
+        try {
+            setCurrentValue(this.initialValue);
+        } catch (RangeException e) {
+            return false;
+        }
+
+        return true;
     }
 }
