@@ -81,6 +81,7 @@ public class RedundantSetTest {
     @Test
     public void test_countElementFor_AfterAllRedundantValuesRemoved_NoValueLeft() {
         // Setup
+        this.setupWithSameValues();
         this.setupWithDifferentValues();
 
         // SUT
@@ -112,7 +113,7 @@ public class RedundantSetTest {
     @Test
     public void test_size_AfterAllRedundantValuesRemoved_ValidSize() {
         // Setup
-        int _added_values = this.setupWitSameValues();
+        int _added_values = this.setupWithSameValues();
         _added_values += this.setupWithDifferentValues();
 
         // SUT
@@ -122,7 +123,7 @@ public class RedundantSetTest {
         Assert.assertEquals(_added_values, this.redundantSetTesting.size());
     }
 
-    private int setupWitSameValues() {
+    private int setupWithSameValues() {
         int _nb_added_values = 3;
         for (int i = 0; i < _nb_added_values; ++i) {
             this.redundantSetTesting.add(1);
@@ -168,7 +169,7 @@ public class RedundantSetTest {
     @Test
     public void test_size_RemoveRendudantValue_ValidCollectionSize() {
         // Setup
-        this.setupWitSameValues();
+        this.setupWithSameValues();
         this.addAndRemoveSameValue(5);
 
         // Assert
@@ -186,7 +187,7 @@ public class RedundantSetTest {
     @Test
     public void test_size_twice_SameValues() {
         // Setup
-        int _nb_values = this.setupWitSameValues();
+        int _nb_values = this.setupWithSameValues();
 
         // SUT
         Assert.assertEquals(_nb_values, this.redundantSetTesting.size());
@@ -204,7 +205,7 @@ public class RedundantSetTest {
     @Test
     public void test_countElementFor_sameValues() {
         // Setup
-        this.setupWitSameValues();
+        this.setupWithSameValues();
 
         // SUT
         Assert.assertEquals(3, this.redundantSetTesting.countElementFor(1));
@@ -222,7 +223,7 @@ public class RedundantSetTest {
     @Test
     public void test_add_twice_SizeIsValid() {
         // Setup
-        this.setupWitSameValues();
+        this.setupWithSameValues();
 
         // SUT
         Assert.assertEquals(3, this.redundantSetTesting.size());
@@ -290,7 +291,7 @@ public class RedundantSetTest {
         // Setup
         Collection<Integer> _other_collection = Arrays.asList(5, 6, 7);
         int _nb_elements = this.setupWithDifferentValues();
-        _nb_elements += this.setupWitSameValues();
+        _nb_elements += this.setupWithSameValues();
 
         // SUT
         this.redundantSetTesting.removeAll(_other_collection);
@@ -556,7 +557,7 @@ public class RedundantSetTest {
     @Test
     public void test_Iterator_WithDuplicateValues_DuplicateValuesAreExisting() {
         // Setup
-        this.setupWitSameValues();
+        this.setupWithSameValues();
 
         // Assert
         for (Integer i : this.redundantSetTesting) {
@@ -580,7 +581,7 @@ public class RedundantSetTest {
     @Test
     public void test_Iterator_WithDuplicateValues_DuplicateValuesAreExistingWithClassicalWay() {
         // Setup
-        int _nb_of_elements = this.setupWitSameValues();
+        int _nb_of_elements = this.setupWithSameValues();
         int _counter = 0;
 
         // SUT
@@ -598,7 +599,7 @@ public class RedundantSetTest {
     @Test
     public void test_CopyConstructor_MoveSetListIntoAnotherCollection_SameSize() {
         // Setup
-        this.setupWitSameValues();
+        this.setupWithSameValues();
 
         // SUT
         Collection<Integer> _other_collection = new ArrayList<>(this.redundantSetTesting);
@@ -610,7 +611,7 @@ public class RedundantSetTest {
     @Test
     public void test_CopyConstructor_MoveSetListIntoAnotherCollection_NewCollectionWithDuplicateValues() {
         // Setup
-        this.setupWitSameValues();
+        this.setupWithSameValues();
 
         // SUT
         Collection<Integer> _other_collection = new ArrayList<>(this.redundantSetTesting);
