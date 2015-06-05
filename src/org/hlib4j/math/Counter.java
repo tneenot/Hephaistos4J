@@ -159,13 +159,18 @@ public class Counter extends Range<Integer> {
         this.isValidCounter = true;
     }
 
+    /**
+     * Fix the original default value for this counter to allow to use it again.
+     *
+     * @return
+     */
     public boolean rearm() {
         try {
             setCurrentValue(this.initialValue);
         } catch (RangeException e) {
-            return false;
+            // No other action
         }
 
-        return true;
+        return this.isValid();
     }
 }

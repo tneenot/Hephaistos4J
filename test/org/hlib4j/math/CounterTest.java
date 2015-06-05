@@ -166,29 +166,79 @@ public class CounterTest {
     @Test
     public void test_IsValid_UpperLimitReached_CounterNotValid() {
         // Setup
+        this.setupCounterToUpperLimit();
+
+        // Assert
+        Assert.assertFalse(this.counterTesting.isValid());
+    }
+
+    private void setupCounterToUpperLimit() {
         try {
             this.counterTesting.setCurrentValue(this.counterTesting.getUpperLimitValue());
             Assert.fail("This point couldn't be reached");
         } catch (RangeException e) {
             // Awaiting point due to setup constraint
         }
-
-        // Assert
-        Assert.assertFalse(this.counterTesting.isValid());
     }
 
     @Test
     public void test_IsValid_LowerLimitReached_CounterNotValid() {
         // Setup
+        this.setupCounterToOverloadLowerLimit();
+
+        // Assert
+        Assert.assertFalse(this.counterTesting.isValid());
+    }
+
+    private void setupCounterToOverloadLowerLimit() {
         try {
             this.counterTesting.setCurrentValue(this.counterTesting.getLowerLimitValue() - 1);
             Assert.fail("This point couldn't be reached");
         } catch (RangeException e) {
             // Awaiting point due to setup constraint
         }
+    }
+
+    @Test
+    public void test_rearm_forInvalidCounter_CounterRearmedAndValid() {
+        // Setup
+        this.setupCounterToUpperLimit();
 
         // Assert
-        Assert.assertFalse(this.counterTesting.isValid());
+        Assert.assertTrue(this.counterTesting.rearm());
+    }
+
+    @Test
+    public void test_rearm_forInvalidCounter_DefaultValueUpdated() {
+        // Setup
+        this.setupCounterToUpperLimit();
+
+        // SUT
+        this.counterTesting.rearm();
+
+        // Assert
+        Assert.assertEquals(this.counterTesting.getLowerLimitValue(), this.counterTesting.getCurrentValue());
+    }
+
+    @Test
+    public void test_rearm_forValidCounter_CounterRearmedAndValid() {
+        // Setup
+        this.counterTesting.increment();
+
+        // Assert
+        Assert.assertTrue(this.counterTesting.rearm());
+    }
+
+    @Test
+    public void test_rearm_forValidCounter_DefaultValueUpdated() {
+        // Setup
+        this.counterTesting.incrementByStep(5);
+
+        // SUT
+        this.counterTesting.rearm();
+
+        // Assert
+        Assert.assertEquals(this.counterTesting.getLowerLimitValue(), this.counterTesting.getCurrentValue());
     }
 
     @After
