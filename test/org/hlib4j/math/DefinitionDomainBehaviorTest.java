@@ -1,3 +1,24 @@
+/*
+ * Hephaistos 4 Java library: a library with facilities to get more concise code.
+ *
+ * Copyright (C) 2015 Tioben Neenot
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
+
 package org.hlib4j.math;
 
 import org.junit.After;
@@ -6,9 +27,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Template tests for {@link DefinitionDomain} class implementation.
+ * Template tests for {@link DefinitionDomain} class implementation. This template tests class allows to control the
+ * behavior for all implementations classes.
  */
-public abstract class DefinitionDomainTTemplateTest<D extends DefinitionDomain<T>, T> {
+public abstract class DefinitionDomainBehaviorTest<D extends DefinitionDomain<T>, T> {
 
     protected D definitionDomainTesting = null;
     protected D validDefinitionDomainInclude = null;
@@ -55,26 +77,20 @@ public abstract class DefinitionDomainTTemplateTest<D extends DefinitionDomain<T
 }
 
 /**
- * This class is using for {@link DefinitionDomainTTemplateTest} self tests. It's allowing to control that tests of template are conforms
+ * This class is using for {@link DefinitionDomainBehaviorTest} self tests. It's allowing to control that tests of template are conforms
  * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation.
  */
-class FakeDefinitionDomain extends DefinitionDomain<Integer> {
+class DefinitionDomainFake extends DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(Integer value) {
-        if (value < 0) {
-            return false;
-        }
+        return value >= 0;
 
-        return true;
     }
 
     @Override
     public boolean isInclude(DefinitionDomain<Integer> otherDefinitionDomain) {
-        if (otherDefinitionDomain instanceof FakeDefinitionDomainAlwaysFalse) {
-            return false;
-        }
+        return !(otherDefinitionDomain instanceof DefinitionDomainAlwaysFalseFake);
 
-        return true;
     }
 
     @Override
@@ -89,11 +105,11 @@ class FakeDefinitionDomain extends DefinitionDomain<Integer> {
 }
 
 /**
- * This class is using for {@link DefinitionDomainTTemplateTest} self tests. It's allowing to control that tests of template are conforms
+ * This class is using for {@link DefinitionDomainBehaviorTest} self tests. It's allowing to control that tests of template are conforms
  * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation. This class return always false for
- * its methods, for self {@link DefinitionDomainTTemplateTest} self control.
+ * its methods, for self {@link DefinitionDomainBehaviorTest} self control.
  */
-class FakeDefinitionDomainAlwaysFalse extends DefinitionDomain<Integer> {
+class DefinitionDomainAlwaysFalseFake extends DefinitionDomain<Integer> {
     @Override
     public boolean isInclude(Integer value) {
         return false;

@@ -25,13 +25,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit tests to test the definition domain interface itself thru the {@link DefinitionDomainTTemplateTest}.
+ * Unit tests to test the definition domain interface itself thru the {@link DefinitionDomainBehaviorTest}.
  */
-public class DefinitionDomainInterfaceTest extends DefinitionDomainTTemplateTest<DefinitionDomain<Integer>, Integer> {
+public class DefinitionDomainInterfaceTest extends DefinitionDomainBehaviorTest<DefinitionDomain<Integer>, Integer> {
     @Override
     public void setUp() throws Exception {
-        this.definitionDomainTesting = new FakeDefinitionDomain();
-        this.invalidDefinitionDomainInclude = new FakeDefinitionDomainAlwaysFalse();
+        this.definitionDomainTesting = new DefinitionDomainFake();
+        this.invalidDefinitionDomainInclude = new DefinitionDomainAlwaysFalseFake();
         this.validDataInclude = 1;
         this.invalidDataInclude = -2;
     }

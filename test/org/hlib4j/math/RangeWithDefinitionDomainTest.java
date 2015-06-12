@@ -25,7 +25,7 @@ package org.hlib4j.math;
 /**
  * {@link DefinitionDomain} unit tests with a {@link Range} class implementation.
  */
-public class RangeWithDefinitionDomainTest extends DefinitionDomainTTemplateTest<Range<Integer>, Integer> {
+public class RangeWithDefinitionDomainTest extends DefinitionDomainBehaviorTest<Range<Integer>, Integer> {
     @Override
     public void setUp() throws Exception {
         this.definitionDomainTesting = new Range<Integer>(DefinitionDomain.LimitType.CLOSE_OPEN, 1, 3, 2);
