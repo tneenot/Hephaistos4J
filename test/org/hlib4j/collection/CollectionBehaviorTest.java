@@ -101,13 +101,13 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_HashCode_Valid() {
+    public void test_HashCode_IsValidHashCode_YesValid() {
         Assert.assertTrue(0 != this.testingCollection.hashCode());
     }
 
     @SuppressWarnings("EqualsWithItself")
     @Test
-    public void test_Equals_ToItSelf() {
+    public void test_Equals_ToItSelf_IsEqual() {
         Assert.assertTrue(this.testingCollection.equals(this.testingCollection));
     }
 
@@ -129,7 +129,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_RemoveAll_NoValidValues() {
+    public void test_RemoveAll_NoValidValues_NoRemovedSinceNoInvalidValues() {
         Assert.assertFalse(this.testingCollection.removeAll(this.invalidCollectionValues));
     }
 
@@ -141,7 +141,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_RemoveAll_AllGivenValidValues() {
+    public void test_RemoveAll_AllGivenValidValues_AllValueRemoved() {
         List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
         Assert.assertTrue(this.testingCollection.removeAll(this.randomGenerator.getSubListFromList(_list, 3)));
@@ -156,7 +156,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Clear_NoValuesLeft() {
+    public void test_Clear_OnNotEmptyCollection_NoValuesLeft() {
         this.testingCollection.clear();
 
         Assert.assertEquals(0, this.testingCollection.size());
@@ -184,14 +184,14 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_RetainAll_WithValidValues() {
+    public void test_RetainAll_WithValidValues_ValuesRetained() {
         List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
         Assert.assertTrue(this.testingCollection.retainAll(this.randomGenerator.getSubListFromList(_list, 3)));
     }
 
     @Test
-    public void test_RetainAll_WithInvalidValues() {
+    public void test_RetainAll_WithInvalidValues_NotRetained() {
         Assert.assertFalse(this.testingCollection.retainAll(this.invalidCollectionValues));
     }
 
@@ -205,7 +205,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_toArrayT_RemoveInvalidValues() {
+    public void test_toArrayT_IndirectInvalidValues_InvalidValuesRemoved() {
         // Setup
         int _invalid_value = getAnInvalidValue();
         this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
@@ -229,7 +229,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_toArray_RemoveInvalidValues() {
+    public void test_toArray_IndirectInvalidValues_InvalidValuesRemoved() {
         // Setup
         this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
         int _invalid_value = getAnInvalidValue();
@@ -245,7 +245,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_toArray_RemoveValues_EmptyArray() {
+    public void test_toArray_RemoveValuesFromEmptyCollection_EmptyArray() {
         // Setup
         this.testingCollection.clear();
 
@@ -259,7 +259,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Contains_InvalidValue() {
+    public void test_Contains_InvalidValue_NotContained() {
         // Setup
         int _invalid_value = getAnInvalidValue();
 
@@ -292,12 +292,12 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Size_ControlSizeValue() {
+    public void test_Size_ControlSizeValue_SizeConform() {
         Assert.assertEquals(this.testingCollectionOriginalSize, this.testingCollection.size());
     }
 
     @Test
-    public void test_Add_ValidData() {
+    public void test_Add_ValidData_AddedData() {
         int _valid_value = getAValidValue();
 
         Assert.assertTrue(this.testingCollection.add(_valid_value));
@@ -319,7 +319,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_AddAll_ValidData() {
+    public void test_AddAll_ValidData_AddedData() {
         // Setup
         Collection<Integer> _copy = new ArrayList<>(this.testingCollection);
 
@@ -328,12 +328,12 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_AddAll_InvalidData() {
+    public void test_AddAll_InvalidData_NotAddedData() {
         Assert.assertFalse(this.testingCollection.addAll(this.invalidCollectionValues));
     }
 
     @Test
-    public void test_Add_InvalidData() {
+    public void test_Add_InvalidData_DataNotAdded() {
         int _invalid_value = getAnInvalidValue();
 
         Assert.assertFalse(this.testingCollection.add(_invalid_value));
@@ -369,12 +369,12 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Remove_ValidValue() {
+    public void test_Remove_ValidValue_ValueRemoved() {
         Assert.assertTrue(this.testingCollection.remove(getAValidValue()));
     }
 
     @Test
-    public void test_Remove_InvalidValue() {
+    public void test_Remove_InvalidValue_NoRemoveSinceNoInvalidValue() {
         Assert.assertFalse(this.testingCollection.remove(getAnInvalidValue()));
     }
 

@@ -36,12 +36,12 @@ public class RedundantSetWithAsGenericCollection extends CollectionBehaviorTest<
     }
 
     @Override
-    public void test_Add_InvalidData() {
+    public void test_Add_InvalidData_DataNotAdded() {
         // Not available for this collection type. Skip test.
     }
 
     @Override
-    public void test_AddAll_InvalidData() {
+    public void test_AddAll_InvalidData_NotAddedData() {
         // Not available for this collection type. Skip test.
     }
 

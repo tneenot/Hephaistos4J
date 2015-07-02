@@ -169,7 +169,7 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file already exists
      */
     @Test
-    public void test_AttachFile() throws IOException {
+    public void test_AttachFile_OnValidFile_FileAttached() throws IOException {
         Assert.assertNotNull(workspace.attachFile(new File("foo")));
     }
 
