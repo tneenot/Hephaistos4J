@@ -69,7 +69,7 @@ public class PropertyManagerTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_Constructor_ValidDirectory() {
+    public void test_Constructor_ValidDirectory_InstanceCreated() {
         assertNotNull(new ClassBuilder(new File(refDirectory)));
     }
 
@@ -77,7 +77,7 @@ public class PropertyManagerTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateInstance_ValidName() {
+    public void test_CreateInstance_ValidName_InstanceCreated() {
         String name = "ClassRef";
         ClassDefinition result = instance.createInstance(name);
         assertNotNull(result);
@@ -87,7 +87,7 @@ public class PropertyManagerTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateInstance_InvalidName() {
+    public void test_CreateInstance_InvalidName_NotCreated() {
         String name = "Toto";
         assertNull(instance.createInstance(name));
     }
@@ -121,7 +121,7 @@ public class PropertyManagerTest {
      * Test of getAllClasses method, of class ClassBuilder.
      */
     @Test
-    public void test_GetAllClasses_ValidClasses() {
+    public void test_GetAllClasses_WithValidClasses_ValidDefintionClasses() {
         Collection<ClassDefinition> result = instance.getAllClasses();
         for (ClassDefinition c : result) {
             assertTrue(c.getName().equals("ClassRef") || c.getName().equals("SecondClass") || c.getName().equals("ThirdClass"));
@@ -129,49 +129,49 @@ public class PropertyManagerTest {
     }
 
     @Test
-    public void test_Properties_StringType_1stForm() throws InvocationTargetException {
+    public void test_GetPropertyValues_StringTypeNaturalForm_ValidStringType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.str") instanceof String);
     }
 
     @Test
-    public void test_Properties_StringType_2dForm() throws InvocationTargetException {
+    public void test_GetPropertyValues_StringTypeVariantForm_ValidStringType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.str2") instanceof String);
     }
 
     @Test
-    public void test_Properties_FloatType() throws InvocationTargetException {
+    public void test_GetPropertyValues_FloatType_ValidFloatType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.float") instanceof Float);
     }
 
     @Test
-    public void test_Properties_DoubleType() throws InvocationTargetException {
+    public void test_GetPropertyValues_DoubleType_ValidDoubleType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.double") instanceof Double);
     }
 
     @Test
-    public void test_Properties_IntegerType() throws InvocationTargetException {
+    public void test_GetPropertyValues_IntegerType_ValidIntegerType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.int") instanceof Integer);
     }
 
     @Test
-    public void test_Properties_IntegerHexType() throws InvocationTargetException {
+    public void test_GetPropertyValue_IntegerHexType_ValidIntegerType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.hex") instanceof Integer);
     }
 
     @Test
-    public void test_Properties_DateType() throws InvocationTargetException {
+    public void test_GetPropertyValue_ForDateType_ValidDateType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.date") instanceof Date);
     }
 
     @Test
-    public void test_Properties_LongType() throws InvocationTargetException {
+    public void test_GetPropertyValue_ForLongType_ValidLongType() throws InvocationTargetException {
         ClassDefinition properties = instance.createInstance("ThirdClass");
         assertTrue(properties.getPropertyValue("value.long") instanceof Long);
     }
@@ -182,7 +182,7 @@ public class PropertyManagerTest {
      * @throws InstantiationException If error during test running.
      */
     @Test
-    public void test_GetName_ValidName() throws InstantiationException {
+    public void test_GetName_ValidName_ValidPropertyName() throws InstantiationException {
         System.out.println("getName");
         PropertyManager _instance = new PropertyManager("foo");
         assertEquals("foo", _instance.getName());
@@ -194,7 +194,7 @@ public class PropertyManagerTest {
      * @throws InstantiationException If error during test running.
      */
     @Test
-    public void test_Add_ValidProperty() throws InstantiationException {
+    public void test_Add_ValidProperty_AddedProperty() throws InstantiationException {
         System.out.println("Add");
         PropertyManager _instance = new PropertyManager("foo");
         _instance.Add(new Property("bar"));

@@ -64,7 +64,7 @@ public class NotTest
 	 * </ul>
 	 */
 	@Test
-    public void test_Accept_ValidValueAccepted() {
+    public void test_Accept_ValidValue_Accepted() {
 		Assert.assertTrue(this.ref.accept(4));
 	}
 
@@ -77,12 +77,12 @@ public class NotTest
 	 * </ul>
 	 */
 	@Test
-    public void test_Accept_InvalidValueNotAccepted() {
+    public void test_Accept_InvalidValue_NotAccepted() {
 		Assert.assertFalse(this.ref.accept(5));
 	}
 
 	@Test
-	public void test_Accept_NullAccepted() {
+	public void test_Accept_NullValue_Accepted() {
 		Assert.assertTrue(this.ref.accept(null));
 	}
 }

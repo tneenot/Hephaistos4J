@@ -61,7 +61,7 @@ public class FilteredMapTest {
     }
 
     @Test
-    public void test_Remove_ValidValue() {
+    public void test_Remove_ValidValue_ValueRemoved() {
         Assert.assertEquals(new Integer(4), this.refFilteredMap.remove(2));
     }
 
@@ -83,36 +83,36 @@ public class FilteredMapTest {
     }
 
     @Test
-    public void test_Equals_NotEqualsWithAListType() {
+    public void test_Equals_WithListType_NotEquals() {
         List<Integer> _list = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertFalse(this.refFilteredMap.equals(_list));
     }
 
     @Test
-    public void test_Equals_NotEqualsWithIntegerType() {
+    public void test_Equals_WithIntegerType_NotEquals() {
         Assert.assertFalse(this.refFilteredMap.equals(new Integer(5)));
     }
 
     @Test
-    public void test_Equals_NotEqualWithNullValue() {
+    public void test_Equals_WithNullValue_NotEquals() {
         Assert.assertFalse(this.refFilteredMap.equals((null)));
     }
 
     @Test
-    public void test_IsEmpty_WithAnEmptyMap() {
+    public void test_IsEmpty_ForEmptyMap_EmptyMap() {
         Map<Integer, Integer> _col = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<Integer>(1));
 
         Assert.assertTrue(_col.isEmpty());
     }
 
     @Test
-    public void test_IsEmpty_WithANonEmptyMap() {
+    public void test_IsEmpty_ForNonEmptyMap_NotEmptyMap() {
         Assert.assertFalse(this.refFilteredMap.isEmpty());
     }
 
     @Test
-    public void test_PutAll_RemoveInvalidValues() {
+    public void test_PutAll_WithInvalidSourceValue_InvalidValidValuesRemoved() {
         Map<Integer, Integer> _invalid_value = new HashMap<>();
         _invalid_value.put(10, 1);
 
@@ -125,54 +125,54 @@ public class FilteredMapTest {
     }
 
     @Test
-    public void test_Put_ValidValue() {
+    public void test_Put_ValidValue_PuttedValue() {
         Assert.assertNotNull(this.refFilteredMap.put(6, 8));
     }
 
     @Test
-    public void test_Put_InvalidValue() {
+    public void test_Put_InvalidValue_NotPuttedValue() {
         Assert.assertNull(this.refFilteredMap.put(4, 1));
     }
 
     @Test
-    public void test_Remove_NonExistentValue() {
+    public void test_Remove_NonExistentValue_NoRemove() {
         Assert.assertNull(this.refFilteredMap.remove(12));
     }
 
     @Test
-    public void test_Remove_ExistentValue() {
+    public void test_Remove_ExistentValue_ValueRemoved() {
         Assert.assertNotNull(this.refFilteredMap.remove(6));
     }
 
     @Test
-    public void test_ContainsKey_NonExistentKey() {
+    public void test_ContainsKey_InvalidKey_KeyNotExists() {
         Assert.assertFalse(this.refFilteredMap.containsKey(15));
     }
 
     @Test
-    public void test_ContainsKey_ExistentKey() {
+    public void test_ContainsKey_ValidKey_KeyExists() {
         Assert.assertTrue(this.refFilteredMap.containsKey(4));
     }
 
     @Test
-    public void test_ContainsValue_NonExistentValue() {
+    public void test_ContainsValue_InvalidValue_ValueNotExists() {
         Assert.assertFalse(this.refFilteredMap.containsValue(15));
     }
 
     @Test
-    public void test_ContainsValue_ExistentValue() {
+    public void test_ContainsValue_ValidValue_ValueExists() {
         Assert.assertTrue(this.refFilteredMap.containsValue(8));
     }
 
     @Test
-    public void test_Clear_SizeIsZero() {
+    public void test_Clear_OnNotEmptyMap_SizeIsZero() {
         this.refFilteredMap.clear();
 
         Assert.assertEquals(0, this.refFilteredMap.size());
     }
 
     @Test
-    public void test_Size_SizeIsNotZero() {
+    public void test_Size_NonEmptyMap_SizeNotZero() {
         Assert.assertNotEquals(0, this.refFilteredMap.size());
     }
 

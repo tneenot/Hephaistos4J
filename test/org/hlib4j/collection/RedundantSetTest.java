@@ -53,7 +53,7 @@ public class RedundantSetTest {
     }
 
     @Test
-    public void test_add_NullValue_True() {
+    public void test_Add_NullValue_AddedValue() {
         Assert.assertTrue(this.redundantSetTesting.add(null));
     }
 
@@ -224,7 +224,7 @@ public class RedundantSetTest {
     }
 
     @Test
-    public void test_countElementFor_sameValues() {
+    public void test_countElementFor_ForSameValues_AwaitingNbOfElementsFound() {
         // Setup
         this.setupWithSameValues();
 
@@ -233,7 +233,7 @@ public class RedundantSetTest {
     }
 
     @Test
-    public void test_add_twice_valid() {
+    public void test_Add_TwiceSameValue_Added() {
         // Setup
         redundantSetTesting.add(1);
 

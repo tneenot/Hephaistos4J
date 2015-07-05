@@ -35,7 +35,7 @@ public class ProcessingTest
 	 * Test of accept method, of class Processing.
 	 */
 	@Test
-    public void test_Accept_ValidValue() {
+    public void test_Accept_ValidValue_Accepted() {
 		Object e = new Object();
         Processing<Object> instance = new ProcessingFake<>();
         boolean expResult = true;
@@ -47,7 +47,7 @@ public class ProcessingTest
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-    public void test_Perform_ValidValue() {
+    public void test_Perform_ValidValue_Performed() {
 		Object e = new Object();
         Processing<Object> instance = new ProcessingFake<>();
         boolean expResult = true;
@@ -59,7 +59,7 @@ public class ProcessingTest
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-    public void test_Perform_InverseValue() {
+    public void test_Perform_InvalidValue_NotPerformed() {
 		True e = new True();
 		Processing<True> instance = new ProcessingFake<>(new Not<True>(e));
 		boolean expResult = false;
@@ -71,7 +71,7 @@ public class ProcessingTest
 	 * Test of perform method, of class Processing.
 	 */
 	@Test
-    public void test_getCount_AddAndCount() {
+    public void test_getCount_ValidObject_IndirectPerformCalled() {
 		Object e = new Object();
         Processing<Object> instance = new ProcessingFake<>();
         instance.accept(e);

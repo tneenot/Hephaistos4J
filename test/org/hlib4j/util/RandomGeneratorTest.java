@@ -49,12 +49,12 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GenerateRandomValues_ListOfRandomValuesSizeValid() {
+    public void test_GenerateRandomValues_NonEmptyList_SizeIsValid() {
         Assert.assertEquals(10, this.randomGenerator.getRandomElements().size());
     }
 
     @Test
-    public void test_GenerateRandomValues_InvalidListSizeElements() {
+    public void test_GenerateRandomValues_NbOfElementNegative_InvalidListSizeElements() {
         RandomGenerator _random_generator = new RandomGenerator();
         _random_generator.generateRandomValues(-1);
 
@@ -62,7 +62,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GenerateRandomValues_ZeroListSizeElements() {
+    public void test_GenerateRandomValues_NbOfElementZero_ListEmpty() {
         RandomGenerator _random_generator = new RandomGenerator();
         _random_generator.generateRandomValues(0);
 
@@ -70,7 +70,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GenerateRandomValues_Compare2ListsAlwaysDifferents() {
+    public void test_GenerateRandomValues_TwoDifferentsList_Differents() {
         RandomGenerator otherRandomGenerator = new RandomGenerator();
 
         for (int i = 0; i < 100; ++i) {
@@ -81,7 +81,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GenerateRandomValues_NoRedundantElements() {
+    public void test_GenerateRandomValues_Twice_NoRedundantElements() {
         // Setup
         List<Integer> _copy = new ArrayList<>();
         Collections.copy(this.randomGenerator.getRandomElements(), _copy);
@@ -98,56 +98,56 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GetOnceValue_ValueReturnedFromList() {
+    public void test_GetOnceValue_FromInitialList_ListContainThisValue() {
         int _value = this.randomGenerator.getOnceValue();
 
         Assert.assertTrue(this.randomGenerator.getRandomElements().contains(_value));
     }
 
     @Test
-    public void test_GetSubList_ValidSubListSize() {
+    public void test_GetSubList_WithSpecificNbOfElements_AwaitingSubListSizeValid() {
         List<Integer> _sub_list = this.randomGenerator.getSubList(3);
 
         Assert.assertEquals(3, _sub_list.size());
     }
 
     @Test
-    public void test_GetSubList_ValidSubListElement() {
+    public void test_GetSubList_WithSpecificNbOfelements_SubListContainsIntoMainList() {
         List<Integer> _sub_list = this.randomGenerator.getSubList(3);
 
         Assert.assertTrue(this.randomGenerator.getRandomElements().containsAll(_sub_list));
     }
 
     @Test
-    public void test_GetSubList_NegativeNumberOfElements() {
+    public void test_GetSubList_NumberOfElementsNegative_SubListEmpty() {
         List<Integer> _sub_list = this.randomGenerator.getSubList(-1);
 
         Assert.assertTrue(_sub_list.isEmpty());
     }
 
     @Test
-    public void test_GetSubList_SoMuchElements() {
+    public void test_GetSubList_SoMuchNbOfElements_SubListEmpty() {
         List<Integer> _sub_list = this.randomGenerator.getSubList(this.randomGenerator.getRandomElements().size() + 1);
 
         Assert.assertTrue(_sub_list.isEmpty());
     }
 
     @Test
-    public void test_GetSubList_SameSizeThanInnerList() {
+    public void test_GetSubList_SameSizeThanMainList_SubListEmpty() {
         List<Integer> _sub_list = this.randomGenerator.getSubList(this.randomGenerator.getRandomElements().size());
 
         Assert.assertTrue(_sub_list.isEmpty());
     }
 
     @Test
-    public void test_GetSubList_ZeroListSize() {
+    public void test_GetSubList_NbOfElementZero_SubListEmpty() {
         List<Integer> _sub_list = this.randomGenerator.getSubList(0);
 
         Assert.assertTrue(_sub_list.isEmpty());
     }
 
     @Test
-    public void test_GetOnceIndexFrom_ValidList() {
+    public void test_GetOnceIndexFrom_FromValidList_ValidIndexFromList() {
         // Setup
         List<Integer> _list = Arrays.asList(3, 2, 1);
 
@@ -159,7 +159,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GetOnceIndexFrom_EmptyList() {
+    public void test_GetOnceIndexFrom_FromEmptyList_NegativeIndex() {
         // Exercise
         int _idx = this.randomGenerator.getOnceIndexFrom(new ArrayList<Integer>());
 
@@ -168,12 +168,12 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GetOnceIndexFrom_NullList() {
+    public void test_GetOnceIndexFrom_NullList_NegativeIndex() {
         Assert.assertEquals(-1, this.randomGenerator.getOnceIndexFrom(null));
     }
 
     @Test
-    public void test_GetOnceIndex_ValidIndex() {
+    public void test_GetOnceIndex_FromMainList_ValidIndex() {
         // Exercise
         int _idx = this.randomGenerator.getOnceIndex();
 
@@ -181,7 +181,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GetIsolatedValue_ValidIsolatedValue() {
+    public void test_GetIsolatedValue_FromMainList_ValidIsolatedValue() {
         int _nb_loop = 10000;
 
         System.out.println("Nb of loops: " + _nb_loop);

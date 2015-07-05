@@ -66,7 +66,7 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = IllegalArgumentException.class )
-	public final void test_SetProperty_NullNameForbidden() throws IllegalArgumentException, InvocationTargetException,
+	public final void test_SetProperty_WithNullName_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
 			UnsupportedOperationException
 	{
 		properties.setPropertyValue( null, "toto" );
@@ -84,7 +84,8 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = IllegalArgumentException.class )
-    public final void test_SetProperty_EmptyName_1stForm() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_EmptyNameWithNaturalForm_IllegalArgumentException() throws IllegalArgumentException,
+            InvocationTargetException,
             UnsupportedOperationException
 	{
 		properties.setPropertyValue("", null);
@@ -102,7 +103,8 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = IllegalArgumentException.class )
-    public final void test_SetProperty_EmptyName_2dForm() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_EmptyNameWithVariantForm_IllegalArgumentException() throws IllegalArgumentException,
+            InvocationTargetException,
             UnsupportedOperationException
 	{
 		properties.setPropertyValue( " ", null );
@@ -120,7 +122,7 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InvocationTargetException.class )
-	public final void test_SetProperty_UnknownNameForbidden() throws IllegalArgumentException, InvocationTargetException,
+	public final void test_SetProperty_UnknownName_InvocationTargetException() throws IllegalArgumentException, InvocationTargetException,
 			UnsupportedOperationException
 	{
 		properties.setPropertyValue("toto", 1);
@@ -139,7 +141,7 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception that must not be ran for the test must be available.
 	 */
 	@Test
-    public final void test_SetProperty_ValidReadWrite() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_ForReadWrite_PropertyUpdated() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException
 	{
 		properties.setPropertyValue( "age", 10 );
@@ -159,7 +161,8 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = UnsupportedOperationException.class )
-    public final void test_SetProperty_ValidReadOnly() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_ForReadOnly_UnsupportedOperationException() throws IllegalArgumentException,
+            InvocationTargetException,
             UnsupportedOperationException
 	{
 		properties.setPropertyValue("numSecu", "999");
@@ -177,7 +180,7 @@ public class ClassDefinitionTest
 	 * @throws IllegalArgumentException  Exception that must not be ran for the test must be available.
 	 */
 	@Test
-    public final void test_GetProperty_ValidName() throws IllegalArgumentException, InvocationTargetException {
+    public final void test_GetProperty_ForValidName_ValidValue() throws IllegalArgumentException, InvocationTargetException {
 		Assert.assertEquals("1234567890", properties.getPropertyValue("numSecu"));
 	}
 
@@ -193,7 +196,8 @@ public class ClassDefinitionTest
 	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InvocationTargetException.class )
-	public final void test_GetProperty_InvalidNameForbidden() throws IllegalArgumentException, InvocationTargetException {
+	public final void test_GetProperty_InvalidName_InvocationTargetException() throws IllegalArgumentException,
+			InvocationTargetException {
 		properties.getPropertyValue( "toto" );
 	}
 
@@ -209,7 +213,8 @@ public class ClassDefinitionTest
 	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = IllegalArgumentException.class )
-	public final void test_GetProperty_NullNameInvalid() throws IllegalArgumentException, InvocationTargetException {
+	public final void test_GetProperty_NullName_IllegalArgumentException() throws IllegalArgumentException,
+            InvocationTargetException {
 		properties.getPropertyValue(null);
 	}
 
@@ -222,7 +227,7 @@ public class ClassDefinitionTest
 	 * </ul>
 	 */
 	@Test
-    public final void test_GetProperties_ValidList() {
+    public final void test_GetProperties_ValidList_NotNull() {
 		Assert.assertNotNull( properties.getProperties() );
 	}
 
@@ -235,7 +240,7 @@ public class ClassDefinitionTest
 	 * </ul>
 	 */
 	@Test
-    public final void test_GetProperties_ValidListElement() {
+    public final void test_GetProperties_ValidListElement_NotNull() {
 		for ( Property p : properties.getProperties() )
 		{
 			Assert.assertNotNull( p );
@@ -253,7 +258,7 @@ public class ClassDefinitionTest
 	 * @throws UnsupportedOperationException Exception test awaiting
 	 */
 	@Test( expected = UnsupportedOperationException.class )
-	public final void test_GetProperties_AddPropertyForbidden() {
+	public final void test_GetProperties_AddPropertyForbidden_UnsupportedOperationException() {
 		properties.getProperties().add( new Property( "Toto", 5, true ) );
 	}
 
@@ -268,15 +273,9 @@ public class ClassDefinitionTest
 	 * @throws IllegalAccessException If access exception error.
 	 */
 	@Test
-	public final void test_GetProperties_UpdatePropertyValue() throws IllegalAccessException {
+	public final void test_GetProperties_UpdatePropertyValue_PropertyUpdated() throws IllegalAccessException {
 		// Modify all properties in read/write mode
-		for ( Property p : properties.getProperties() )
-		{
-			if (!p.isReadOnly())
-			{
-				p.setValue( 10 );
-			}
-		}
+		setupValueForReadWriterProperty();
 
 		for ( Property p : properties.getProperties() )
 		{
@@ -287,11 +286,21 @@ public class ClassDefinitionTest
 		}
 	}
 
+	private void setupValueForReadWriterProperty() {
+		for ( Property p : properties.getProperties() )
+		{
+			if (!p.isReadOnly())
+			{
+				p.setValue( 10 );
+			}
+		}
+	}
+
 	/**
 	 * Test of toString method, of class ClassDefinition.
 	 */
 	@Test
-    public void test_ToString_DescriptionClass() {
+    public void test_ToString_DescriptionClass_ValidDescription() {
 		ClassDefinition instance = new PropertiesFactorFake();
 		String expResult = "ClassName";
 		String result = instance.toString();

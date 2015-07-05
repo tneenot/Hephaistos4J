@@ -60,7 +60,7 @@ public class I18nLayoutTest {
      * Test of addLayoutComponent method, of class I18nLayout.
      */
     @Test
-    public void test_AddLayoutComponent_NoError() {
+    public void test_AddLayoutComponent_ValidComponent_NoError() {
         String name = "btnTest";
         Component comp = new JButton("testing");
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
@@ -71,7 +71,7 @@ public class I18nLayoutTest {
      * Test of removeLayoutComponent method, of class I18nLayout.
      */
     @Test
-    public void test_RemoveLayoutComponent_NotError() {
+    public void test_RemoveLayoutComponent_ValidComponent_NoError() {
         Component comp = new JButton("testing");
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.test", new JPanel());
         instance.addLayoutComponent("btnTest", comp);
@@ -82,7 +82,7 @@ public class I18nLayoutTest {
      * Test of preferredLayoutSize method, of class I18nLayout.
      */
     @Test
-    public void test_PreferredLayoutSize_ValidAwaitingDimension() {
+    public void test_PreferredLayoutSize_ForSpecificDimension_ValidAwaitingDimension() {
         Container parent = new JPanel();
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
         parent.setLayout(instance);
@@ -95,7 +95,7 @@ public class I18nLayoutTest {
      * Test of minimumLayoutSize method, of class I18nLayout.
      */
     @Test
-    public void test_MinimumLayoutSize_ValidAwaitingDimension() {
+    public void test_MinimumLayoutSize_ForSpecificDimension_ValidAwaitingDimension() {
         Container parent = new JPanel();
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
         parent.setLayout(instance);
@@ -108,7 +108,7 @@ public class I18nLayoutTest {
      * Test of layoutContainer method, of class I18nLayout.
      */
     @Test
-    public void test_LayoutContainer_NotError() {
+    public void test_LayoutContainer_SetLayoutContainer_NoError() {
         Container parent = new Panel();
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", new JPanel());
         instance.layoutContainer(parent);
@@ -118,7 +118,7 @@ public class I18nLayoutTest {
      * Test of layoutContainer method, of class I18nLayout. Takes a null target container
      */
     @Test(expected = NullPointerException.class)
-    public void test_LayoutContainer_NullValue_NullPointerException() {
+    public void test_LayoutContainer_SetNullValue_NullPointerException() {
         Container parent = new Panel();
         I18nLayout instance = new I18nLayout("org.hlib4j.i18n.messages", null);
         instance.layoutContainer(parent);

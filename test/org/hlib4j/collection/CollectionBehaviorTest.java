@@ -113,18 +113,18 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
 
     @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     @Test
-    public void test_Equals_NotEqualsWithAnIntegerType() {
+    public void test_Equals_ForIntegerType_NotEquals() {
         Assert.assertFalse(this.testingCollection.equals(new Integer(5)));
     }
 
     @SuppressWarnings("ObjectEqualsNull")
     @Test
-    public void test_Equals_NotEqualsWithNullValue() {
+    public void test_Equals_WithNullValue_NotEquals() {
         Assert.assertFalse(this.testingCollection.equals(null));
     }
 
     @Test
-    public void test_Equals_EqualsWithObjectType() {
+    public void test_Equals_ForObjectType_NotEqual() {
         Assert.assertFalse(this.testingCollection.equals(new Object()));
     }
 
@@ -163,12 +163,12 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_IsEmpty_InvalidForNonEmptyCollection() {
+    public void test_IsEmpty_NonEmptyCollection_NotEmpty() {
         Assert.assertFalse(this.testingCollection.isEmpty());
     }
 
     @Test
-    public void test_IsEmpty_EmptyAfterCollectionClearing() {
+    public void test_IsEmpty_OnCleaningCollection_Empty() {
         // Setup
         this.testingCollection.clear();
 
@@ -349,7 +349,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Iterator_NotNull() {
+    public void test_Iterator_IsIteratorExist_NotNull() {
         Assert.assertNotNull(this.testingCollection.iterator());
     }
 

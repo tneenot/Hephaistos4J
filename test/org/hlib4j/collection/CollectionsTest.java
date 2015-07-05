@@ -37,7 +37,7 @@ import static org.junit.Assert.assertEquals;
 public class CollectionsTest {
 
     @Test
-    public void test_Clean_OnFilteredCollection() {
+    public void test_Clean_OnFilteredCollection_CleaningCollection() {
         Collection<Integer> _col = new ArrayList<>();
         Collection<?> _sub_col = Collections.makeFilteredCollection(_col, new Not<Integer>(null));
         _col.add(null);
@@ -46,7 +46,7 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Clean_OnStandardCollection() {
+    public void test_Clean_OnStandardCollection_NotCleaningCollection() {
         Collection<Integer> _col = new ArrayList<>();
         _col.add(2);
 
@@ -54,7 +54,7 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Clean_OnFilteredMap() {
+    public void test_Clean_OnFilteredMap_CleaningMap() {
         Map<String, Integer> _map = new HashMap<>();
         Map<?, ?> _sub_map = Collections.makeFilteredMap(_map, new Not<Integer>(null));
         _map.put("test", null);
@@ -63,7 +63,7 @@ public class CollectionsTest {
     }
 
     @Test
-    public void test_Clean_OnClassicalMap() {
+    public void test_Clean_OnClassicalMap_NotCleaningMap() {
         Map<Integer, String> _map = new HashMap<>();
         _map.put(Integer.SIZE, "Hi");
 

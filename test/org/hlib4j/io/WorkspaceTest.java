@@ -103,13 +103,13 @@ public class WorkspaceTest {
      * @throws IOException If error during file adding or creation
      */
     @Test
-    public void test_AddFileByURI_FileAccepted() throws IOException {
+    public void test_AddFileByURI_ValidFileURI_FileAccepted() throws IOException {
         File f = new File(File.separator + "foobar3");
         Assert.assertNotNull(workspace.addFileByURI(f.toURI()));
     }
 
     @Test
-    public void test_ToURI_ControlURIFormatIfInWorkspace() throws IOException {
+    public void test_ToURI_ControlURIFormatIfInWorkspace_ValidURI() throws IOException {
         File _ref = new File(File.separator + "foobar2");
         File _uri_file = workspace.addFileByURI(new File(File.separator + "foobar2").toURI());
 
@@ -122,7 +122,7 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file exists
      */
     @Test(expected = IOException.class)
-    public void test_AddFileByStringPath_ExistingFileYet() throws IOException {
+    public void test_AddFileByStringPath_ExistingFileYet_IOException() throws IOException {
         ftest = new File(workspace + File.separator + "foobar");
         ftest.createNewFile();
 
@@ -135,13 +135,13 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file exists
      */
     @Test
-    public void test_GetParent_Null() throws IOException {
+    public void test_GetParent_NoParent_GetNull() throws IOException {
         File f = workspace.addFileByStringPath("foo");
         Assert.assertNull(f.getParent());
     }
 
     @Test
-    public void test_GetParentFile_Null() throws IOException {
+    public void test_GetParentFile_NoParent_GetNull() throws IOException {
         File f = workspace.addFileByStringPath("foo");
         Assert.assertNull(f.getParentFile());
     }
@@ -152,13 +152,13 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file exists
      */
     @Test
-    public void test_GetParentFile_NotNullForFirstLevel() throws IOException {
+    public void test_GetParentFile_ParentExistsForFirstLevel_NotNull() throws IOException {
         File f = workspace.addFileByStringPath("foo" + File.separator + " bar");
         Assert.assertNotNull(f.getParentFile());
     }
 
     @Test
-    public void test_GetParentFile_NullForSecondLevel() throws IOException {
+    public void test_GetParentFile_ParentExistsForSecondLevel_NotNull() throws IOException {
         File f = workspace.addFileByStringPath("foo" + File.separator + " bar");
         Assert.assertNull(f.getParentFile().getParentFile());
     }
@@ -179,7 +179,7 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file exists
      */
     @Test(expected = IOException.class)
-    public void test_AttachFile_ErrorCase_FileExistsYet() throws IOException {
+    public void test_AttachFile_FileExistsYet_IOException() throws IOException {
         workspace.attachFile(tmpDir);
     }
 
@@ -187,7 +187,7 @@ public class WorkspaceTest {
      * Gets a file that is not existing from the workspace
      */
     @Test
-    public void test_GetFileByStringPath_FileNotExists() {
+    public void test_GetFileByStringPath_FileNotExists_GetNull() {
         Assert.assertNull(workspace.getFileByStringPath("foo"));
     }
 
@@ -195,7 +195,7 @@ public class WorkspaceTest {
      * Initialized a workspace already initialized.
      */
     @Test
-    public void test_Mkdirs_WorkspaceExistsYet() {
+    public void test_Mkdirs_WorkspaceExistsYet_DirectoryNotCreated() {
         Assert.assertFalse(workspace.mkdirs());
     }
 
@@ -205,7 +205,7 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file exists
      */
     @Test
-    public void test_ToString_ControlDescription() throws IOException {
+    public void test_ToString_ControlDescription_ValidDescription() throws IOException {
         File f = workspace.addFileByStringPath("foo");
 
         Assert.assertEquals(File.separator + "foo", f.toString());
@@ -217,7 +217,7 @@ public class WorkspaceTest {
      * @throws java.io.IOException If file exists.
      */
     @Test
-    public void test_RenameTo_FileNameUpdated() throws IOException {
+    public void test_RenameTo_ValidName_FileNameUpdated() throws IOException {
         File f = workspace.addFileByStringPath("foo");
         f.createNewFile();
 
@@ -230,7 +230,7 @@ public class WorkspaceTest {
      * @throws IOException If error during file creation.
      */
     @Test
-    public void test_ToPath_NotSameIfInWorkspace() throws IOException {
+    public void test_ToPath_WhoseOneFileNotInWorkspace_NotSameFile() throws IOException {
         ftest = workspace.addFileByStringPath("foo3");
         File f = new File(workspace + File.separator + "foo3");
 
@@ -243,7 +243,7 @@ public class WorkspaceTest {
      * @throws IOException If error during file creation.
      */
     @Test
-    public void test_GetRoot_ControlDescription() throws IOException {
+    public void test_GetRoot_ControlDescription_ValidDescription() throws IOException {
         ftest = workspace.addFileByStringPath("foo4");
 
         Assert.assertEquals(File.separator, ftest.toPath().getRoot().toString());
@@ -255,7 +255,7 @@ public class WorkspaceTest {
      * @throws IOException If error during file creation.
      */
     @Test
-    public void test_GetParent_ControlDescription() throws IOException {
+    public void test_GetParent_ControlDescription_ValidDescription() throws IOException {
         ftest = workspace.addFileByStringPath("foo5");
 
         Assert.assertEquals(File.separator, ftest.toPath().getParent().toString());
@@ -265,27 +265,27 @@ public class WorkspaceTest {
      * Call <code>createNewFile</code> for a <code>Workspace</code> and control that raises an exception.
      */
     @Test(expected = IOException.class)
-    public void test_CreateNewFile_FailedSinceForbidden() throws IOException {
+    public void test_CreateNewFile_ForbiddenOperationSinceIsADirectoryType_IOException() throws IOException {
         workspace.createNewFile();
     }
 
     @Test
-    public void test_Workspace_BuildInstanceWithParentAndChildString() {
+    public void test_Constructor_BuildInstanceWithParentAndChildStringParameters_NoError() {
         new Workspace(tmpDir + File.separator + "foo", "bar");
     }
 
     @Test
-    public void test_Workspace_BuildInstanceWithParentFileAndChildString() {
+    public void test_Constructor_BuildInstanceWithParentFileAndChildStringParameters_NoError() {
         new Workspace(new File(tmpDir + File.separator + "foo"), "bar");
     }
 
     @Test
-    public void test_Workspace_BuildInstanceWithURI() {
+    public void test_Constructor_BuildInstanceFromURI_NoError() {
         new Workspace(new File(tmpDir + File.separator + "foo").toURI());
     }
 
     @Test
-    public void test_ToURI_SameValues() throws Exception {
+    public void test_ToURI_ReferenceInternalFileFromURI_SameValues() throws Exception {
         File add_file = workspace.addFileByURI(new File(File.separator + "foobar").toURI());
         add_file.createNewFile();
         File uri_file = workspace.getFileByURI(add_file.toURI());
@@ -294,19 +294,19 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void test_Mkdirs_ForEncapsulateWorkspaces() throws IOException {
+    public void test_Mkdirs_ForEncapsulateWorkspaces_DirectoryCreated() throws IOException {
         File second_workspace = workspace.attachFile(new Workspace(File.separator + "W2"));
         Assert.assertTrue(second_workspace.mkdirs());
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void test_ToURL_CallException() throws IOException {
+    public void test_ToURL_CallException_UnsupportedOperationException() throws IOException {
         File f = workspace.addFileByStringPath("foo4");
         f.toURL();
     }
 
     @Test
-    public void test_Workspace_ControlIfExistsAfterDeletion() {
+    public void test_Workspace_ControlIfExistsAfterDeletion_DoesntExists() {
         workspace.deleteOnExit();
 
         Assert.assertFalse(workspace.exists());

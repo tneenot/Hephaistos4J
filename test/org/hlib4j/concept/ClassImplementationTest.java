@@ -80,7 +80,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_Constructor_EmptyName_NaturalForm_InstantiationException() throws InstantiationException {
+    public void test_Constructor_EmptyNameWithNaturalForm_InstantiationException() throws InstantiationException {
 		new PropertyManager( "" );
 	}
 
@@ -90,7 +90,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Awaiting exception
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_Constructor_EmptyName_VariantForm_InstantiationException() throws InstantiationException {
+    public void test_Constructor_EmptyNameWithVariantForm_InstantiationException() throws InstantiationException {
 		new PropertyManager( "  " );
 	}
 
@@ -100,7 +100,7 @@ public class ClassImplementationTest
 	 * @throws InstantiationException Exception that must not be ran for the test must be available.
 	 */
 	@Test( expected = InstantiationException.class )
-    public void test_Constructor_SpaceInName_InstantiationException() throws InstantiationException {
+    public void test_Constructor_WithSpaceInName_InstantiationException() throws InstantiationException {
 		new PropertyManager( "Class Ref" );
 	}
 
@@ -108,7 +108,7 @@ public class ClassImplementationTest
 	 * Test of getName method, of class PropertyManager.
 	 */
 	@Test
-    public void test_GetName_ValidName() {
+    public void test_GetName_ForValidName_ValidDescriptionName() {
 		String expResult = "ClassRef";
 		String result = instance.getName();
 		assertEquals( expResult, result );
@@ -120,7 +120,7 @@ public class ClassImplementationTest
 	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
 	 */
 	@Test
-    public void test_Add_ValidPropertyValue() throws IllegalArgumentException, InvocationTargetException {
+    public void test_Add_ValidPropertyValue_AddedProperty() throws IllegalArgumentException, InvocationTargetException {
 		Property p = new Property( "prop", 1, false );
 		instance.Add( p );
 

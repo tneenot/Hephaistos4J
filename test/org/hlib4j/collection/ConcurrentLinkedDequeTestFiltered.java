@@ -42,6 +42,6 @@ public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredBehavio
 
     // Used only to force all running tests
     @Test
-    public void test_RunAllUnitTests() {
+    public void test_ForceRunAllUnitTests() {
     }
 }

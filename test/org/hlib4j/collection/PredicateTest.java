@@ -56,29 +56,29 @@ public class PredicateTest {
     }
 
     @Test
-    public void test_Accept_ValidValueAccepted() {
+    public void test_Accept_ValidValue_Accepted() {
         assertTrue(this.refOccurrenceTested.accept(this.randomValue));
     }
 
     @Test
-    public void test_Accept_InvalidValueNotAccepted() {
+    public void test_Accept_InvalidValue_NotAccepted() {
         Assert.assertFalse(this.refOccurrenceTested.accept(this.randomData.getIsolatedValue()));
     }
 
     @Test
-    public final void test_Accept_InvalidObjectValueNotAccepted() {
+    public final void test_Accept_InvalidObjectType_NotAccepted() {
         Predicate<Object> _ref = new Predicate<>(null);
         Assert.assertFalse(_ref.accept(new Object()));
     }
 
     @Test
-    public final void test_Accept_ValidNullValueAccepted() {
+    public final void test_Accept_ValidNullValue_Accepted() {
         Predicate<Object> _ref = new Predicate<>(null);
         Assert.assertTrue(_ref.accept(null));
     }
 
     @Test
-    public final void test_Accept_NullValueNotAccepted() {
+    public final void test_Accept_InvalidNullValue_NotAccepted() {
         Assert.assertFalse(this.refOccurrenceTested.accept(null));
     }
 }

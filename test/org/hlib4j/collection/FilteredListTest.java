@@ -61,7 +61,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
      * <code>lastIndexOf(Object o)</code> for a list type.
      */
     @Test
-    public void test_LastIndexOf_ValueExistsForValidIndex() {
+    public void test_LastIndexOf_ValidIndex_ValueExists() {
         // Setup
         int _idx = this.randomGenerator.getOnceIndexFrom(this.testingCollection);
         int _value = this.collectionOfThisTemplate.lastIndexOf(_idx);
@@ -80,7 +80,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_ListIterator_NotNull() {
+    public void test_ListIterator_ValidIterator_NotNull() {
         Assert.assertNotNull(this.testingCollection.listIterator());
     }
 
@@ -274,7 +274,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_RemoveRange_ValuesRemoved() {
+    public void test_RemoveRange_ValidRangeValues_ValuesRemoved() {
         // Setup
         ListFake<Integer> _list2 = new ListFake<>((FilteredList<Integer>) Collections.makeFilteredList(this.testingCollection, this.ruleRef));
 
@@ -285,12 +285,12 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_HashCode_Valid() {
+    public void test_HashCode_DefaultHashCode_Valid() {
         Assert.assertTrue(0 != this.testingCollection.hashCode());
     }
 
     @Test
-    public void test_Get_Int_ValidValue() {
+    public void test_Get_ValidIntIndex_ValidValue() {
         // Setup
         int _idx = this.randomGenerator.getOnceIndexFrom(this.testingCollection);
         int _value = this.testingCollection.get(_idx);
@@ -333,7 +333,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_Size_FromExternalListWithInvalidValue() {
+    public void test_Size_FromExternalListWithInvalidValue_AwaitingSizeValidSinceInvalidValueRemoved() {
         List<Integer> _col = Collections.makeFilteredList(this.collectionOfThisTemplate, this.ruleRef);
 
         // Note: this.collectionOfThisTemplate was contained n elements + 1 before to be added to a new filtered list type.
@@ -341,20 +341,20 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_Equals_NotEqualsWithDifferentListDefinition() {
+    public void test_Equals_WithDifferentListDefinition_NotEquals() {
         List<Character> _list2 = Collections.makeFilteredList(new LinkedList<Character>(), new Not<Character>('r'));
 
         Assert.assertFalse(this.testingCollection.equals(_list2));
     }
 
     @Test
-    public void test_IsEmpty_ValidForEmptyList() {
+    public void test_IsEmpty_ForEmptyList_Valid() {
         List<Integer> _col = Collections.makeFilteredList(new ArrayList<Integer>(), new Not<Integer>(1));
         Assert.assertTrue(_col.isEmpty());
     }
 
     @Test
-    public void test_Equals_NotEqualsWithACollectionType() {
+    public void test_Equals_ForCollectionType_NotEquals() {
         Collection<Integer> _col = Collections.makeFilteredCollection(new ArrayList<Integer>(), new Not<Integer>(1));
 
         Assert.assertFalse(this.testingCollection.equals(_col));

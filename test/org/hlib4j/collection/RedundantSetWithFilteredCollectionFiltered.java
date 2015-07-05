@@ -40,7 +40,7 @@ public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilter
     }
 
     @Test
-    public void test_RunAllUnitTests() {
+    public void test_ForceRunAllUnitTests() {
         // Default method to force to run all unit tests due to xUnit limitation constraint.
     }
 }

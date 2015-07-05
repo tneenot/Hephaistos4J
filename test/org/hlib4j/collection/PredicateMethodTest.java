@@ -78,7 +78,7 @@ public class PredicateMethodTest
 	 * @see PredicateMethod#PredicateMethod(Object, String)
 	 */
 	@Test(expected = InvocationTargetException.class)
-	public void test_Constructor_WithInvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
+	public void test_Constructor_InvalidMethodName_InvocationTargetException() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException
 	{
 		new PredicateMethod<>( new AUTFake( 1 ), "foo" );
@@ -93,7 +93,7 @@ public class PredicateMethodTest
 	 * </ul>
 	 */
 	@Test
-    public void test_Accept_ValidValueAccepted() {
+    public void test_Accept_ValidValue_Accepted() {
 		AUTFake e = new AUTFake( 5 );
         Assert.assertTrue(ref.accept(e));
     }
@@ -108,7 +108,7 @@ public class PredicateMethodTest
 	 * </ul>
 	 */
 	@Test
-    public void test_Accept_InvalidValueNotAccepted() {
+    public void test_Accept_InvalidValue_NotAccepted() {
 		AUTFake e = new AUTFake( 4 );
 		Assert.assertFalse( ref.accept( e ) );
 	}
@@ -122,7 +122,7 @@ public class PredicateMethodTest
 	 * </ul>
 	 */
 	@Test(expected = NullPointerException.class)
-    public final void test_Accept_NullPointerException() throws InvocationTargetException, IllegalAccessException {
+    public final void test_Constructor_NullParameters_NullPointerException() throws InvocationTargetException, IllegalAccessException {
         new PredicateMethod<>( null, null );
 	}
 

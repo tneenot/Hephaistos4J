@@ -47,6 +47,6 @@ public class DefinitionDomainInterfaceTest extends DefinitionDomainBehaviorTest<
     }
 
     @Test
-    public void test_RunAllTest() {
+    public void test_ForceRunAllInheritsTest() {
     }
 }
