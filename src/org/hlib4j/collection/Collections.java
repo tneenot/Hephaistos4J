@@ -184,12 +184,12 @@ public class Collections
 	/**
 	 * Runs a cleaner operation on the {@link org.hlib4j.concept.Cleaner} type.
 	 *
-	 * @param cleanerElement
+	 * @param collectionToClean
 	 *          Element on which the cleaning will be run.
 	 * @return The number of elements removed.
 	 */
-	private static int cleanOn(org.hlib4j.concept.Cleaner cleanerElement)
+	private static int cleanOn(org.hlib4j.concept.Cleaner collectionToClean)
 	{
-		return cleanerElement.clean();
+		return collectionToClean.clean();
 	}
 }
