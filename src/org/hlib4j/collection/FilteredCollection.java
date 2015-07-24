@@ -89,14 +89,14 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
      *
      *  @see org.hlib4j.concept.Cleaner#clean()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public int clean() {
         int _counter = 0;
         // Control the collection contents. Here remove all elements that contains forbidden value.
-        List<Object> _raw_list = Arrays.asList(this.managedCollection.toArray());
-        for (Object _element : _raw_list) {
-            if (!this.filter.accept((ElementType) _element)) {
+        // -- Duplicate values from source collection to avoid concurrent access while element will be removed from the first one.
+        List<ElementType> _raw_list = Arrays.asList((ElementType[]) this.managedCollection.toArray());
+        for (ElementType _element : _raw_list) {
+            if (!this.filter.accept(_element)) {
                 this.managedCollection.remove(_element);
                 ++_counter;
             }
