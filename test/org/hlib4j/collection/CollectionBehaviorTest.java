@@ -141,6 +141,15 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
+    public void test_RemoveAll_InvalidValuesFromSourceCollection_FalseSinceNoInvalidValueFromSUT() {
+        // Setup
+        this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
+
+        // SUT
+        Assert.assertFalse(this.testingCollection.removeAll(this.invalidCollectionValues));
+    }
+
+    @Test
     public void test_RemoveAll_AllGivenValidValues_AllValueRemoved() {
         List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
@@ -177,10 +186,19 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_ContainsAll_AwaitingValidValues() {
+    public void test_ContainsAll_AwaitingValidValues_ContainsAllInCollection() {
         List<Integer> _list = new ArrayList<>(this.collectionOfThisTemplate);
 
         Assert.assertTrue(this.testingCollection.containsAll(this.randomGenerator.getSubListFromList(_list, 2)));
+    }
+
+    @Test
+    public void test_ContainsAll_WithInvalidValueFromSourceCollection_NotContainsAll() {
+        // Setup
+        this.collectionOfThisTemplate.addAll(this.invalidCollectionValues);
+
+        // SUT
+        Assert.assertFalse(this.testingCollection.containsAll(this.invalidCollectionValues));
     }
 
     @Test

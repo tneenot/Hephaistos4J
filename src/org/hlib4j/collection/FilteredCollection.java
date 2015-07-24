@@ -130,7 +130,7 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
         boolean _is_all_added = true;
 
         for (ElementType e : otherCollection) {
-            // If once add is false, so isAllAdded will be false
+            // If once add is false, so _is_all_added will be false
             _is_all_added &= add(e);
         }
 
@@ -165,6 +165,7 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
      */
     @Override
     public boolean containsAll(Collection<?> otherCollection) {
+        clean();
         return this.managedCollection.containsAll(otherCollection);
     }
 
@@ -208,6 +209,7 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
      */
     @Override
     public boolean removeAll(Collection<?> otherCollection) {
+        clean();
         return this.managedCollection.removeAll(otherCollection);
     }
 
