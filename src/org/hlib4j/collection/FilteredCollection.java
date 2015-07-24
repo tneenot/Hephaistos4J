@@ -91,13 +91,17 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
      */
     @Override
     public int clean() {
+        return cleanOn(this.managedCollection);
+    }
+
+    private int cleanOn(Collection<? extends ElementType> collectionToClean) {
         int _counter = 0;
         // Control the collection contents. Here remove all elements that contains forbidden value.
         // -- Duplicate values from source collection to avoid concurrent access while element will be removed from the first one.
-        List<ElementType> _raw_list = Arrays.asList((ElementType[]) this.managedCollection.toArray());
+        List<ElementType> _raw_list = Arrays.asList((ElementType[]) collectionToClean.toArray());
         for (ElementType _element : _raw_list) {
             if (!this.filter.accept(_element)) {
-                this.managedCollection.remove(_element);
+                collectionToClean.remove(_element);
                 ++_counter;
             }
         }
@@ -213,20 +217,18 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
         return this.managedCollection.removeAll(otherCollection);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * <b>Warning: </b> this version remove all invalid element from collection source. If sources elements had been removed, the result
+     * is not retain with this collection.
      *
      * @see java.util.AbstractCollection#retainAll(java.util.Collection)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public boolean retainAll(Collection<?> initialCollection) {
         // Here we don't accept this operation if some elements from the initial collection can't be according with the filter
         // of this collection.
-        for (Object _element : initialCollection) {
-            if (!this.filter.accept((ElementType) _element)) {
-                return false;
-            }
+        if(cleanOn((Collection<? extends ElementType>) initialCollection) != 0) {
+            return false;
         }
 
         return this.managedCollection.retainAll(initialCollection);
