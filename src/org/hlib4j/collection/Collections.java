@@ -160,7 +160,7 @@ public class Collections
 	 */
 	public static int clean(Collection<?> collectionToClean)
 	{
-		if (collectionToClean instanceof Cleaner) { return cleanOn((Cleaner) collectionToClean); }
+		if (collectionToClean instanceof org.hlib4j.concept.Cleaner) { return cleanOn((org.hlib4j.concept.Cleaner) collectionToClean); }
 
 		return -1;
 	}
@@ -176,19 +176,19 @@ public class Collections
 	 */
 	public static int clean(Map<?, ?> mapToClean)
 	{
-		if (mapToClean instanceof Cleaner) { return cleanOn((Cleaner) mapToClean); }
+		if (mapToClean instanceof org.hlib4j.concept.Cleaner) { return cleanOn((org.hlib4j.concept.Cleaner) mapToClean); }
 
 		return -1;
 	}
 
 	/**
-	 * Runs a cleaner operation on the {@link Cleaner} type.
+	 * Runs a cleaner operation on the {@link org.hlib4j.concept.Cleaner} type.
 	 *
 	 * @param cleanerElement
 	 *          Element on which the cleaning will be run.
 	 * @return The number of elements removed.
 	 */
-	private static int cleanOn(Cleaner cleanerElement)
+	private static int cleanOn(org.hlib4j.concept.Cleaner cleanerElement)
 	{
 		return cleanerElement.clean();
 	}

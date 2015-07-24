@@ -44,7 +44,7 @@ import java.util.Set;
  * @author Tioben Neenot
  * @see FilteredCollection
  */
-final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
+final class FilteredMap<K, V> extends AbstractMap<K, V> implements org.hlib4j.concept.Cleaner {
 
     /**
      * Internal map to manage all records
@@ -227,7 +227,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
     /*
      * (non-Javadoc)
      *
-     * @see org.hlib4j.collection.Cleaner#clean()
+     * @see org.hlib4j.concept.Cleaner#clean()
      */
     @Override
     public int clean() {

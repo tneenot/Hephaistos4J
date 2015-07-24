@@ -38,7 +38,7 @@ import java.util.*;
  * @author Tioben Neenot
  * @see Rule
  */
-class FilteredCollection<ElementType> extends AbstractCollection<ElementType> implements Cleaner {
+class FilteredCollection<ElementType> extends AbstractCollection<ElementType> implements org.hlib4j.concept.Cleaner {
 
     /**
      * The filter to manage all elements in the managedCollection
@@ -87,7 +87,7 @@ class FilteredCollection<ElementType> extends AbstractCollection<ElementType> im
     /*
      * (non-Javadoc)
      *
-     *  @see org.hlib4j.collection.Cleaner#clean()
+     *  @see org.hlib4j.concept.Cleaner#clean()
      */
     @SuppressWarnings("unchecked")
     @Override
