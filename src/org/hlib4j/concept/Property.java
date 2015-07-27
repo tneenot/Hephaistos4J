@@ -133,22 +133,26 @@ public class Property
 	 */
 	@Override
     public boolean equals(Object object) {
-        if (object instanceof Property) {
-            Property property = (Property) object;
 
-			if ( null == getValue() )
-			{
-				return getName().equals( property.getName() ) && isReadOnly() == property.isReadOnly();
-			}
-
-			return getName().equals( property.getName() ) && getValue().equals( property.getValue() ) && isReadOnly() == property.isReadOnly();
-		}
+        try {
+            return equalsToThisProperty((Property) object);
+        } catch (ClassCastException e) {
+            // Do nothing else. Is not the same object type.
+        }
 
 		return false;
 	}
 
-	/**
-	 * Gets the hashCode for the property
+    private boolean equalsToThisProperty(Property property) {
+        return null == getValue() ? equalsToNameAndReadOnlyStatus(property) : equalsToNameAndReadOnlyStatus(property) && getValue().equals(property.getValue());
+    }
+
+    private boolean equalsToNameAndReadOnlyStatus(Property property) {
+        return getName().equals(property.getName()) && isReadOnly() == property.isReadOnly();
+    }
+
+    /**
+     * Gets the hashCode for the property
 	 *
 	 * @return HashCode for the property
 	 */
