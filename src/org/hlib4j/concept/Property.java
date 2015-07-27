@@ -20,27 +20,30 @@ package org.hlib4j.concept;
 *  
 */
 
+import org.hlib4j.util.States;
+
 /**
  * Defines a property with its value and read/write access information. A
- * <code>Property</code> can have several kinds of values. If a value is setting to a property with readonly status, an
+ * <code>Property</code> can have several kinds of values. If a value is setting to a property with isReadOnly status, an
  * exception occurs. A property has a name that can't be never changed after instantiation.
  *
  * @author Tioben Neenot
  */
 public class Property
 {
-
 	/**
-	 * Flag to specify if the property is readonly or not.
-	 */
-	private boolean readonly = false;
-	/**
+     * Flag to specify if the property is isReadOnly or not.
+     */
+    private boolean isReadOnly = false;
+    /**
 	 * Property name
 	 */
+
 	private String  name     = null;
 	/**
 	 * Property value
 	 */
+
 	private Object  value    = null;
 
 	/**
@@ -58,34 +61,28 @@ public class Property
 	 * Create an instance of the Property class with no default value.
 	 *
 	 * @param name     Property name
-	 * @param readonly <code>true</code> if the property is readonly, <code>false</code> otherwise.
-	 * @throws IllegalArgumentException If name is <code>null</code> or empty
+     * @param readonly <code>true</code> if the property is isReadOnly, <code>false</code> otherwise.
+     * @throws IllegalArgumentException If name is <code>null</code> or empty
 	 */
 	public Property( String name, boolean readonly ) throws IllegalArgumentException
 	{
-		if ( null == name )
-		{
-			throw new IllegalArgumentException( "Null name forbidden" );
-		}
-
-		if ( "".equals( name.trim() ) )
-		{
-			throw new IllegalArgumentException( "Empty name forbidden" );
-		}
+        if (States.isNullOrEmpty(name)) {
+            throw new IllegalArgumentException("Null or empty name");
+        }
 
 		this.name = name;
-		this.readonly = readonly;
-	}
+        this.isReadOnly = readonly;
+    }
 
 	/**
-	 * Create an instance of the Property class with a readonly status and default value. Even if the property is readonly
-	 * it's possible to set a default value with only this constructor. If the developer set a value later with the
+     * Create an instance of the Property class with a isReadOnly status and default value. Even if the property is isReadOnly
+     * it's possible to set a default value with only this constructor. If the developer set a value later with the
 	 * <code>setValue(Object )</code> method, an exception will occur.
 	 *
 	 * @param name     Property name
 	 * @param value    Initial property value
-	 * @param readonly Flag to specify if the property is readonly or not.
-	 * @throws IllegalArgumentException If name is null or empty
+     * @param readonly Flag to specify if the property is isReadOnly or not.
+     * @throws IllegalArgumentException If name is null or empty
 	 */
 	public Property( String name, Object value, boolean readonly ) throws IllegalArgumentException
 	{
@@ -117,14 +114,14 @@ public class Property
 	 * Sets a property value
 	 *
 	 * @param value Value to set for the property
-	 * @throws UnsupportedOperationException If set a readonly value.
-	 */
+     * @throws UnsupportedOperationException If set a isReadOnly value.
+     */
 	public final void setValue( Object value ) throws UnsupportedOperationException
 	{
 		if (isReadOnly())
 		{
-			throw new UnsupportedOperationException( "The property is readonly" );
-		}
+            throw new UnsupportedOperationException("Readonly property");
+        }
 
 		this.value = value;
 	}
@@ -135,11 +132,9 @@ public class Property
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals( Object o )
-	{
-		if ( o instanceof Property )
-		{
-			Property property = ( Property ) o;
+    public boolean equals(Object object) {
+        if (object instanceof Property) {
+            Property property = (Property) object;
 
 			if ( null == getValue() )
 			{
@@ -167,14 +162,14 @@ public class Property
 	}
 
 	/**
-	 * Defines if the property is readonly or not
-	 *
-	 * @return <code>true</code> if the property is readonly, <code>false</code> if the property is read/write.
-	 */
+     * Defines if the property is isReadOnly or not
+     *
+     * @return <code>true</code> if the property is isReadOnly, <code>false</code> if the property is read/write.
+     */
 	public boolean isReadOnly()
 	{
-		return readonly;
-	}
+        return isReadOnly;
+    }
 
 	/**
 	 * Return the property description
@@ -184,6 +179,6 @@ public class Property
 	@Override
 	public String toString()
 	{
-		return getName() + "=" + getValue() + " (readonly:" + isReadOnly() + ")";
-	}
+        return getName() + "=" + getValue() + " (isReadOnly:" + isReadOnly() + ")";
+    }
 }
