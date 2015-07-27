@@ -113,10 +113,7 @@ public class ClassBuilder {
      * @throws java.io.IOException If error during XML file creating.
      */
     private static File parse(ResourceBundle bundle, File dir) throws IOException {
-        File _xml_file = new File(dir.getAbsolutePath() + File.separator + "DefXML" + System.nanoTime() + ".tmp");
-        new ResourceBundleToXMLParser(bundle, _xml_file).invoke();
-
-        return _xml_file;
+        return new ResourceBundleToXMLParser(bundle, dir).invoke();
     }
 
     /**
@@ -183,7 +180,7 @@ public class ClassBuilder {
 
         String _class_name = getClassNameFor(classNode);
         if (_class_name.equals(className)) {
-            // Build the class definition awaiting
+            // Build the awaiting class definition
             _class_definition = new PropertyManager(_class_name);
 
             // Gets all properties
@@ -267,33 +264,29 @@ public class ClassBuilder {
                 return Long.parseLong(valueToParse.substring(0, valueToParse.length() - 0x1));
             }
 
+            // It's not a Long
+            if (valueToParse.endsWith("f")) {
+                return Float.parseFloat(valueToParse);
+            }
+
             return Integer.parseInt(valueToParse);
         } catch (NumberFormatException e) {
             // It's not an Integer
             try {
-                // It's not a Long
-                if (valueToParse.endsWith("f")) {
-                    return Float.parseFloat(valueToParse);
-                }
-
                 // Try for a Double
                 return Double.parseDouble(valueToParse);
 
             } catch (NumberFormatException e2) {
-                // It's not a Float
-                try {
-                    return Double.parseDouble(valueToParse);
-                } catch (NumberFormatException e3) {
-                    // It's not a Double
-                    // Control if it's a date
-                    if (valueToParse.startsWith("#") && valueToParse.endsWith("#")) {
-                        try {
-                            return DateFormat.getDateInstance(DateFormat.SHORT).parse(valueToParse.substring(1, valueToParse.length() - 1));
-                        } catch (ParseException ex) {
-                            // It's not a Date. So pass, the default parsing result will be a String.
-                        }
+                // It's not a Double
+                // Control if it's a date
+                if (valueToParse.startsWith("#") && valueToParse.endsWith("#")) {
+                    try {
+                        return DateFormat.getDateInstance(DateFormat.SHORT).parse(valueToParse.substring(1, valueToParse.length() - 1));
+                    } catch (ParseException ex) {
+                        // It's not a Date. So pass, the default parsing result will be a String.
                     }
                 }
+
             }
         }
 
@@ -305,9 +298,9 @@ public class ClassBuilder {
         private ResourceBundle bundle;
         private File xmlFile;
 
-        public ResourceBundleToXMLParser(ResourceBundle bundle, File xmlFile) {
+        public ResourceBundleToXMLParser(ResourceBundle bundle, File dir) {
             this.bundle = bundle;
-            this.xmlFile = xmlFile;
+            this.xmlFile = new File(dir.getAbsolutePath() + File.separator + "DefXML" + System.nanoTime() + ".tmp");
         }
 
         private static void writeHeader(FileWriter xmlWriter) throws IOException {
@@ -332,12 +325,14 @@ public class ClassBuilder {
             xmlWriter.write("</classes>");
         }
 
-        public void invoke() throws IOException {
+        public File invoke() throws IOException {
             try (FileWriter _xml_writer = new FileWriter(xmlFile)) {
                 writeHeader(_xml_writer);
                 writeBody(bundle, _xml_writer);
                 writerFooter(_xml_writer);
             }
+
+            return this.xmlFile;
         }
     }
 }
