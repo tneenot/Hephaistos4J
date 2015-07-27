@@ -114,22 +114,7 @@ public class ClassBuilder {
      */
     private static File parse(ResourceBundle bundle, File dir) throws IOException {
         File _xml_file = new File(dir.getAbsolutePath() + File.separator + "DefXML" + System.nanoTime() + ".tmp");
-        try (FileWriter _xml_writer = new FileWriter(_xml_file)) {
-            _xml_writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            _xml_writer.write("<classes>");
-            _xml_writer.write("<class name=\"Bundle\">");
-            _xml_writer.write("<properties>");
-
-            // Gets all elements from ResourceBundle and write them into XML format.
-            Enumeration<String> _keys = bundle.getKeys();
-            while (_keys.hasMoreElements()) {
-                String _key = _keys.nextElement();
-                _xml_writer.write("<property name=\"" + _key + "\" readonly=\"false\">" + bundle.getString(_key) + "</property>");
-            }
-            _xml_writer.write("</properties>");
-            _xml_writer.write("</class>");
-            _xml_writer.write("</classes>");
-        }
+        new ResourceBundleToXMLParser(bundle, _xml_file).invoke();
 
         return _xml_file;
     }
@@ -314,6 +299,46 @@ public class ClassBuilder {
 
         // It's a String
         return valueToParse;
+    }
+
+    private static class ResourceBundleToXMLParser {
+        private ResourceBundle bundle;
+        private File xmlFile;
+
+        public ResourceBundleToXMLParser(ResourceBundle bundle, File xmlFile) {
+            this.bundle = bundle;
+            this.xmlFile = xmlFile;
+        }
+
+        private static void writeHeader(FileWriter xmlWriter) throws IOException {
+            xmlWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xmlWriter.write("<classes>");
+            xmlWriter.write("<class name=\"Bundle\">");
+            xmlWriter.write("<properties>");
+        }
+
+        private static void writeBody(ResourceBundle bundle, FileWriter xmlWriter) throws IOException {
+            // Gets all elements from ResourceBundle and write them into XML format.
+            Enumeration<String> _keys = bundle.getKeys();
+            while (_keys.hasMoreElements()) {
+                String _key = _keys.nextElement();
+                xmlWriter.write("<property name=\"" + _key + "\" readonly=\"false\">" + bundle.getString(_key) + "</property>");
+            }
+        }
+
+        private static void writerFooter(FileWriter xmlWriter) throws IOException {
+            xmlWriter.write("</properties>");
+            xmlWriter.write("</class>");
+            xmlWriter.write("</classes>");
+        }
+
+        public void invoke() throws IOException {
+            try (FileWriter _xml_writer = new FileWriter(xmlFile)) {
+                writeHeader(_xml_writer);
+                writeBody(bundle, _xml_writer);
+                writerFooter(_xml_writer);
+            }
+        }
     }
 }
 
