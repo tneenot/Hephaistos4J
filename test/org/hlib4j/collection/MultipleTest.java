@@ -38,30 +38,6 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class MultipleTest
 {
-
-	/**
-	 * Class reference for tests
-	 */
-	private Multiple< Integer > ref = null;
-
-	/**
-	 * Test initialisation
-	 */
-	@Before
-	public void setUp()
-	{
-		ref = new Multiple<>( 4 );
-	}
-
-	/**
-	 * Test cleaning
-	 */
-	@After
-	public void tearDown()
-	{
-		ref = null;
-	}
-
 	/**
 	 * Test of accept method, of class {@link Multiple}. <br>
 	 * <ul>
@@ -73,8 +49,8 @@ public class MultipleTest
 	 */
 	@Test
     public void test_Accept_InvalidEvenValue_NotAccepted() {
-		Assert.assertFalse( ref.accept( 2 ) );
-	}
+        Assert.assertFalse(new Multiple<Integer>(4).accept(2));
+    }
 
 	/**
 	 * Test of accept method, of class {@link Multiple}. <br>
@@ -87,12 +63,12 @@ public class MultipleTest
 	 */
 	@Test
     public void test_Accept_InvalidOddValue_NotAccepted() {
-		Assert.assertFalse( ref.accept( 3 ) );
-	}
+        Assert.assertFalse(new Multiple<Integer>(4).accept(3));
+    }
 
     @Test(expected = NullPointerException.class)
-    public void test_Accept_NullValue_NotAccepted() {
-        this.ref.accept((Integer) null);
+    public void test_Accept_NullValue_NullPointerException() {
+        new Multiple<Integer>(2).accept((Integer) null);
     }
 
     @Test
@@ -101,8 +77,18 @@ public class MultipleTest
     }
 
     @Test
+    public void test_Multiple_ForInvalidAtomicLongValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<AtomicLong>(new AtomicLong(4L)).accept(new AtomicLong(3L)));
+    }
+
+    @Test
     public void test_Multiple_ForValidAtomicIntegerValue_Accepted() {
         Assert.assertTrue(new Multiple<AtomicInteger>(new AtomicInteger(3)).accept(new AtomicInteger(3)));
+    }
+
+    @Test
+    public void test_Multiple_ForInvalidAtomicIntegerValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<AtomicInteger>(new AtomicInteger(3)).accept(new AtomicInteger(2)));
     }
 
     @Test
@@ -111,8 +97,18 @@ public class MultipleTest
     }
 
     @Test
+    public void test_Multiple_ForInvalidShortValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<Short>((short) 3).accept((short) 2));
+    }
+
+    @Test
     public void test_Multiple_ForValidLongValue_Accepted() {
         Assert.assertTrue(new Multiple<Long>(3L).accept(3L));
+    }
+
+    @Test
+    public void test_Multiple_ForInvalidLongValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<Long>(3L).accept(2L));
     }
 
     @Test
@@ -121,8 +117,18 @@ public class MultipleTest
     }
 
     @Test
+    public void test_Multiple_ForInvalidFloatValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<Float>(new Float(3.65f)).accept(3.64f));
+    }
+
+    @Test
     public void test_Multiple_ForValidDoubleValue_Accepted() {
         Assert.assertTrue(new Multiple<Double>(new Double(2.5)).accept(new Double(2.5)));
+    }
+
+    @Test
+    public void test_Multiple_ForInvalidDoubleValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<Double>(new Double(2.5)).accept(new Double(2.0)));
     }
 
     @Test
@@ -131,8 +137,18 @@ public class MultipleTest
     }
 
     @Test
+    public void test_Multiple_ForInvalidIntegerValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<Integer>(2).accept(3));
+    }
+
+    @Test
     public void test_Multiple_ForValidByteValue_Accepted() {
         Assert.assertTrue(new Multiple<Byte>((byte) 9).accept((byte) 9));
+    }
+
+    @Test
+    public void test_Multiple_ForInvalidByteValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<Byte>((byte) 9).accept((byte) 8));
     }
 
     @Test
@@ -142,57 +158,17 @@ public class MultipleTest
     }
 
     @Test
+    public void test_Multiple_ForInvalidBigIntegerValue_NotAccepted() {
+        Assert.assertFalse(new Multiple<BigInteger>(new BigInteger(new byte[]{1, 3})).accept(new BigInteger(new byte[]{
+                1, 4})));
+    }
+    @Test
     public void test_Multiple_ForValidBigDecimalValue_Accepted() {
         Assert.assertTrue(new Multiple<BigDecimal>(new BigDecimal(5.2)).accept(new BigDecimal(5.2)));
     }
 
     @Test
-    public void test_Multiple_ForInvalidAtomicLongValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<AtomicLong>(new AtomicLong(4L)).accept(new AtomicInteger(3)));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidAtomicIntegerValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<AtomicInteger>(new AtomicInteger(3)).accept(new AtomicLong(4L)));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidShortValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<Short>((short) 3).accept(3));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidLongValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<Long>(3L).accept(3.3f));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidFloatValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<Float>(new Float(3.65f)).accept(3));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidDoubleValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<Double>(new Double(2.5)).accept(1));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidIntegerValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<Integer>(2).accept(2.3f));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidByteValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<Byte>((byte) 9).accept(9));
-    }
-
-    @Test
-    public void test_Multiple_ForInvalidBigIntegerValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<BigInteger>(new BigInteger(new byte[]{1, 3})).accept(1));
-    }
-
-    @Test
     public void test_Multiple_ForInvalidBigDecimalValue_NotAccepted() {
-        Assert.assertFalse(new Multiple<BigDecimal>(new BigDecimal(5.2)).accept(5.3f));
+        Assert.assertFalse(new Multiple<BigDecimal>(new BigDecimal(5.2)).accept(new BigDecimal(5.1)));
     }
 }

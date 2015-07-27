@@ -89,13 +89,13 @@ final class FilteredList<ElementType> extends FilteredCollection<ElementType> im
      * @see java.util.AbstractList#addAll(int, java.util.Collection)
      */
     @Override
-    public boolean addAll(int index, Collection<? extends ElementType> c) {
+    public boolean addAll(int index, Collection<? extends ElementType> collection) {
         boolean _is_all_added = this.ctrlFlag = true;
 
-        for (ElementType elementType : c) {
+        for (ElementType elementType : collection) {
             add(index++, elementType);
 
-            // Retains the cumulative ctrlFlag after each add
+            // Retains the cumulative ctrlFlag after each add(index, element) call
             _is_all_added &= this.ctrlFlag;
         }
 
@@ -136,8 +136,8 @@ final class FilteredList<ElementType> extends FilteredCollection<ElementType> im
      * @see java.util.AbstractList#indexOf(java.lang.Object)
      */
     @Override
-    public int indexOf(Object o) {
-        return this.undergroundList.indexOf(o);
+    public int indexOf(Object object) {
+        return this.undergroundList.indexOf(object);
     }
 
     /*

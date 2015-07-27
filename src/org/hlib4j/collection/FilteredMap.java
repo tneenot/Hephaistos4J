@@ -197,9 +197,9 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements org.hlib4j.co
      * @see java.util.AbstractMap#putAll(java.util.Map)
      */
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
-        for (K _key : m.keySet()) {
-            put(_key, m.get(_key));
+    public void putAll(Map<? extends K, ? extends V> map) {
+        for (K _key : map.keySet()) {
+            put(_key, map.get(_key));
         }
     }
 
