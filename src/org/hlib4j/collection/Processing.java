@@ -47,7 +47,6 @@ public abstract class Processing < E > implements Rule< E >
 	 * Default constructor that's implementing a rule that's returning always
 	 * <code>true</code>.
 	 */
-	@SuppressWarnings( "unchecked" )
 	public Processing()
 	{
 		this( ( Rule< E > ) new True() );
@@ -72,13 +71,12 @@ public abstract class Processing < E > implements Rule< E >
 	}
 
 	@Override
-	public boolean accept( E e )
-	{
-		boolean _return = rule.accept( e );
-		if ( _return )
+    public boolean accept(E element) {
+        boolean _return = rule.accept(element);
+        if ( _return )
 		{
-			perform( e );
-		}
+            perform(element);
+        }
 
 		return _return;
 	}
@@ -86,9 +84,9 @@ public abstract class Processing < E > implements Rule< E >
 	/**
 	 * Applies a treatment for the element given as parameter.
 	 *
-	 * @param e Element on which the treatment will be applied.
-	 * @return <code>true</code> if treatment has been performed,
+     * @param element Element on which the treatment will be applied.
+     * @return <code>true</code> if treatment has been performed,
 	 * <code>false</code> if treatment was not necessary.
 	 */
-	public abstract boolean perform( E e );
+    public abstract boolean perform(E element);
 }

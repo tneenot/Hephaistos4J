@@ -31,7 +31,7 @@ import org.hlib4j.util.States;
 public class Not<E> implements Rule<E>
 {
 
-    private final Object refValue;
+    private final E refValue;
 
     /**
 	 * Builds an instance of the opposite of a {@link PredicateMethod} according to model and method's name.
@@ -39,26 +39,22 @@ public class Not<E> implements Rule<E>
      * @param refValue
      *          Reference value for this rule.
      */
-	public Not(Object refValue)
-	{
+    public Not(E refValue) {
 		this.refValue = refValue;
 	}
 
 
     @Override
-	public boolean accept(E theValue)
-	{
-        // If the reference value and the comparison value are null so return the opposite of this state
-        boolean _flag_ctrl = States.isNullOrEmpty(this.refValue) & States.isNullOrEmpty(theValue);
-        if(_flag_ctrl) { return false; }
-
-        // If the reference value is not null, compare it with the parameter
-        if(!States.isNullOrEmpty(this.refValue)) {
-            return !refValue.equals(theValue);
-        }
+    public boolean accept(E element) {
+        if (areNullParameterAndRefValue(element)) return false;
 
         // Otherwise, compare the parameter with the reference value
-        return !this.refValue.equals(theValue);
+        return !this.refValue.equals(element);
+    }
+
+    private boolean areNullParameterAndRefValue(E theValue) {
+        // If the reference value and the comparison value are null so return the opposite of this state
+        return States.isNullOrEmpty(this.refValue) & States.isNullOrEmpty(theValue);
     }
 
 }

@@ -76,8 +76,8 @@ public class Predicate<E> implements Rule<E> {
      * @see Rule#accept(Object)
      */
     @Override
-    public boolean accept(E e) {
+    public boolean accept(E element) {
 
-        return States.isNullOrEmpty(this.simpleValue) ? this.simpleValue == e : this.simpleValue.equals(e);
+        return States.isNullOrEmpty(this.simpleValue) ? this.simpleValue == element : this.simpleValue.equals(element);
     }
 }

@@ -66,24 +66,23 @@ import java.lang.reflect.Method;
  */
 public class PredicateMethod< E > implements Rule < E >
 {
-
 	/**
-	 * The property to compare a value
-	 */
-	private String methodName = null;
+     * The property to use to compare a value
+     */
+    private String propertyName = null;
 
 	/**
 	 * The equal clause to gets the referenced value
 	 */
-	private Object objectValue = null;
+    private Object valueFromPropertyName = null;
 
 	/**
 	 * Builds an instance of the <code>PredicateMethod</code> class.
 	 *
 	 * @param model      Model type of this class
 	 * @param methodName The method's name for the class. The value returned by this
-	 *                   methodName will be compare to the &lt;E&gt; type.
-	 * @throws InvocationTargetException Invocation method error
+     *                   propertyName will be compare to the &lt;E&gt; type.
+     * @throws InvocationTargetException Invocation method error
 	 * @throws IllegalAccessException    Method invocation error
 	 * @throws IllegalArgumentException  Invocation error into given model
 	 *                                   <b>Note: </b> If method not found, a ClassCastException will be thrown.
@@ -92,9 +91,9 @@ public class PredicateMethod< E > implements Rule < E >
 	{
 		// Control if the property name exists in the element and gets the value
 		// returned by this method, as referenced value
-		this.objectValue = isValid( model, methodName ).invoke( model );
-		this.methodName = methodName;
-	}
+        this.valueFromPropertyName = isValid(model, methodName).invoke(model);
+        this.propertyName = methodName;
+    }
 
     /**
 	 * Controls if the propertyName exists in the element
@@ -118,9 +117,9 @@ public class PredicateMethod< E > implements Rule < E >
 	}
 
 	/**
-	 * Controls if the element <code>e</code> is conforming to the {@link Rule}.
-	 * If <code>e</code> element doesn't contains the <code>methodName</code>
-	 * method a <code>ClassCastException</code> will be thrown. If method exist
+     * Controls if the element <code>element</code> is conforming to the {@link Rule}.
+     * If <code>e</code> element doesn't contains the <code>propertyName</code>
+     * method a <code>ClassCastException</code> will be thrown. If method exist
 	 * and invocation error is occurs, so return <code>false</code>. If
 	 * <code>PredicateMethod</code> was built for a reference value only with
 	 * {@link #PredicateMethod(Object, String)} constructor , so in this case accept method runs
@@ -129,22 +128,19 @@ public class PredicateMethod< E > implements Rule < E >
 	 * @see org.hlib4j.collection.Rule#accept(java.lang.Object)
 	 */
 	@Override
-	public boolean accept( E e )
-	{
-		Object _val2;
+    public boolean accept(E element) {
+        Object _target_value_from_element;
 
         try
         {
-			// Controls if the method name exists in the element e
-			Method _target_method = isValid(e, this.methodName);
-
-			_val2 = _target_method.invoke(e);
-		}
+            // Controls if the method name exists in the element
+            _target_value_from_element = isValid(element, this.propertyName).invoke(element);
+        }
         catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
         {
             return false;
         }
 
-		return this.objectValue.equals( _val2 );
-	}
+        return this.valueFromPropertyName.equals(_target_value_from_element);
+    }
 }

@@ -18,6 +18,11 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     private final Map<T, Counter> internalRedundantValues;
 
+    /**
+     * Builds a <code>RedundantSet</code> collection based on the element of the collection given as parameters.
+     *
+     * @param values Element of the collection that will be copied into the current one.
+     */
     public RedundantSet(Collection<T> values) {
         this();
 

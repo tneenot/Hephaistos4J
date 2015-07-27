@@ -20,11 +20,6 @@ package org.hlib4j.collection;
 *  
 */
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-
 /**
  * Multiple is a <code>Rule</code>, computes the multiple for the number value.
  *
@@ -52,10 +47,10 @@ public class Multiple<E extends Number> implements Rule<E>
         }
     }
 
-    public boolean accept(E aNumber) {
+    public boolean accept(E element) {
         synchronized (this) {
             try {
-                return (aNumber.doubleValue() % this.refValue.doubleValue()) == 0.0;
+                return (element.doubleValue() % this.refValue.doubleValue()) == 0.0;
             } catch (ClassCastException e) {
                 // Do nothing, only for implementation
             }

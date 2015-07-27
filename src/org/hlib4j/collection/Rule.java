@@ -39,9 +39,9 @@ public interface Rule < E >
 	/**
 	 * Verifies if the element is valid according to the rule.
 	 *
-	 * @param e Element to control by the rule.
-	 * @return <code>true</code> if the rule implementation determines if the
+     * @param element Element to control by the rule.
+     * @return <code>true</code> if the rule implementation determines if the
 	 * element is valid, <code>false</code> otherwise.
 	 */
-	boolean accept( E e );
+    boolean accept(E element);
 }

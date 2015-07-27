@@ -101,11 +101,10 @@ public class ProcessingTest
 		}
 
 		@Override
-		public boolean perform( Object e )
-		{
+        public boolean perform(Object element) {
 			++count;
 
-			return e != null;
+            return element != null;
 
 		}
 

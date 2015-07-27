@@ -30,8 +30,7 @@ public class True implements Rule< Object >
 {
 
 	@Override
-	public boolean accept( Object e )
-	{
+    public boolean accept(Object element) {
 		return true;
 	}
 }
