@@ -20,6 +20,8 @@ package org.hlib4j.i18n;
 *  
 */
 
+import org.hlib4j.util.States;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
@@ -67,13 +69,12 @@ public class I18nContainer
 	 */
 	public I18nContainer( Locale locale )
 	{
-		this.i18nCollections = new ArrayList<>();
-		if ( null == locale )
-		{
-			throw new NullPointerException();
-		}
+        if (States.isNullOrEmpty(locale)) {
+            throw new NullPointerException("Null locale");
+        }
 
-		lastLocale = locale;
+        this.i18nCollections = new ArrayList<>();
+        lastLocale = locale;
 	}
 
 	/**
@@ -96,22 +97,26 @@ public class I18nContainer
 	 */
 	public boolean add( I18n i18n )
 	{
-		if ( null != i18n && !i18nCollections.contains( i18n ) )
-		{
-			// Build a ResourceBundle to test if this one is valid or not
-			{
-				ResourceBundle.getBundle( i18n.getBaseName(), getLastLocale() );
-			}
-
-			// No error, so bundle based on baseName of I18n is valid
-			return i18nCollections.add( i18n );
-		}
+        try {
+            if (!i18nCollections.contains(States.validate(i18n))) {
+                // No error, so bundle based on baseName of I18n is valid
+                return i18nCollections.add(baseNameValidation(i18n));
+            }
+        } catch (AssertionError e) {
+            // Do nothing else. i18n is not a valid parameter.
+        }
 
 		return false;
 	}
 
-	/**
-	 * Removes an I18n instance from I18nContainer.
+    private I18n baseNameValidation(I18n i18n) {
+        ResourceBundle.getBundle(i18n.getBaseName(), getLastLocale());
+
+        return i18n;
+    }
+
+    /**
+     * Removes an I18n instance from I18nContainer.
 	 *
 	 * @param i18n I18n instance to remove
 	 * @return <code>true</code> if instance has been removed, <code>false</code> otherwise (can be meaning locale doesn't

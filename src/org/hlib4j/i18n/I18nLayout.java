@@ -70,11 +70,11 @@ public class I18nLayout implements I18n, LayoutManager
 	@Override
 	public void change( Locale locale )
 	{
-		ResourceBundle r = ResourceBundle.getBundle( getBaseName(), locale );
-		synchronized ( this.target.getTreeLock() )
+        ResourceBundle bundle = ResourceBundle.getBundle(getBaseName(), locale);
+        synchronized ( this.target.getTreeLock() )
 		{
-			updateComponents( r, this.target );
-		}
+            updateComponents(bundle, this.target);
+        }
 	}
 
 	/**
@@ -88,15 +88,12 @@ public class I18nLayout implements I18n, LayoutManager
 		for ( Component _component : container.getComponents() )
 		{
 			// Take account only component with name
-			boolean _is_name = _component.getName() != null;
+            boolean _has_a_name = _component.getName() != null;
 
 			// According to component type, fix text value
-			if ( _component instanceof AbstractButton && _is_name )
-			{
+            if (_component instanceof AbstractButton && _has_a_name) {
 				( ( AbstractButton ) _component ).setText( resourceBundle.getString( _component.getName() ) );
-			}
-			else if ( _component instanceof JLabel && _is_name )
-			{
+			} else if (_component instanceof JLabel && _has_a_name) {
 				( ( JLabel ) _component ).setText( resourceBundle.getString( _component.getName() ) );
 			}
 			else if ( _component instanceof Container )
@@ -105,9 +102,9 @@ public class I18nLayout implements I18n, LayoutManager
 			}
 
 			try {
-				// Control if component as tooltip text associated with
-				if (_is_name && resourceBundle.containsKey(_component.getName() + ".tooltip")) {
-					((JComponent) _component).setToolTipText(resourceBundle.getString(_component.getName() + ".tooltip"));
+                // Control if component as tooltip text is associated with
+                if (_has_a_name && resourceBundle.containsKey(_component.getName() + ".tooltip")) {
+                    ((JComponent) _component).setToolTipText(resourceBundle.getString(_component.getName() + ".tooltip"));
 				}
 			} catch(ClassCastException e)
 			{
