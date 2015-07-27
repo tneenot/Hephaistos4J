@@ -165,16 +165,16 @@ public class Workspace extends File {
     private void deleteWorkspaceContent(File directory) {
         File[] _files = directory.listFiles();
 
-        for(File f : _files)
+        for (File _file : _files)
         {
-            if(f.isDirectory())
+            if (_file.isDirectory())
             {
-                deleteWorkspaceContent(f);
+                deleteWorkspaceContent(_file);
             }
 
-            if(f.delete() == false)
+            if (_file.delete() == false)
             {
-                f.deleteOnExit();
+                _file.deleteOnExit();
             }
         }
     }
@@ -230,7 +230,7 @@ public class Workspace extends File {
          * @see java.io.File
          */
         WorkspaceUnitFile(Workspace workspace, String pathname) {
-            super(workspace.toString(), pathname);
+            super(workspace, pathname);
             this.workspace = workspace;
         }
 
@@ -271,8 +271,10 @@ public class Workspace extends File {
             try {
                 return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getCanonicalPath());
             } catch(IOException e) {
-                return null;
+                // Do nothing else. No Parent file yet.
             }
+
+            return null;
         }
 
         /**
@@ -283,8 +285,13 @@ public class Workspace extends File {
         public String getParent() {
             // Limits to workspace root directory has upper level.
             String _parent = super.getParent();
-            String _its_parent = _parent.replace(this.workspace.toString(), "");
+            String _its_parent = normalizeParentPathDescription(_parent);
             return "".equals(_its_parent) ? null : _its_parent;
+        }
+
+        // Removes the workspace description from the parent path name
+        private String normalizeParentPathDescription(String _parent) {
+            return _parent.replace(this.workspace.toString(), "");
         }
 
         /**
@@ -344,7 +351,6 @@ public class Workspace extends File {
         }
 
         @Override
-        @SuppressWarnings(value="deprecated")
         public URL toURL() throws MalformedURLException {
             throw new UnsupportedOperationException("Deprecated and forbidden method");
         }
