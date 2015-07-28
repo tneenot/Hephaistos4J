@@ -102,7 +102,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after decrement.
      */
     public int decrement() {
-        return decrementByStep(1);
+        return decrementByStep(this.counterStep);
     }
 
     /**
@@ -135,7 +135,7 @@ public class Counter extends Range<Integer> {
         int _hypothetical_value = this.getCurrentValue() + counterStep;
 
         if (_hypothetical_value >= this.getUpperLimitValue() || _hypothetical_value < this.getLowerLimitValue()) {
-            throw new RangeException("Impossible to set counter step value that overload counter limits");
+            throw new RangeException("CounterStep value overloads counter limits");
         }
 
         this.counterStep = counterStep;
