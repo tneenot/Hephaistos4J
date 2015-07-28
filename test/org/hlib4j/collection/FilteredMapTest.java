@@ -199,7 +199,8 @@ public class FilteredMapTest {
     @Test
     public void test_keySet_EmptyMap_EmptyKeySet() {
         // Setup
-        Map<Integer, Integer> _empty_map = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<>(null));
+        Map<Integer, Integer> _empty_map = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<Integer>
+                (null));
 
         // Assert
         Assert.assertEquals(0, _empty_map.keySet().size());
