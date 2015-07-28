@@ -89,8 +89,8 @@ public class PropertyTest
 	 */
 	@Test
     public final void test_GetValue_NullValue_AwaitingNullValue() {
-		Assert.assertNull( readWrite.getValue() );
-	}
+        Assert.assertNull(readWrite.getValue());
+    }
 
 	/**
 	 * Unit test <code>SetValueReadOnly()</code>.
@@ -104,8 +104,8 @@ public class PropertyTest
 	 */
 	@Test( expected = UnsupportedOperationException.class )
     public final void test_SetValue_ReadOnly_UnsupporedOperationException() throws UnsupportedOperationException {
-		readOnly.setValue( "Toto" );
-	}
+        readOnly.setValue("Toto");
+    }
 
 	/**
 	 * Unit test <code>setValueReadWrite()</code>.
@@ -121,8 +121,8 @@ public class PropertyTest
     public final void test_SetValue_ReadWrite_ValueUpdated() throws UnsupportedOperationException {
 		readWrite.setValue( "Toto" );
 
-		Assert.assertEquals( "Toto", readWrite.getValue() );
-	}
+        Assert.assertEquals("Toto", readWrite.getValue());
+    }
 
 	/**
 	 * Unit test <code>equalsSameObject()</code>.
@@ -136,8 +136,8 @@ public class PropertyTest
     public final void test_Equals_SameInstanceType_Equals() {
 		Property read = new Property( "PropertyRead", true );
 
-		Assert.assertTrue( readOnly.equals( read ) );
-	}
+        Assert.assertTrue(readOnly.equals(read));
+    }
 
 	/**
 	 * Unit test <code>isReadOnlyTrue()</code>.
@@ -162,6 +162,29 @@ public class PropertyTest
 	 */
 	@Test
 	public final void test_isReadOnly_InvalidReadOnly_NotReadOnly() {
-		Assert.assertFalse( new Property( "Toto", false ).isReadOnly() );
-	}
+        Assert.assertFalse(new Property("Toto", false).isReadOnly());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void test_Constructor_NullName_IllegalArgumentException() {
+        new Property(null, false);
+    }
+
+    @Test
+    public final void test_hashCode_IsValidHashCode_HashCodeValid() {
+        Assert.assertNotEquals(0, new Property("foo", true).hashCode());
+    }
+
+    @Test
+    public final void test_equals_WithObject_NotEquals() {
+        Assert.assertNotEquals(new Object(), new Property("foo", false));
+    }
+
+    @Test
+    public final void test_toString_ControlDescription_RightDescription() {
+        // Setup
+        Property _property = new Property("foo", 1, true);
+
+        Assert.assertEquals("foo=1 (isReadOnly:true)", _property.toString());
+    }
 }

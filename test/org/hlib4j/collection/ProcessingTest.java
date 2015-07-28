@@ -51,8 +51,8 @@ public class ProcessingTest
 		Object e = new Object();
         Processing<Object> instance = new ProcessingFake<>();
         boolean expResult = true;
-		boolean result = instance.perform( e );
-		assertEquals( expResult, result );
+        boolean result = instance.perform(e);
+        assertEquals( expResult, result );
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class ProcessingTest
 		True e = new True();
 		Processing<True> instance = new ProcessingFake<>(new Not<True>(e));
 		boolean expResult = false;
-		boolean result = instance.accept( e );
-		assertEquals( expResult, result );
+        boolean result = instance.accept(e);
+        assertEquals( expResult, result );
 	}
 
 	/**
@@ -77,6 +77,11 @@ public class ProcessingTest
         instance.accept(e);
         assertEquals(1, ((ProcessingFake<Object>) instance).getCount());
 	}
+
+    @Test(expected = NullPointerException.class)
+    public void test_Constructor_NullRule_NullPointerException() {
+        new ProcessingFake<Object>(null);
+    }
 
 
 	/**

@@ -190,4 +190,28 @@ public class FilteredMapTest {
     public void test_MakeFilteredMap_NullRuleParameter_NullPointerException() {
         Collections.makeFilteredMap(new HashMap<>(), null);
     }
+
+    @Test
+    public void test_keySet_NonEmptyMap_NonEmptyKeySet() {
+        Assert.assertNotEquals(0, this.refFilteredMap.keySet().size());
+    }
+
+    @Test
+    public void test_keySet_EmptyMap_EmptyKeySet() {
+        // Setup
+        Map<Integer, Integer> _empty_map = Collections.makeFilteredMap(new HashMap<Integer, Integer>(), new Not<>(null));
+
+        // Assert
+        Assert.assertEquals(0, _empty_map.keySet().size());
+    }
+
+    @Test
+    public void test_get_ValidKey_ValidCorrespondingObject() {
+        Assert.assertEquals(new Integer(6), this.refFilteredMap.get(4));
+    }
+
+    @Test
+    public void test_get_InvalidKey_NullCorrespondingObject() {
+        Assert.assertNull(this.refFilteredMap.get(25));
+    }
 }

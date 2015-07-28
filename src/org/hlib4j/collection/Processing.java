@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.util.States;
+
 /**
  * Runs a process on a specific value given as argument. The Processing class is
  * using within a collection for which a {@link Rule} is applying. Process is
@@ -55,20 +57,18 @@ public abstract class Processing < E > implements Rule< E >
 	/**
 	 * Processing constructor with a specific rule.
 	 *
-	 * @param r Rule to use that will be authorizing
-	 *          {@link Processing#perform(java.lang.Object)} method thru
+     * @param rule Rule to use that will be authorizing
+     *          {@link Processing#perform(java.lang.Object)} method thru
 	 *          {@link Processing#accept(java.lang.Object)}.
 	 * @throws NullPointerException If rule is <code>null</code>.
 	 */
-	public Processing( Rule< E > r )
-	{
-		if ( r == null )
-		{
-			throw new NullPointerException( "Null rule forbidden" );
-		}
+    public Processing(Rule<E> rule) {
+        if (States.isNullOrEmpty(rule)) {
+            throw new NullPointerException("Null rule");
+        }
 
-		rule = r;
-	}
+        this.rule = rule;
+    }
 
 	@Override
     public boolean accept(E element) {
