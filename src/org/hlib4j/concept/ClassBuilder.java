@@ -242,12 +242,20 @@ public class ClassBuilder {
     private NodeList getClasses() throws IOException, SAXException, ParserConfigurationException {
         // Build the XML parsing to create the instance corresponding to the given
         // class name
+        Document _doc = parseXmlDocument(makeDocumentBuilderFactory());
+        return _doc.getElementsByTagName("class");
+    }
+
+    private Document parseXmlDocument(DocumentBuilderFactory documentBuilderFactory) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder _doc_builder = documentBuilderFactory.newDocumentBuilder();
+        return _doc_builder.parse(xmlFileClassDef);
+    }
+
+    private DocumentBuilderFactory makeDocumentBuilderFactory() {
         DocumentBuilderFactory _factory = DocumentBuilderFactory.newInstance();
         _factory.setIgnoringComments(true);
         _factory.setCoalescing(true);
-        DocumentBuilder _doc_builder = _factory.newDocumentBuilder();
-        Document _doc = _doc_builder.parse(xmlFileClassDef);
-        return _doc.getElementsByTagName("class");
+        return _factory;
     }
 
     /**
