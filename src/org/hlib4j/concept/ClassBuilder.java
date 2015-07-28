@@ -176,43 +176,57 @@ public class ClassBuilder {
      */
     private ClassDefinition getClassDefinitionFor(Node classNode, String className) throws IllegalArgumentException,
             DOMException, InstantiationException {
-        ClassDefinition _class_definition = null;
+        PropertyManager _class_definition = null;
 
         String _class_name = getClassNameFor(classNode);
         if (_class_name.equals(className)) {
-            // Build the awaiting class definition
+            // Build the awaiting class definition. In fact the class definition consist to register a list of properties for this class
+            // with their accessors.
             _class_definition = new PropertyManager(_class_name);
+            addPropertiesToClassFromNode(_class_definition, classNode);
 
-            // Gets all properties
-            NodeList _properties = classNode.getChildNodes();
-            for (int j = 0; j < _properties.getLength(); ++j) {
-                // For each property get all parameters
-                NodeList _property_list = _properties.item(j).getChildNodes();
-                for (int k = 0; k < _property_list.getLength(); ++k) {
-                    // Variables for all properties elements
-                    String _property_name = null;
-                    Object _value = parse(_property_list.item(k).getTextContent().trim());
-                    boolean _read_only = false;
-                    NamedNodeMap _attributes = _property_list.item(k).getAttributes();
-                    if (null != _attributes) {
-                        for (int l = 0; l < _attributes.getLength(); ++l) {
-                            Node _property = _attributes.item(l);
-                            String _property_raw = _property.getNodeName();
-                            if ("name".equals(_property_raw)) {
-                                _property_name = _property.getNodeValue();
-                            } else {
-                                if ("readonly".equals(_property_raw)) {
-                                    _read_only = Boolean.parseBoolean(_property.getNodeValue());
-                                }
-                            }
-                        }
-                        // Add the property to the class definition
-                        ((PropertyManager) _class_definition).Add(new Property(_property_name, _value, _read_only));
-                    }
-                }
-            }
+
         }
         return _class_definition;
+    }
+
+    private void addPropertiesToClassFromNode(PropertyManager classDefinition, Node classNode) {
+        // Gets all properties that will be linked to this class definition
+        NodeList _properties = classNode.getChildNodes();
+        addAccessorsToClassFromProperties(classDefinition, _properties);
+    }
+
+    private void addAccessorsToClassFromProperties(PropertyManager classDefinition, NodeList properties) {
+        for (int j = 0; j < properties.getLength(); ++j) {
+            // For each property get all parameters. A parameter is an accessor.
+            NodeList _accessor_definition = properties.item(j).getChildNodes();
+            setAccessorDefinitionToClass(classDefinition, _accessor_definition);
+        }
+    }
+
+    private void setAccessorDefinitionToClass(PropertyManager classDefinition, NodeList accessorDefinition) {
+        for (int k = 0; k < accessorDefinition.getLength(); ++k) {
+            // Variables for all properties
+            String _property_name = null;
+            Object _value = parse(accessorDefinition.item(k).getTextContent().trim());
+            boolean _read_only = false;
+            NamedNodeMap _attributes = accessorDefinition.item(k).getAttributes();
+            if (null != _attributes) {
+                for (int l = 0; l < _attributes.getLength(); ++l) {
+                    Node _attribute = _attributes.item(l);
+                    String _attribute_name = _attribute.getNodeName();
+                    if ("name".equals(_attribute_name)) {
+                        _property_name = _attribute.getNodeValue();
+                    } else {
+                        if ("readonly".equals(_attribute_name)) {
+                            _read_only = Boolean.parseBoolean(_attribute.getNodeValue());
+                        }
+                    }
+                }
+                // Add the property to the class definition
+                classDefinition.Add(new Property(_property_name, _value, _read_only));
+            }
+        }
     }
 
     /**
