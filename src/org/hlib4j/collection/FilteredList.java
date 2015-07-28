@@ -62,13 +62,7 @@ final class FilteredList<ElementType> extends FilteredCollection<ElementType> im
     FilteredList(List<ElementType> originalList, Rule<ElementType> ruleForThisList) {
         super(originalList, ruleForThisList);
 
-        try {
-            this.setFilter(ruleForThisList);
-            this.setManagedCollection(originalList);
-            this.undergroundList = originalList;
-        } catch (AssertionError e) {
-            throw new NullPointerException(e.getMessage() + ". Null element.");
-        }
+        this.undergroundList = originalList;
     }
 
     /*

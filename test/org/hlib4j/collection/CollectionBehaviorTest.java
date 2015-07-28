@@ -286,7 +286,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Contains_FromExternalCollectionWithInvalidData() {
+    public void test_Contains_FromExternalCollectionWithInvalidData_NotContains() {
         // Setup
         int _invalid_value = getAnInvalidValue();
 
@@ -298,7 +298,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     }
 
     @Test
-    public void test_Contains_FromExternalCollectionWithValidData() {
+    public void test_Contains_FromExternalCollectionWithValidData_Contains() {
         int _valid_value = getAValidValue();
 
         Assert.assertTrue(this.testingCollection.contains(_valid_value));
