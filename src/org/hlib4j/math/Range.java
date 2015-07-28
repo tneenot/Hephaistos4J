@@ -48,7 +48,7 @@ public class Range<T> extends DefinitionDomain<T> {
 
     private void setCommonMembers(LimitType limitType, T lowerLimitValue, T upperLimitValue) throws RangeException {
         if (lowerLimitValue.hashCode() > upperLimitValue.hashCode()) {
-            throw new RangeException("Lower limit can't be greater than upper limit");
+            throw new RangeException("Lower limit greater than upper limit");
         }
 
         this.limitType = limitType;
@@ -65,14 +65,15 @@ public class Range<T> extends DefinitionDomain<T> {
             return this.upperLimitValue;
         }
 
-        throw new RangeException("Default value can't be find according to range definition");
+        throw new RangeException("Default value can't be found according to range definition");
     }
 
     @Override
     public boolean isInclude(T value) {
-        // Control of current value is realizing according to lower and upper limits in one hand and the LimitType limits definition in
+        // Control of current value is realizing according to lower and upper limits in one hand and the LimitType definition in
         // other hand.
-        if ((this.limitType.getLeft().equals(LimitType.BOTH_CLOSE.getLeft()) && value.hashCode() < this.lowerLimitValue.hashCode()) || (this.limitType.getRight().equals(LimitType.BOTH_CLOSE.getRight()) && value.hashCode() > this.upperLimitValue.hashCode())) {
+        if ((this.limitType.getLeft().equals(LimitType.BOTH_CLOSE.getLeft()) && value.hashCode() < this.lowerLimitValue.hashCode()) || (this.
+                limitType.getRight().equals(LimitType.BOTH_CLOSE.getRight()) && value.hashCode() > this.upperLimitValue.hashCode())) {
             return false;
         }
 
@@ -81,8 +82,7 @@ public class Range<T> extends DefinitionDomain<T> {
             return false;
         }
 
-        return !(value.hashCode() < this.lowerLimitValue.hashCode() || value.hashCode() > this.upperLimitValue.hashCode());
-
+        return (value.hashCode() >= this.lowerLimitValue.hashCode() && value.hashCode() <= this.upperLimitValue.hashCode());
     }
 
     @Override
@@ -93,20 +93,29 @@ public class Range<T> extends DefinitionDomain<T> {
         }
 
         // Pass 2:  Control limits of definition domain
-        boolean _are_valid_limits = this.isInclude(otherDefinitionDomain.getLowerLimitValue()) && this.isInclude(otherDefinitionDomain
-                .getUpperLimitValue());
+        boolean _are_valid_limits = areSameLimitValues(otherDefinitionDomain);
 
         if (_are_valid_limits) {
             // Pass 3: compare limits definition
             Range<T> _other_definition = (Range<T>) otherDefinitionDomain;
 
-            _are_valid_limits &= this.lowerLimitValue.hashCode() <= _other_definition.getLowerLimitValue().hashCode() && this.limitType.getLeft()
-                    .equals
-                            (_other_definition.getLimitType().getLeft()) && this.upperLimitValue.hashCode() >= _other_definition.getUpperLimitValue().hashCode()
-                    && this.limitType.getRight().equals(_other_definition.getLimitType().getRight());
+            _are_valid_limits &= isSameLowerLimitDeclaration(_other_definition) && isSameUpperLimitDeclaration(_other_definition);
         }
 
         return _are_valid_limits;
+    }
+
+    private boolean areSameLimitValues(DefinitionDomain<T> otherDefinitionDomain) {
+        return this.isInclude(otherDefinitionDomain.getLowerLimitValue()) && this.isInclude(otherDefinitionDomain
+                .getUpperLimitValue());
+    }
+
+    private boolean isSameLowerLimitDeclaration(Range<T> otherDefinition) {
+        return this.limitType.getLeft().equals(otherDefinition.getLimitType().getLeft());
+    }
+
+    private boolean isSameUpperLimitDeclaration(Range<T> otherDefinition) {
+        return this.limitType.getRight().equals(otherDefinition.getLimitType().getRight());
     }
 
     public T getCurrentValue() {
@@ -115,7 +124,7 @@ public class Range<T> extends DefinitionDomain<T> {
 
     public void setCurrentValue(T currentValue) throws RangeException {
         if (this.isInclude(currentValue) == false) {
-            throw new RangeException("Current value to set is out of bounds: " + currentValue + " for: " + this);
+            throw new RangeException("Current value is out of bounds: " + currentValue + " for: " + this);
         }
 
         this.currentValue = currentValue;

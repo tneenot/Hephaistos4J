@@ -23,7 +23,7 @@ package org.hlib4j.math;
 
 /**
  * This abstract class is a concept to represent a definition domain. Methods implemented by the class that realize this interface offers
- * some methods  * to define if a value or another domain is include into the current one. A definition domain is corresponding to a
+ * some methods  to define if a value or another domain is include into the current one. A definition domain is corresponding to a
  * group of values. The included values management it let to implementation.
  */
 public abstract class DefinitionDomain<Type> {
