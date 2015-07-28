@@ -206,23 +206,13 @@ public class ClassBuilder {
 
     private void setAccessorDefinitionToClass(PropertyManager classDefinition, NodeList accessorDefinition) {
         for (int k = 0; k < accessorDefinition.getLength(); ++k) {
-            // Variables for all properties
-            String _property_name = null;
-            Object _value = parse(accessorDefinition.item(k).getTextContent().trim());
-            boolean _read_only = false;
+            // Variables for all properties type
             NamedNodeMap _attributes = accessorDefinition.item(k).getAttributes();
             if (null != _attributes) {
-                for (int l = 0; l < _attributes.getLength(); ++l) {
-                    Node _attribute = _attributes.item(l);
-                    String _attribute_name = _attribute.getNodeName();
-                    if ("name".equals(_attribute_name)) {
-                        _property_name = _attribute.getNodeValue();
-                    } else {
-                        if ("readonly".equals(_attribute_name)) {
-                            _read_only = Boolean.parseBoolean(_attribute.getNodeValue());
-                        }
-                    }
-                }
+                String _property_name = _attributes.getNamedItem("name").getNodeValue();
+                boolean _read_only = Boolean.parseBoolean(_attributes.getNamedItem("readonly").getNodeValue());
+                Object _value = parse(accessorDefinition.item(k).getTextContent().trim());
+
                 // Add the property to the class definition
                 classDefinition.Add(new Property(_property_name, _value, _read_only));
             }
