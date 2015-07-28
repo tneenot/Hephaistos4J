@@ -162,7 +162,7 @@ public class Counter extends Range<Integer> {
     /**
      * Fix the original default value for this counter to allow to use it again.
      *
-     * @return
+     * @return <code>true</code> if counter has been rearm with its default initial value.
      */
     public boolean rearm() {
         try {

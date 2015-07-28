@@ -4,7 +4,5 @@ lib
 out
 api
 .idea
-.idea/**
-lib
-api
 TestResults
+doc
