@@ -65,7 +65,7 @@ public class RandomGenerator {
 
     /**
      * Gets a new value from the internal random generator. This values doesn't correspond to those generated throw {@link
-     * #generateRandomValues(int)}. If is the case, is only due to hasard !
+     * #generateRandomValues(int)}. If is the case, is only due to hazard !
      * @return A specific random new value.
      */
     public int getIsolatedValue() {
@@ -92,7 +92,7 @@ public class RandomGenerator {
     }
 
     /**
-     * Gets a random index from the list of elements given as paremeter.
+     * Gets a random index from the list of elements given as parameter.
      * @param elements List of element.
      * @return A random index from the list of elements.
      */

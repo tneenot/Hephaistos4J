@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit tests to test the definition domain interface itself thru the {@link DefinitionDomainBehaviorTest}.
+ * Unit tests to test the definition domain interface itself with the {@link DefinitionDomainBehaviorTest}.
  */
 public class DefinitionDomainInterfaceTest extends DefinitionDomainBehaviorTest<DefinitionDomain<Integer>, Integer> {
     @Override

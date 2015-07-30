@@ -31,7 +31,7 @@ import java.util.Collection;
  */
 public class ArrayDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>> {
     @Override
-    protected void instanciateReferencesTestData() {
+    protected void instantiateReferencesTestData() {
         this.collectionOfThisTemplate = new ArrayDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 

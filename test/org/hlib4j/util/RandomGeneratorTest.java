@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by tneenot on 06/04/15.
+ * Unit tests for {@link RandomGenerator} class.
  */
 public class RandomGeneratorTest {
 
@@ -70,7 +70,7 @@ public class RandomGeneratorTest {
     }
 
     @Test
-    public void test_GenerateRandomValues_TwoDifferentsList_Differents() {
+    public void test_GenerateRandomValues_TwoDifferentList_Differents() {
         RandomGenerator otherRandomGenerator = new RandomGenerator();
 
         for (int i = 0; i < 100; ++i) {

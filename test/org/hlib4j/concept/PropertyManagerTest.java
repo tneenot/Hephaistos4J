@@ -121,7 +121,7 @@ public class PropertyManagerTest {
      * Test of getAllClasses method, of class ClassBuilder.
      */
     @Test
-    public void test_GetAllClasses_WithValidClasses_ValidDefintionClasses() {
+    public void test_GetAllClasses_WithValidClasses_ValidDefinitionClasses() {
         Collection<ClassDefinition> result = instance.getAllClasses();
         for (ClassDefinition c : result) {
             assertTrue(c.getName().equals("ClassRef") || c.getName().equals("SecondClass") || c.getName().equals("ThirdClass"));

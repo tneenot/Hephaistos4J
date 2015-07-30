@@ -103,7 +103,7 @@ public class PropertyTest
 	 * @throws UnsupportedOperationException Exception awaiting for the test
 	 */
 	@Test( expected = UnsupportedOperationException.class )
-    public final void test_SetValue_ReadOnly_UnsupporedOperationException() throws UnsupportedOperationException {
+    public final void test_SetValue_ReadOnly_UnsupportedOperationException() throws UnsupportedOperationException {
         readOnly.setValue("Toto");
     }
 

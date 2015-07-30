@@ -29,7 +29,7 @@ import java.util.Collection;
 public class RedundantSetWithAsGenericCollection extends CollectionBehaviorTest<Collection<Integer>> {
 
     @Override
-    protected void instanciateReferencesTestData() {
+    protected void instantiateReferencesTestData() {
         this.collectionOfThisTemplate = new RedundantSet<>();
         this.invalidCollectionValues = new RedundantSet<>();
         this.testingCollection = new RedundantSet<>();

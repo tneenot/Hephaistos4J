@@ -47,7 +47,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
     public void setUp() {
         buildRandomTestValues();
 
-        instanciateReferencesTestData();
+        instantiateReferencesTestData();
 
         createTestData();
     }
@@ -57,7 +57,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
         this.randomGenerator.generateRandomValues(10);
     }
 
-    protected abstract void instanciateReferencesTestData();
+    protected abstract void instantiateReferencesTestData();
 
     protected void createTestData() {
         this.collectionOfThisTemplate.addAll(this.randomGenerator.getRandomElements());
@@ -326,7 +326,7 @@ public abstract class CollectionBehaviorTest<C extends java.util.Collection<Inte
         // Setup
         int _valid_value = getAValidValue();
 
-        // Remove old value to be sure while it will be added, there will be only one first occurence of this value
+        // Remove old value to be sure while it will be added, there will be only one first occurrence of this value
         purgeAValueFromCollection(this.testingCollection, _valid_value);
 
         // Exercise

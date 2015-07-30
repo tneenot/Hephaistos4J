@@ -109,14 +109,14 @@ public class StatesTest
 	 */
 	@Test
     public void test_NullOrEmptyArray_OnNullBoolean_NullBooleanConfirmed() {
-		Boolean[] _barray1 = null;
-		Assert.assertTrue(States.isNullOrEmptyArray(_barray1));
-	}
+        Boolean[] _boolean_array = null;
+        Assert.assertTrue(States.isNullOrEmptyArray(_boolean_array));
+    }
 
     @Test
     public void test_NullOrEmptyArray_OnEmptyBooleanArray_EmptyArrayConfirmed() {
-        Boolean[] _barray2 = {};
-        Assert.assertTrue(States.isNullOrEmptyArray(_barray2));
+        Boolean[] _boolean_array = {};
+        Assert.assertTrue(States.isNullOrEmptyArray(_boolean_array));
     }
 
 

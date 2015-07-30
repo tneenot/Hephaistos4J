@@ -32,7 +32,7 @@ import java.util.*;
 public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Integer>, Not<Integer>> {
 
     @Override
-    protected void instanciateReferencesTestData() {
+    protected void instantiateReferencesTestData() {
         this.collectionOfThisTemplate = new LinkedList<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
         this.testingCollection = Collections.makeFilteredList(this.collectionOfThisTemplate, this.ruleRef);
@@ -114,7 +114,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_ListIterator_Set_ValidValueSetted() {
+    public void test_ListIterator_Set_ValidValueSet() {
         // Setup
         int _valid_value = getAValidValue();
         purgeAValueFromCollection(this.testingCollection, _valid_value);
@@ -129,7 +129,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_ListIterator_Set_InvalidValueNotSetted() {
+    public void test_ListIterator_Set_InvalidValueNotSet() {
         // Setup
         int _invalid_value = getAnInvalidValue();
         ListIterator<Integer> _it = this.testingCollection.listIterator();
@@ -249,7 +249,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
      * List.Set(int, E) test
      */
     @Test
-    public void test_Set_Index_ValidValue_Setted() {
+    public void test_Set_Index_ValidValue_Set() {
         // Setup
         int _valid_value = getAValidValue();
         purgeAValueFromCollection(this.testingCollection, _valid_value);
@@ -262,7 +262,7 @@ public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Intege
     }
 
     @Test
-    public void test_Set_Index_InvalidValue_NotSetted() {
+    public void test_Set_Index_InvalidValue_NotSet() {
         // Setup
         int _invalid_value = getAnInvalidValue();
 

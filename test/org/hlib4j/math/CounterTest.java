@@ -137,7 +137,7 @@ public class CounterTest {
     }
 
     @Test
-    public void test_Increment_IncrementAndDecrement_OrignalValueRetreive() throws RangeException {
+    public void test_Increment_IncrementAndDecrement_OriginalValueRetreive() throws RangeException {
         // Setup
         int _original_value = this.counterTesting.getCurrentValue();
 

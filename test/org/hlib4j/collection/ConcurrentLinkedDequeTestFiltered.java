@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>> {
     @Override
-    protected void instanciateReferencesTestData() {
+    protected void instantiateReferencesTestData() {
         this.collectionOfThisTemplate = new ConcurrentLinkedDeque<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 

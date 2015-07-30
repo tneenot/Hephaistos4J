@@ -301,13 +301,13 @@ public class RangeTest {
     }
 
     @Test(expected = RangeException.class)
-    public void test_Constructor_BothOpenNotSameLimitsWithSufficentRange_ImpossibleToSetDefaultValue_RangeException() throws
+    public void test_Constructor_BothOpenNotSameLimitsWithEnoughRange_ImpossibleToSetDefaultValue_RangeException() throws
             RangeException {
         new Range<>(DefinitionDomain.LimitType.BOTH_OPEN, 1, 3);
     }
 
     @Test(expected = RangeException.class)
-    public void test_Constructor_BothOpenNotSameLimitsWithInsufficentRange_RangeException() throws RangeException {
+    public void test_Constructor_BothOpenNotSameLimitsWithNotEnoughRange_RangeException() throws RangeException {
         new Range<Integer>(DefinitionDomain.LimitType.BOTH_OPEN, 0, 1);
     }
 

@@ -188,7 +188,7 @@ public class RedundantSetTest {
     }
 
     @Test
-    public void test_size_RemoveRendudantValue_ValidCollectionSize() {
+    public void test_size_RemoveRedundantValue_ValidCollectionSize() {
         // Setup
         this.setupWithSameValues();
         this.addAndRemoveSameValue(5);

@@ -22,7 +22,8 @@
 package org.hlib4j.math;
 
 /**
- * Range class defining a definition domain that'singleBrace representing a range of values whose concrete values are given by <code>T</code>
+ * Range class defining a definition domain that's single brace representing a range of values whose concrete values are given by
+ * <code>T</code>
  * definition. Range definition have got some limits that can be opens or closes. Here, rather than to use a collection of values that
  * can be represents a definition domain, the implementation define a rule of available values.<br><br>
  * <p>

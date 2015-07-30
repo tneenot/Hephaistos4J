@@ -306,7 +306,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void test_Workspace_ControlIfExistsAfterDeletion_DoesntExists() {
+    public void test_Workspace_ControlIfExistsAfterDeletion_NotExists() {
         workspace.deleteOnExit();
 
         Assert.assertFalse(workspace.exists());

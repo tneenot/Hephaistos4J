@@ -6,7 +6,7 @@ import org.hlib4j.math.RangeException;
 import java.util.*;
 
 /**
- * Collection of elements with redudant elements authorized. This collection doesn't each duplicate element as an specific
+ * Collection of elements with redundant elements authorized. This collection doesn't each duplicate element as an specific
  * instance, but register only the first instance as reference element. All other same elements are counted as a supplementary
  * instance without recorded them. That's meaning in the internal representation, the element is recorded once. Other elements
  * are counted as supplementary instance, but the effective instance will not be setting into the collection.<br><br>
@@ -152,8 +152,8 @@ public class RedundantSet<T> extends AbstractSet<T> {
      */
     private class RedundantSetIterator implements Iterator<T> {
 
-        // The current collection on which the iterator will be setted
-        private final Map<T, Counter> redundatSetCollection;
+        // The current collection on which the iterator will be set
+        private final Map<T, Counter> redundantSetCollection;
 
         // The iterator on keys of the current collection
         private final Iterator<T> keySetIterator;
@@ -161,30 +161,30 @@ public class RedundantSet<T> extends AbstractSet<T> {
         // The current element gets from current collection keySetIterator
         private T currentElement = null;
 
-        // The occurence counter on the currentElement
+        // The occurrence counter on the currentElement
         private int occurrenceCounter;
 
         public RedundantSetIterator(Map<T, Counter> internalRedundantValues) {
-            this.redundatSetCollection = internalRedundantValues;
-            this.keySetIterator = this.redundatSetCollection.keySet().iterator();
+            this.redundantSetCollection = internalRedundantValues;
+            this.keySetIterator = this.redundantSetCollection.keySet().iterator();
             this.occurrenceCounter = 0;
         }
 
         @Override
         public boolean hasNext() {
 
-            return this.keySetIterator.hasNext() || this.isAnotherOccurenceExist();
+            return this.keySetIterator.hasNext() || this.isAnotherOccurrenceExist();
 
         }
 
-        private boolean isAnotherOccurenceExist() {
-            return this.currentElement != null && this.redundatSetCollection.get(this.currentElement).getCurrentValue() > this
+        private boolean isAnotherOccurrenceExist() {
+            return this.currentElement != null && this.redundantSetCollection.get(this.currentElement).getCurrentValue() > this
                     .occurrenceCounter;
         }
 
         @Override
         public T next() {
-            if (this.isAnotherOccurenceExist()) {
+            if (this.isAnotherOccurrenceExist()) {
                 ++this.occurrenceCounter;
                 return this.currentElement;
             }

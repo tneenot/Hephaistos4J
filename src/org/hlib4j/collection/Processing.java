@@ -58,8 +58,8 @@ public abstract class Processing < E > implements Rule< E >
 	 * Processing constructor with a specific rule.
 	 *
      * @param rule Rule to use that will be authorizing
-     *          {@link Processing#perform(java.lang.Object)} method thru
-	 *          {@link Processing#accept(java.lang.Object)}.
+     *          {@link Processing#perform(java.lang.Object)} method with
+     *          {@link Processing#accept(java.lang.Object)}.
 	 * @throws NullPointerException If rule is <code>null</code>.
 	 */
     public Processing(Rule<E> rule) {

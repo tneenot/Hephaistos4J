@@ -32,7 +32,7 @@ import java.util.Collection;
 public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>> {
 
     @Override
-    protected void instanciateReferencesTestData() {
+    protected void instantiateReferencesTestData() {
         this.collectionOfThisTemplate = new RedundantSet<>();
         this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
         this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);

@@ -78,7 +78,7 @@ public abstract class DefinitionDomainBehaviorTest<D extends DefinitionDomain<T>
 
 /**
  * This class is using for {@link DefinitionDomainBehaviorTest} self tests. It's allowing to control that tests of template are conforms
- * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation.
+ * to the awaiting results to ensure valid definition for all {@link DefinitionDomain} implementation.
  */
 class DefinitionDomainFake extends DefinitionDomain<Integer> {
     @Override
@@ -106,7 +106,7 @@ class DefinitionDomainFake extends DefinitionDomain<Integer> {
 
 /**
  * This class is using for {@link DefinitionDomainBehaviorTest} self tests. It's allowing to control that tests of template are conforms
- * to the awaiting results to ensure valid defintion for all {@link DefinitionDomain} implementation. This class return always false for
+ * to the awaiting results to ensure valid definition for all {@link DefinitionDomain} implementation. This class return always false for
  * its methods, for self {@link DefinitionDomainBehaviorTest} self control.
  */
 class DefinitionDomainAlwaysFalseFake extends DefinitionDomain<Integer> {

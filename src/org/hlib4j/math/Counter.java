@@ -107,7 +107,7 @@ public class Counter extends Range<Integer> {
 
     /**
      * Decrements the counter internal value by the specific step. This step can not be correspond to the last one
-     * definied with {@link #setCounterStep(int)}.
+     * defined with {@link #setCounterStep(int)}.
      *
      * @param step Decrementing step value.
      * @return The new value after decrement.

@@ -132,7 +132,7 @@ public class ClassBuilderTest {
     }
 
     @Test
-    public void test_Parse_ResourceBundleFile_IntegerHexRef_IntergerTypeFound() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_IntegerHexRef_IntegerTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.hex") instanceof Integer);
     }
