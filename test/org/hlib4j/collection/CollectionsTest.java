@@ -701,7 +701,7 @@ public class CollectionsTest {
      */
     @Test
     public void test_HashCode_List_Valid() {
-         Assert.assertTrue(0 != (Collections.makeFilteredList(new LinkedList<Integer>(), (p) -> p != 1)).hashCode());
+        Assert.assertTrue(0 != (Collections.makeFilteredList(new LinkedList<Integer>(), (p) -> p != 1)).hashCode());
     }
 
     @Test
@@ -870,7 +870,7 @@ public class CollectionsTest {
         _list.add(5);
         ListIterator<Integer> _it = _list.listIterator();
 
-         _it.next();
+        _it.next();
         Assert.assertEquals(1, _it.nextIndex());
     }
 

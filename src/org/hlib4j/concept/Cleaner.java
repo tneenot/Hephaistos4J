@@ -1,4 +1,4 @@
-package org.hlib4j.collection;
+package org.hlib4j.concept;
 /*
 *  Hephaistos 4 Java library: a library with facilities to get more concise code.
 *  
@@ -25,14 +25,13 @@ package org.hlib4j.collection;
  *
  * @author Tioben Neenot
  */
-public interface Cleaner
-{
+public interface Cleaner {
 
-	/**
-	 * Delete or cancel all elements that are not corresponding to a specific rule
-	 * defines by implementation class.
-	 *
-	 * @return The number of elements rejected.
-	 */
-	int clean();
+    /**
+     * Delete or cancel all elements that are not corresponding to a specific rule
+     * defines by implementation class.
+     *
+     * @return The number of elements rejected.
+     */
+    int clean();
 }

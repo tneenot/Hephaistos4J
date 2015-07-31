@@ -51,221 +51,85 @@ public class ClassDefinitionTest {
         properties = null;
     }
 
-    /**
-     * Unit test <code>SetPropertyNullName()</code>.
-     * <ul>
-     * <li>Description: sets a null property name.</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws UnsupportedOperationException               Exception that must not be ran for the test must be available.
-     */
     @Test(expected = IllegalArgumentException.class)
-    public final void test_SetPropertyValue_NullName_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_WithNullName_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException {
         properties.setPropertyValue(null, "toto");
     }
 
-    /**
-     * Unit test <code>SetPropertyEmptyName()</code>.
-     * <ul>
-     * <li>Description: Sets an empty property name.</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: property name is "" form.</li>
-     * </ul>
-     *
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws UnsupportedOperationException               Exception that must not be ran for the test must be available.
-     */
     @Test(expected = IllegalArgumentException.class)
-    public final void test_SetPropertyValue_EmptyName_NaturalForm_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_EmptyNameWithNaturalForm_IllegalArgumentException() throws IllegalArgumentException,
+            InvocationTargetException,
             UnsupportedOperationException {
         properties.setPropertyValue("", null);
     }
 
-    /**
-     * Unit test <code>SetPropertyEmptyName2()</code>.
-     * <ul>
-     * <li>Description: Sets an empty string as property name.</li>
-     * <li>Result: <i>result awaiting here</i>.</li>
-     * <li>Comment: property name is " " form.</li>
-     * </ul>
-     *
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws UnsupportedOperationException               Exception that must not be ran for the test must be available.
-     */
     @Test(expected = IllegalArgumentException.class)
-    public final void test_SetPropertyValue_EmptyName_VariantForm_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_EmptyNameWithVariantForm_IllegalArgumentException() throws IllegalArgumentException,
+            InvocationTargetException,
             UnsupportedOperationException {
         properties.setPropertyValue(" ", null);
     }
 
-    /**
-     * Unit test <code>SetPropertyUknown()</code>.
-     * <ul>
-     * <li>Description: Sets a non existent property value.</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws UnsupportedOperationException               Exception that must not be ran for the test must be available.
-     */
     @Test(expected = InvocationTargetException.class)
-    public final void test_SetPropertyValue_UnknownName_InvocationTargetException() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_UnknownName_InvocationTargetException() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException {
         properties.setPropertyValue("toto", 1);
     }
 
-    /**
-     * Unit test <code>SetPropertyValidReadWrite()</code>.
-     * <ul>
-     * <li>Description: Sets a value for a read/write property.</li>
-     * <li>Result: property updated.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws IllegalArgumentException                    Exception that must not be ran for the test must be available.
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws UnsupportedOperationException               Exception that must not be ran for the test must be available.
-     */
     @Test
-    public final void test_GetPropertyValue_ValidValue_Equals() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_ForReadWrite_PropertyUpdated() throws IllegalArgumentException, InvocationTargetException,
             UnsupportedOperationException {
         properties.setPropertyValue("age", 10);
 
         Assert.assertEquals(10, properties.getPropertyValue("age"));
     }
 
-    /**
-     * Unit test <code>SetPropertyValidReadOnly()</code>.
-     * <ul>
-     * <li>Description: Sets a value for a readonly property .</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws UnsupportedOperationException               Exception that must not be ran for the test must be available.
-     */
     @Test(expected = UnsupportedOperationException.class)
-    public final void test_SetPropertyValue_ReadOnly_UnsupportedOperationException() throws IllegalArgumentException, InvocationTargetException,
+    public final void test_SetProperty_ForReadOnly_UnsupportedOperationException() throws IllegalArgumentException,
+            InvocationTargetException,
             UnsupportedOperationException {
         properties.setPropertyValue("numSecu", "999");
     }
 
-    /**
-     * Unit test <code>GetProperty()</code>.
-     * <ul>
-     * <li>Description: Gets the default property value.</li>
-     * <li>Result: Default value conforms.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     * @throws IllegalArgumentException                    Exception that must not be ran for the test must be available.
-     */
     @Test
-    public final void test_GetPropertyValue_ValidValueName_Equals() throws IllegalArgumentException, InvocationTargetException {
+    public final void test_GetProperty_ForValidName_ValidValue() throws IllegalArgumentException, InvocationTargetException {
         Assert.assertEquals("1234567890", properties.getPropertyValue("numSecu"));
     }
 
-    /**
-     * Unit test <code>GetPropertyUnvalid()</code>.
-     * <ul>
-     * <li>Description: Gets the value for a non existent property.</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws IllegalArgumentException                    Exception that must not be ran for the test must be available.
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     */
     @Test(expected = InvocationTargetException.class)
-    public final void test_GetPropertyValue_InvalidValueName_InvocationTargetException() throws IllegalArgumentException, InvocationTargetException {
+    public final void test_GetProperty_InvalidName_InvocationTargetException() throws IllegalArgumentException,
+            InvocationTargetException {
         properties.getPropertyValue("toto");
     }
 
-    /**
-     * Unit test <code>GetPropertyNull()</code>.
-     * <ul>
-     * <li>Description: Gets a value for a null property name.</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws IllegalArgumentException                    Exception that must not be ran for the test must be available.
-     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-     */
     @Test(expected = IllegalArgumentException.class)
-    public final void test_GetPropertyValue_NullName_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException {
+    public final void test_GetProperty_NullName_IllegalArgumentException() throws IllegalArgumentException,
+            InvocationTargetException {
         properties.getPropertyValue(null);
     }
 
-    /**
-     * Unit test <code>GetProperties()</code>.
-     * <ul>
-     * <li>Description: Gets the properties list.</li>
-     * <li>Result: Properties list not empty.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     */
     @Test
     public final void test_GetProperties_ValidList_NotNull() {
         Assert.assertNotNull(properties.getProperties());
     }
 
-    /**
-     * Unit test <code>GetPropertiesList()</code>.
-     * <ul>
-     * <li>Description: Gets each content of the properties list.</li>
-     * <li>Result: No null content.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     */
     @Test
-    public final void test_GetProperties_ValidListElementControl_NotNull() {
+    public final void test_GetProperties_ValidListElement_NotNull() {
         for (Property p : properties.getProperties()) {
-            System.out.println(p);
             Assert.assertNotNull(p);
         }
     }
 
-    /**
-     * Unit test <code>GetPropertiesAdd()</code>.
-     * <ul>
-     * <li>Description: Add a new property from the properties list.</li>
-     * <li>Result: Throws an exception.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws UnsupportedOperationException Exception test awaiting
-     */
     @Test(expected = UnsupportedOperationException.class)
-    public final void test_Add_AddPropertyForReadOnlyReference_UnsupportedOperationException() {
+    public final void test_GetProperties_AddPropertyForbidden_UnsupportedOperationException() {
         properties.getProperties().add(new Property("Toto", 5, true));
     }
 
-    /**
-     * Unit test <code>GetPropertiesAndModify()</code>.
-     * <ul>
-     * <li>Description: Modify the value for each read/write property.</li>
-     * <li>Result: All read/write properties updated.</li>
-     * <li>Comment: none.</li>
-     * </ul>
-     *
-     * @throws IllegalAccessException If access exception error.
-     */
     @Test
-    public final void test_GetValue_UpdatePropertyValue_NotNull() throws IllegalAccessException {
+    public final void test_GetProperties_UpdatePropertyValue_PropertyUpdated() throws IllegalAccessException {
         // Modify all properties in read/write mode
-        for (Property p : properties.getProperties()) {
-            if (!p.isReadOnly()) {
-                p.setValue(10);
-            }
-        }
+        setupValueForReadWriterProperty();
 
         for (Property p : properties.getProperties()) {
             if (!p.isReadOnly()) {
@@ -274,11 +138,16 @@ public class ClassDefinitionTest {
         }
     }
 
-    /**
-     * Test of toString method, of class ClassDefinition.
-     */
+    private void setupValueForReadWriterProperty() {
+        for (Property p : properties.getProperties()) {
+            if (!p.isReadOnly()) {
+                p.setValue(10);
+            }
+        }
+    }
+
     @Test
-    public void test_ToString_DescriptionClass_Equals() {
+    public void test_ToString_DescriptionClass_ValidDescription() {
         ClassDefinition instance = new PropertiesFactorFake();
         String expResult = "ClassName";
         String result = instance.toString();

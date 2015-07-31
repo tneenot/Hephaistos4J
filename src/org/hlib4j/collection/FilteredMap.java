@@ -20,6 +20,7 @@
  */
 package org.hlib4j.collection;
 
+import org.hlib4j.concept.Cleaner;
 import org.hlib4j.util.States;
 
 import java.util.AbstractMap;
@@ -59,7 +60,7 @@ final class FilteredMap<K, V> extends AbstractMap<K, V> implements Cleaner {
     /**
      * Build an instance of this managedMap.
      *
-     * @param sourceMap    Map to use for records managing
+     * @param sourceMap      Map to use for records managing
      * @param ruleForThisMap The predicate to use with the Map
      */
     FilteredMap(Map<K, V> sourceMap, Predicate<V> ruleForThisMap) {

@@ -35,83 +35,79 @@ import java.util.Locale;
  *
  * @author Tioben Neenot
  */
-public class JI18nLayoutSample extends JFrame implements ActionListener
-{
+public class JI18nLayoutSample extends JFrame implements ActionListener {
 
-	/**
-	 * Component ID
-	 */
-	private static final long serialVersionUID = -9153951314849973679L;
+    /**
+     * Component ID
+     */
+    private static final long serialVersionUID = -9153951314849973679L;
 
-	/**
-	 * I18nLayout manager
-	 */
-	private final I18nLayout layout;
-	/**
-	 * Default locale
-	 */
-	private Locale defaultLocal = new Locale( "en", "GB" );
+    /**
+     * I18nLayout manager
+     */
+    private final I18nLayout layout;
+    /**
+     * Default locale
+     */
+    private Locale defaultLocal = new Locale("en", "GB");
 
-	/**
-	 * Builds an instance of the JI18nLayoutSample
-	 */
-	JI18nLayoutSample()
-	{
-		setTitle( "JI18nLayout sample" );
-		setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
+    /**
+     * Builds an instance of the JI18nLayoutSample
+     */
+    JI18nLayoutSample() {
+        setTitle("JI18nLayout sample");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		JPanel _panel = new JPanel( new BorderLayout() );
-		layout = new I18nLayout( "org.hlib4j.samples.i18n.layout", _panel );
+        JPanel _panel = new JPanel(new BorderLayout());
+        layout = new I18nLayout("org.hlib4j.samples.i18n.layout", _panel);
 
 		/*
-	  Components for sample
+      Components for sample
 	 */
-		JLabel lblLabel1 = new JLabel("Default label 1");
-		lblLabel1.setName("label1.text");
+        JLabel lblLabel1 = new JLabel("Default label 1");
+        lblLabel1.setName("label1.text");
 
-		JLabel lblLabel2 = new JLabel("Default label 2");
-		lblLabel2.setName("label2.text");
+        JLabel lblLabel2 = new JLabel("Default label 2");
+        lblLabel2.setName("label2.text");
 
-		JButton btnBtn1 = new JButton("Default button 1");
-		btnBtn1.setName("btn1.text");
-		btnBtn1.setToolTipText("Default tooltip text");
+        JButton btnBtn1 = new JButton("Default button 1");
+        btnBtn1.setName("btn1.text");
+        btnBtn1.setToolTipText("Default tooltip text");
 
-		JButton btnBtn2 = new JButton("Default button 2");
-		btnBtn2.setName("btn2.text");
-		btnBtn2.addActionListener(this);
+        JButton btnBtn2 = new JButton("Default button 2");
+        btnBtn2.setName("btn2.text");
+        btnBtn2.addActionListener(this);
 
-		_panel.add(lblLabel1, BorderLayout.NORTH );
-		_panel.add(lblLabel2, BorderLayout.WEST );
-		_panel.add(btnBtn1, BorderLayout.EAST );
-		_panel.add(btnBtn2, BorderLayout.SOUTH );
-		_panel.add( new JLabel( "Static text", SwingConstants.CENTER ), BorderLayout.CENTER );
+        _panel.add(lblLabel1, BorderLayout.NORTH);
+        _panel.add(lblLabel2, BorderLayout.WEST);
+        _panel.add(btnBtn1, BorderLayout.EAST);
+        _panel.add(btnBtn2, BorderLayout.SOUTH);
+        _panel.add(new JLabel("Static text", SwingConstants.CENTER), BorderLayout.CENTER);
 
-		add( _panel );
+        add(_panel);
 
-		// If comment line above, default text value for each component will be
-		// displayed
-		layout.change( Locale.getDefault() );
-		pack();
-	}
+        // If comment line above, default text value for each component will be
+        // displayed
+        layout.change(Locale.getDefault());
+        pack();
+    }
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main( String[] args )
-	{
-		new JI18nLayoutSample().setVisible( true );
-	}
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        new JI18nLayoutSample().setVisible(true);
+    }
 
-	/**
-	 * Applied a new local and change all components.
-	 *
-	 * @param e Event source
-	 */
-	@Override
-	public void actionPerformed( ActionEvent e )
-	{
-		defaultLocal = defaultLocal.getCountry().equals( "GB" ) ? new Locale( "fr", "FR" ) : new Locale( "en", "GB" );
+    /**
+     * Applied a new local and change all components.
+     *
+     * @param e Event source
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        defaultLocal = defaultLocal.getCountry().equals("GB") ? new Locale("fr", "FR") : new Locale("en", "GB");
 
-		layout.change( defaultLocal );
-	}
+        layout.change(defaultLocal);
+    }
 }

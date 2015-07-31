@@ -31,7 +31,7 @@ import java.util.function.Predicate;
  * process is only calling if and only if
  * {@link Processing#test(java.lang.Object)} return <code>true</code> for
  * inner predicate.<br><br>
- *
+ * <p>
  * Inner predicate is specifying with
  * {@link Processing#Processing(java.util.function.Predicate)} constructor.
  * Default constructor is a convenient constructor that implements an internal predicate that returns
@@ -40,7 +40,7 @@ import java.util.function.Predicate;
  * @param <E> Element of the processing.
  * @author Tioben Neenot
  */
-public abstract class Processing <E> implements Predicate<E> {
+public abstract class Processing<E> implements Predicate<E> {
 
     /**
      * Predicate for this processing class.
@@ -51,17 +51,16 @@ public abstract class Processing <E> implements Predicate<E> {
      * Default constructor that's implementing a predicate that's returning always
      * {@code true}.
      */
-    public Processing()
-    {
-        this(p-> true);
+    public Processing() {
+        this(p -> true);
     }
 
     /**
      * Builds an instance of the Processing class with a predicate value
+     *
      * @param predicate Predicate value
      */
-    public Processing(Predicate<E> predicate)
-    {
+    public Processing(Predicate<E> predicate) {
         this.predicate = States.validate(predicate);
     }
 

@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Cleaner;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;

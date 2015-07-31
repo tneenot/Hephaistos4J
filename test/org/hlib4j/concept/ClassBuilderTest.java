@@ -61,7 +61,7 @@ public class ClassBuilderTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_GetInstance_ValidInstance_NotNull() {
+    public void test_GetInstance_ValidInstance() {
         File xmlFile = new File("test/org/hlib4j/concept/CDef.xml");
         assertNotNull(new ClassBuilder(xmlFile));
     }
@@ -70,10 +70,10 @@ public class ClassBuilderTest {
      * Test of getAllClasses method, of class ClassBuilder.
      */
     @Test
-    public void test_Contains_ValidDefinitionClasses_True() {
+    public void test_GetAllClasses_ValidClasses() {
         ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
         Collection<String> expResult;
-        expResult = Arrays.asList(new String[]{"ClassRef", "SecondClass", "ThirdClass"});
+        expResult = Arrays.asList("ClassRef", "SecondClass", "ThirdClass");
         Collection<ClassDefinition> result = instance.getAllClasses();
         for (ClassDefinition d : result) {
             assertTrue(expResult.contains(d.getName()));
@@ -84,7 +84,7 @@ public class ClassBuilderTest {
      * Test of createInstance method, of class ClassBuilder.
      */
     @Test
-    public void test_CreateInstance_InvalidInstance_Null() {
+    public void test_CreateInstance_InvalidInstance_NotCreated() {
         ClassBuilder instance = new ClassBuilder(new File("test/org/hlib4j/concept/CDef.xml"));
         assertNull(instance.createInstance("foo"));
 
@@ -96,55 +96,55 @@ public class ClassBuilderTest {
      * @throws Exception If exception test running.
      */
     @Test
-    public void test_Parse_ValidResourceBundle_NotNull() throws Exception {
+    public void test_Parse_ValidResourceBundle_ResourceFileCreated() throws Exception {
         File result = ClassBuilder.parse(ResourceBundle.getBundle(getClass().getPackage().getName() + ".bundle_test", Locale.ENGLISH));
         assertNotNull(result);
     }
 
     @Test
-    public void test_GetPropertyValue_FromClassDefinition_1stString_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_1stParameterString_StringTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.str.1") instanceof String);
     }
 
     @Test
-    public void test_GetPropertyValue_FromClassDefinition_2dString_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_2dParameterString_StringTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.str.2") instanceof String);
     }
 
     @Test
-    public void test_GetPropertyValue_FloatType_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_FloatTypeRef_FloatTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.float") instanceof Float);
     }
 
     @Test
-    public void test_GetPropertyValue_DoubleType_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_DoubleTypeRef_DoubleTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.double") instanceof Double);
     }
 
     @Test
-    public void test_GetPropertyValue_IntegerType_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_IntegerTypeRef_IntegerTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.int") instanceof Integer);
     }
 
     @Test
-    public void test_GetPropertyValue_IntegerHexType_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_IntegerHexRef_IntegerTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.hex") instanceof Integer);
     }
 
     @Test
-    public void test_GetPropertyValue_LongType_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_LongTypeRef_LongTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.long") instanceof Long);
     }
 
     @Test
-    public void test_GetPropertyValue_DateType_True() throws IOException, InvocationTargetException {
+    public void test_Parse_ResourceBundleFile_DateTypeRef_DateTypeFound() throws IOException, InvocationTargetException {
         ClassDefinition _ci = getClassDefinition();
         assertTrue(_ci.getPropertyValue("value.date") instanceof Date);
     }

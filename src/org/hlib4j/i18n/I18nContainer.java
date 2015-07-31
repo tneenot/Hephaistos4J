@@ -20,6 +20,8 @@ package org.hlib4j.i18n;
 *  
 */
 
+import org.hlib4j.util.States;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
@@ -40,129 +42,121 @@ import java.util.ResourceBundle;
  * @author Tioben Neenot
  * @see I18n
  */
-public class I18nContainer
-{
+public class I18nContainer {
 
-	/**
-	 * Internal collection of I18n implementation.
-	 */
-	private final Collection< I18n > i18nCollections;
-	/**
-	 * Last locale used.
-	 */
-	private Locale             lastLocale;
+    /**
+     * Internal collection of I18n implementation.
+     */
+    private final Collection<I18n> i18nCollections;
+    /**
+     * Last locale used.
+     */
+    private Locale lastLocale;
 
-	/**
-	 * Builds an instance of I18nManager with default current locale.
-	 */
-	public I18nContainer()
-	{
-		this( Locale.getDefault() );
-	}
+    /**
+     * Builds an instance of I18nManager with default current locale.
+     */
+    public I18nContainer() {
+        this(Locale.getDefault());
+    }
 
-	/**
-	 * Build an instance of I18nManager with a specific locale as default.
-	 *
-	 * @param locale Default locale
-	 */
-	public I18nContainer( Locale locale )
-	{
-		this.i18nCollections = new ArrayList<>();
-		if ( null == locale )
-		{
-			throw new NullPointerException();
-		}
+    /**
+     * Build an instance of I18nManager with a specific locale as default.
+     *
+     * @param locale Default locale
+     */
+    public I18nContainer(Locale locale) {
+        if (States.isNullOrEmpty(locale)) {
+            throw new NullPointerException("Null locale");
+        }
 
-		lastLocale = locale;
-	}
+        this.i18nCollections = new ArrayList<>();
+        lastLocale = locale;
+    }
 
-	/**
-	 * Gets last locale used.
-	 *
-	 * @return Last locale.
-	 */
-	public Locale getLastLocale()
-	{
-		return lastLocale;
-	}
+    /**
+     * Gets last locale used.
+     *
+     * @return Last locale.
+     */
+    public Locale getLastLocale() {
+        return lastLocale;
+    }
 
-	/**
-	 * Adds an I18n implementation only if this one is valid. A valid implementation means {@link I18n#getBaseName()}
-	 * musn't be null or empty and must be existing.
-	 *
-	 * @param i18n I18n implementation
-	 * @return <code>true</code> if I18n implementation is valid and not exists into I18nContainer, <code>false</code>
-	 * otherwise.
-	 */
-	public boolean add( I18n i18n )
-	{
-		if ( null != i18n && !i18nCollections.contains( i18n ) )
-		{
-			// Build a ResourceBundle to test if this one is valid or not
-			{
-				ResourceBundle.getBundle( i18n.getBaseName(), getLastLocale() );
-			}
+    /**
+     * Adds an I18n implementation only if this one is valid. A valid implementation means {@link I18n#getBaseName()}
+     * musn't be null or empty and must be existing.
+     *
+     * @param i18n I18n implementation
+     * @return <code>true</code> if I18n implementation is valid and not exists into I18nContainer, <code>false</code>
+     * otherwise.
+     */
+    public boolean add(I18n i18n) {
+        try {
+            if (!i18nCollections.contains(States.validate(i18n))) {
+                // No error, so bundle based on baseName of I18n is valid
+                return i18nCollections.add(baseNameValidation(i18n));
+            }
+        } catch (AssertionError e) {
+            // Do nothing else. i18n is not a valid parameter.
+        }
 
-			// No error, so bundle based on baseName of I18n is valid
-			return i18nCollections.add( i18n );
-		}
+        return false;
+    }
 
-		return false;
-	}
+    private I18n baseNameValidation(I18n i18n) {
+        ResourceBundle.getBundle(i18n.getBaseName(), getLastLocale());
 
-	/**
-	 * Removes an I18n instance from I18nContainer.
-	 *
-	 * @param i18n I18n instance to remove
-	 * @return <code>true</code> if instance has been removed, <code>false</code> otherwise (can be meaning locale doesn't
-	 * exist).
-	 */
-	public boolean remove( I18n i18n )
-	{
-		return i18nCollections.remove( i18n );
-	}
+        return i18n;
+    }
 
-	/**
-	 * Controls if an I18n instance already exists into I18nContainer or not.
-	 *
-	 * @param i18n I18n instance to control.
-	 * @return <code>true</code> if I18n instance exists, or <code>false</code> otherwise.
-	 */
-	public boolean contains( I18n i18n )
-	{
-		return i18nCollections.contains( i18n );
-	}
+    /**
+     * Removes an I18n instance from I18nContainer.
+     *
+     * @param i18n I18n instance to remove
+     * @return <code>true</code> if instance has been removed, <code>false</code> otherwise (can be meaning locale doesn't
+     * exist).
+     */
+    public boolean remove(I18n i18n) {
+        return i18nCollections.remove(i18n);
+    }
 
-	/**
-	 * Return the number of I18n implementation taking account by this I18nContainer instance.
-	 *
-	 * @return Number of I18n implementation taking account by I18nContainer instance.
-	 */
-	public int size()
-	{
-		return i18nCollections.size();
-	}
+    /**
+     * Controls if an I18n instance already exists into I18nContainer or not.
+     *
+     * @param i18n I18n instance to control.
+     * @return <code>true</code> if I18n instance exists, or <code>false</code> otherwise.
+     */
+    public boolean contains(I18n i18n) {
+        return i18nCollections.contains(i18n);
+    }
 
-	/**
-	 * Updates all I18n implementations with last locale.
-	 */
-	public void update()
-	{
-		change(getLastLocale());
-	}
+    /**
+     * Return the number of I18n implementation taking account by this I18nContainer instance.
+     *
+     * @return Number of I18n implementation taking account by I18nContainer instance.
+     */
+    public int size() {
+        return i18nCollections.size();
+    }
 
-	/**
-	 * Changes all I18n implementations with a specific locale. This locale will become the last locale after change.
-	 *
-	 * @param locale Locale to use for all I18n implementation
-	 */
-	public void change(Locale locale)
-	{
-		for ( I18n _i18n : i18nCollections )
-		{
-			_i18n.change( locale );
-		}
+    /**
+     * Updates all I18n implementations with last locale.
+     */
+    public void update() {
+        change(getLastLocale());
+    }
 
-		lastLocale = locale;
-	}
+    /**
+     * Changes all I18n implementations with a specific locale. This locale will become the last locale after change.
+     *
+     * @param locale Locale to use for all I18n implementation
+     */
+    public void change(Locale locale) {
+        for (I18n _i18n : i18nCollections) {
+            _i18n.change(locale);
+        }
+
+        lastLocale = locale;
+    }
 }

@@ -39,7 +39,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#I18nContainer()}.
      */
     @Test
-    public final void test_GetLastLocale_DefaultLocale_Equals() {
+    public final void test_Constructor_DefaultLocale_AwaitingLocalByDefault() {
         Locale _loc = Locale.getDefault();
         I18nContainer _manager = new I18nContainer();
         assertEquals(_loc, _manager.getLastLocale());
@@ -49,7 +49,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#I18nContainer(java.util.Locale)}.
      */
     @Test
-    public final void test_GetLastLocale_WithSpecificLocale_Equals() {
+    public final void test_Constructor_SetNewLocale_LocalUpdated() {
         Locale _loc = new Locale("fr", "FR");
         I18nContainer _manager = new I18nContainer(new Locale("fr", "FR"));
         assertEquals(_loc, _manager.getLastLocale());
@@ -59,7 +59,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#I18nContainer(java.util.Locale)}.
      */
     @Test(expected = NullPointerException.class)
-    public final void test_Constructor_NullValue_NullPointerException() {
+    public final void test_Constructor_NullLocale_NullPointerException() {
         new I18nContainer(null);
     }
 
@@ -67,7 +67,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#getLastLocale()}.
      */
     @Test
-    public final void test_GetLastLocale_ValidImplementation_NotNull() {
+    public final void test_GetLastLocale_ForValidLocal_NotNull() {
         assertNotNull(new I18nContainer().getLastLocale());
     }
 
@@ -75,7 +75,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#add(org.hlib4j.i18n.I18n)}.
      */
     @Test
-    public final void test_Add_ValidI18nType_True() {
+    public final void test_Add_ValidI18nType_Accepted() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         assertTrue(_manager.add(_ref));
@@ -85,7 +85,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#add(org.hlib4j.i18n.I18n)}.
      */
     @Test
-    public final void test_Add_ValidI18nTypeTwice_False() {
+    public final void test_Add_ValidI18nType_FalseSinceAddedTwice() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);
@@ -96,7 +96,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#add(org.hlib4j.i18n.I18n)}.
      */
     @Test(expected = NullPointerException.class)
-    public final void  test_Add_NullBaseName_NullPointerException() {
+    public final void test_Add_NullBaseName_NullPointerException() {
         new I18nContainer().add(new I18nInvalidFake());
     }
 
@@ -112,7 +112,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#add(org.hlib4j.i18n.I18n)}.
      */
     @Test
-    public final void test_Add_NullValue_False() {
+    public final void test_Add_NullValue_NotAccepted() {
         I18nContainer _manager = new I18nContainer();
         assertFalse(_manager.add(null));
     }
@@ -121,7 +121,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#remove(org.hlib4j.i18n.I18n)}.
      */
     @Test
-    public final void test_Remove_Exist_True() {
+    public final void test_Remove_ValidValue_ValueRemoved() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);
@@ -133,7 +133,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#remove(org.hlib4j.i18n.I18n)}.
      */
     @Test
-    public final void test_Remove_NotExist_False() {
+    public final void test_Remove_NotExistingValue_NoRemove() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);
@@ -144,7 +144,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#contains(org.hlib4j.i18n.I18n)}.
      */
     @Test
-    public final void test_Contains_Exist_True() {
+    public final void test_Contains_ValidValue_ValueFound() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);
@@ -152,7 +152,7 @@ public class I18nContainerTest {
     }
 
     @Test
-    public final void test_Contains_NotExist_False() {
+    public final void test_Contains_ForNotExistingValue_ValueNotExist() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);
@@ -163,7 +163,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#size()}.
      */
     @Test
-    public final void test_Size_With2SameReferencesAddedTwice_Equals() {
+    public final void test_Size_WithSameReferencesAddedTwice_RedudantReferencesNotTakingAccount() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);
@@ -177,7 +177,7 @@ public class I18nContainerTest {
      * Test method for {@link org.hlib4j.i18n.I18nContainer#update()}.
      */
     @Test
-    public final void test_Update_ValidI18nType_NoError() {
+    public final void test_Update_WithValidI18nReference_NoError() {
         I18nContainer _manager = new I18nContainer();
         I18nFake _ref = new I18nFake();
         _manager.add(_ref);

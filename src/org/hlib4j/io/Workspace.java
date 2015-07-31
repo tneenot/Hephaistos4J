@@ -1,24 +1,25 @@
-package org.hlib4j.io;
 /*
-*  Hephaistos 4 Java library: a library with facilities to get more concise code.
-*  
-*  Copyright (C) 2015 Tioben Neenot
-*  
-*  This program is free software; you can redistribute it and/or modify it under
-*  the terms of the GNU General Public License as published by the Free Software
-*  Foundation; either version 2 of the License, or (at your option) any later
-*  version.
-*  
-*  This program is distributed in the hope that it will be useful, but WITHOUT
-*  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-*  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-*  details.
-*  
-*  You should have received a copy of the GNU General Public License along with
-*  this program; if not, write to the Free Software Foundation, Inc., 51
-*  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-*  
-*/
+ * Hephaistos 4 Java library: a library with facilities to get more concise code.
+ *
+ * Copyright (C) 2015 Tioben Neenot
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
+
+package org.hlib4j.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
 
 /**
  * This class represents a workspace in which all file created or attached to this workspace will be stored. Thanks to the workspace concept, it's possible to create a private workspace during a session, for example, in which all temporaries files will be saved.
@@ -140,14 +142,14 @@ public class Workspace extends File {
      * Deletion will be attempted only for normal termination of the
      * virtual machine, as defined by the Java Language Specification.
      * <p>
-     * <p> Once deletion has been requested, it is not possible to cancel the
+     * Once deletion has been requested, it is not possible to cancel the
      * request.  This method should therefore be used with care.
-     * <p>
      * <p>
      * Note: this method should <i>not</i> be used for file-locking, as
      * the resulting protocol cannot be made to work reliably. The
      * {@link java.nio.channels.FileLock FileLock}
      * facility should be used instead.
+     * </p>
      *
      * @throws SecurityException If a security manager exists and its <code>{@link
      *                           SecurityManager#checkDelete}</code> method denies
@@ -164,16 +166,13 @@ public class Workspace extends File {
     private void deleteWorkspaceContent(File directory) {
         File[] _files = directory.listFiles();
 
-        for(File f : _files)
-        {
-            if(f.isDirectory())
-            {
-                deleteWorkspaceContent(f);
+        for (File _file : _files) {
+            if (_file.isDirectory()) {
+                deleteWorkspaceContent(_file);
             }
 
-            if(f.delete() == false)
-            {
-                f.deleteOnExit();
+            if (_file.delete() == false) {
+                _file.deleteOnExit();
             }
         }
     }
@@ -191,11 +190,11 @@ public class Workspace extends File {
 
     /**
      * Gets the file that is corresponding to the given URI.
+     *
      * @param uri URI file
      * @return File that is corresponding to the URI, or {@code null} if not found.
      */
-    public File getFileByURI(URI uri)
-    {
+    public File getFileByURI(URI uri) {
         File _inner_file = new File(this, new File(uri).getName());
         return _inner_file.exists() ? new File(uri) : null;
     }
@@ -229,7 +228,7 @@ public class Workspace extends File {
          * @see java.io.File
          */
         WorkspaceUnitFile(Workspace workspace, String pathname) {
-            super(workspace.toString(), pathname);
+            super(workspace, pathname);
             this.workspace = workspace;
         }
 
@@ -267,7 +266,13 @@ public class Workspace extends File {
         public File getParentFile() {
             File _parent_file = super.getParentFile();
 
-            return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getAbsolutePath());
+            try {
+                return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getCanonicalPath());
+            } catch (IOException e) {
+                // Do nothing else. No Parent file yet.
+            }
+
+            return null;
         }
 
         /**
@@ -278,8 +283,13 @@ public class Workspace extends File {
         public String getParent() {
             // Limits to workspace root directory has upper level.
             String _parent = super.getParent();
-            String _its_parent = _parent.replace(this.workspace.toString(), "");
+            String _its_parent = normalizeParentPathDescription(_parent);
             return "".equals(_its_parent) ? null : _its_parent;
+        }
+
+        // Removes the workspace description from the parent path name
+        private String normalizeParentPathDescription(String _parent) {
+            return _parent.replace(this.workspace.toString(), "");
         }
 
         /**
@@ -301,7 +311,7 @@ public class Workspace extends File {
         @Override
         public URI toURI() {
             try {
-                return new URI(super.toURI().toString().replace(this.workspace.toString(), ""));
+                return new URI(super.toURI().toString().replace(this.workspace.toString().replaceAll(Matcher.quoteReplacement(File.separator), "/"), ""));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -339,9 +349,8 @@ public class Workspace extends File {
         }
 
         @Override
-        @SuppressWarnings(value="deprecated")
         public URL toURL() throws MalformedURLException {
-            throw new UnsupportedOperationException("This class is deprecated and forbidden now");
+            throw new UnsupportedOperationException("Deprecated and forbidden method");
         }
     }
 }

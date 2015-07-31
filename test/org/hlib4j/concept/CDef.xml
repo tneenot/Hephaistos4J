@@ -52,7 +52,7 @@
         </properties>
     </class>
 
-    <!-- Third class with differents values types -->
+    <!-- Third class with different values types -->
     <class name="ThirdClass">
         <properties>
             <property name="value.str" readonly="false">A value string</property>

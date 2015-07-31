@@ -21,6 +21,7 @@
 
 package org.hlib4j.collection;
 
+import org.hlib4j.concept.Cleaner;
 import org.hlib4j.util.States;
 
 import java.util.*;
@@ -34,7 +35,7 @@ import java.util.function.Predicate;
  * method, even if he adds a forbidden value, this value will not be backed to this collection. If the external
  * collection given as argument to the constructor {@link #FilteredList(java.util.List, java.util.function.Predicate)}} contains
  * forbidden elements yet, the <code>FilteredList</code> will delete them. <br><br>
- * <p/>
+ * <p>
  * This class is using as implementations for {@link Collections#makeFilteredList(java.util.List, java.util.function.Predicate)}.
  *
  * @param <ElementType> The data type of this managedList
@@ -60,7 +61,8 @@ final class FilteredList<ElementType> extends AbstractList<ElementType> implemen
     /**
      * Builds an instance of the <code>FilteredList</code>. This class is a wrapper on a real
      * collection, and takes the control of the external collection, according to filter definition.
-     *  @param originalList    List links with this wrapper for which all elements will be managing bye the given filter.
+     *
+     * @param originalList    List links with this wrapper for which all elements will be managing bye the given filter.
      * @param ruleForThisList The predicate to apply on each element of this list.
      */
     FilteredList(List<ElementType> originalList, Predicate<ElementType> ruleForThisList) {
