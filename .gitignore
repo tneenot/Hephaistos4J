@@ -1,8 +1,6 @@
 Hephaistos4J.iml
 TestCoverageReports
-lib
+doc
 out
 api
 .idea
-.idea/**
-lib
