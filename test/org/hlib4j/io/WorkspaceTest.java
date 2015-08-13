@@ -299,7 +299,8 @@ public class WorkspaceTest {
         Assert.assertTrue(second_workspace.mkdirs());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @SuppressWarnings("deprecation")
+	@Test(expected = UnsupportedOperationException.class)
     public void test_ToURL_CallException_UnsupportedOperationException() throws IOException {
         File f = workspace.addFileByStringPath("foo4");
         f.toURL();
