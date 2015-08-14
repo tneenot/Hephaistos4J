@@ -190,7 +190,6 @@ public class I18nContainerTest {
     @Test(expected = NullPointerException.class)
     public final void test_Add_InvalidI18nBaseName_NullPointerException() {
         I18nContainer _manager = new I18nContainer();
-        I18nFake _ref = new I18nFake();
         _manager.add(new I18nInvalidFake());
     }
 }

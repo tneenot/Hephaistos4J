@@ -37,6 +37,11 @@ import java.util.regex.Matcher;
  */
 public class Workspace extends File {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4771588607750266125L;
+
+	/**
      * Builds an instance of the <code>Workspace</code> for the specified path.
      *
      * @param path Path for the workspace.
