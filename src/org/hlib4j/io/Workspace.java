@@ -144,13 +144,12 @@ public class Workspace extends File {
      * <p>
      * Once deletion has been requested, it is not possible to cancel the
      * request.  This method should therefore be used with care.
-     * <p>
+     *
      * Note: this method should <i>not</i> be used for file-locking, as
      * the resulting protocol cannot be made to work reliably. The
      * {@link java.nio.channels.FileLock FileLock}
      * facility should be used instead.
      * </p>
-     *
      * @throws SecurityException If a security manager exists and its <code>{@link
      *                           SecurityManager#checkDelete}</code> method denies
      *                           delete access to the file
@@ -166,12 +165,15 @@ public class Workspace extends File {
     private void deleteWorkspaceContent(File directory) {
         File[] _files = directory.listFiles();
 
-        for (File _file : _files) {
-            if (_file.isDirectory()) {
+        for (File _file : _files)
+        {
+            if (_file.isDirectory())
+            {
                 deleteWorkspaceContent(_file);
             }
 
-            if (_file.delete() == false) {
+            if (_file.delete() == false)
+            {
                 _file.deleteOnExit();
             }
         }
@@ -190,11 +192,11 @@ public class Workspace extends File {
 
     /**
      * Gets the file that is corresponding to the given URI.
-     *
      * @param uri URI file
      * @return File that is corresponding to the URI, or {@code null} if not found.
      */
-    public File getFileByURI(URI uri) {
+    public File getFileByURI(URI uri)
+    {
         File _inner_file = new File(this, new File(uri).getName());
         return _inner_file.exists() ? new File(uri) : null;
     }
@@ -268,7 +270,7 @@ public class Workspace extends File {
 
             try {
                 return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getCanonicalPath());
-            } catch (IOException e) {
+            } catch(IOException e) {
                 // Do nothing else. No Parent file yet.
             }
 
@@ -311,7 +313,7 @@ public class Workspace extends File {
         @Override
         public URI toURI() {
             try {
-                return new URI(super.toURI().toString().replace(this.workspace.toString().replaceAll(Matcher.quoteReplacement(File.separator), "/"), ""));
+                return new URI(super.toURI().toString().replace(this.workspace.toString().replaceAll(Matcher.quoteReplacement(File.separator),"/"), ""));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

@@ -21,17 +21,17 @@ package org.hlib4j.concept;
 */
 
 /**
- * Defines a basis operation to run a cleaning process on a collection or for resources removing.
+ * Defines a basis operation for running a cleaning process.
  *
  * @author Tioben Neenot
  */
-public interface Cleaner {
+public interface Cleaner
+{
 
-    /**
-     * Delete or cancel all elements that are not corresponding to a specific rule
-     * defines by implementation class.
-     *
-     * @return The number of elements rejected.
-     */
-    int clean();
+	/**
+	 * Perform the cleaning process.
+	 *
+	 * @return The number of elements that had been cleaned.
+	 */
+	int clean();
 }

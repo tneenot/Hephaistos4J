@@ -67,7 +67,7 @@ import java.util.logging.Logger;
  *  &lt;/class&gt;
  * &lt;/classes&gt;
  * </pre>
- * <br>
+ *
  * This XML file is loading with <code>ClassBuilder</code> that allows to create an instance of {@link ClassDefinition}
  * type according to a class name that's corresponding to XML description file. The {@link ClassDefinition} instance is
  * created with {@link #createInstance(java.lang.String)} method. If an invalid name or non existent name is given as
@@ -113,25 +113,7 @@ public class ClassBuilder {
      * @throws java.io.IOException If error during XML file creating.
      */
     private static File parse(ResourceBundle bundle, File dir) throws IOException {
-        File _xml_file = new File(dir.getAbsolutePath() + File.separator + "DefXML" + System.nanoTime() + ".tmp");
-        try (FileWriter _xml_writer = new FileWriter(_xml_file)) {
-            _xml_writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            _xml_writer.write("<classes>");
-            _xml_writer.write("<class name=\"Bundle\">");
-            _xml_writer.write("<properties>");
-
-            // Gets all elements from ResourceBundle and write them into XML format.
-            Enumeration<String> _keys = bundle.getKeys();
-            while (_keys.hasMoreElements()) {
-                String _key = _keys.nextElement();
-                _xml_writer.write("<property name=\"" + _key + "\" readonly=\"false\">" + bundle.getString(_key) + "</property>");
-            }
-            _xml_writer.write("</properties>");
-            _xml_writer.write("</class>");
-            _xml_writer.write("</classes>");
-        }
-
-        return _xml_file;
+        return new ResourceBundleToXMLParser(bundle, dir).invoke();
     }
 
     /**
@@ -194,43 +176,47 @@ public class ClassBuilder {
      */
     private ClassDefinition getClassDefinitionFor(Node classNode, String className) throws IllegalArgumentException,
             DOMException, InstantiationException {
-        ClassDefinition _class_definition = null;
+        PropertyManager _class_definition = null;
 
         String _class_name = getClassNameFor(classNode);
         if (_class_name.equals(className)) {
-            // Build the class definition awaiting
+            // Build the awaiting class definition. In fact the class definition consist to register a list of properties for this class
+            // with their accessors.
             _class_definition = new PropertyManager(_class_name);
+            addPropertiesToClassFromNode(_class_definition, classNode);
 
-            // Gets all properties
-            NodeList _properties = classNode.getChildNodes();
-            for (int j = 0; j < _properties.getLength(); ++j) {
-                // For each property get all parameters
-                NodeList _property_list = _properties.item(j).getChildNodes();
-                for (int k = 0; k < _property_list.getLength(); ++k) {
-                    // Variables for all properties elements
-                    String _property_name = null;
-                    Object _value = parse(_property_list.item(k).getTextContent().trim());
-                    boolean _read_only = false;
-                    NamedNodeMap _attributes = _property_list.item(k).getAttributes();
-                    if (null != _attributes) {
-                        for (int l = 0; l < _attributes.getLength(); ++l) {
-                            Node _property = _attributes.item(l);
-                            String _property_raw = _property.getNodeName();
-                            if ("name".equals(_property_raw)) {
-                                _property_name = _property.getNodeValue();
-                            } else {
-                                if ("readonly".equals(_property_raw)) {
-                                    _read_only = Boolean.parseBoolean(_property.getNodeValue());
-                                }
-                            }
-                        }
-                        // Add the property to the class definition
-                        ((PropertyManager) _class_definition).Add(new Property(_property_name, _value, _read_only));
-                    }
-                }
-            }
+
         }
         return _class_definition;
+    }
+
+    private void addPropertiesToClassFromNode(PropertyManager classDefinition, Node classNode) {
+        // Gets all properties that will be linked to this class definition
+        NodeList _properties = classNode.getChildNodes();
+        addAccessorsToClassFromProperties(classDefinition, _properties);
+    }
+
+    private void addAccessorsToClassFromProperties(PropertyManager classDefinition, NodeList properties) {
+        for (int j = 0; j < properties.getLength(); ++j) {
+            // For each property get all parameters. A parameter is an accessor.
+            NodeList _accessor_definition = properties.item(j).getChildNodes();
+            setAccessorDefinitionToClass(classDefinition, _accessor_definition);
+        }
+    }
+
+    private void setAccessorDefinitionToClass(PropertyManager classDefinition, NodeList accessorDefinition) {
+        for (int k = 0; k < accessorDefinition.getLength(); ++k) {
+            // Variables for all properties type
+            NamedNodeMap _attributes = accessorDefinition.item(k).getAttributes();
+            if (null != _attributes) {
+                String _property_name = _attributes.getNamedItem("name").getNodeValue();
+                boolean _read_only = Boolean.parseBoolean(_attributes.getNamedItem("readonly").getNodeValue());
+                Object _value = parse(accessorDefinition.item(k).getTextContent().trim());
+
+                // Add the property to the class definition
+                classDefinition.Add(new Property(_property_name, _value, _read_only));
+            }
+        }
     }
 
     /**
@@ -256,12 +242,20 @@ public class ClassBuilder {
     private NodeList getClasses() throws IOException, SAXException, ParserConfigurationException {
         // Build the XML parsing to create the instance corresponding to the given
         // class name
+        Document _doc = parseXmlDocument(makeDocumentBuilderFactory());
+        return _doc.getElementsByTagName("class");
+    }
+
+    private Document parseXmlDocument(DocumentBuilderFactory documentBuilderFactory) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilder _doc_builder = documentBuilderFactory.newDocumentBuilder();
+        return _doc_builder.parse(xmlFileClassDef);
+    }
+
+    private DocumentBuilderFactory makeDocumentBuilderFactory() {
         DocumentBuilderFactory _factory = DocumentBuilderFactory.newInstance();
         _factory.setIgnoringComments(true);
         _factory.setCoalescing(true);
-        DocumentBuilder _doc_builder = _factory.newDocumentBuilder();
-        Document _doc = _doc_builder.parse(xmlFileClassDef);
-        return _doc.getElementsByTagName("class");
+        return _factory;
     }
 
     /**
@@ -282,38 +276,76 @@ public class ClassBuilder {
                 return Long.parseLong(valueToParse.substring(0, valueToParse.length() - 0x1));
             }
 
+            // It's not a Long
+            if (valueToParse.endsWith("f")) {
+                return Float.parseFloat(valueToParse);
+            }
+
             return Integer.parseInt(valueToParse);
         } catch (NumberFormatException e) {
             // It's not an Integer
             try {
-                // It's not a Long
-                if (valueToParse.endsWith("f")) {
-                    return Float.parseFloat(valueToParse);
-                }
-
                 // Try for a Double
                 return Double.parseDouble(valueToParse);
 
             } catch (NumberFormatException e2) {
-                // It's not a Float
-                try {
-                    return Double.parseDouble(valueToParse);
-                } catch (NumberFormatException e3) {
-                    // It's not a Double
-                    // Control if it's a date
-                    if (valueToParse.startsWith("#") && valueToParse.endsWith("#")) {
-                        try {
-                            return DateFormat.getDateInstance(DateFormat.SHORT).parse(valueToParse.substring(1, valueToParse.length() - 1));
-                        } catch (ParseException ex) {
-                            // It's not a Date. So pass, the default parsing result will be a String.
-                        }
+                // It's not a Double
+                // Control if it's a date
+                if (valueToParse.startsWith("#") && valueToParse.endsWith("#")) {
+                    try {
+                        return DateFormat.getDateInstance(DateFormat.SHORT).parse(valueToParse.substring(1, valueToParse.length() - 1));
+                    } catch (ParseException ex) {
+                        // It's not a Date. So pass, the default parsing result will be a String.
                     }
                 }
+
             }
         }
 
         // It's a String
         return valueToParse;
+    }
+
+    private static class ResourceBundleToXMLParser {
+        private ResourceBundle bundle;
+        private File xmlFile;
+
+        public ResourceBundleToXMLParser(ResourceBundle bundle, File dir) {
+            this.bundle = bundle;
+            this.xmlFile = new File(dir.getAbsolutePath() + File.separator + "DefXML" + System.nanoTime() + ".tmp");
+        }
+
+        private static void writeHeader(FileWriter xmlWriter) throws IOException {
+            xmlWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            xmlWriter.write("<classes>");
+            xmlWriter.write("<class name=\"Bundle\">");
+            xmlWriter.write("<properties>");
+        }
+
+        private static void writeBody(ResourceBundle bundle, FileWriter xmlWriter) throws IOException {
+            // Gets all elements from ResourceBundle and write them into XML format.
+            Enumeration<String> _keys = bundle.getKeys();
+            while (_keys.hasMoreElements()) {
+                String _key = _keys.nextElement();
+                xmlWriter.write("<property name=\"" + _key + "\" readonly=\"false\">" + bundle.getString(_key) + "</property>");
+            }
+        }
+
+        private static void writerFooter(FileWriter xmlWriter) throws IOException {
+            xmlWriter.write("</properties>");
+            xmlWriter.write("</class>");
+            xmlWriter.write("</classes>");
+        }
+
+        public File invoke() throws IOException {
+            try (FileWriter _xml_writer = new FileWriter(xmlFile)) {
+                writeHeader(_xml_writer);
+                writeBody(bundle, _xml_writer);
+                writerFooter(_xml_writer);
+            }
+
+            return this.xmlFile;
+        }
     }
 }
 
