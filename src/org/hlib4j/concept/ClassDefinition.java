@@ -36,7 +36,7 @@ import java.util.Map;
  * This class allows to define any kind of property type to centralize them under the same concept.
  * Rather than to defines several sub-classes with specific properties, if yours sub-classes can be resume to a single
  * concept where only properties are variations, so that means at the final, only one class is necessary.
- * 
+ *
  * In this case the  * <code>ClassDefinition</code> allows to avoid several sub-classes to group them under the same concepts, where
  * properties can be used from the <code>getProperty(String)</code>. The developer can known all available properties with the
  * <code>getProperties()</code>, but is not possible to add or remove all available properties from this method.
@@ -61,41 +61,38 @@ import java.util.Map;
  * @author Tioben Neenot
  * @see Property
  */
-public abstract class ClassDefinition
-{
+public abstract class ClassDefinition {
 
-	/**
-	 * Properties list for user properties.
-	 */
-	protected final Map< String, Property > properties = new HashMap<>();
+    /**
+     * Properties list for user properties.
+     */
+    protected final Map<String, Property> properties = new HashMap<>();
 
-	/**
-	 * Sets a property value. If a value can't be set or if the property name doesn't exist, an exception is occurs.
-	 *
-	 * @param name  Property name
-	 * @param value Value of the property
-	 * @throws IllegalArgumentException      If the property name is null or empty
-	 * @throws InvocationTargetException     If the property name doesn't exist.
-	 * @throws UnsupportedOperationException If a value sets a read only property
-	 */
-	public void setPropertyValue( String name, Object value ) throws IllegalArgumentException, InvocationTargetException,
-		UnsupportedOperationException
-	{
-		// Control the argument validity
+    /**
+     * Sets a property value. If a value can't be set or if the property name doesn't exist, an exception is occurs.
+     *
+     * @param name  Property name
+     * @param value Value of the property
+     * @throws IllegalArgumentException      If the property name is null or empty
+     * @throws InvocationTargetException     If the property name doesn't exist.
+     * @throws UnsupportedOperationException If a value sets a read only property
+     */
+    public void setPropertyValue(String name, Object value) throws IllegalArgumentException, InvocationTargetException,
+            UnsupportedOperationException {
+        // Control the argument validity
         properties.get(ControlArgumentValidity(name)).setValue(value);
     }
 
 
-	/**
-	 * Gets a property value. If the property name doesn't exist, an exception is occurs.
-	 *
-	 * @param name Name of the property
-	 * @return Value of the property
-	 * @throws IllegalArgumentException  If the property name is null or empty
-	 * @throws InvocationTargetException If the property name doesn't exist
-	 */
-	public Object getPropertyValue( String name ) throws IllegalArgumentException, InvocationTargetException
-	{
+    /**
+     * Gets a property value. If the property name doesn't exist, an exception is occurs.
+     *
+     * @param name Name of the property
+     * @return Value of the property
+     * @throws IllegalArgumentException  If the property name is null or empty
+     * @throws InvocationTargetException If the property name doesn't exist
+     */
+    public Object getPropertyValue(String name) throws IllegalArgumentException, InvocationTargetException {
         return properties.get(ControlArgumentValidity(name)).getValue();
     }
 
@@ -111,38 +108,36 @@ public abstract class ClassDefinition
     }
 
 
-	private void isPropertyExists(String name) throws InvocationTargetException {
-		if ( properties.containsKey( name ) == false )
-		{
-			throw new InvocationTargetException( new Throwable( "Unknown property" + name) );
-		}
-	}
+    private void isPropertyExists(String name) throws InvocationTargetException {
+        if (properties.containsKey(name) == false) {
+            throw new InvocationTargetException(new Throwable("Unknown property" + name));
+        }
+    }
 
-	/**
-	 * Gets all properties. The collection doesn't allow to add or remove the properties, but each property can be
-	 * modified according to if it's read only or not.
-	 *
-	 * @return The list of all properties
-	 */
-	public Collection< Property > getProperties()
-	{
-		return Collections.unmodifiableCollection( properties.values() );
-	}
+    /**
+     * Gets all properties. The collection doesn't allow to add or remove the properties, but each property can be
+     * modified according to if it's read only or not.
+     *
+     * @return The list of all properties
+     */
+    public Collection<Property> getProperties() {
+        return Collections.unmodifiableCollection(properties.values());
+    }
 
-	/**
-	 * Returns the class name
-	 *
-	 * @return The class name
-	 */
-	public abstract String getName();
+    /**
+     * Returns the class name
+     *
+     * @return The class name
+     */
+    public abstract String getName();
 
-	/**
-	 * Gets the class definition description
-	 *
-	 * @return Class definition description
-	 */
-	@Override
-	public String toString()
+    /**
+     * Gets the class definition description
+     *
+     * @return Class definition description
+     */
+    @Override
+    public String toString()
 	{
 		return getName();
 	}

@@ -35,95 +35,92 @@ import static org.junit.Assert.assertNotNull;
  * @author Tioben Neenot
  * @see PropertyManager
  */
-public class ClassImplementationTest
-{
+public class ClassImplementationTest {
 
-	/**
-	 * Instance class reference
-	 */
-	private PropertyManager instance = null;
+    /**
+     * Instance class reference
+     */
+    private PropertyManager instance = null;
 
-	/**
-	 * Test initialization
-	 *
-	 * @throws InstantiationException Exception that must not be ran for the test must be available.
-	 */
-	@Before
-	public void setUp() throws InstantiationException
-	{
-		instance = new PropertyManager( "ClassRef" );
-	}
+    /**
+     * Test initialization
+     *
+     * @throws InstantiationException Exception that must not be ran for the test must be available.
+     */
+    @Before
+    public void setUp() throws InstantiationException {
+        instance = new PropertyManager("ClassRef");
+    }
 
-	/**
-	 * Test cleaning
-	 */
-	@After
-	public void tearDown()
-	{
-		instance = null;
-	}
+    /**
+     * Test cleaning
+     */
+    @After
+    public void tearDown() {
+        instance = null;
+    }
 
 
-	/**
-	 * Test of the PropertyManager constructor
-	 *
-	 * @throws InstantiationException Exception that must not be ran for the test must be available.
-	 */
-	@Test( expected = InstantiationException.class )
+    /**
+     * Test of the PropertyManager constructor
+     *
+     * @throws InstantiationException Exception that must not be ran for the test must be available.
+     */
+    @Test(expected = InstantiationException.class)
     public void test_Constructor_NullName_InstantiationException() throws InstantiationException {
-		new PropertyManager( null );
-	}
+        new PropertyManager(null);
+    }
 
-	/**
-	 * Test of the PropertyManager constructor
-	 *
-	 * @throws InstantiationException Exception that must not be ran for the test must be available.
-	 */
-	@Test( expected = InstantiationException.class )
+    /**
+     * Test of the PropertyManager constructor
+     *
+     * @throws InstantiationException Exception that must not be ran for the test must be available.
+     */
+    @Test(expected = InstantiationException.class)
     public void test_Constructor_EmptyNameWithNaturalForm_InstantiationException() throws InstantiationException {
-		new PropertyManager( "" );
-	}
+        new PropertyManager("");
+    }
 
-	/**
-	 * Test of the PropertyManager constructor
-	 *
-	 * @throws InstantiationException Awaiting exception
-	 */
-	@Test( expected = InstantiationException.class )
+    /**
+     * Test of the PropertyManager constructor
+     *
+     * @throws InstantiationException Awaiting exception
+     */
+    @Test(expected = InstantiationException.class)
     public void test_Constructor_EmptyNameWithVariantForm_InstantiationException() throws InstantiationException {
-		new PropertyManager( "  " );
-	}
+        new PropertyManager("  ");
+    }
 
-	/**
-	 * Test of the PropertyManager constructor
-	 *
-	 * @throws InstantiationException Exception that must not be ran for the test must be available.
-	 */
-	@Test( expected = InstantiationException.class )
+    /**
+     * Test of the PropertyManager constructor
+     *
+     * @throws InstantiationException Exception that must not be ran for the test must be available.
+     */
+    @Test( expected = InstantiationException.class )
     public void test_Constructor_WithSpaceInName_InstantiationException() throws InstantiationException {
-		new PropertyManager( "Class Ref" );
-	}
+        new PropertyManager("Class Ref");
+    }
 
-	/**
-	 * Test of getName method, of class PropertyManager.
-	 */
-	@Test
+    /**
+     * Test of getName method, of class PropertyManager.
+     */
+    @Test
     public void test_GetName_ForValidName_ValidDescriptionName() {
-		String expResult = "ClassRef";
-		String result = instance.getName();
-		assertEquals( expResult, result );
-	}
+        String expResult = "ClassRef";
+        String result = instance.getName();
+        assertEquals(expResult, result);
+    }
 
-	/**
-	 * Test of Add method, of class PropertyManager.
-	 *
-	 * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
-	 */
-	@Test
+    /**
+     * Test of Add method, of class PropertyManager.
+     *
+     * @throws java.lang.reflect.InvocationTargetException Exception that must not be ran for the test must be available.
+     */
+    @Test
     public void test_Add_ValidPropertyValue_AddedProperty() throws IllegalArgumentException, InvocationTargetException {
-		Property p = new Property( "prop", 1, false );
-		instance.Add( p );
+        Property p = new Property("prop", 1, false);
+        instance.Add(p);
 
 		assertNotNull( instance.getPropertyValue( "prop" ) );
-	}
+    }
 }

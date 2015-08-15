@@ -10,7 +10,7 @@ import java.util.*;
  * instance, but register only the first instance as reference element. All other same elements are counted as a supplementary
  * instance without recorded them. That's meaning in the internal representation, the element is recorded once. Other elements
  * are counted as supplementary instance, but the effective instance will not be setting into the collection.<br><br>
- *
+ * <p>
  * To know the number of redundant elements, use the {@link #countElementFor(Object)}. The method {@link #size()} is taking account
  * of redundant elements for its size.
  */
@@ -55,11 +55,11 @@ public class RedundantSet<T> extends AbstractSet<T> {
 
     public boolean add(T value) {
         try {
-        if (this.internalRedundantValues.containsKey(value)) {
-            this.internalRedundantValues.get(value).increment();
-        } else {
-            this.internalRedundantValues.put(value, new Counter(1, Integer.MAX_VALUE));
-        }
+            if (this.internalRedundantValues.containsKey(value)) {
+                this.internalRedundantValues.get(value).increment();
+            } else {
+                this.internalRedundantValues.put(value, new Counter(1, Integer.MAX_VALUE));
+            }
         } catch (RangeException e) {
             return false;
         }
@@ -128,11 +128,11 @@ public class RedundantSet<T> extends AbstractSet<T> {
         if (externalArray.length < this.size())
             externalArray = (T1[]) java.lang.reflect.Array.newInstance(externalArray.getClass().getComponentType(), this.size());
 
-            Iterator<T> _it = this.iterator();
-            int _counter = 0;
-            while (_it.hasNext()) {
-                externalArray[_counter++] = (T1) _it.next();
-            }
+        Iterator<T> _it = this.iterator();
+        int _counter = 0;
+        while (_it.hasNext()) {
+            externalArray[_counter++] = (T1) _it.next();
+        }
 
 
         if (externalArray.length > this.size()) {

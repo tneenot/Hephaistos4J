@@ -66,6 +66,7 @@ public class RandomGenerator {
     /**
      * Gets a new value from the internal random generator. This values doesn't correspond to those generated throw {@link
      * #generateRandomValues(int)}. If is the case, is only due to hazard !
+     *
      * @return A specific random new value.
      */
     public int getIsolatedValue() {
@@ -74,6 +75,7 @@ public class RandomGenerator {
 
     /**
      * Gets only one value from those generated with {@link #generateRandomValues(int)}.
+     *
      * @return A value from internal generated values
      */
     public int getOnceValue() {
@@ -83,6 +85,7 @@ public class RandomGenerator {
     /**
      * Gets only a value from the list of values given as parameter. The choice of this value is based only random index given with
      * {@link #getOnceIndexFrom(List)}.
+     *
      * @param elements List of values
      * @return One value from the list of values.
      */
@@ -93,6 +96,7 @@ public class RandomGenerator {
 
     /**
      * Gets a random index from the list of elements given as parameter.
+     *
      * @param elements List of element.
      * @return A random index from the list of elements.
      */
@@ -110,6 +114,7 @@ public class RandomGenerator {
 
     /**
      * Gets a random index from the internal list of random values.
+     *
      * @return A random index from the internal list of random values.
      */
     public int getOnceIndex() {
@@ -118,6 +123,7 @@ public class RandomGenerator {
 
     /**
      * Gets the list of random elements generated with {@link #generateRandomValues(int)}.
+     *
      * @return List of random elements.
      */
     public List<Integer> getRandomElements() {
@@ -126,8 +132,9 @@ public class RandomGenerator {
 
     /**
      * Gets a sub-list from the random elements generated with {@link #generateRandomValues(int)}.
+     *
      * @param nbSubListElements Number of elements for the sub-list.If the number of elements for the sub-list is greater than the number of
-     * elements of the internal list, the sub-list will be empty.
+     *                          elements of the internal list, the sub-list will be empty.
      * @return The sub-list that's coming from the internal random elements list.
      */
     public List<Integer> getSubList(int nbSubListElements) {
@@ -137,7 +144,8 @@ public class RandomGenerator {
     /**
      * Gets a sub-list from the list given as parameter. If the number of elements for the sub-list is greater than the number of
      * elements of the source list, the sub-list will be empty.
-     * @param referenceList The list from which the sub-list will be build.
+     *
+     * @param referenceList     The list from which the sub-list will be build.
      * @param nbSubListElements The number of elements for the sub-list.
      * @return The sub-list according to the number of elements of the sub-list.
      */

@@ -170,15 +170,12 @@ public class Workspace extends File {
     private void deleteWorkspaceContent(File directory) {
         File[] _files = directory.listFiles();
 
-        for (File _file : _files)
-        {
-            if (_file.isDirectory())
-            {
+        for (File _file : _files) {
+            if (_file.isDirectory()) {
                 deleteWorkspaceContent(_file);
             }
 
-            if (_file.delete() == false)
-            {
+            if (_file.delete() == false) {
                 _file.deleteOnExit();
             }
         }
@@ -200,8 +197,7 @@ public class Workspace extends File {
      * @param uri URI file
      * @return File that is corresponding to the URI, or {@code null} if not found.
      */
-    public File getFileByURI(URI uri)
-    {
+    public File getFileByURI(URI uri) {
         File _inner_file = new File(this, new File(uri).getName());
         return _inner_file.exists() ? new File(uri) : null;
     }
@@ -275,7 +271,7 @@ public class Workspace extends File {
 
             try {
                 return null == _parent_file ? null : new WorkspaceUnitFile(this.workspace, _parent_file.getCanonicalPath());
-            } catch(IOException e) {
+            } catch (IOException e) {
                 // Do nothing else. No Parent file yet.
             }
 
@@ -318,7 +314,7 @@ public class Workspace extends File {
         @Override
         public URI toURI() {
             try {
-                return new URI(super.toURI().toString().replace(this.workspace.toString().replaceAll(Matcher.quoteReplacement(File.separator),"/"), ""));
+                return new URI(super.toURI().toString().replace(this.workspace.toString().replaceAll(Matcher.quoteReplacement(File.separator), "/"), ""));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
