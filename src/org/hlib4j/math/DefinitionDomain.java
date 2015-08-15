@@ -63,7 +63,7 @@ public abstract class DefinitionDomain<Type> {
      */
     public enum LimitType {
         /**
-         * Braces used to define a range limits of type of : <b>[..;..[</b>.
+         * Braces used to define a range limits of type of : <b>[..;..&#91;</b>.
          */
         CLOSE_OPEN(LimitType.getBraceRight(), LimitType.getBraceRight()),
 
@@ -78,7 +78,7 @@ public abstract class DefinitionDomain<Type> {
         BOTH_CLOSE(LimitType.getBraceRight(), LimitType.getBraceLeft()),
 
         /**
-         * Braces used to define a range limits of type of: <b>]..;..[</b>.
+         * Braces used to define a range limits of type of: <b>]..;..&#91;</b>.
          */
         BOTH_OPEN(LimitType.getBraceLeft(), LimitType.getBraceRight());
 
