@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * to them are <code>null</code>. <br>
  * <br>
  * These collections allow to avoid to write code like the following example. Imagine you want a collection with no
- * value equal to <code>5</code>. Usually developers write this functionality like this (pseudo-code): <br>
+ * odd value. Usually developers write this functionality like this (pseudo-code): <br>
  * <br>
  *
  * <pre>
