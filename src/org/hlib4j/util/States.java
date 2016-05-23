@@ -93,6 +93,19 @@ public class States {
         throw new AssertionError("Invalid element");
     }
 
+    public static <T> T validateOrReplace(T elementToValidate, T valueToSubstitute) throws AssertionError
+    {
+        try
+        {
+            return validate(elementToValidate);
+        } catch (AssertionError e)
+        {
+            // Do nothing
+        }
+
+        return valueToSubstitute;
+    }
+
     /**
      * Validate if the given element is not <code>null</code>. This method returns the tested
      * element if it's valid. This choice allows to chain method calling during variable affectation for example.

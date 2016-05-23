@@ -238,4 +238,13 @@ public class StatesTest {
         Integer i = 4;
         Assert.assertEquals(i, States.validateNotNullOnly(i));
     }
+
+    @Test
+    public void test_ValidateOrReplace_NullStringElement_ElementReplaced()
+    {
+        String ref_element = null;
+        String replace_element = "Foo";
+
+        Assert.assertEquals(replace_element, States.validateOrReplace(ref_element, replace_element));
+    }
 }
