@@ -93,7 +93,16 @@ public class States {
         throw new AssertionError("Invalid element");
     }
 
-    public static <T> T validateOrReplace(T elementToValidate, T valueToSubstitute) throws AssertionError
+    /**
+     * Validate the given element to control if it's a <code>null</code> value or not. If value is <code>null</code> the <code>valueToSubstitute</code> is returning as the current value.
+     * In other case, return the <code>elementToValidate</code> argument.
+     *
+     * @param elementToValidate Argument to control as <code>null</code> value or not.
+     * @param valueToSubstitute The element that will substitute to <code>elementToValidate</code> if this first one is <code>null</code>.
+     * @param <T>               The type of element to validate.
+     * @return The <code>elementToValidate</code> if not <code>null</code>, otherwise the <code>valueToSubstitude</code> element.
+     */
+    public static <T> T validateOrReplace(T elementToValidate, T valueToSubstitute)
     {
         try
         {

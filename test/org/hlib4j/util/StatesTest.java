@@ -239,6 +239,7 @@ public class StatesTest {
         Assert.assertEquals(i, States.validateNotNullOnly(i));
     }
 
+
     @Test
     public void test_ValidateOrReplace_NullStringElement_ElementReplaced()
     {
