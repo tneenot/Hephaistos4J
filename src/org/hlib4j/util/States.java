@@ -46,6 +46,12 @@ public class States {
      * <code>isNullOrEmptyArray(...)</code> in this case.</b>
      */
     public static boolean isNullOrEmpty(Object o) {
+        // This code to test directly null value, minimize the cost of process due to stack exception with the code after this line above.
+        if (null == o)
+        {
+            return true;
+        }
+
         try {
             return ((Collection<?>) o).isEmpty();
         } catch (NullPointerException e1) {
