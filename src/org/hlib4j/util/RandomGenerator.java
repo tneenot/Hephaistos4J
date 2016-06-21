@@ -20,10 +20,7 @@ package org.hlib4j.util;
 *  
 */
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This class is using to generate a list of values. These values are generated with random values
@@ -127,7 +124,7 @@ public class RandomGenerator {
      * @return List of random elements.
      */
     public List<Integer> getRandomElements() {
-        return this.randomElements;
+        return Collections.unmodifiableList(this.randomElements);
     }
 
     /**
