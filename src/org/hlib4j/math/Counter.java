@@ -23,7 +23,7 @@ package org.hlib4j.math;
 
 
 /**
- * Class that's allowing a counter according to limits defined with its constructors. Limits management are defined with <code>LimitType.CLOSE_OPEN</code>,
+ * Class that's allowing a counter according to limits defined with its constructors. Limits management are defined with {@link DefinitionDomain.LimitType#CLOSE_OPEN},
  * that's meaning the counter is managing as zero based values. So, the low limit is
  * taking account and not the upper limit. While the one of the <code>increment...(...)</code> or <code>decrement...(...)</code> like
  * methods reached the upper or lower limit, {@link #isValid()} return <code>false</code>, and the new call to these increment/decrement
