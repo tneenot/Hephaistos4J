@@ -147,7 +147,7 @@ public class Workspace extends File {
      *
      * Note: this method should <i>not</i> be used for file-locking, as
      * the resulting protocol cannot be made to work reliably. The
-     * {@link java.nio.channels.FileLock FileLock}
+     * <code>java.nio.channels.FileLock FileLock</code>
      * facility should be used instead.
      * </p>
      * @throws SecurityException If a security manager exists and its <code>{@link

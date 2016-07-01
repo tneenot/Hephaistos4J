@@ -23,11 +23,11 @@ package org.hlib4j.math;
 
 
 /**
- * Class that's allowing a counter according to limits defined with its constructors. Limits management are defined with {@link org
- * .hlib4j.math.DefinitionDomain.LimitType#CLOSE_OPEN}, that's meaning the counter is managing as zero based values. So, the low limit is
+ * Class that's allowing a counter according to limits defined with its constructors. Limits management are defined with <code>LimitType.CLOSE_OPEN</code>,
+ * that's meaning the counter is managing as zero based values. So, the low limit is
  * taking account and not the upper limit. While the one of the <code>increment...(...)</code> or <code>decrement...(...)</code> like
  * methods reached the upper or lower limit, {@link #isValid()} return <code>false</code>, and the new call to these increment/decrement
- * methods don't update any value. To reinitialize the counter to its original default value, used [@link #rearm()] method. You can set a
+ * methods don't update any value. To reinitialize the counter to its original default value, used {@link #rearm()} method. You can set a
  * specific value thanks to {@link #setCurrentValue(Integer)} method. If the new value is not allowing due to counter limit, the {@link
  * #isValid()} return <code>false</code>.
  *

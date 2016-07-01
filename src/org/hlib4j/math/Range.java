@@ -27,8 +27,8 @@ package org.hlib4j.math;
  * definition. Range definition have got some limits that can be opens or closes. Here, rather than to use a collection of values that
  * can be represents a definition domain, the implementation define a rule of available values.<br><br>
  * <p>
- * Limits are defining with the {@link LimitType} enumeration where the {@link org.hlib4j.math.Range
- * .LimitType#RIGHT} definition is the <b>[</b> character and {@link LimitType#LEFT} is the <b>]</b> character.
+ * Limits are defining with the {@link DefinitionDomain.LimitType} enumeration where the {@link DefinitionDomain.LimitType#RIGHT} definition is the <b>[</b> character
+ * and {@link DefinitionDomain.LimitType#LEFT} is the <b>]</b> character.
  */
 public class Range<T> extends DefinitionDomain<T> {
 
