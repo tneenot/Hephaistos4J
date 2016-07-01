@@ -1,22 +1,21 @@
 /*
- * Hephaistos 4 Java library: a library with facilities to get more concise code.
+ *  Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- * Copyright (C) 2015 Tioben Neenot
+ *  Copyright (C) 2016 Tioben Neenot
  *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the GNU General Public License as published by the Free Software
+ *  Foundation; either version 2 of the License, or (at your option) any later
+ *  version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ *  details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
+ *  You should have received a copy of the GNU General Public License along with
+ *  this program; if not, write to the Free Software Foundation, Inc., 51
+ *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 package org.hlib4j.io;
@@ -37,11 +36,6 @@ import java.util.regex.Matcher;
  */
 public class Workspace extends File {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4771588607750266125L;
-
-	/**
      * Builds an instance of the <code>Workspace</code> for the specified path.
      *
      * @param path Path for the workspace.
@@ -152,7 +146,7 @@ public class Workspace extends File {
      *
      * Note: this method should <i>not</i> be used for file-locking, as
      * the resulting protocol cannot be made to work reliably. The
-     * {@link java.nio.channels.FileLock FileLock}
+     * <code>java.nio.channels.FileLock FileLock</code>
      * facility should be used instead.
      * </p>
      * @throws SecurityException If a security manager exists and its <code>{@link

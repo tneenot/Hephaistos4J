@@ -1,22 +1,21 @@
 /*
- * Hephaistos 4 Java library: a library with facilities to get more concise code.
+ *  Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- * Copyright (C) 2015 Tioben Neenot
+ *  Copyright (C) 2016 Tioben Neenot
  *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the GNU General Public License as published by the Free Software
+ *  Foundation; either version 2 of the License, or (at your option) any later
+ *  version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ *  details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
+ *  You should have received a copy of the GNU General Public License along with
+ *  this program; if not, write to the Free Software Foundation, Inc., 51
+ *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 package org.hlib4j.math;
@@ -27,8 +26,8 @@ package org.hlib4j.math;
  * definition. Range definition have got some limits that can be opens or closes. Here, rather than to use a collection of values that
  * can be represents a definition domain, the implementation define a rule of available values.<br><br>
  * <p>
- * Limits are defining with the {@link LimitType} enumeration where the {@link org.hlib4j.math.Range
- * .LimitType#RIGHT} definition is the <b>[</b> character and {@link LimitType#LEFT} is the <b>]</b> character.
+ * Limits are defining with the {@link DefinitionDomain.LimitType} enumeration where the {@link DefinitionDomain.LimitType#RIGHT} definition is the <b>[</b> character
+ * and {@link DefinitionDomain.LimitType#LEFT} is the <b>]</b> character.
  */
 public class Range<T> extends DefinitionDomain<T> {
 
