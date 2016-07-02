@@ -39,8 +39,6 @@ public class Counter extends Range<Integer> {
 
     private boolean isValidCounter;
 
-    private CounterEvent counterEvent;
-
     /**
      * Builds an instance of the Counter by defining the counter limits and its specific default value.
      *
@@ -96,19 +94,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after increment.
      */
     public int incrementByStep(int step) {
-
-        int counter_value = computeNewValue(this.getCurrentValue() + step);
-
-        fireCounterEvent(counter_value);
-
-        return counter_value;
-    }
-
-    private void fireCounterEvent(final int counterValue) {
-
-        if (this.counterEvent != null) {
-            this.counterEvent.counterValueUpdatedTo(counterValue);
-        }
+        return computeNewValue(this.getCurrentValue() + step);
     }
 
     private int computeNewValue(int currentValue) {
@@ -138,11 +124,7 @@ public class Counter extends Range<Integer> {
      * @return The new value after decrement.
      */
     public int decrementByStep(int step) {
-        int counter_value = computeNewValue(this.getCurrentValue() - step);
-
-        fireCounterEvent(counter_value);
-
-        return counter_value;
+        return computeNewValue(this.getCurrentValue() - step);
     }
 
     /**
@@ -201,14 +183,5 @@ public class Counter extends Range<Integer> {
         }
 
         return this.isValid();
-    }
-
-    /**
-     * Sets a counter event that will be called, while the counter value will be updated.
-     *
-     * @param counterEvent CounterEvent attached with this counter.
-     */
-    public void setCounterEvent(CounterEvent counterEvent) {
-        this.counterEvent = counterEvent;
     }
 }
