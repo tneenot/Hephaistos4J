@@ -123,8 +123,8 @@ public class RelativeProgressTest {
     public void test_GetProgress_AfterUpdateValueForSuccessorAndStep_ValueUpdated() throws Exception {
         relativeProgress.setSuccessor(new RelativeProgress(6));
 
-        relativeProgress.getSuccessor().setProgress(0.6);
         ((RelativeProgress) relativeProgress.getSuccessor()).getStepCounter().increment();
+        relativeProgress.getSuccessor().setProgress(0.6);
 
         Assert.assertEquals(0.06, relativeProgress.getProgress(), 0.01);
     }
@@ -133,9 +133,9 @@ public class RelativeProgressTest {
     public void test_GetProgress_AfterUpdateValueForSuccessorAndStepAndStepForFirstRank_ValueUpdated() throws Exception {
         relativeProgress.setSuccessor(new RelativeProgress(6));
 
-        relativeProgress.getSuccessor().setProgress(0.6);
         ((RelativeProgress) relativeProgress.getSuccessor()).getStepCounter().increment();
         relativeProgress.getStepCounter().increment();
+        relativeProgress.getSuccessor().setProgress(0.6);
 
         Assert.assertEquals(0.316, relativeProgress.getProgress(), 0.001);
     }
@@ -148,5 +148,15 @@ public class RelativeProgressTest {
     @Test
     public void test_Constructor_MaximumStepToMinimum_InstanceBuildWithoutError() throws Exception {
         new RelativeProgress(1);
+    }
+
+    @Test
+    public void test_GetProgress_ControlProgressAfterCounterStepIncrement_ValueIsZero() throws Exception {
+        relativeProgress.setProgress(0.6);
+
+        relativeProgress.getStepCounter().increment();
+        relativeProgress.getStepCounter().decrement();
+
+        Assert.assertEquals(0, relativeProgress.getProgress(), 0);
     }
 }
