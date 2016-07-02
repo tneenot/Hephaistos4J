@@ -96,16 +96,11 @@ public class RelativeProgressTest {
     }
 
     @Test
-    public void test_GetStepCounter_InternalStepCounter_CounterNotNull() throws Exception {
-        Assert.assertNotNull(relativeProgress.getStepCounter());
-    }
-
-    @Test
     public void test_GetProgress_AfterStepIncrement_ValueUpdated() throws Exception {
         relativeProgress.setProgress(0.4);
         double ref_value = relativeProgress.getProgress();
 
-        relativeProgress.getStepCounter().increment();
+        relativeProgress.nextStep();
 
         Assert.assertNotEquals(ref_value, relativeProgress.getProgress(), 0.0);
     }
@@ -123,7 +118,7 @@ public class RelativeProgressTest {
     public void test_GetProgress_AfterUpdateValueForSuccessorAndStep_ValueUpdated() throws Exception {
         relativeProgress.setSuccessor(new RelativeProgress(6));
 
-        ((RelativeProgress) relativeProgress.getSuccessor()).getStepCounter().increment();
+        ((RelativeProgress) relativeProgress.getSuccessor()).nextStep();
         relativeProgress.getSuccessor().setProgress(0.6);
 
         Assert.assertEquals(0.06, relativeProgress.getProgress(), 0.01);
@@ -133,8 +128,8 @@ public class RelativeProgressTest {
     public void test_GetProgress_AfterUpdateValueForSuccessorAndStepAndStepForFirstRank_ValueUpdated() throws Exception {
         relativeProgress.setSuccessor(new RelativeProgress(6));
 
-        ((RelativeProgress) relativeProgress.getSuccessor()).getStepCounter().increment();
-        relativeProgress.getStepCounter().increment();
+        ((RelativeProgress) relativeProgress.getSuccessor()).nextStep();
+        relativeProgress.nextStep();
         relativeProgress.getSuccessor().setProgress(0.6);
 
         Assert.assertEquals(0.316, relativeProgress.getProgress(), 0.001);
@@ -154,9 +149,42 @@ public class RelativeProgressTest {
     public void test_GetProgress_ControlProgressAfterCounterStepIncrement_ValueIsZero() throws Exception {
         relativeProgress.setProgress(0.6);
 
-        relativeProgress.getStepCounter().increment();
-        relativeProgress.getStepCounter().decrement();
+        relativeProgress.nextStep();
+        relativeProgress.previousStep();
 
         Assert.assertEquals(0, relativeProgress.getProgress(), 0);
+    }
+
+    @Test
+    public void test_NextStep_GoToNextStep_NextStepIsValid() throws Exception {
+        Assert.assertTrue(relativeProgress.nextStep());
+    }
+
+    @Test
+    public void test_PreviousStep_GoToPreviousStep_PreviousStepNotValid() throws Exception {
+        Assert.assertFalse(relativeProgress.previousStep());
+    }
+
+    @Test
+    public void test_NexStep_GoToNextStepWhileNotExist_NextStepNotValid() throws Exception {
+        RelativeProgress relative_progress = new RelativeProgress(1);
+
+        Assert.assertFalse(relative_progress.nextStep());
+    }
+
+    @Test
+    public void test_PreviousStep_GoToPreviousStepWhileNotExist_PreviousStepNotValid() throws Exception {
+        RelativeProgress relative_progress = new RelativeProgress(1);
+
+        Assert.assertFalse(relative_progress.previousStep());
+    }
+
+    @Test
+    public void test_PreviousStep_GoToPreviousStepWhileNextStepNotExist_PreviousStepValid() throws Exception {
+        RelativeProgress relative_progress = new RelativeProgress(2);
+        relative_progress.nextStep();
+        relative_progress.nextStep();
+
+        Assert.assertTrue(relative_progress.previousStep());
     }
 }
