@@ -26,9 +26,12 @@ package org.hlib4j.math;
  * To compute a relative progress, the maximum steps must be defined with the {@link RelativeProgress#RelativeProgress(int)} constructor.
  * Afterwards, while a value is defining with {@link #setProgress(double)}, {@link #getProgress()} is computing according to the current
  * step incremented or decremented by {@link #getStepCounter()}. If successor exits, the current value is computing by the successor first
- * (relatively to its own current step) and by the current instance relatively its current step too.
+ * (relatively to its own current step) and by the current instance relatively its current step too. <br>
+ *
+ *  While the {@link #getStepCounter()} value will be changed by increment or decrement, the value set by {@link #setProgress(double)} is setting
+ *  to 0. The <code>RelativeProgress</code> considers the progress value to 0 automatically, while a new step is incrementing or decrementing.
  */
-public class RelativeProgress implements ProgressStepDefinition {
+public class RelativeProgress implements ProgressStepDefinition, CounterEvent {
 
     private final Counter counter;
     private ProgressStepDefinition successor;
@@ -42,6 +45,7 @@ public class RelativeProgress implements ProgressStepDefinition {
      */
     public RelativeProgress(int maxSteps) throws RangeException {
         this.counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 1, maxSteps, 1);
+        this.counter.setCounterEvent(this);
         this.successor = null;
     }
 
@@ -80,5 +84,11 @@ public class RelativeProgress implements ProgressStepDefinition {
      */
     public final Counter getStepCounter() {
         return counter;
+    }
+
+
+    @Override
+    public void counterValueUpdatedTo(int counterValue) {
+        this.progressValue = 0;
     }
 }
