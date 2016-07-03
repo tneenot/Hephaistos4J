@@ -118,7 +118,7 @@ public class RelativeProgressTest {
     public void test_GetProgress_AfterUpdateValueForSuccessorAndStep_ValueUpdated() throws Exception {
         relativeProgress.setSuccessor(new RelativeProgress(6));
 
-        ((RelativeProgress) relativeProgress.getSuccessor()).nextStep();
+        relativeProgress.getSuccessor().nextStep();
         relativeProgress.getSuccessor().setProgress(0.6);
 
         Assert.assertEquals(0.06, relativeProgress.getProgress(), 0.01);
@@ -128,7 +128,7 @@ public class RelativeProgressTest {
     public void test_GetProgress_AfterUpdateValueForSuccessorAndStepAndStepForFirstRank_ValueUpdated() throws Exception {
         relativeProgress.setSuccessor(new RelativeProgress(6));
 
-        ((RelativeProgress) relativeProgress.getSuccessor()).nextStep();
+        relativeProgress.getSuccessor().nextStep();
         relativeProgress.nextStep();
         relativeProgress.getSuccessor().setProgress(0.6);
 
@@ -186,5 +186,25 @@ public class RelativeProgressTest {
         relative_progress.nextStep();
 
         Assert.assertTrue(relative_progress.previousStep());
+    }
+
+    @Test
+    public void test_GetCurrentStep_GetFirstStepValue_FirstStepValueConforms() throws Exception {
+        Assert.assertEquals(1, relativeProgress.getCurrentStep());
+    }
+
+    @Test
+    public void test_GetCurrentStep_GetSecondStepValue_SecondStepValueConforms() throws Exception {
+        relativeProgress.nextStep();
+
+        Assert.assertEquals(2, relativeProgress.getCurrentStep());
+    }
+
+    @Test
+    public void test_GetCurrentStep_GetTheNextStepAndPrevious_EqualsToInitialValue() throws Exception {
+        relativeProgress.nextStep();
+        relativeProgress.previousStep();
+
+        Assert.assertEquals(1, relativeProgress.getCurrentStep());
     }
 }

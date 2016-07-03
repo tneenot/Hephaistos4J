@@ -29,7 +29,7 @@ package org.hlib4j.math;
  * (relatively to its own current step) and by the current instance relatively its current step too. <br><br>
  *
  * While a next step or a previous step is calling, the internal progress value is setting to 0, to begin the awaiting step if it exists.
- * If the step doesn't exist, the internal progress value is not updated to 0.
+ * If the step doesn't exist, the internal progress value is not updated to 0. The current step value can be obtained with {@link #getCurrentStep()}.
  */
 public class RelativeProgress implements ProgressStepDefinition {
 
@@ -76,11 +76,7 @@ public class RelativeProgress implements ProgressStepDefinition {
         this.progressValue = progress;
     }
 
-
-    /**
-     * Go to the next step. This feature fix the progress value to 0, to begin a next step if next step is existing.
-     * @return <code>true</code> if next step is existing, <code>false</code> otherwise.
-     */
+    @Override
     public boolean nextStep() {
         this.counter.increment();
 
@@ -89,17 +85,23 @@ public class RelativeProgress implements ProgressStepDefinition {
         return this.counter.isValid();
     }
 
-    /**
-     * Go to the previous step. This feature fix the progress value to 0, to begin the previous step if previous step is existing.
-     *
-     * @return <code>true</code> if previous step is existing, <code>false</code> otherwise.
-     */
+    @Override
     public boolean previousStep() {
         this.counter.decrement();
 
         initializeProgressValueAccordingToCounterValidStatus();
 
         return this.counter.isValid();
+    }
+
+    /**
+     * Returns the current step value.
+     *
+     * @return Current step value.
+     */
+    @Override
+    public int getCurrentStep() {
+        return this.counter.getCurrentValue();
     }
 
     private void initializeProgressValueAccordingToCounterValidStatus() {
