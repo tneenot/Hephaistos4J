@@ -55,4 +55,25 @@ public interface ProgressStepDefinition {
      * @param progress Current progress value.
      */
     void setProgress(double progress);
+
+    /**
+     * Go to the next step. This feature fix the progress value to 0, to begin a next step if next step is existing.
+     *
+     * @return <code>true</code> if next step is existing, <code>false</code> otherwise.
+     */
+    boolean nextStep();
+
+    /**
+     * Go to the previous step. This feature fix the progress value to 0, to begin the previous step if previous step is existing.
+     *
+     * @return <code>true</code> if previous step is existing, <code>false</code> otherwise.
+     */
+    boolean previousStep();
+
+    /**
+     * Returns the current step value.
+     *
+     * @return Current step value.
+     */
+    int getCurrentStep();
 }
