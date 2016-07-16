@@ -85,6 +85,12 @@ public class RelativeProgress implements ProgressStepDefinition {
         return this.counter.isValid();
     }
 
+    private void initializeProgressValueAccordingToCounterValidStatus() {
+        if (this.counter.isValid()) {
+            this.progressValue = 0;
+        }
+    }
+
     @Override
     public boolean previousStep() {
         this.counter.decrement();
@@ -104,9 +110,4 @@ public class RelativeProgress implements ProgressStepDefinition {
         return this.counter.getCurrentValue();
     }
 
-    private void initializeProgressValueAccordingToCounterValidStatus() {
-        if (this.counter.isValid()) {
-            this.progressValue = 0;
-        }
-    }
 }
