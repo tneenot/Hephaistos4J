@@ -18,7 +18,7 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.math;
+package org.hlib4j.util;
 
 /**
  * This interface defines a progress step concept. A progress step is a concept for which each progress value is computing

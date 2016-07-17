@@ -18,8 +18,9 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.math;
+package org.hlib4j.util;
 
+import org.hlib4j.math.RangeException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

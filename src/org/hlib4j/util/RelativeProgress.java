@@ -18,8 +18,12 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.math;
+package org.hlib4j.util;
 
+
+import org.hlib4j.math.Counter;
+import org.hlib4j.math.DefinitionDomain;
+import org.hlib4j.math.RangeException;
 
 /**
  * The relative progress is a class that computes a progress value according to the current step and step of its successors.
