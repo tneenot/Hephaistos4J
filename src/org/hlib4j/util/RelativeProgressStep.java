@@ -27,7 +27,7 @@ import org.hlib4j.math.RangeException;
 
 /**
  * The relative progress is a class that computes a progress value according to the current step and step of its successors.
- * To compute a relative progress, the maximum steps must be defined with the {@link RelativeProgress#RelativeProgress(int)} constructor.
+ * To compute a relative progress, the maximum steps must be defined with the {@link RelativeProgressStep#RelativeProgressStep(int)} constructor.
  * Afterwards, while a value is defining with {@link #setProgress(double)}, {@link #getProgress()} is computing according to the current
  * step incremented or decremented by {@link #nextStep()} or {@link #previousStep()}. If successor exits, the current value is computing by the successor first
  * (relatively to its own current step) and by the current instance relatively its current step too. <br><br>
@@ -35,30 +35,30 @@ import org.hlib4j.math.RangeException;
  * While a next step or a previous step is calling, the internal progress value is setting to 0, to begin the awaiting step if it exists.
  * If the step doesn't exist, the internal progress value is not updated to 0. The current step value can be obtained with {@link #getCurrentStep()}.
  */
-public class RelativeProgress implements ProgressStepDefinition {
+public class RelativeProgressStep implements ProgressStep {
 
     private final Counter counter;
-    private ProgressStepDefinition successor;
+    private ProgressStep successor;
     private double progressValue;
 
     /**
-     * Builds an instance of RelativeProgress with the maximum step for this progress.
+     * Builds an instance of RelativeProgressStep with the maximum step for this progress.
      *
      * @param maxSteps Maximum step for this instance.
      * @throws RangeException If maximum steps is zero.
      */
-    public RelativeProgress(int maxSteps) throws RangeException {
+    public RelativeProgressStep(int maxSteps) throws RangeException {
         this.counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 1, maxSteps, 1);
         this.successor = null;
     }
 
     @Override
-    public ProgressStepDefinition getSuccessor() {
+    public ProgressStep getSuccessor() {
         return successor;
     }
 
     @Override
-    public void setSuccessor(ProgressStepDefinition successor) {
+    public void setSuccessor(ProgressStep successor) {
         this.successor = successor;
     }
 

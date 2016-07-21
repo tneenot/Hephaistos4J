@@ -23,23 +23,24 @@ package org.hlib4j.util;
 /**
  * This interface defines a progress step concept. A progress step is a concept for which each progress value is computing
  * according to a current step and the step for its successors if they exist. This progress definition allows to run a chain
- * of progress computation.
+ * of progress computation. A progress step allows to avoid to get progress value that's coming back to zero while a new
+ * step is beginning with its initial value to 0.
  */
-public interface ProgressStepDefinition {
+public interface ProgressStep {
 
     /**
      * Gets the successor for this progress step.
      *
      * @return Successor of this progress step definition, or <code>null</code> if not exist.
      */
-    ProgressStepDefinition getSuccessor();
+    ProgressStep getSuccessor();
 
     /**
      * Defines a successor to this progress step.
      *
      * @param successor Successor for this progress step, or <code>null</code> to break the chain of processes.
      */
-    void setSuccessor(ProgressStepDefinition successor);
+    void setSuccessor(ProgressStep successor);
 
     /**
      * Returns the progress value for this step.
