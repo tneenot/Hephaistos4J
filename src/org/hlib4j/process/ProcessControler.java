@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by TiobenNeenot on 18/12/2016.
+ * ProcessControler allows to run an external command during an amount of times or for an awaiting result.
+ * This release takes account only standard output. The process controler stops the process command while the
+ * awaiting result is reach or if the time wait upper limit is reach.
  */
 public class ProcessControler
 {
@@ -35,12 +37,26 @@ public class ProcessControler
   private final Counter counterDelay;
   private ProcessResult processResult;
 
+  /**
+   * Builds an instance of the process controler for the process builder. The {@link Counter} class is using to
+   * specify the way of the timeout will be managed.
+   *
+   * @param processBuilder ProcessBuilder that will run the underlying command.
+   * @param counterDelay   The counter delay for this controler.
+   */
   public ProcessControler(ProcessBuilder processBuilder, Counter counterDelay)
   {
     this.processBuilder = processBuilder;
     this.counterDelay = counterDelay;
   }
 
+  /**
+   * Run the task of the underlying process and stop on the awaiting result. That means this task will stop if its
+   * output contains the awaiting filter result.
+   * @param awaitingFilterResult The awaiting filter result to reach to stop command as valid.
+   * @return <code>true</code> if the command was reached with the awaiting result, <code>false</code> otherwise.
+   * @throws IOException If the underlying process occurs an IOException.
+   */
   public boolean runTaskWithAwaitingResult(String awaitingFilterResult) throws IOException
   {
     AtomicBoolean is_start_again = new AtomicBoolean(true);
@@ -85,6 +101,10 @@ public class ProcessControler
     return !States.isNullOrEmpty(getEffectiveResult());
   }
 
+  /**
+   * Gets the effective result of the underlying process. Can be <code>null</code>.
+   * @return The first line that's verifying the awaiting filer result.
+   */
   public String getEffectiveResult()
   {
     if (null != processResult)
