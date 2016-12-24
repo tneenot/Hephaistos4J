@@ -48,7 +48,7 @@ public class ProcessControlerTest
   @Test
   public void test_runTaskWithAwaitingResult_TaskFail_AwaitingResultIsFalse() throws Exception
   {
-    Assert.assertFalse(processControler.runTaskWithAwaitingResult(""));
+    Assert.assertFalse(processControler.runTaskWithAwaitingResult("boo"));
   }
 
   @Test
@@ -83,7 +83,7 @@ public class ProcessControlerTest
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    processControler.runTaskWithAwaitingResult("");
+    processControler.runTaskWithAwaitingResult("boo");
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() >= internalCounter.getUpperLimitValue());

@@ -24,7 +24,6 @@ import org.hlib4j.math.Counter;
 import org.hlib4j.util.States;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * ProcessControler allows to run an external command during an amount of times or for an awaiting result.
@@ -59,43 +58,22 @@ public class ProcessControler
    */
   public boolean runTaskWithAwaitingResult(String awaitingFilterResult) throws IOException
   {
-    AtomicBoolean is_start_again = new AtomicBoolean(true);
 
-    do
-    {
       processResult = new ProcessResult(this.processBuilder, awaitingFilterResult);
       processResult.start();
 
-      if (null == processResult.getOutputResultAsString())
+    while (States.isNullOrEmpty(processResult.getOutputResultAsString()) && this.counterDelay.isValid())
+    {
+      try
       {
-        Thread waiting_thread = new Thread()
-        {
-
-          @Override
-          public void run()
-          {
-            try
-            {
-              sleep(counterDelay.getCounterStep());
-            } catch (InterruptedException e)
-            {
-              e.printStackTrace();
-            }
-          }
-        };
-
-        waiting_thread.start();
-        while (waiting_thread.isAlive())
-        {
-        }
+        processResult.join(counterDelay.getCounterStep());
+      } catch (InterruptedException e)
+      {
+        e.printStackTrace();
+      }
 
         this.counterDelay.increment();
-        if (null != processResult.getOutputResultAsString())
-        {
-          is_start_again.set(!processResult.getOutputResultAsString().contains(awaitingFilterResult));
-        }
-      }
-    } while (this.counterDelay.isValid() && is_start_again.get() == true);
+    }
 
 
     return !States.isNullOrEmpty(getEffectiveResult());
