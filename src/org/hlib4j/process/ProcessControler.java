@@ -34,7 +34,7 @@ public class ProcessControler
 {
   private final ProcessBuilder processBuilder;
   private final Counter counterDelay;
-  private ProcessResult processResult;
+  private String effectiveResult;
 
   /**
    * Builds an instance of the process controler for the process builder. The {@link Counter} class is using to
@@ -59,14 +59,14 @@ public class ProcessControler
   public boolean runTaskWithAwaitingResult(String awaitingFilterResult) throws IOException
   {
 
-      processResult = new ProcessResult(this.processBuilder, awaitingFilterResult);
-      processResult.start();
+    ProcessResult process_result = new ProcessResult(this.processBuilder, awaitingFilterResult);
+    process_result.start();
 
-    while (States.isNullOrEmpty(processResult.getOutputResultAsString()) && this.counterDelay.isValid())
+    while (States.isNullOrEmpty(process_result.getOutputResultAsString()) && this.counterDelay.isValid())
     {
       try
       {
-        processResult.join(counterDelay.getCounterStep());
+        process_result.join(counterDelay.getCounterStep());
       } catch (InterruptedException e)
       {
         e.printStackTrace();
@@ -75,8 +75,8 @@ public class ProcessControler
         this.counterDelay.increment();
     }
 
-
-    return !States.isNullOrEmpty(getEffectiveResult());
+    this.effectiveResult = process_result.getOutputResultAsString();
+    return !States.isNullOrEmpty(this.effectiveResult);
   }
 
   /**
@@ -85,11 +85,6 @@ public class ProcessControler
    */
   public String getEffectiveResult()
   {
-    if (null != processResult)
-    {
-      return processResult.getOutputResultAsString();
-    }
-
-    return null;
+    return this.effectiveResult;
   }
 }
