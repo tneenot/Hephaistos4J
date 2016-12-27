@@ -30,9 +30,9 @@ import org.junit.Test;
 import java.io.IOException;
 
 
-public class ProcessControlerTest
+public class ProcessFilterTest
 {
-  private ProcessControler processControler;
+  private ProcessFilter processFilter;
   private Counter internalCounter;
 
   @Before
@@ -41,60 +41,60 @@ public class ProcessControlerTest
     internalCounter = new Counter(0, 5000);
     internalCounter.setCounterStep(1000);
 
-    processControler = new ProcessControler(new ProcessBuilder("/sbin/ping", "10.10.10.10"),
+    processFilter = new ProcessFilter(new ProcessBuilder("/sbin/ping", "10.10.10.10"),
       internalCounter);
   }
 
   @Test
-  public void test_runTaskWithAwaitingResult_TaskFail_AwaitingResultIsFalse() throws Exception
+  public void test_runForFilterAsString_TaskFail_AwaitingResultIsFalse() throws Exception
   {
-    Assert.assertFalse(processControler.runTaskWithAwaitingResult("boo"));
+    Assert.assertFalse(processFilter.runForFilterAsString("boo"));
   }
 
   @Test
-  public void test_runTaskWithAwaitingResult_TaskOk_AwaitingResultIsTrue() throws IOException
+  public void test_runForFilterAsString_TaskOk_AwaitingResultIsTrue() throws IOException
   {
-    Assert.assertTrue(createValidTask().runTaskWithAwaitingResult("r"));
+    Assert.assertTrue(createValidTask().runForFilterAsString("r"));
   }
 
   @Test
   public void test_getEffectiveResult_DefaultResult_ValueIsNull() throws Exception
   {
-    Assert.assertNull(processControler.getEffectiveResult());
+    Assert.assertNull(processFilter.getEffectiveResult());
   }
 
   @Test
   public void test_getEffectiveResult_ResultAfterValidProcess_ResultAwaitingValid() throws IOException
   {
-    ProcessControler process_controler = createValidTask();
-    process_controler.runTaskWithAwaitingResult("r");
+    ProcessFilter process_controler = createValidTask();
+    process_controler.runForFilterAsString("r");
 
     Assert.assertFalse(States.isNullOrEmpty(process_controler.getEffectiveResult()));
   }
 
-  private ProcessControler createValidTask()
+  private ProcessFilter createValidTask()
   {
-    return new ProcessControler(new ProcessBuilder("/bin/ls", "-l", "/"),
+    return new ProcessFilter(new ProcessBuilder("/bin/ls", "-l", "/"),
       internalCounter);
   }
 
   @Test
-  public void test_runTaskWithAwaitingResult_TaskFail_TimeRunningOutOfTime() throws IOException
+  public void test_runForFilterAsString_TaskFail_TimeRunningOutOfTime() throws IOException
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    processControler.runTaskWithAwaitingResult("boo");
+    processFilter.runForFilterAsString("boo");
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() >= internalCounter.getUpperLimitValue());
   }
 
   @Test
-  public void test_runTaskWithAwaitingResult_ValidTask_NoTimeOut() throws IOException
+  public void test_runForFilterAsString_ValidTask_NoTimeOut() throws IOException
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    createValidTask().runTaskWithAwaitingResult("r");
+    createValidTask().runForFilterAsString("r");
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() < internalCounter.getUpperLimitValue());

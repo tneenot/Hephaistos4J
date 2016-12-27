@@ -26,11 +26,13 @@ import org.hlib4j.util.States;
 import java.io.IOException;
 
 /**
- * ProcessControler allows to run an external command during an amount of times or for an awaiting result.
- * This release takes account only standard output. The process controler stops the process command while the
- * awaiting result is reach or if the time wait upper limit is reach.
+ * ProcessFilter allows to run an external command during an amount of times or for an awaiting result specifies
+ * with {@link #runForFilterAsString(String)}. While the awaiting result was found, the underlying process is
+ * stopping.
+ * This release takes account only standard output. The <code>ProcessFilter</code> stops the process command while the
+ * awaiting result was reached or if the time wait upper limit was reached.
  */
-public class ProcessControler
+public class ProcessFilter
 {
   private final ProcessBuilder processBuilder;
   private final Counter counterDelay;
@@ -43,7 +45,7 @@ public class ProcessControler
    * @param processBuilder ProcessBuilder that will run the underlying command.
    * @param counterDelay   The counter delay for this controler.
    */
-  public ProcessControler(ProcessBuilder processBuilder, Counter counterDelay)
+  public ProcessFilter(ProcessBuilder processBuilder, Counter counterDelay)
   {
     this.processBuilder = processBuilder;
     this.counterDelay = counterDelay;
@@ -52,14 +54,15 @@ public class ProcessControler
   /**
    * Run the task of the underlying process and stop on the awaiting result. That means this task will stop if its
    * output contains the awaiting filter result.
-   * @param awaitingFilterResult The awaiting filter result to reach to stop command as valid.
-   * @return <code>true</code> if the command was reached with the awaiting result, <code>false</code> otherwise.
+   * @param filterAsString The awaiting filter result to reach to stop command as valid.
+   * @return <code>true</code> if the command was reached with the awaiting result, <code>false</code> otherwise. If
+   * <code>true</code>, {@link #getEffectiveResult()} return the effective result that's corresponding to the filter.
    * @throws IOException If the underlying process occurs an IOException.
    */
-  public boolean runTaskWithAwaitingResult(String awaitingFilterResult) throws IOException
+  public boolean runForFilterAsString(String filterAsString) throws IOException
   {
 
-    ProcessResult process_result = new ProcessResult(this.processBuilder, awaitingFilterResult);
+    ProcessScanner process_result = new ProcessScanner(this.processBuilder, filterAsString);
     process_result.start();
 
     while (States.isNullOrEmpty(process_result.getOutputResultAsString()) && this.counterDelay.isValid())

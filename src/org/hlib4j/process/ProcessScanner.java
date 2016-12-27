@@ -28,19 +28,19 @@ import java.util.Scanner;
  * underlying process builder return the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter.
  */
-public class ProcessResult extends Thread
+public class ProcessScanner extends Thread
 {
   private final String filterResult;
   private final ProcessBuilder processBuilder;
   private String outputResultAsString;
 
   /**
-   * Builds an instance of ProcessResult for the given process builder and the awaiting filter.
+   * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
    *
    * @param processBuilder The process builder associated with this instance.
    * @param filterResult   The process filter that is awaiting.
    */
-  public ProcessResult(ProcessBuilder processBuilder, String filterResult)
+  public ProcessScanner(ProcessBuilder processBuilder, String filterResult)
   {
     this.processBuilder = processBuilder;
     this.filterResult = filterResult;
