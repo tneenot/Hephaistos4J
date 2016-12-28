@@ -20,13 +20,22 @@
 
 package org.hlib4j.process;
 
+import org.hlib4j.util.States;
+
 import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Convinient class to get the first string result for the process builder. While the standard output of the
- * underlying process builder return the awaiting result, the {@link #getOutputResultAsString()} will return the
- * first line that's verifying this filter.
+ * Convenient class to get the first string output result for the process builder. Once the standard output of the
+ * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
+ * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
+ * end of the underlying process.
+ *
+ * <h3>ProcessBuilder rule to respect or limit of implementation</h3>
+ * To avoid situation where some output can be missed or not capture by the <code>ProcessScanner</code> it's recommanded
+ * to not call the {@link ProcessBuilder#start()} method. This method will be calling by the <code>ProcessScanner</code>
+ * itself. If the process builder is starting before to call the {@link #run()} method, it will be re-running again. The
+ * awaiting result can be inconsistent for the underlying process and the awaiting result !
  */
 public class ProcessScanner extends Thread
 {
@@ -43,11 +52,12 @@ public class ProcessScanner extends Thread
   public ProcessScanner(ProcessBuilder processBuilder, String filterResult)
   {
     this.processBuilder = processBuilder;
-    this.filterResult = filterResult;
+    this.filterResult = States.validateNotNullOnly(filterResult);
   }
 
   /**
    * The output result that's verifying the filter result.
+   *
    * @return The output that's verifying the filter result or <code>null</code>.
    */
   public synchronized String getOutputResultAsString()
@@ -65,6 +75,7 @@ public class ProcessScanner extends Thread
       while (this.outputResultAsString == null && stream_scanner.hasNextLine())
       {
         String scanner_line = stream_scanner.nextLine();
+
         if (scanner_line.contains(this.filterResult))
         {
           synchronized (this)

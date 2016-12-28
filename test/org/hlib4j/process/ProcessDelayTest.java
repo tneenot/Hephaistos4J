@@ -22,7 +22,6 @@ package org.hlib4j.process;
 
 import org.hlib4j.math.Counter;
 import org.hlib4j.time.TimeFlow;
-import org.hlib4j.util.States;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,9 +29,9 @@ import org.junit.Test;
 import java.io.IOException;
 
 
-public class ProcessFilterTest
+public class ProcessDelayTest
 {
-  private ProcessFilter processFilter;
+  private ProcessDelay processDelay;
   private Counter internalCounter;
 
   @Before
@@ -41,49 +40,21 @@ public class ProcessFilterTest
     internalCounter = new Counter(0, 5000);
     internalCounter.setCounterStep(1000);
 
-    processFilter = new ProcessFilter(new ProcessBuilder("/sbin/ping", "10.10.10.10"),
+    processDelay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("/sbin/ping", "10.10.10.10"), "foo"),
       internalCounter);
   }
 
-  @Test
-  public void test_runForFilterAsString_TaskFail_AwaitingResultIsFalse() throws Exception
+  private ProcessDelay createValidTask()
   {
-    Assert.assertFalse(processFilter.runForFilterAsString("boo"));
+    return new ProcessDelay(new ProcessScanner(new ProcessBuilder("/bin/ls", "-l", "/"), "r"), internalCounter);
   }
 
   @Test
-  public void test_runForFilterAsString_TaskOk_AwaitingResultIsTrue() throws IOException
-  {
-    Assert.assertTrue(createValidTask().runForFilterAsString("r"));
-  }
-
-  @Test
-  public void test_getEffectiveResult_DefaultResult_ValueIsNull() throws Exception
-  {
-    Assert.assertNull(processFilter.getEffectiveResult());
-  }
-
-  @Test
-  public void test_getEffectiveResult_ResultAfterValidProcess_ResultAwaitingValid() throws IOException
-  {
-    ProcessFilter process_controler = createValidTask();
-    process_controler.runForFilterAsString("r");
-
-    Assert.assertFalse(States.isNullOrEmpty(process_controler.getEffectiveResult()));
-  }
-
-  private ProcessFilter createValidTask()
-  {
-    return new ProcessFilter(new ProcessBuilder("/bin/ls", "-l", "/"),
-      internalCounter);
-  }
-
-  @Test
-  public void test_runForFilterAsString_TaskFail_TimeRunningOutOfTime() throws IOException
+  public void test_run_TaskFail_TimeRunningOutOfTime() throws IOException
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    processFilter.runForFilterAsString("boo");
+    processDelay.run();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() >= internalCounter.getUpperLimitValue());
@@ -94,7 +65,7 @@ public class ProcessFilterTest
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    createValidTask().runForFilterAsString("r");
+    createValidTask().run();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() < internalCounter.getUpperLimitValue());
