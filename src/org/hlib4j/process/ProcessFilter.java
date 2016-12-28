@@ -39,11 +39,11 @@ public class ProcessFilter
   private String effectiveResult;
 
   /**
-   * Builds an instance of the process controler for the process builder. The {@link Counter} class is using to
+   * Builds an instance of the process controller for the process builder. The {@link Counter} class is using to
    * specify the way of the timeout will be managed.
    *
    * @param processBuilder ProcessBuilder that will run the underlying command.
-   * @param counterDelay   The counter delay for this controler.
+   * @param counterDelay   The counter delay for this controller.
    */
   public ProcessFilter(ProcessBuilder processBuilder, Counter counterDelay)
   {
