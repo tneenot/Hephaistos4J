@@ -22,6 +22,7 @@ package org.hlib4j.process;
 
 import org.hlib4j.math.Counter;
 import org.hlib4j.time.TimeFlow;
+import org.hlib4j.util.States;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +70,14 @@ public class ProcessDelayTest
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() < internalCounter.getUpperLimitValue());
+  }
+
+  @Test
+  public void test_getProcessScanner_ValidTask_ValidResult() throws IOException
+  {
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("/bin/ls", "-l", "/"), "r"), internalCounter);
+    process_delay.run();
+    Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
   }
 
 }
