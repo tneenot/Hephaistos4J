@@ -1,7 +1,7 @@
 /*
  * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -34,7 +34,7 @@ public class ProcessScannerTest
   @Before
   public void setUp()
   {
-    this.processBuilder = new ProcessBuilder("/bin/ls", "-l", "/");
+    this.processBuilder = new ProcessBuilder("ls", "-l", "/");
   }
 
   @Test

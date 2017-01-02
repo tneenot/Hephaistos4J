@@ -1,7 +1,7 @@
 /*
  * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -41,13 +41,13 @@ public class ProcessDelayTest
     internalCounter = new Counter(0, 5000);
     internalCounter.setCounterStep(1000);
 
-    processDelay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("/sbin/ping", "10.10.10.10"), "foo"),
+    processDelay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "10.10.10.10"), "foo"),
       internalCounter);
   }
 
   private ProcessDelay createValidTask()
   {
-    return new ProcessDelay(new ProcessScanner(new ProcessBuilder("/bin/ls", "-l", "/"), "r"), internalCounter);
+    return new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), internalCounter);
   }
 
   @Test
@@ -75,7 +75,7 @@ public class ProcessDelayTest
   @Test
   public void test_getProcessScanner_ValidTask_ValidResult() throws IOException
   {
-    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("/bin/ls", "-l", "/"), "r"), internalCounter);
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), internalCounter);
     process_delay.run();
     Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
   }
