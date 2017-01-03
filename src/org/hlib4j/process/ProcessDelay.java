@@ -30,7 +30,7 @@ import java.io.IOException;
  * underlying process. While the awaiting result was found, the underlying process is
  * stopping immediately. If the result is not found immediately, the task will be stopping according to counter delay
  * gives as constructor argument. <br><br>
- *
+ * <p>
  * The process output filtering is controlling by an instance of {@link ProcessScanner}.
  *
  * @see ProcessScanner
@@ -57,6 +57,7 @@ public class ProcessDelay
   /**
    * Run the task of the underlying process and stop on the awaiting result. That means this task will stop if its
    * output contains the awaiting filter result.
+   *
    * @return The current instance to allow some chaining calls.
    * @throws IOException If the underlying process occurs an IOException.
    */
@@ -75,20 +76,26 @@ public class ProcessDelay
         e.printStackTrace();
       }
 
-        this.counterDelay.increment();
-      if (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()))
-      {
-        processCloneScanner = this.processScanner.clone();
-        processCloneScanner.start();
-      }
+      this.counterDelay.increment();
+      restartIfNotFound();
     }
 
     return this;
   }
 
+  private void restartIfNotFound()
+  {
+    if (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()))
+    {
+      processCloneScanner = this.processScanner.clone();
+      processCloneScanner.start();
+    }
+  }
+
 
   /**
    * Gets the process scanner associated with this process delay.
+   *
    * @return The process scanner associated with this process delay.
    */
   public synchronized ProcessScanner getProcessScanner()
