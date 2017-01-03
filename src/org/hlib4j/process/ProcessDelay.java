@@ -39,6 +39,7 @@ public class ProcessDelay
 {
   private final ProcessScanner processScanner;
   private final Counter counterDelay;
+  private ProcessScanner processCloneScanner;
 
   /**
    * Builds an instance of the process delay for the process scanner. The {@link Counter} class is using to
@@ -61,19 +62,25 @@ public class ProcessDelay
    */
   public ProcessDelay run() throws IOException
   {
-    this.processScanner.start();
+    processCloneScanner = this.processScanner.clone();
+    processCloneScanner.start();
 
-    while (States.isNullOrEmpty(this.processScanner.getOutputResultAsString()) && this.counterDelay.isValid())
+    while (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()) && this.counterDelay.isValid())
     {
       try
       {
-        this.processScanner.join(counterDelay.getCounterStep());
+        processCloneScanner.join(counterDelay.getCounterStep());
       } catch (InterruptedException e)
       {
         e.printStackTrace();
       }
 
         this.counterDelay.increment();
+      if (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()))
+      {
+        processCloneScanner = this.processScanner.clone();
+        processCloneScanner.start();
+      }
     }
 
     return this;
@@ -84,8 +91,8 @@ public class ProcessDelay
    * Gets the process scanner associated with this process delay.
    * @return The process scanner associated with this process delay.
    */
-  public ProcessScanner getProcessScanner()
+  public synchronized ProcessScanner getProcessScanner()
   {
-    return this.processScanner;
+    return this.processCloneScanner;
   }
 }

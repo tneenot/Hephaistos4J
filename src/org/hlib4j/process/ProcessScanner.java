@@ -37,7 +37,7 @@ import java.util.Scanner;
  * itself. If the process builder is starting before to call the {@link #run()} method, it will be re-running again. The
  * awaiting result can be inconsistent for the underlying process and the awaiting result !
  */
-public class ProcessScanner extends Thread
+public class ProcessScanner extends Thread implements Cloneable
 {
   private final String filterResult;
   private final ProcessBuilder processBuilder;
@@ -53,6 +53,12 @@ public class ProcessScanner extends Thread
   {
     this.processBuilder = processBuilder;
     this.filterResult = States.validateNotNullOnly(filterResult);
+  }
+
+  @Override
+  protected ProcessScanner clone()
+  {
+    return new ProcessScanner(this.processBuilder, this.filterResult);
   }
 
   /**
@@ -91,5 +97,9 @@ public class ProcessScanner extends Thread
     }
   }
 
+  public ProcessBuilder getProcessBuilder()
+  {
+    return this.processBuilder;
+  }
 
 }
