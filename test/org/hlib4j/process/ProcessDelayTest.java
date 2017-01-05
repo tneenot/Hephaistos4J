@@ -55,7 +55,7 @@ public class ProcessDelayTest
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    processDelay.run();
+    processDelay.proceed();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() >= internalCounter.getUpperLimitValue());
@@ -66,7 +66,7 @@ public class ProcessDelayTest
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    createValidTask().run();
+    createValidTask().proceed();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() < internalCounter.getUpperLimitValue());
@@ -76,7 +76,7 @@ public class ProcessDelayTest
   public void test_getProcessScanner_ValidTask_ValidResult() throws IOException
   {
     ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), internalCounter);
-    process_delay.run();
+    process_delay.proceed();
     Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
   }
 

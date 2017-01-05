@@ -26,7 +26,7 @@ import org.hlib4j.util.States;
 import java.io.IOException;
 
 /**
- * ProcessDelay allows to run an external command during a delay. Call {@link #run()} to run the
+ * ProcessDelay allows to proceed an external command during a delay. Call {@link #proceed()} to proceed the
  * underlying process. While the awaiting result was found, the underlying process is
  * stopping immediately. If the result is not found immediately, the task will be stopping according to counter delay
  * gives as constructor argument. <br><br>
@@ -35,7 +35,7 @@ import java.io.IOException;
  *
  * @see ProcessScanner
  */
-public class ProcessDelay
+public class ProcessDelay implements Runnable
 {
   private final ProcessScanner processScanner;
   private final Counter counterDelay;
@@ -45,7 +45,7 @@ public class ProcessDelay
    * Builds an instance of the process delay for the process scanner. The {@link Counter} class is using to
    * specify the way of the timeout will be managed.
    *
-   * @param processScanner Process scanner that will run the underlying command.
+   * @param processScanner Process scanner that will proceed the underlying command.
    * @param counterDelay   The counter delay for this controller.
    */
   public ProcessDelay(ProcessScanner processScanner, Counter counterDelay)
@@ -61,7 +61,7 @@ public class ProcessDelay
    * @return The current instance to allow some chaining calls.
    * @throws IOException If the underlying process occurs an IOException.
    */
-  public ProcessDelay run() throws IOException
+  public ProcessDelay proceed() throws IOException
   {
     processCloneScanner = this.processScanner.clone();
     processCloneScanner.start();
@@ -101,5 +101,17 @@ public class ProcessDelay
   public synchronized ProcessScanner getProcessScanner()
   {
     return this.processCloneScanner;
+  }
+
+  @Override
+  public void run()
+  {
+    try
+    {
+      this.proceed();
+    } catch (IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 }

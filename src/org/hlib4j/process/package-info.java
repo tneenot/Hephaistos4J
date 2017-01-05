@@ -19,7 +19,7 @@
  */
 
 /**
- * Conveniences classes to run processes and capture their results. Some processes can be run according to an amount
+ * Conveniences classes to proceed processes and capture their results. Some processes can be proceed according to an amount
  * of time waiting.
  */
 package org.hlib4j.process;
