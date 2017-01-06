@@ -1,7 +1,7 @@
 /*
  * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -21,7 +21,6 @@
 package org.hlib4j.process;
 
 import org.hlib4j.math.Counter;
-import org.hlib4j.util.States;
 
 import java.io.IOException;
 import java.util.concurrent.*;
@@ -40,7 +39,6 @@ public class ProcessDelay implements Runnable
 {
   private final ProcessScanner processScanner;
   private final Counter counterDelay;
-  private ProcessScanner processCloneScanner;
 
   /**
    * Builds an instance of the process delay for the process scanner. The {@link Counter} class is using to
@@ -64,23 +62,35 @@ public class ProcessDelay implements Runnable
    */
   public ProcessDelay proceed() throws IOException
   {
-    ExecutorService scanner_executor = Executors.newCachedThreadPool();
+    ExecutorService scanner_executor = Executors.newSingleThreadExecutor();
 
     FutureTask<ProcessScanner> scanner_task = new FutureTask<>(() ->
     {
-      while (cloneTaskAndControlIfMustBeRestarted())
+      ExecutorService second_service = Executors.newSingleThreadExecutor();
+      FutureTask<ProcessScanner> second_task = new FutureTask<>(new Runnable()
       {
-        processCloneScanner.start();
+        @Override
+        public void run()
+        {
+          processScanner.run();
+        }
+      }, null);
+
+      do
+      {
+        second_service.execute(second_task);
         try
         {
-          processCloneScanner.join(counterDelay.getCounterStep());
-        } catch (InterruptedException e)
+          second_task.get(counterDelay.getCounterStep(), TimeUnit.MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e)
         {
           // Do nothing
         }
 
         this.counterDelay.increment();
       }
+      while (processScanner.getOutputResultAsString() == null && counterDelay.isValid());
+
     }, null);
 
     try
@@ -97,28 +107,10 @@ public class ProcessDelay implements Runnable
     {
       scanner_task.cancel(true);
       scanner_executor.shutdownNow();
-      processCloneScanner.interrupt();
+      processScanner.interrupt();
     }
 
     return this;
-  }
-
-  private boolean cloneTaskAndControlIfMustBeRestarted()
-  {
-    if (null == processCloneScanner)
-    {
-      this.processCloneScanner = processScanner.clone();
-      return true;
-    }
-
-    if (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()) && counterDelay.isValid())
-    {
-      processCloneScanner.interrupt();
-      processCloneScanner = this.processScanner.clone();
-      return true;
-    }
-
-    return false;
   }
 
 
@@ -129,7 +121,7 @@ public class ProcessDelay implements Runnable
    */
   public synchronized ProcessScanner getProcessScanner()
   {
-    return this.processCloneScanner;
+    return this.processScanner;
   }
 
   @Override

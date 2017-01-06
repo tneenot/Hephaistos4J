@@ -21,6 +21,7 @@
 package org.hlib4j.process;
 
 import org.hlib4j.math.Counter;
+import org.hlib4j.math.RangeException;
 import org.hlib4j.time.TimeFlow;
 import org.hlib4j.util.States;
 import org.junit.Assert;
@@ -75,9 +76,47 @@ public class ProcessDelayTest
   @Test
   public void test_getProcessScanner_ValidTask_ValidResult() throws IOException
   {
-    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), internalCounter);
+    ProcessDelay process_delay = createValidTask();
     process_delay.proceed();
     Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
+  }
+
+  @Test
+  public void test_getProcessScanner_ValidTaskIntoThread_ValidResult() throws InterruptedException
+  {
+    ProcessDelay process_delay = createValidTask();
+    Thread start_thread = new Thread(process_delay);
+    start_thread.start();
+    start_thread.join();
+
+    Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
+  }
+
+  @Test
+  public void test_getProcessScanner_InvalidTaskIntoThread_NullResult() throws InterruptedException
+  {
+    Thread start_thread = new Thread(processDelay);
+    start_thread.start();
+    start_thread.join();
+
+    Assert.assertTrue(States.isNullOrEmpty(processDelay.getProcessScanner().getOutputResultAsString()));
+  }
+
+  @Test
+  public void test_getProcessScanner_RunTaskInBackground_ControlIfTaskWasRunningSeveralTimes() throws InterruptedException, RangeException
+  {
+    // Setup
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "10.10.10.10"),
+      "3"), internalCounter);
+
+    // SUT
+    Thread start_thread = new Thread(process_delay);
+    start_thread.start();
+    start_thread.join();
+
+    // Result
+    String string_result = process_delay.getProcessScanner().getOutputResultAsString();
+    Assert.assertTrue(string_result.contains("3"));
   }
 
 }

@@ -1,7 +1,7 @@
 /*
  * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -30,12 +30,6 @@ import java.util.Scanner;
  * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
  * end of the underlying process.
- * <p>
- * <h3>ProcessBuilder rule to respect or limit of implementation</h3>
- * To avoid situation where some output can be missed or not capture by the <code>ProcessScanner</code> it's recommanded
- * to not call the {@link ProcessBuilder#start()} method. This method will be calling by the <code>ProcessScanner</code>
- * itself. If the process builder is starting before to call the {@link #run()} method, it will be re-running again. The
- * awaiting result can be inconsistent for the underlying process and the awaiting result !
  */
 public class ProcessScanner extends Thread implements Cloneable
 {
@@ -77,22 +71,15 @@ public class ProcessScanner extends Thread implements Cloneable
   @Override
   public void run()
   {
+    String scanner_line = "";
     try
     {
       associatedProcess = this.processBuilder.start();
       Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
 
-      while (this.outputResultAsString == null && stream_scanner.hasNextLine())
+      while (!scanner_line.contains(filterResult) && stream_scanner.hasNextLine())
       {
-        String scanner_line = stream_scanner.nextLine();
-
-        if (scanner_line.contains(this.filterResult))
-        {
-          synchronized (this)
-          {
-            this.outputResultAsString = scanner_line;
-          }
-        }
+        scanner_line = stream_scanner.nextLine();
       }
       stream_scanner.close();
     } catch (IOException e)
@@ -100,13 +87,13 @@ public class ProcessScanner extends Thread implements Cloneable
       e.printStackTrace();
     } finally
     {
+      if (scanner_line.contains(filterResult))
+      {
+        this.outputResultAsString = scanner_line;
+      }
+
       interrupt();
     }
-  }
-
-  public ProcessBuilder getProcessBuilder()
-  {
-    return this.processBuilder;
   }
 
   @Override
