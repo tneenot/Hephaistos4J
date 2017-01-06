@@ -20,8 +20,9 @@
 
 package org.hlib4j.process;
 
-import org.hlib4j.time.TimeFlow;
 import org.hlib4j.util.States;
+
+import java.util.concurrent.*;
 
 /**
  * Run a process or a task after a given amount of time. This feature allows to run a task later. The task must be a
@@ -35,7 +36,7 @@ public class ProcessFuture implements Runnable
   /**
    * Builds an instance of a Runnable task
    *
-   * @param runnableTask  Runnable task to run
+   * @param runnableTask             Runnable task to run
    * @param runAfterThisTimeDuration Long time delay after which the runnable task will be running.
    */
   public ProcessFuture(Runnable runnableTask, long runAfterThisTimeDuration)
@@ -61,12 +62,26 @@ public class ProcessFuture implements Runnable
   @Override
   public void run()
   {
-    TimeFlow waiting_counter = new TimeFlow();
-    waiting_counter.begin();
-    waiting_counter.end();
-    while (waiting_counter.getTimeFlow() < this.runAfterThisTimeDuration)
+    ExecutorService waiting_executor = Executors.newSingleThreadExecutor();
+    FutureTask<Void> waiting_task = new FutureTask<Void>(new Runnable()
     {
-      waiting_counter.end();
+      @Override
+      public void run()
+      {
+        while (true)
+        {
+
+        }
+      }
+    }, null);
+
+    waiting_executor.execute(waiting_task);
+    try
+    {
+      waiting_task.get(this.runAfterThisTimeDuration, TimeUnit.MILLISECONDS);
+    } catch (InterruptedException | ExecutionException | TimeoutException e)
+    {
+      // Do nothing
     }
 
     this.runnableTask.run();

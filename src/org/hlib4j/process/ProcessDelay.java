@@ -24,6 +24,7 @@ import org.hlib4j.math.Counter;
 import org.hlib4j.util.States;
 
 import java.io.IOException;
+import java.util.concurrent.*;
 
 /**
  * ProcessDelay allows to proceed an external command during a delay. Call {@link #proceed()} to proceed the
@@ -63,33 +64,61 @@ public class ProcessDelay implements Runnable
    */
   public ProcessDelay proceed() throws IOException
   {
-    processCloneScanner = this.processScanner.clone();
-    processCloneScanner.start();
+    ExecutorService scanner_executor = Executors.newCachedThreadPool();
 
-    while (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()) && this.counterDelay.isValid())
+    FutureTask<ProcessScanner> scanner_task = new FutureTask<>(() ->
     {
+      while (cloneTaskAndControlIfMustBeRestarted())
+      {
+        processCloneScanner.start();
+        try
+        {
+          processCloneScanner.join(counterDelay.getCounterStep());
+        } catch (InterruptedException e)
+        {
+          // Do nothing
+        }
+
+        this.counterDelay.increment();
+      }
+    }, null);
+
+    try
+    {
+      scanner_executor.execute(scanner_task);
       try
       {
-        processCloneScanner.join(counterDelay.getCounterStep());
-      } catch (InterruptedException e)
+        scanner_task.get(counterDelay.getUpperLimitValue(), TimeUnit.MILLISECONDS);
+      } catch (InterruptedException | ExecutionException | TimeoutException e)
       {
-        e.printStackTrace();
+        // Do nothing
       }
-
-      this.counterDelay.increment();
-      restartIfNotFound();
+    } finally
+    {
+      scanner_task.cancel(true);
+      scanner_executor.shutdownNow();
+      processCloneScanner.interrupt();
     }
 
     return this;
   }
 
-  private void restartIfNotFound()
+  private boolean cloneTaskAndControlIfMustBeRestarted()
   {
-    if (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()))
+    if (null == processCloneScanner)
     {
-      processCloneScanner = this.processScanner.clone();
-      processCloneScanner.start();
+      this.processCloneScanner = processScanner.clone();
+      return true;
     }
+
+    if (States.isNullOrEmpty(processCloneScanner.getOutputResultAsString()) && counterDelay.isValid())
+    {
+      processCloneScanner.interrupt();
+      processCloneScanner = this.processScanner.clone();
+      return true;
+    }
+
+    return false;
   }
 
 

@@ -30,7 +30,7 @@ import java.util.Scanner;
  * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
  * end of the underlying process.
- *
+ * <p>
  * <h3>ProcessBuilder rule to respect or limit of implementation</h3>
  * To avoid situation where some output can be missed or not capture by the <code>ProcessScanner</code> it's recommanded
  * to not call the {@link ProcessBuilder#start()} method. This method will be calling by the <code>ProcessScanner</code>
@@ -42,6 +42,7 @@ public class ProcessScanner extends Thread implements Cloneable
   private final String filterResult;
   private final ProcessBuilder processBuilder;
   private String outputResultAsString;
+  private Process associatedProcess;
 
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
@@ -58,6 +59,8 @@ public class ProcessScanner extends Thread implements Cloneable
   @Override
   protected ProcessScanner clone()
   {
+    interrupt();
+
     return new ProcessScanner(this.processBuilder, this.filterResult);
   }
 
@@ -76,7 +79,8 @@ public class ProcessScanner extends Thread implements Cloneable
   {
     try
     {
-      Scanner stream_scanner = new Scanner(this.processBuilder.start().getInputStream());
+      associatedProcess = this.processBuilder.start();
+      Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
 
       while (this.outputResultAsString == null && stream_scanner.hasNextLine())
       {
@@ -94,6 +98,9 @@ public class ProcessScanner extends Thread implements Cloneable
     } catch (IOException e)
     {
       e.printStackTrace();
+    } finally
+    {
+      interrupt();
     }
   }
 
@@ -102,4 +109,14 @@ public class ProcessScanner extends Thread implements Cloneable
     return this.processBuilder;
   }
 
+  @Override
+  public void interrupt()
+  {
+    if (null != associatedProcess)
+    {
+      associatedProcess.destroyForcibly();
+      associatedProcess = null;
+    }
+    super.interrupt();
+  }
 }
