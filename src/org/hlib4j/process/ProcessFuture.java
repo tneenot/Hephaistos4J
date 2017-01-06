@@ -22,8 +22,6 @@ package org.hlib4j.process;
 
 import org.hlib4j.util.States;
 
-import java.util.concurrent.*;
-
 /**
  * Run a process or a task after a given amount of time. This feature allows to run a task later. The task must be a
  * {@link Runnable} command type.
@@ -62,26 +60,25 @@ public class ProcessFuture implements Runnable
   @Override
   public void run()
   {
-    ExecutorService waiting_executor = Executors.newSingleThreadExecutor();
-    FutureTask<Void> waiting_task = new FutureTask<Void>(new Runnable()
+    if (runAfterThisTimeDuration >= 0)
     {
-      @Override
-      public void run()
+      Thread waiting_thread = new Thread(new Runnable()
       {
-        while (true)
+        @Override
+        public void run()
         {
 
         }
-      }
-    }, null);
+      });
 
-    waiting_executor.execute(waiting_task);
-    try
-    {
-      waiting_task.get(this.runAfterThisTimeDuration, TimeUnit.MILLISECONDS);
-    } catch (InterruptedException | ExecutionException | TimeoutException e)
-    {
-      // Do nothing
+      waiting_thread.start();
+      try
+      {
+        Thread.sleep(runAfterThisTimeDuration);
+      } catch (InterruptedException e)
+      {
+        // Do nothing
+      }
     }
 
     this.runnableTask.run();
