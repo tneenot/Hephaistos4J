@@ -29,9 +29,9 @@ import java.util.Scanner;
  * Convenient class to get the first string output result for the process builder. Once the standard output of the
  * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
- * end of the underlying process.
+ * end of the underlying process, or if it receives a thread interrupted signal.
  */
-public class ProcessScanner extends Thread implements Cloneable
+public class ProcessScanner extends Thread
 {
   private final String filterResult;
   private final ProcessBuilder processBuilder;
@@ -48,14 +48,6 @@ public class ProcessScanner extends Thread implements Cloneable
   {
     this.processBuilder = processBuilder;
     this.filterResult = States.validateNotNullOnly(filterResult);
-  }
-
-  @Override
-  protected ProcessScanner clone()
-  {
-    interrupt();
-
-    return new ProcessScanner(this.processBuilder, this.filterResult);
   }
 
   /**
