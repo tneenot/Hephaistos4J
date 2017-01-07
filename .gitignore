@@ -1,7 +1,6 @@
-Hephaistos4J.iml
 TestCoverageReports
+doc
 out
 api
 .idea
-TestResults
-doc
+/bin/

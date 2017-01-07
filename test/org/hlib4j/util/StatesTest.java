@@ -33,81 +33,35 @@ import java.util.Date;
  *
  * @author Tioben Neenot
  */
-public class StatesTest
-{
+public class StatesTest {
 
-	/**
-	 * Test: <b>Test if an object is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: <code>null</code> value.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmpty(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
+    @Test
     public void test_IsNullOrEmptyArray_OnNullValue_NullValueConfirmed() {
-		Assert.assertTrue( States.isNullOrEmptyArray(null) );
-	}
+        Assert.assertTrue(States.isNullOrEmptyArray(null));
+    }
 
-	/**
-	 * Test: <b>Test if a string is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties string.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmpty(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
+    @Test
     public void test_IsNullOrEmpty_OnEmptyStringNaturalForm_StringEmpty() {
-		Assert.assertTrue( States.isNullOrEmpty( "" ) );
-	}
+        Assert.assertTrue(States.isNullOrEmpty(""));
+    }
 
     @Test
     public void test_IsNullOrEmpty_OnEmptyStringVariantForm_StringEmpty() {
         Assert.assertTrue(States.isNullOrEmpty(" "));
     }
 
-	/**
-	 * Test: <b>Test an object instance and controls if it's <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: an Object instance.</li>
-	 * <li>Result: <code>false</code>.</li>
-	 * <li>Method: isNullOrEmpty(...)</li>
-	 * </ul>
-	 * Note: <i>Result is <code>false</code> since the {@link Object#toString()} is never empty.</i>
-	 */
-	@Test
+    @Test
     public void test_IsNullOrEmpty_OnNonNullObject_ObjectNotNull() {
-		Assert.assertFalse( States.isNullOrEmpty( new Object() ) );
-	}
+        Assert.assertFalse(States.isNullOrEmpty(new Object()));
+    }
 
-	/**
-	 * Test: <b>Test an empty collection.</b>.<br>
-	 * <ul>
-	 * <li>Input data: an empty collection.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmpty(...)</li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test
+    @Test
     public void test_IsNullOrEmpty_OnEmptyCollection_EmptyCollection() {
-		Collection< Object > c = new ArrayList<>();
-		Assert.assertTrue( States.isNullOrEmpty( c ) );
-	}
+        Collection<Object> c = new ArrayList<>();
+        Assert.assertTrue(States.isNullOrEmpty(c));
+    }
 
-	/**
-	 * Test: <b>test if an array of <code>boolean</code> types is <code>null</code> or empty.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empties array of <code>boolean</code> types.</li>
-	 * <li>Result: <code>true</code>.</li>
-	 * <li>Method: isNullOrEmptyArray(...)</li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
+    @Test
     public void test_NullOrEmptyArray_OnNullBoolean_NullBooleanConfirmed() {
         Boolean[] _boolean_array = null;
         Assert.assertTrue(States.isNullOrEmptyArray(_boolean_array));
@@ -119,23 +73,13 @@ public class StatesTest
         Assert.assertTrue(States.isNullOrEmptyArray(_boolean_array));
     }
 
-
-	/**
-	 * Test: <b>Test a valid assertion and controls the parameters is correctly returned.</b>.<br>
-	 * <ul>
-	 * <li>Input data: a valid <code>Date</code> type.</li>
-	 * <li>Result: <code>true</code> and <code>Date</code> type returned.</li>
-	 * <li>Method: <code>validate(...)</code></li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
+    @Test
     public void test_Validate_OnSameInstances_SameInstancesConfirmed() {
-		Date d = Calendar.getInstance().getTime();
-		Date r = States.validate( d );
+        Date d = Calendar.getInstance().getTime();
+        Date r = States.validate(d);
 
-		Assert.assertSame( d, r );
-	}
+        Assert.assertSame(d, r);
+    }
 
     @Test
     public void test_Validate_OnEqualsInstances_EqualInstancesConfirmed() {
@@ -145,87 +89,41 @@ public class StatesTest
         Assert.assertEquals(d, r);
     }
 
-	/**
-	 * Test: <b>Test a valid assertion for a primary type.</b>.<br>
-	 * <ul>
-	 * <li>Input data: an integer</li>
-	 * <li>Result: no error and integer value returned.</li>
-	 * <li>Method: <code>validate(...)</code></li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test
+    @Test
     public void test_Validate_PrimaryIntType_ValueEquals() {
-		int i = Integer.MAX_VALUE;
-		int r = States.validate( i );
+        int i = Integer.MAX_VALUE;
+        int r = States.validate(i);
 
-		Assert.assertEquals( r, i );
-	}
+        Assert.assertEquals(r, i);
+    }
 
-	/**
-	 * Test: <b>Test the assertion for a non empty array of primaries types</b>.<br>
-	 * <ul>
-	 * <li>Input data: array of primaries types.</li>
-	 * <li>Result: <code>true</code> and array not modified.</li>
-	 * <li>Method: <code>validateArray(...)</code>.</li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test
+    @Test
     public void test_Validate_PrimaryArrayType_ArraysEquals() {
-		int[] i =
-			{
-				1, 2, 3, 4
-			};
-		int[] r = States.validate( i );
+        int[] i =
+                {
+                        1, 2, 3, 4
+                };
+        int[] r = States.validate(i);
 
-		Assert.assertArrayEquals( r, i );
-	}
+        Assert.assertArrayEquals(r, i);
+    }
 
-	/**
-	 * Test: <b>Test assert for a <code>null</code> array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: null primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validate(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
+    @Test(expected = AssertionError.class)
     public void test_Validate_NullArray_AssertionError() {
-		int[] i = null;
-		States.validate( i );
-	}
+        int[] i = null;
+        States.validate(i);
+    }
 
-
-	/**
-	 * Test: <b>Test assert for an empty array.</b>.<br>
-	 * <ul>
-	 * <li>Input data: empty primary array.</li>
-	 * <li>Result: an exception</li>
-	 * <li>Method: <code>validateArray(...)</code></li>
-	 * </ul>
-	 * Note: <i>None.</i>
-	 */
-	@Test( expected = AssertionError.class )
+    @Test( expected = AssertionError.class )
     public void test_ValidateArray_EmptyArray_AssertionError() {
-		Integer[] i = {	};
-		States.validateArray( i );
-	}
+        Integer[] i = {};
+        States.validateArray(i);
+    }
 
-	/**
-	 * Test: <b>Test an invalid assertion with an invalid value.</b>.<br>
-	 * <ul>
-	 * <li>Input data: <code>null</code> value type.</li>
-	 * <li>Result: <code>AssertionException</code>.</li>
-	 * <li>Method: <code>validate(...)</code></li>
-	 * </ul>
-	 * Note: <i>None</i>
-	 */
-	@Test( expected = AssertionError.class )
+    @Test( expected = AssertionError.class )
     public void test_Validate_NullValue_AssertionError() {
-		States.validate( null );
-	}
+        States.validate(null);
+    }
 
     @Test
     public void test_ValidateNotNullOnly_OnEmptyArray_ArraysValidate() throws Exception {

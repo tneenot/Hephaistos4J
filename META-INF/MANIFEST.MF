@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Created-By: 1.8 (OpenJDK)
 Specification-Title: Hephaistos 4 Java
-Specification-Version: 1.0 - Java 7
+Specification-Version: 1.0 - Java 8
 Specification-Vendor: Tioben Neenot
 Implementation-Title: hlib4j
 
