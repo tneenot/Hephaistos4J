@@ -42,20 +42,15 @@ public class ProcessFutureTest
 
   private TimeFlow createTaskWithDurationAndRunIt(int durationValue)
   {
-    TimeFlow duration = new TimeFlow();
-    ProcessFuture process_future = new ProcessFuture(new Runnable()
+    ProcessFuture process_future = new ProcessFuture(new FutureTaskForTest(), durationValue);
+    TimeFlow force_waiting = new TimeFlow();
+    force_waiting.begin();
+    while (force_waiting.getTimeFlow() < (durationValue + 1000))
     {
-      @Override
-      public void run()
-      {
+      force_waiting.end();
+    }
 
-      }
-    }, durationValue);
-
-    duration.begin();
-    process_future.run();
-    duration.end();
-    return duration;
+    return ((FutureTaskForTest) process_future.getRunnableTask()).getTimeFlow();
   }
 
   @Test
@@ -106,8 +101,11 @@ public class ProcessFutureTest
 
     TimeFlow duration = new TimeFlow();
     duration.begin();
-    process_future.run();
-    duration.end();
+    while (duration.getTimeFlow() <= durationValue)
+    {
+      duration.end();
+    }
+
     return duration;
   }
 
@@ -124,5 +122,40 @@ public class ProcessFutureTest
     duration.end();
 
     Assert.assertNotNull(((ProcessDelay) process_future.getRunnableTask()).getProcessScanner().getOutputResultAsString());
+  }
+}
+
+class FutureTaskForTest implements Runnable
+{
+
+  private final TimeFlow timeFlow;
+
+  FutureTaskForTest()
+  {
+    this.timeFlow = new TimeFlow();
+    this.timeFlow.begin();
+  }
+
+  /**
+   * When an object implementing interface <code>Runnable</code> is used
+   * to create a thread, starting the thread causes the object's
+   * <code>run</code> method to be called in that separately executing
+   * thread.
+   * <p>
+   * The general contract of the method <code>run</code> is that it may
+   * take any action whatsoever.
+   *
+   * @see Thread#run()
+   */
+  @Override
+  public void run()
+  {
+    this.timeFlow.end();
+    System.out.println("Task was ran");
+  }
+
+  TimeFlow getTimeFlow()
+  {
+    return this.timeFlow;
   }
 }
