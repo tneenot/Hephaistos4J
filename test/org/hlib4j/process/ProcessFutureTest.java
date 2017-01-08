@@ -43,13 +43,7 @@ public class ProcessFutureTest
   private TimeFlow createTaskWithDurationAndRunIt(int durationValue)
   {
     ProcessFuture process_future = new ProcessFuture(new FutureTaskForTest(), durationValue);
-    TimeFlow force_waiting = new TimeFlow();
-    force_waiting.begin();
-    while (force_waiting.getTimeFlow() < (durationValue + 1000))
-    {
-      force_waiting.end();
-    }
-
+    forceWaiting(durationValue + 1000);
     return ((FutureTaskForTest) process_future.getRunnableTask()).getTimeFlow();
   }
 
@@ -101,11 +95,23 @@ public class ProcessFutureTest
 
     TimeFlow duration = new TimeFlow();
     duration.begin();
-    while (duration.getTimeFlow() <= durationValue)
+    while (duration.getTimeFlow() <= durationValue && ((ProcessDelay) process_future.getRunnableTask
+      ()).getProcessScanner().getOutputResultAsString() == null)
     {
       duration.end();
     }
 
+    return duration;
+  }
+
+  private TimeFlow forceWaiting(int durationValue)
+  {
+    TimeFlow duration = new TimeFlow();
+    duration.begin();
+    while (duration.getTimeFlow() <= durationValue)
+    {
+      duration.end();
+    }
     return duration;
   }
 
@@ -116,10 +122,7 @@ public class ProcessFutureTest
     counter_delay.setCounterStep(50);
     ProcessFuture process_future = new ProcessFuture(new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), counter_delay), 5000);
 
-    TimeFlow duration = new TimeFlow();
-    duration.begin();
-    process_future.run();
-    duration.end();
+    forceWaiting(15000);
 
     Assert.assertNotNull(((ProcessDelay) process_future.getRunnableTask()).getProcessScanner().getOutputResultAsString());
   }
