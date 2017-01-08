@@ -22,14 +22,19 @@ package org.hlib4j.process;
 
 import org.hlib4j.util.States;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Run a process or a task after a given amount of time. This feature allows to run a task later. The task must be a
  * {@link Runnable} command type.
  */
-public class ProcessFuture implements Runnable
+public class ProcessFuture extends TimerTask implements Runnable
 {
   private final Runnable runnableTask;
   private final long runAfterThisTimeDuration;
+  private final Timer timerTaskRunner;
+
 
   /**
    * Builds an instance of a Runnable task
@@ -40,7 +45,9 @@ public class ProcessFuture implements Runnable
   public ProcessFuture(Runnable runnableTask, long runAfterThisTimeDuration)
   {
     this.runnableTask = States.validate(runnableTask);
-    this.runAfterThisTimeDuration = runAfterThisTimeDuration;
+    this.runAfterThisTimeDuration = (runAfterThisTimeDuration < 0 ? 0 : runAfterThisTimeDuration);
+    this.timerTaskRunner = new Timer();
+    this.timerTaskRunner.schedule(this, this.runAfterThisTimeDuration);
   }
 
   /**
@@ -60,27 +67,6 @@ public class ProcessFuture implements Runnable
   @Override
   public void run()
   {
-    if (runAfterThisTimeDuration >= 0)
-    {
-      Thread waiting_thread = new Thread(new Runnable()
-      {
-        @Override
-        public void run()
-        {
-
-        }
-      });
-
-      waiting_thread.start();
-      try
-      {
-        Thread.sleep(runAfterThisTimeDuration);
-      } catch (InterruptedException e)
-      {
-        // Do nothing
-      }
-    }
-
     this.runnableTask.run();
   }
 }

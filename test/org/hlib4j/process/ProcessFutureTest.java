@@ -42,20 +42,9 @@ public class ProcessFutureTest
 
   private TimeFlow createTaskWithDurationAndRunIt(int durationValue)
   {
-    TimeFlow duration = new TimeFlow();
-    ProcessFuture process_future = new ProcessFuture(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-
-      }
-    }, durationValue);
-
-    duration.begin();
-    process_future.run();
-    duration.end();
-    return duration;
+    ProcessFuture process_future = new ProcessFuture(new FutureTaskForTest(), durationValue);
+    forceWaiting(durationValue + 1000);
+    return ((FutureTaskForTest) process_future.getRunnableTask()).getTimeFlow();
   }
 
   @Test
@@ -106,8 +95,23 @@ public class ProcessFutureTest
 
     TimeFlow duration = new TimeFlow();
     duration.begin();
-    process_future.run();
-    duration.end();
+    while (duration.getTimeFlow() <= durationValue && ((ProcessDelay) process_future.getRunnableTask
+      ()).getProcessScanner().getOutputResultAsString() == null)
+    {
+      duration.end();
+    }
+
+    return duration;
+  }
+
+  private TimeFlow forceWaiting(int durationValue)
+  {
+    TimeFlow duration = new TimeFlow();
+    duration.begin();
+    while (duration.getTimeFlow() <= durationValue)
+    {
+      duration.end();
+    }
     return duration;
   }
 
@@ -118,11 +122,43 @@ public class ProcessFutureTest
     counter_delay.setCounterStep(50);
     ProcessFuture process_future = new ProcessFuture(new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), counter_delay), 5000);
 
-    TimeFlow duration = new TimeFlow();
-    duration.begin();
-    process_future.run();
-    duration.end();
+    forceWaiting(15000);
 
     Assert.assertNotNull(((ProcessDelay) process_future.getRunnableTask()).getProcessScanner().getOutputResultAsString());
+  }
+}
+
+class FutureTaskForTest implements Runnable
+{
+
+  private final TimeFlow timeFlow;
+
+  FutureTaskForTest()
+  {
+    this.timeFlow = new TimeFlow();
+    this.timeFlow.begin();
+  }
+
+  /**
+   * When an object implementing interface <code>Runnable</code> is used
+   * to create a thread, starting the thread causes the object's
+   * <code>run</code> method to be called in that separately executing
+   * thread.
+   * <p>
+   * The general contract of the method <code>run</code> is that it may
+   * take any action whatsoever.
+   *
+   * @see Thread#run()
+   */
+  @Override
+  public void run()
+  {
+    this.timeFlow.end();
+    System.out.println("Task was ran");
+  }
+
+  TimeFlow getTimeFlow()
+  {
+    return this.timeFlow;
   }
 }
