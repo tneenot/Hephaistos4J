@@ -22,7 +22,6 @@ package org.hlib4j.process;
 
 import org.hlib4j.util.States;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -33,7 +32,6 @@ public class ProcessFuture extends TimerTask implements Runnable
 {
   private final Runnable runnableTask;
   private final long runAfterThisTimeDuration;
-  private final Timer timerTaskRunner;
 
 
   /**
@@ -46,8 +44,6 @@ public class ProcessFuture extends TimerTask implements Runnable
   {
     this.runnableTask = States.validate(runnableTask);
     this.runAfterThisTimeDuration = (runAfterThisTimeDuration < 0 ? 0 : runAfterThisTimeDuration);
-    this.timerTaskRunner = new Timer();
-    this.timerTaskRunner.schedule(this, this.runAfterThisTimeDuration);
   }
 
   /**
@@ -67,6 +63,13 @@ public class ProcessFuture extends TimerTask implements Runnable
   @Override
   public void run()
   {
+    try
+    {
+      Thread.sleep(runAfterThisTimeDuration);
+    } catch (InterruptedException e)
+    {
+      // Do nothing
+    }
     this.runnableTask.run();
   }
 }
