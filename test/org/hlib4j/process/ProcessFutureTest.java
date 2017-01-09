@@ -43,7 +43,7 @@ public class ProcessFutureTest
   private TimeFlow createTaskWithDurationAndRunIt(int durationValue)
   {
     ProcessFuture process_future = new ProcessFuture(new FutureTaskForTest(), durationValue);
-    forceWaiting(durationValue + 1000);
+    process_future.run();
     return ((FutureTaskForTest) process_future.getRunnableTask()).getTimeFlow();
   }
 
@@ -82,37 +82,17 @@ public class ProcessFutureTest
   @Test
   public void test_run_TrueRunnableTask_TaskRunAfterDelay() throws RangeException
   {
-    TimeFlow duration = createRealFutureTaskWithDurationAndRunIt(5000);
+    Counter counter_delay = new Counter(0, 5000);
+    counter_delay.setCounterStep(50);
+    ProcessFuture process_future = new ProcessFuture(new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls",
+      "-l", "/"), "r"), counter_delay), counter_delay.getUpperLimitValue());
+
+    TimeFlow duration = new TimeFlow();
+    duration.begin();
+    process_future.run();
+    duration.end();
 
     Assert.assertTrue(duration.getTimeFlow() >= 5000);
-  }
-
-  private TimeFlow createRealFutureTaskWithDurationAndRunIt(int durationValue) throws RangeException
-  {
-    Counter counter_delay = new Counter(0, durationValue * 3);
-    counter_delay.setCounterStep(50);
-    ProcessFuture process_future = new ProcessFuture(new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), counter_delay), durationValue);
-
-    TimeFlow duration = new TimeFlow();
-    duration.begin();
-    while (duration.getTimeFlow() <= durationValue && ((ProcessDelay) process_future.getRunnableTask
-      ()).getProcessScanner().getOutputResultAsString() == null)
-    {
-      duration.end();
-    }
-
-    return duration;
-  }
-
-  private TimeFlow forceWaiting(int durationValue)
-  {
-    TimeFlow duration = new TimeFlow();
-    duration.begin();
-    while (duration.getTimeFlow() <= durationValue)
-    {
-      duration.end();
-    }
-    return duration;
   }
 
   @Test
@@ -121,8 +101,7 @@ public class ProcessFutureTest
     Counter counter_delay = new Counter(0, 15000);
     counter_delay.setCounterStep(50);
     ProcessFuture process_future = new ProcessFuture(new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), counter_delay), 5000);
-
-    forceWaiting(15000);
+    process_future.run();
 
     Assert.assertNotNull(((ProcessDelay) process_future.getRunnableTask()).getProcessScanner().getOutputResultAsString());
   }
