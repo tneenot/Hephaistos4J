@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Convenient class to get the first string output result for the process builder. Once the standard output of the
+ * Convenient class to get the first string output result for the process builder. Once the standard output or error of the
  * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
  * end of the underlying process, or if it receives a thread interrupted signal.
@@ -63,25 +63,76 @@ public class ProcessScanner extends Thread
   @Override
   public void run()
   {
-    String scanner_line = "";
+    final String[] output_line = {""};
+    final String[] error_line = {""};
     try
     {
       associatedProcess = this.processBuilder.start();
-      Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
-
-      while (!scanner_line.contains(filterResult) && stream_scanner.hasNextLine())
+      Thread output_capture = new Thread(new Runnable()
       {
-        scanner_line = stream_scanner.nextLine();
+        @Override
+        public void run()
+        {
+          Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
+
+          while (!output_line[0].contains(filterResult) && stream_scanner.hasNextLine())
+          {
+            output_line[0] = stream_scanner.nextLine();
+          }
+          stream_scanner.close();
+        }
+      });
+
+      Thread error_capture = new Thread(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          Scanner stream_scanner = new Scanner(associatedProcess.getErrorStream());
+
+          while (!error_line[0].contains(filterResult) && stream_scanner.hasNextLine())
+          {
+            error_line[0] = stream_scanner.nextLine();
+          }
+          stream_scanner.close();
+        }
+      });
+
+      output_capture.start();
+      error_capture.start();
+
+      try
+      {
+        output_capture.join();
+      } catch (InterruptedException e)
+      {
+        // Do nothing
       }
-      stream_scanner.close();
+
+      try
+      {
+        error_capture.join();
+      } catch (InterruptedException e)
+      {
+        // Do nothing
+      }
+
     } catch (IOException e)
     {
       e.printStackTrace();
     } finally
     {
-      if (scanner_line.contains(filterResult))
+      if (output_line[0].contains(filterResult))
       {
-        this.outputResultAsString = scanner_line;
+        this.outputResultAsString = output_line[0];
+      }
+
+      if (null != this.outputResultAsString)
+      {
+        this.outputResultAsString += " - " + error_line[0];
+      } else
+      {
+        this.outputResultAsString = error_line[0];
       }
 
       interrupt();

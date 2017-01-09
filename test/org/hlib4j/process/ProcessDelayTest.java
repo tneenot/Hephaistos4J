@@ -56,18 +56,18 @@ public class ProcessDelayTest
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    processDelay.proceed();
+    processDelay.run();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() >= internalCounter.getUpperLimitValue());
   }
 
   @Test
-  public void test_runForFilterAsString_ValidTask_NoTimeOut() throws IOException
+  public void test_run_ValidTask_NoTimeOut() throws IOException
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    createValidTask().proceed();
+    createValidTask().run();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() < internalCounter.getUpperLimitValue());
@@ -77,7 +77,7 @@ public class ProcessDelayTest
   public void test_getProcessScanner_ValidTask_ValidResult() throws IOException
   {
     ProcessDelay process_delay = createValidTask();
-    process_delay.proceed();
+    process_delay.run();
     Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
   }
 
@@ -106,8 +106,8 @@ public class ProcessDelayTest
   public void test_getProcessScanner_RunTaskInBackground_ControlIfTaskWasRunningSeveralTimes() throws InterruptedException, RangeException
   {
     // Setup
-    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "10.10.10.10"),
-      "3"), internalCounter);
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.10"),
+      "unreachable"), internalCounter);
 
     // SUT
     Thread start_thread = new Thread(process_delay);
@@ -116,7 +116,7 @@ public class ProcessDelayTest
 
     // Result
     String string_result = process_delay.getProcessScanner().getOutputResultAsString();
-    Assert.assertTrue(string_result.contains("3"));
+    Assert.assertTrue(string_result.contains("unreachable"));
   }
 
 }
