@@ -106,8 +106,8 @@ public class ProcessDelayTest
   public void test_getProcessScanner_RunTaskInBackground_ControlIfTaskWasRunningSeveralTimes() throws InterruptedException, RangeException
   {
     // Setup
-    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "10.10.10.10"),
-      "3"), internalCounter);
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.10"),
+      "unreachable"), internalCounter);
 
     // SUT
     Thread start_thread = new Thread(process_delay);
@@ -116,7 +116,7 @@ public class ProcessDelayTest
 
     // Result
     String string_result = process_delay.getProcessScanner().getOutputResultAsString();
-    Assert.assertTrue(string_result.contains("3"));
+    Assert.assertTrue(string_result.contains("unreachable"));
   }
 
 }

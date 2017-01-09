@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Convenient class to get the first string output result for the process builder. Once the standard output of the
+ * Convenient class to get the first string output result for the process builder. Once the standard output or error of the
  * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
  * end of the underlying process, or if it receives a thread interrupted signal.
@@ -63,25 +63,48 @@ public class ProcessScanner extends Thread
   @Override
   public void run()
   {
-    String scanner_line = "";
+    final String[] scanner_line = {""};
     try
     {
       associatedProcess = this.processBuilder.start();
-      Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
-
-      while (!scanner_line.contains(filterResult) && stream_scanner.hasNextLine())
+      Thread output_capture = new Thread(() ->
       {
-        scanner_line = stream_scanner.nextLine();
-      }
-      stream_scanner.close();
+        Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
+
+        while (!scanner_line[0].contains(filterResult) && stream_scanner.hasNextLine())
+        {
+          scanner_line[0] = stream_scanner.nextLine();
+        }
+        stream_scanner.close();
+      });
+
+      Thread error_capture = new Thread(() ->
+      {
+        Scanner stream_scanner = new Scanner(associatedProcess.getErrorStream());
+
+        while (!scanner_line[0].contains(filterResult) && stream_scanner.hasNextLine())
+        {
+          scanner_line[0] = stream_scanner.nextLine();
+        }
+        stream_scanner.close();
+      });
+
+      output_capture.start();
+      error_capture.start();
+      output_capture.join();
+      error_capture.join();
+
     } catch (IOException e)
+    {
+      e.printStackTrace();
+    } catch (InterruptedException e)
     {
       e.printStackTrace();
     } finally
     {
-      if (scanner_line.contains(filterResult))
+      if (scanner_line[0].contains(filterResult))
       {
-        this.outputResultAsString = scanner_line;
+        this.outputResultAsString = scanner_line[0];
       }
 
       interrupt();
