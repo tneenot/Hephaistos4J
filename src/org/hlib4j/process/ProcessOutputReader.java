@@ -108,15 +108,16 @@ public class ProcessOutputReader extends Thread
         if (null == filter)
         {
           stringBuffer.append(text_reader.nextLine()).append('\n');
+          occurrenceCounter.increment();
         } else
         {
           String a_text = text_reader.nextLine();
           if (a_text.contains(filter))
           {
             stringBuffer.append(a_text).append('\n');
+            occurrenceCounter.increment();
           }
         }
-        occurrenceCounter.increment();
       }
     }
 
