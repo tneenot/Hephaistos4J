@@ -22,11 +22,10 @@ package org.hlib4j.process;
 
 import org.hlib4j.math.Counter;
 
-import java.io.IOException;
 import java.util.concurrent.*;
 
 /**
- * ProcessDelay allows to proceed an external command during a delay. Call {@link #proceed()} to proceed the
+ * ProcessDelay allows to proceed an external command during a delay. Call {@link #run()} to proceed the
  * underlying process. While the awaiting result was found, the underlying process is
  * stopping immediately. If the result is not found immediately, the task will be stopping according to counter delay
  * gives as constructor argument. <br><br>
@@ -53,41 +52,39 @@ public class ProcessDelay implements Runnable
     this.counterDelay = counterDelay;
   }
 
+
   /**
-   * Run the task of the underlying process and stop on the awaiting result. That means this task will stop if its
-   * output contains the awaiting filter result.
+   * Gets the process scanner associated with this process delay.
    *
-   * @return The current instance to allow some chaining calls.
-   * @throws IOException If the underlying process occurs an IOException.
+   * @return The process scanner associated with this process delay.
    */
-  public ProcessDelay proceed() throws IOException
+  public synchronized ProcessScanner getProcessScanner()
+  {
+    return this.processScanner;
+  }
+
+  @Override
+  public void run()
   {
     ExecutorService scanner_executor = Executors.newSingleThreadExecutor();
 
     FutureTask<ProcessScanner> scanner_task = new FutureTask<>(() ->
     {
-      ExecutorService second_service = Executors.newSingleThreadExecutor();
-      FutureTask<ProcessScanner> second_task = new FutureTask<>(new Runnable()
-      {
-        @Override
-        public void run()
-        {
-          processScanner.run();
-        }
-      }, null);
-
       do
       {
-        second_service.execute(second_task);
-        try
-        {
-          second_task.get(counterDelay.getCounterStep(), TimeUnit.MILLISECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e)
-        {
-          // Do nothing
-        }
+        processScanner.run();
 
-        this.counterDelay.increment();
+        if (processScanner.getOutputResultAsString() == null && counterDelay.isValid())
+        {
+          this.counterDelay.increment();
+          try
+          {
+            Thread.sleep(counterDelay.getCounterStep());
+          } catch (InterruptedException e)
+          {
+            // Do nothing
+          }
+        }
       }
       while (processScanner.getOutputResultAsString() == null && counterDelay.isValid());
 
@@ -108,31 +105,6 @@ public class ProcessDelay implements Runnable
       scanner_task.cancel(true);
       scanner_executor.shutdownNow();
       processScanner.interrupt();
-    }
-
-    return this;
-  }
-
-
-  /**
-   * Gets the process scanner associated with this process delay.
-   *
-   * @return The process scanner associated with this process delay.
-   */
-  public synchronized ProcessScanner getProcessScanner()
-  {
-    return this.processScanner;
-  }
-
-  @Override
-  public void run()
-  {
-    try
-    {
-      this.proceed();
-    } catch (IOException e)
-    {
-      e.printStackTrace();
     }
   }
 }

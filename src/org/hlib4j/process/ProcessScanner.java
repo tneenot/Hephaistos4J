@@ -63,7 +63,8 @@ public class ProcessScanner extends Thread
   @Override
   public void run()
   {
-    final String[] scanner_line = {""};
+    final String[] output_line = {""};
+    final String[] error_line = {""};
     try
     {
       associatedProcess = this.processBuilder.start();
@@ -71,9 +72,9 @@ public class ProcessScanner extends Thread
       {
         Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
 
-        while (!scanner_line[0].contains(filterResult) && stream_scanner.hasNextLine())
+        while (!output_line[0].contains(filterResult) && stream_scanner.hasNextLine())
         {
-          scanner_line[0] = stream_scanner.nextLine();
+          output_line[0] = stream_scanner.nextLine();
         }
         stream_scanner.close();
       });
@@ -82,29 +83,48 @@ public class ProcessScanner extends Thread
       {
         Scanner stream_scanner = new Scanner(associatedProcess.getErrorStream());
 
-        while (!scanner_line[0].contains(filterResult) && stream_scanner.hasNextLine())
+        while (!error_line[0].contains(filterResult) && stream_scanner.hasNextLine())
         {
-          scanner_line[0] = stream_scanner.nextLine();
+          error_line[0] = stream_scanner.nextLine();
         }
         stream_scanner.close();
       });
 
       output_capture.start();
       error_capture.start();
-      output_capture.join();
-      error_capture.join();
+
+      try
+      {
+        output_capture.join();
+      } catch (InterruptedException e)
+      {
+        // Do nothing
+      }
+
+      try
+      {
+        error_capture.join();
+      } catch (InterruptedException e)
+      {
+        // Do nothing
+      }
 
     } catch (IOException e)
     {
       e.printStackTrace();
-    } catch (InterruptedException e)
-    {
-      e.printStackTrace();
     } finally
     {
-      if (scanner_line[0].contains(filterResult))
+      if (output_line[0].contains(filterResult))
       {
-        this.outputResultAsString = scanner_line[0];
+        this.outputResultAsString = output_line[0];
+      }
+
+      if (null != this.outputResultAsString)
+      {
+        this.outputResultAsString += " - " + error_line[0];
+      } else
+      {
+        this.outputResultAsString = error_line[0];
       }
 
       interrupt();
