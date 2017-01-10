@@ -23,7 +23,6 @@ package org.hlib4j.process;
 import org.hlib4j.util.States;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Convenient class to get the first string output result for the process builder. Once the standard output or error of the
@@ -35,8 +34,16 @@ public class ProcessScanner extends Thread
 {
   private final String filterResult;
   private final ProcessBuilder processBuilder;
+  private final boolean firstInstanceOnly;
   private String outputResultAsString;
   private Process associatedProcess;
+
+  public ProcessScanner(ProcessBuilder processBuilder, String filterResult, boolean firstInstanceOnly)
+  {
+    this.processBuilder = processBuilder;
+    this.filterResult = States.validateNotNullOnly(filterResult);
+    this.firstInstanceOnly = firstInstanceOnly;
+  }
 
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
@@ -46,8 +53,7 @@ public class ProcessScanner extends Thread
    */
   public ProcessScanner(ProcessBuilder processBuilder, String filterResult)
   {
-    this.processBuilder = processBuilder;
-    this.filterResult = States.validateNotNullOnly(filterResult);
+    this(processBuilder, filterResult, false);
   }
 
   /**
@@ -63,32 +69,13 @@ public class ProcessScanner extends Thread
   @Override
   public void run()
   {
-    final String[] output_line = {""};
-    final String[] error_line = {""};
+    ProcessOutputReader output_capture = null;
+    ProcessOutputReader error_capture = null;
     try
     {
       associatedProcess = this.processBuilder.start();
-      Thread output_capture = new Thread(() ->
-      {
-        Scanner stream_scanner = new Scanner(associatedProcess.getInputStream());
-
-        while (!output_line[0].contains(filterResult) && stream_scanner.hasNextLine())
-        {
-          output_line[0] = stream_scanner.nextLine();
-        }
-        stream_scanner.close();
-      });
-
-      Thread error_capture = new Thread(() ->
-      {
-        Scanner stream_scanner = new Scanner(associatedProcess.getErrorStream());
-
-        while (!error_line[0].contains(filterResult) && stream_scanner.hasNextLine())
-        {
-          error_line[0] = stream_scanner.nextLine();
-        }
-        stream_scanner.close();
-      });
+      output_capture = new ProcessOutputReader(associatedProcess.getInputStream(), filterResult, firstInstanceOnly);
+      error_capture = new ProcessOutputReader(associatedProcess.getErrorStream(), filterResult, firstInstanceOnly);
 
       output_capture.start();
       error_capture.start();
@@ -114,17 +101,17 @@ public class ProcessScanner extends Thread
       e.printStackTrace();
     } finally
     {
-      if (output_line[0].contains(filterResult))
+      if (output_capture.getOutputResult().contains(filterResult))
       {
-        this.outputResultAsString = output_line[0];
+        this.outputResultAsString = output_capture.getOutputResult();
       }
 
       if (null != this.outputResultAsString)
       {
-        this.outputResultAsString += " - " + error_line[0];
+        this.outputResultAsString += " - " + error_capture.getOutputResult();
       } else
       {
-        this.outputResultAsString = error_line[0];
+        this.outputResultAsString = error_capture.getOutputResult();
       }
 
       interrupt();

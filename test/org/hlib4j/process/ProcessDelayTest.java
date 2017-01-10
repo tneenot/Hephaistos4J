@@ -107,7 +107,7 @@ public class ProcessDelayTest
   {
     // Setup
     ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.10"),
-      "unreachable"), internalCounter);
+      "unreachable", true), internalCounter);
 
     // SUT
     Thread start_thread = new Thread(process_delay);
