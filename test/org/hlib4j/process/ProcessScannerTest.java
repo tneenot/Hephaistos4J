@@ -24,6 +24,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.function.Predicate;
+
 /**
  * Unit tests for {@link ProcessScanner} class.
  */
@@ -55,9 +57,27 @@ public class ProcessScannerTest
   }
 
   @Test(expected = AssertionError.class)
-  public void test_getOutputResultAsString_AfterRunningWithNullFilter_AwaitingException() throws InterruptedException
+  public void test_Constructor_NullString_AwaitingException() throws InterruptedException
   {
-    new ProcessScanner(this.processBuilder, null);
+    new ProcessScanner(this.processBuilder, (String) null);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullStringAndBoolean_AwaitingException()
+  {
+    new ProcessScanner(this.processBuilder, (String) null, false);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullPredicateFilter_AwaitingException()
+  {
+    new ProcessScanner(this.processBuilder, (Predicate<String>) null);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullPredicateFilterAndBoolean_AwaitingException()
+  {
+    new ProcessScanner(this.processBuilder, (Predicate<String>) null, false);
   }
 
   @Test

@@ -23,6 +23,7 @@ package org.hlib4j.process;
 import org.hlib4j.util.States;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 /**
  * Convenient class to get the first string output result for the process builder. Once the standard output or error of the
@@ -32,7 +33,7 @@ import java.io.IOException;
  */
 public class ProcessScanner extends Thread
 {
-  private final String filterResult;
+  private final Predicate<String> filterResult;
   private final ProcessBuilder processBuilder;
   private final boolean firstInstanceOnly;
   private String outputResultAsString;
@@ -48,9 +49,9 @@ public class ProcessScanner extends Thread
    */
   public ProcessScanner(ProcessBuilder processBuilder, String filterResult, boolean firstInstanceOnly)
   {
-    this.processBuilder = processBuilder;
-    this.filterResult = States.validateNotNullOnly(filterResult);
-    this.firstInstanceOnly = firstInstanceOnly;
+    this(processBuilder, p -> (p.contains(filterResult)),
+      firstInstanceOnly);
+    States.validateNotNullOnly(filterResult);
   }
 
   /**
@@ -61,7 +62,32 @@ public class ProcessScanner extends Thread
    */
   public ProcessScanner(ProcessBuilder processBuilder, String filterResult)
   {
-    this(processBuilder, filterResult, false);
+    this(processBuilder, States.validateNotNullOnly(filterResult), false);
+  }
+
+  /**
+   * Builds an instance of ProcessScanner for the given process builder and the predicate filter.
+   *
+   * @param processBuilder The process builder associated with this instance.
+   * @param filter         The predicate filter that will control the final result
+   */
+  public ProcessScanner(ProcessBuilder processBuilder, Predicate<String> filter)
+  {
+    this(processBuilder, filter, false);
+  }
+
+  /**
+   * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
+   *
+   * @param processBuilder    The process builder associated with this instance.
+   * @param filter            The predicate filter that will control the final result.
+   * @param firstInstanceOnly Stop on first instance if <code>true</code>, <code>false</code> otherwise.
+   */
+  public ProcessScanner(ProcessBuilder processBuilder, Predicate<String> filter, boolean firstInstanceOnly)
+  {
+    this.processBuilder = processBuilder;
+    this.filterResult = States.validateNotNullOnly(filter);
+    this.firstInstanceOnly = firstInstanceOnly;
   }
 
   /**
@@ -109,14 +135,14 @@ public class ProcessScanner extends Thread
       e.printStackTrace();
     } finally
     {
-      if (output_capture.getOutputResult().contains(filterResult))
+      if (filterResult.test(output_capture.getOutputResult()))
       {
         this.outputResultAsString = output_capture.getOutputResult();
       }
 
       if (null != this.outputResultAsString)
       {
-        this.outputResultAsString += " - " + error_capture.getOutputResult();
+        this.outputResultAsString += "-" + error_capture.getOutputResult();
       } else
       {
         this.outputResultAsString = error_capture.getOutputResult();
