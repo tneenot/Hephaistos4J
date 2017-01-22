@@ -25,6 +25,7 @@ import org.hlib4j.math.RangeException;
 
 import java.io.InputStream;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 /**
  * Creates a process output reading. This class is a thread type to read an output stream from a process. It's
@@ -34,7 +35,7 @@ public class ProcessOutputReader extends Thread
 {
   private final InputStream inputStream;
   private final StringBuffer stringBuffer;
-  private final String filter;
+  private final Predicate<String> filter;
   private Counter occurrenceCounter;
 
   /**
@@ -44,7 +45,7 @@ public class ProcessOutputReader extends Thread
    */
   public ProcessOutputReader(InputStream inputStream)
   {
-    this(inputStream, null);
+    this(inputStream, (String) null);
   }
 
   /**
@@ -70,9 +71,34 @@ public class ProcessOutputReader extends Thread
    */
   public ProcessOutputReader(InputStream inputStream, String filter, boolean stopOnFirstOccurrence)
   {
+    this(inputStream, s -> (null == filter || s.contains(filter)), stopOnFirstOccurrence);
+  }
+
+  /**
+   * Builds an instance of ProcessOutputStream with a predicate filter and takes all occurrences
+   *
+   * @param inputStream InputStream to read
+   * @param filter      Predicate filter.
+   */
+  public ProcessOutputReader(InputStream inputStream, Predicate<String> filter)
+  {
+    this(inputStream, filter, false);
+  }
+
+  /**
+   * Builds an instance of ProcessOutputStream with a predicate filter and takes all occurences only if
+   * <code>stopOnFirstOccurrence</code> is <code>true</code>.
+   *
+   * @param inputStream           InputStream to read
+   * @param filter                Predicate filter
+   * @param stopOnFirstOccurrence Stop on first occurrence find if <code>true</code>. Otherwise, takes all occurrences.
+   */
+  public ProcessOutputReader(InputStream inputStream, Predicate<String> filter, boolean stopOnFirstOccurrence)
+  {
     this.inputStream = inputStream;
     this.stringBuffer = new StringBuffer();
     this.filter = filter;
+
     try
     {
       if (stopOnFirstOccurrence)
@@ -105,19 +131,12 @@ public class ProcessOutputReader extends Thread
     {
       synchronized (stringBuffer)
       {
-        if (null == filter)
+        String a_line = text_reader.nextLine();
+        if (filter.test(a_line))
         {
-          stringBuffer.append(text_reader.nextLine()).append('\n');
-          occurrenceCounter.increment();
-        } else
-        {
-          String a_text = text_reader.nextLine();
-          if (a_text.contains(filter))
-          {
-            stringBuffer.append(a_text).append('\n');
-            occurrenceCounter.increment();
-          }
+          stringBuffer.append(a_line).append('\n');
         }
+        occurrenceCounter.increment();
       }
     }
 

@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 /**
  * Unit tests for {@link ProcessOutputReader}.
@@ -54,15 +55,39 @@ public class ProcessOutputReaderTest
   }
 
   @Test
+  public void test_Constructor_WithInputStreamAndPredicate_NoError()
+  {
+    new ProcessOutputReader(testProcess.getInputStream(), p -> (!p.contains("foo")));
+  }
+
+  @Test
+  public void test_Constructor_WithInputStreamAndPredicateAndBoolean_NoError()
+  {
+    new ProcessOutputReader(testProcess.getInputStream(), p -> (!p.contains("foo")), true);
+  }
+
+  @Test
   public void test_Constructor_WithInputStreamAndNullFilter_NoError()
   {
-    new ProcessOutputReader(testProcess.getInputStream(), null);
+    new ProcessOutputReader(testProcess.getInputStream(), (String) null);
+  }
+
+  @Test
+  public void test_Constructor_WithInputStreamAndNullPredicate_NoError()
+  {
+    new ProcessOutputReader(testProcess.getInputStream(), (Predicate<String>) null);
   }
 
   @Test
   public void test_Constructor_WithInputStreamAndFilterAndBoolean_NoError()
   {
     new ProcessOutputReader(testProcess.getInputStream(), "", false);
+  }
+
+  @Test
+  public void test_Constructor_WithInputStreamAndNullPredicateAndBoolean_NoError()
+  {
+    new ProcessOutputReader(testProcess.getInputStream(), (Predicate<String>) null, false);
   }
 
   @Test
@@ -140,14 +165,52 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainOnceOccurrence()
+  public void test_getOuputResult_WithValidPredicateAndSeveralOccurrences_ResultsGetsSeveralOccurrences()
   {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream(), "10.10.10.10",
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream(), (p -> p
+      .contains("unreachable")));
+    process_output_reader.start();
+
+    try
+    {
+      process_output_reader.join(5000);
+    } catch (InterruptedException e)
+    {
+      // Do nothing
+    }
+
+    String[] results = process_output_reader.getOutputResult().split("\\n");
+    Assert.assertFalse(States.isNullOrEmptyArray(results));
+  }
+
+  @Test
+  public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainsOnceOccurrence()
+  {
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream(), "unreachable",
       true);
     process_output_reader.start();
     try
     {
       process_output_reader.join();
+    } catch (InterruptedException e)
+    {
+      // Do nothing
+    }
+
+    String[] results = process_output_reader.getOutputResult().split("\\n");
+    Assert.assertEquals(1, results.length);
+  }
+
+  @Test
+  public void test_getOuputResult_WithValidPredicateAndOneOccurrence_ResultsContainsOneOccurrence()
+  {
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream(), (p -> p
+      .contains("unreachable")), true);
+    process_output_reader.start();
+
+    try
+    {
+      process_output_reader.join(5000);
     } catch (InterruptedException e)
     {
       // Do nothing

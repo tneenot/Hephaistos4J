@@ -38,6 +38,14 @@ public class ProcessScanner extends Thread
   private String outputResultAsString;
   private Process associatedProcess;
 
+  /**
+   * Builds an instance of ProcessScanner for the given process builder and the awaiting filter. Takes on first
+   * occurrence or not according to <code>firstInstanceOnly</code> value.
+   *
+   * @param processBuilder    Process builder associated with this instance.
+   * @param filterResult      The process filter that is awaiting.
+   * @param firstInstanceOnly Takes only first instance if <code>true</code>, or all instances if <code>false</code>.
+   */
   public ProcessScanner(ProcessBuilder processBuilder, String filterResult, boolean firstInstanceOnly)
   {
     this.processBuilder = processBuilder;
