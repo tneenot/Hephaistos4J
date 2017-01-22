@@ -1,4 +1,4 @@
-package org.hlib4j.collection;
+package org.hlib4j.concept;
 /*
 *  Hephaistos 4 Java library: a library with facilities to get more concise code.
 *  
@@ -19,6 +19,8 @@ package org.hlib4j.collection;
 *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 *  
 */
+
+import org.hlib4j.collection.Collections;
 
 /**
  * A rule is a concept that's controlling the validity for an element. Rule

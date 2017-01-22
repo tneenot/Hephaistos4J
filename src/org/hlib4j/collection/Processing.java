@@ -20,6 +20,7 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Rule;
 import org.hlib4j.util.States;
 
 /**
@@ -31,7 +32,7 @@ import org.hlib4j.util.States;
  * inner {@link Rule}.<br><br>
  * 
  * Inner {@link Rule} is specifying with
- * {@link Processing#Processing(org.hlib4j.collection.Rule)} constructor.
+ * {@link Processing#Processing(Rule)} constructor.
  * Default constructor implement an internal rule that's returning always true.
  *
  * @param <E> Element of the processing.

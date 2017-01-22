@@ -20,6 +20,7 @@
 
 package org.hlib4j.process;
 
+import org.hlib4j.concept.Rule;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,9 +56,27 @@ public class ProcessScannerTest
   }
 
   @Test(expected = AssertionError.class)
-  public void test_getOutputResultAsString_AfterRunningWithNullFilter_AwaitingException() throws InterruptedException
+  public void test_Constructor_NullStringFilter_AwaitingException() throws InterruptedException
   {
-    new ProcessScanner(this.processBuilder, null);
+    new ProcessScanner(this.processBuilder, (String) null);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullStringFilterAndBoolean_AwaitingException()
+  {
+    new ProcessScanner(this.processBuilder, (String) null, false);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullRuleFilter_AwaitingException()
+  {
+    new ProcessScanner(this.processBuilder, (Rule<String>) null);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullRuleFilterAndBoolean_AwaitingResult()
+  {
+    new ProcessScanner(this.processBuilder, (Rule<String>) null, false);
   }
 
   @Test

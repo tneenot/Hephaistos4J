@@ -20,6 +20,7 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Rule;
 import org.hlib4j.util.States;
 
 /**
@@ -54,7 +55,8 @@ import org.hlib4j.util.States;
  * @param <E> value type for comparison
  * @author Tioben Neenot
  */
-public class Predicate<E> implements Rule<E> {
+public class Predicate<E> implements Rule<E>
+{
 
     /**
      * The equal clause to gets the referenced value

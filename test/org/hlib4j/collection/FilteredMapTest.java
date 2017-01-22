@@ -21,6 +21,7 @@
 
 package org.hlib4j.collection;
 
+import org.hlib4j.concept.Rule;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

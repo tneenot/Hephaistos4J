@@ -20,6 +20,7 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Rule;
 import org.hlib4j.util.States;
 
 import java.util.*;

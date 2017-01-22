@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Rule;
+
 /**
  * Multiple is a <code>Rule</code>, computes the multiple for the number value.
  *

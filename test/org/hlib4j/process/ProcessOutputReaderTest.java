@@ -56,7 +56,7 @@ public class ProcessOutputReaderTest
   @Test
   public void test_Constructor_WithInputStreamAndNullFilter_NoError()
   {
-    new ProcessOutputReader(testProcess.getInputStream(), null);
+    new ProcessOutputReader(testProcess.getInputStream(), (String) null);
   }
 
   @Test

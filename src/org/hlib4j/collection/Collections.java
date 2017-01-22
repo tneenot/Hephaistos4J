@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Rule;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -105,8 +107,8 @@ public class Collections
 	 * @param originalCollection
 	 *          The original collection on which the rule will be applied.
 	 * @param ruleForThisCollection
-	 *          The {@link org.hlib4j.collection.Rule} used to manage all elements in this collection.
-	 * @return The collection with a filter rule on collection elements.
+   *          The {@link Rule} used to manage all elements in this collection.
+   * @return The collection with a filter rule on collection elements.
 	 */
 	public static <ElementType> Collection<ElementType> makeFilteredCollection(
 			Collection<ElementType> originalCollection, Rule<ElementType> ruleForThisCollection)

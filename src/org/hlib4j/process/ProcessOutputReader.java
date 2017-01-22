@@ -20,6 +20,7 @@
 
 package org.hlib4j.process;
 
+import org.hlib4j.concept.Rule;
 import org.hlib4j.math.Counter;
 import org.hlib4j.math.RangeException;
 
@@ -34,7 +35,7 @@ public class ProcessOutputReader extends Thread
 {
   private final InputStream inputStream;
   private final StringBuffer stringBuffer;
-  private final String filter;
+  private final Rule<String> filter;
   private Counter occurrenceCounter;
 
   /**
@@ -44,7 +45,7 @@ public class ProcessOutputReader extends Thread
    */
   public ProcessOutputReader(InputStream inputStream)
   {
-    this(inputStream, null);
+    this(inputStream, (String) null);
   }
 
   /**
@@ -68,11 +69,51 @@ public class ProcessOutputReader extends Thread
    *                              <code>filter</code>. If <code>filter</code> is <code>null</code>, it will take only
    *                              the first string.
    */
-  public ProcessOutputReader(InputStream inputStream, String filter, boolean stopOnFirstOccurrence)
+  public ProcessOutputReader(InputStream inputStream, final String filter, boolean stopOnFirstOccurrence)
+  {
+    this(inputStream, new Rule<String>()
+    {
+
+      /**
+       * Verifies if the element is valid according to the rule.
+       *
+       * @param element Element to control by the rule.
+       * @return <code>true</code> if the rule implementation determines if the
+       * element is valid, <code>false</code> otherwise.
+       */
+      @Override
+      public boolean accept(String element)
+      {
+        return (filter == null || element.contains(filter));
+      }
+    }, stopOnFirstOccurrence);
+  }
+
+  /**
+   * Builds an instance of ProcessOutputStream with a predicate filter and takes all occurrences
+   *
+   * @param inputStream InputStream to read
+   * @param filter      Predicate filter.
+   */
+  public ProcessOutputReader(InputStream inputStream, Rule<String> filter)
+  {
+    this(inputStream, filter, false);
+  }
+
+  /**
+   * Builds an instance of ProcessOutputStream with a predicate filter and takes all occurences only if
+   * <code>stopOnFirstOccurrence</code> is <code>true</code>.
+   *
+   * @param inputStream           InputStream to read
+   * @param filter                Predicate filter
+   * @param stopOnFirstOccurrence Stop on first occurrence find if <code>true</code>. Otherwise, takes all occurrences.
+   */
+  public ProcessOutputReader(InputStream inputStream, Rule<String> filter, boolean stopOnFirstOccurrence)
   {
     this.inputStream = inputStream;
     this.stringBuffer = new StringBuffer();
     this.filter = filter;
+
     try
     {
       if (stopOnFirstOccurrence)
@@ -90,7 +131,6 @@ public class ProcessOutputReader extends Thread
 
   /**
    * Gets the output result.
-   *
    * @return The output result string or an empty string.
    */
   public String getOutputResult()
@@ -106,19 +146,12 @@ public class ProcessOutputReader extends Thread
     {
       synchronized (stringBuffer)
       {
-        if (null == filter)
+        String a_line = text_reader.nextLine();
+        if (filter.accept(a_line))
         {
-          stringBuffer.append(text_reader.nextLine()).append('\n');
-          occurrenceCounter.increment();
-        } else
-        {
-          String a_text = text_reader.nextLine();
-          if (a_text.contains(filter))
-          {
-            stringBuffer.append(a_text).append('\n');
-            occurrenceCounter.increment();
-          }
+          stringBuffer.append(a_line).append('\n');
         }
+        occurrenceCounter.increment();
       }
     }
 

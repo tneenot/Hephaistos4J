@@ -20,6 +20,8 @@ package org.hlib4j.collection;
 *  
 */
 
+import org.hlib4j.concept.Rule;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -125,7 +127,7 @@ public class PredicateMethod< E > implements Rule < E >
 	 * {@link #PredicateMethod(Object, String)} constructor , so in this case accept method runs
 	 * only on this value.
 	 *
-	 * @see org.hlib4j.collection.Rule#accept(java.lang.Object)
+	 * @see Rule#accept(java.lang.Object)
 	 */
 	@Override
     public boolean accept(E element) {
