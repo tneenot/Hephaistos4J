@@ -135,17 +135,20 @@ public class ProcessScanner extends Thread
       e.printStackTrace();
     } finally
     {
-      if (filterResult.test(output_capture.getOutputResult()))
+      synchronized (this)
       {
-        this.outputResultAsString = output_capture.getOutputResult();
-      }
+        if (filterResult.test(output_capture.getOutputResult()))
+        {
+          this.outputResultAsString = output_capture.getOutputResult();
+        }
 
-      if (null != this.outputResultAsString)
-      {
-        this.outputResultAsString += "-" + error_capture.getOutputResult();
-      } else
-      {
-        this.outputResultAsString = error_capture.getOutputResult();
+        if (null != this.outputResultAsString)
+        {
+          this.outputResultAsString += "-" + error_capture.getOutputResult();
+        } else
+        {
+          this.outputResultAsString = error_capture.getOutputResult();
+        }
       }
 
       interrupt();
