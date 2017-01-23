@@ -76,7 +76,7 @@ public class ProcessOutputReaderTest
   @Test
   public void test_getOutputResult_RunAndGetResult_StringNotEmpty()
   {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream());
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream());
     process_output_reader.start();
     try
     {
@@ -147,7 +147,7 @@ public class ProcessOutputReaderTest
     process_output_reader.start();
     try
     {
-      process_output_reader.join();
+      process_output_reader.join(1000);
     } catch (InterruptedException e)
     {
       // Do nothing
