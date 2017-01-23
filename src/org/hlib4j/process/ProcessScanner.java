@@ -152,9 +152,10 @@ public class ProcessScanner extends Thread
     {
       synchronized (this)
       {
-        if (filterResult.accept(output_capture.getOutputResult()))
+        String output_result = output_capture.getOutputResult();
+        if (null != output_result && filterResult.accept(output_result))
         {
-          this.outputResultAsString = output_capture.getOutputResult();
+          this.outputResultAsString = output_result;
         }
 
         if (null != this.outputResultAsString)

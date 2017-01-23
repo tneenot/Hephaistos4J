@@ -140,14 +140,15 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainOnceOccurrence()
+  public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainOnceOccurrence() throws IOException
   {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream(), "10.10.10.10",
+    ProcessBuilder process_test = new ProcessBuilder("ping", "-r", "10.10.10.10");
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(process_test.start().getErrorStream(), "unreachable",
       true);
     process_output_reader.start();
     try
     {
-      process_output_reader.join(1000);
+      process_output_reader.join(5000);
     } catch (InterruptedException e)
     {
       // Do nothing

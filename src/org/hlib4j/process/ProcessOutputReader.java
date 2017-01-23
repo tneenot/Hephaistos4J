@@ -131,10 +131,15 @@ public class ProcessOutputReader extends Thread
 
   /**
    * Gets the output result.
-   * @return The output result string or an empty string.
+   * @return The output result string or <code>null</code> value if the criteria is not applicable.
    */
   public String getOutputResult()
   {
+    if (stringBuffer.length() == 0)
+    {
+      return null;
+    }
+
     return stringBuffer.toString();
   }
 
