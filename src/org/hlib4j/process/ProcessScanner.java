@@ -182,7 +182,7 @@ public class ProcessScanner extends Thread
         this.exitValue = associatedProcess.exitValue();
       } catch (IllegalThreadStateException e)
       {
-        this.exitValue = -1;
+        this.exitValue = outputResultAsString == null ? -1 : 0;
       }
 
       associatedProcess.destroy();
