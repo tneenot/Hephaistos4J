@@ -38,6 +38,7 @@ public class ProcessScanner extends Thread
   private final boolean firstInstanceOnly;
   private String outputResultAsString;
   private Process associatedProcess;
+  private int exitValue;
 
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter. Takes on first
@@ -176,9 +177,27 @@ public class ProcessScanner extends Thread
   {
     if (null != associatedProcess)
     {
+      try
+      {
+        this.exitValue = associatedProcess.exitValue();
+      } catch (IllegalThreadStateException e)
+      {
+        this.exitValue = -1;
+      }
+
       associatedProcess.destroy();
       associatedProcess = null;
     }
     super.interrupt();
+  }
+
+  /**
+   * Gets the exit value from the underlying associated process.
+   *
+   * @return The exit value from the underlying process. <code>-1</code> if the exit value hasn't been evaluated.
+   */
+  public int getExitValue()
+  {
+    return exitValue;
   }
 }
