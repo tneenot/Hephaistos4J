@@ -47,6 +47,23 @@ public class ProcessScannerTest
   }
 
   @Test
+  public void test_getExitValue_WithValidCommand_Zero()
+  {
+    ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, s -> true);
+
+    process_scanner.run();
+    Assert.assertEquals(0, process_scanner.getExitValue());
+  }
+
+  @Test
+  public void test_getExitValue_WithInvalidCommand_GreaterThanZero()
+  {
+    ProcessScanner process_scanner = new ProcessScanner(new ProcessBuilder("ls", "-l", "/foo"), s -> true);
+    process_scanner.run();
+    Assert.assertTrue(process_scanner.getExitValue() > 0);
+  }
+
+  @Test
   public void test_getOutputResultAsString_AfterRunningWithValidFilter_NoNullValue() throws InterruptedException
   {
     ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "r");
