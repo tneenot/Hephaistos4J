@@ -241,6 +241,33 @@ public class CounterTest {
         Assert.assertEquals(this.counterTesting.getLowerLimitValue(), this.counterTesting.getCurrentValue());
     }
 
+  @Test
+  public void test_invalidate_InvalidateCounter_CounterNoValid()
+  {
+    this.counterTesting.rearm();
+    this.counterTesting.invalidate();
+
+    Assert.assertFalse(this.counterTesting.isValid());
+  }
+
+  @Test
+  public void test_getCurrentValue_InvalidateCounter_LowerLimitValue()
+  {
+    this.counterTesting.invalidate();
+
+    Assert.assertEquals(this.counterTesting.getCurrentValue(), this.counterTesting.getLowerLimitValue());
+  }
+
+
+  @Test
+  public void test_isValid_InvalidateAndRearmCounter_CounterIsValid()
+  {
+    this.counterTesting.invalidate();
+    this.counterTesting.rearm();
+
+    Assert.assertTrue(this.counterTesting.isValid());
+  }
+
     @After
     public void tearDown() throws Exception {
         initialValue = null;

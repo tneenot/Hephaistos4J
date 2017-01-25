@@ -110,6 +110,8 @@ public class ProcessDelay implements Runnable
    */
   public void interrupt()
   {
+    this.counterDelay.invalidate();
+
     if (null != processScanner)
     {
       processScanner.interrupt();

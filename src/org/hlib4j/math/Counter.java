@@ -184,4 +184,18 @@ public class Counter extends Range<Integer> {
 
         return this.isValid();
     }
+
+  /**
+   * Force the current counter to set to invalidate state. Afterwards {@link #isValid()} will return <code>false</code>
+   */
+  public void invalidate()
+  {
+    try
+    {
+      setCurrentValue(this.getUpperLimitValue().intValue());
+    } catch (RangeException e)
+    {
+      // No other action
+    }
+  }
 }
