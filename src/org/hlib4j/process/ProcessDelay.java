@@ -105,6 +105,9 @@ public class ProcessDelay implements Runnable
     }
   }
 
+  /**
+   * Stop all processes and threads associated with this instance.
+   */
   public void interrupt()
   {
     if (null != processScanner)
