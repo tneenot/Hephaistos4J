@@ -36,9 +36,9 @@ public class ProcessScanner extends Thread
   private final Rule<String> filterResult;
   private final ProcessBuilder processBuilder;
   private final boolean firstInstanceOnly;
-  private String outputResultAsString;
-  private Process associatedProcess;
   private int exitValue;
+  private ProcessOutputReader outputCapture;
+  private ProcessOutputReader errorCapture;
 
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter. Takes on first
@@ -104,6 +104,7 @@ public class ProcessScanner extends Thread
     this.processBuilder = processBuilder;
     this.filterResult = States.validateNotNullOnly(filter);
     this.firstInstanceOnly = firstInstanceOnly;
+    this.exitValue = -1;
   }
 
   /**
@@ -113,34 +114,46 @@ public class ProcessScanner extends Thread
    */
   public synchronized String getOutputResultAsString()
   {
-    return outputResultAsString;
+    String final_output_result = null;
+    if (null != outputCapture)
+    {
+      String output_result = outputCapture.getOutputResult();
+      if (null != output_result && filterResult.accept(output_result))
+      {
+        final_output_result = output_result;
+      }
+    }
+
+    if (null != errorCapture)
+    {
+      if (null != final_output_result)
+      {
+        final_output_result += "-" + errorCapture.getOutputResult();
+      } else
+      {
+        final_output_result = errorCapture.getOutputResult();
+      }
+    }
+
+    return final_output_result;
   }
 
   @Override
   public void run()
   {
-    ProcessOutputReader output_capture = null;
-    ProcessOutputReader error_capture = null;
+    Process associated_process = null;
     try
     {
-      associatedProcess = this.processBuilder.start();
-      output_capture = new ProcessOutputReader(associatedProcess.getInputStream(), filterResult, firstInstanceOnly);
-      error_capture = new ProcessOutputReader(associatedProcess.getErrorStream(), filterResult, firstInstanceOnly);
+      associated_process = this.processBuilder.start();
+      outputCapture = new ProcessOutputReader(associated_process.getInputStream(), filterResult, firstInstanceOnly);
+      errorCapture = new ProcessOutputReader(associated_process.getErrorStream(), filterResult, firstInstanceOnly);
 
-      output_capture.start();
-      error_capture.start();
-
-      try
-      {
-        output_capture.join();
-      } catch (InterruptedException e)
-      {
-        // Do nothing
-      }
+      outputCapture.start();
+      errorCapture.start();
 
       try
       {
-        error_capture.join();
+        this.exitValue = associated_process.waitFor();
       } catch (InterruptedException e)
       {
         // Do nothing
@@ -151,42 +164,19 @@ public class ProcessScanner extends Thread
       e.printStackTrace();
     } finally
     {
-      synchronized (this)
+      if (null != associated_process)
       {
-        String output_result = output_capture.getOutputResult();
-        if (null != output_result && filterResult.accept(output_result))
-        {
-          this.outputResultAsString = output_result;
-        }
-
-        if (null != this.outputResultAsString)
-        {
-          this.outputResultAsString += "-" + error_capture.getOutputResult();
-        } else
-        {
-          this.outputResultAsString = error_capture.getOutputResult();
-        }
+        associated_process.destroy();
       }
-
-      interrupt();
     }
   }
 
   @Override
   public void interrupt()
   {
-    if (null != associatedProcess)
+    if (this.exitValue == -1)
     {
-      try
-      {
-        this.exitValue = associatedProcess.exitValue();
-      } catch (IllegalThreadStateException e)
-      {
-        this.exitValue = outputResultAsString == null ? -1 : 0;
-      }
-
-      associatedProcess.destroy();
-      associatedProcess = null;
+      this.exitValue = getOutputResultAsString() == null ? -1 : 0;
     }
     super.interrupt();
   }

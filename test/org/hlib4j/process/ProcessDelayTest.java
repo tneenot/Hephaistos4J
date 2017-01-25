@@ -119,4 +119,24 @@ public class ProcessDelayTest
     Assert.assertTrue(string_result.contains("unreachable"));
   }
 
+  @Test
+  public void test_interrupt_RunTaskInBackgroundAndInterruptIt_NoError()
+  {
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.10"),
+      "unreachable"), internalCounter);
+
+    // SUT
+    Thread start_thread = new Thread(process_delay);
+    start_thread.start();
+
+    try
+    {
+      Thread.sleep(1000);
+    } catch (InterruptedException e)
+    {
+      // No error
+    }
+    process_delay.interrupt();
+  }
+
 }

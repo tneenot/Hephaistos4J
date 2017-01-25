@@ -38,6 +38,8 @@ public class ProcessDelay implements Runnable
 {
   private final ProcessScanner processScanner;
   private final Counter counterDelay;
+  private FutureTask<ProcessScanner> futureTask;
+  private ExecutorService executorService;
 
   /**
    * Builds an instance of the process delay for the process scanner. The {@link Counter} class is using to
@@ -66,9 +68,9 @@ public class ProcessDelay implements Runnable
   @Override
   public void run()
   {
-    ExecutorService scanner_executor = Executors.newSingleThreadExecutor();
+    executorService = Executors.newSingleThreadExecutor();
 
-    FutureTask<ProcessScanner> scanner_task = new FutureTask<>(new Runnable()
+    futureTask = new FutureTask<>(new Runnable()
     {
       @Override
       public void run()
@@ -93,21 +95,31 @@ public class ProcessDelay implements Runnable
       }
     }, null);
 
+    executorService.execute(futureTask);
     try
     {
-      scanner_executor.execute(scanner_task);
-      try
-      {
-        scanner_task.get(counterDelay.getUpperLimitValue(), TimeUnit.MILLISECONDS);
-      } catch (InterruptedException | ExecutionException | TimeoutException e)
-      {
-        // Do nothing
-      }
-    } finally
+      futureTask.get(counterDelay.getUpperLimitValue(), TimeUnit.MILLISECONDS);
+    } catch (InterruptedException | ExecutionException | TimeoutException | CancellationException e)
     {
-      scanner_task.cancel(true);
-      scanner_executor.shutdownNow();
+      // Do nothing
+    }
+  }
+
+  public void interrupt()
+  {
+    if (null != processScanner)
+    {
       processScanner.interrupt();
+    }
+
+    if (null != futureTask && futureTask.isDone() == false && futureTask.isCancelled() == false)
+    {
+      futureTask.cancel(true);
+    }
+
+    if (null != executorService)
+    {
+      executorService.shutdownNow();
     }
   }
 }
