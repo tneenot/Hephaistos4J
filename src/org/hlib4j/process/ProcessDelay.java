@@ -38,6 +38,8 @@ public class ProcessDelay implements Runnable
 {
   private final ProcessScanner processScanner;
   private final Counter counterDelay;
+  private FutureTask<ProcessScanner> futureTask;
+  private ExecutorService executorService;
 
   /**
    * Builds an instance of the process delay for the process scanner. The {@link Counter} class is using to
@@ -66,9 +68,9 @@ public class ProcessDelay implements Runnable
   @Override
   public void run()
   {
-    ExecutorService scanner_executor = Executors.newSingleThreadExecutor();
+    executorService = Executors.newSingleThreadExecutor();
 
-    FutureTask<ProcessScanner> scanner_task = new FutureTask<>(() ->
+    futureTask = new FutureTask<>(() ->
     {
       do
       {
@@ -76,7 +78,7 @@ public class ProcessDelay implements Runnable
 
         if (processScanner.getOutputResultAsString() == null && counterDelay.isValid())
         {
-          this.counterDelay.increment();
+          counterDelay.increment();
           try
           {
             Thread.sleep(counterDelay.getCounterStep());
@@ -87,24 +89,41 @@ public class ProcessDelay implements Runnable
         }
       }
       while (processScanner.getOutputResultAsString() == null && counterDelay.isValid());
-
     }, null);
 
+    executorService.execute(futureTask);
     try
     {
-      scanner_executor.execute(scanner_task);
-      try
-      {
-        scanner_task.get(counterDelay.getUpperLimitValue(), TimeUnit.MILLISECONDS);
-      } catch (InterruptedException | ExecutionException | TimeoutException e)
-      {
-        // Do nothing
-      }
+      futureTask.get(counterDelay.getUpperLimitValue(), TimeUnit.MILLISECONDS);
+    } catch (InterruptedException | ExecutionException | TimeoutException | CancellationException e)
+    {
+      // Do nothing
     } finally
     {
-      scanner_task.cancel(true);
-      scanner_executor.shutdownNow();
+      interrupt();
+    }
+  }
+
+  /**
+   * Stop all processes and threads associated with this instance.
+   */
+  public void interrupt()
+  {
+    this.counterDelay.invalidate();
+
+    if (null != processScanner)
+    {
       processScanner.interrupt();
+    }
+
+    if (null != futureTask && futureTask.isDone() == false && futureTask.isCancelled() == false)
+    {
+      futureTask.cancel(true);
+    }
+
+    if (null != executorService)
+    {
+      executorService.shutdownNow();
     }
   }
 }

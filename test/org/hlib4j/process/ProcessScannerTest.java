@@ -66,44 +66,35 @@ public class ProcessScannerTest
   @Test
   public void test_getOutputResultAsString_AfterRunningWithValidFilter_NoNullValue() throws InterruptedException
   {
-    ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "r");
+    ProcessBuilder ping_process = new ProcessBuilder("ping", "-r", "10.10.10.24");
+    ProcessScanner process_scanner = new ProcessScanner(ping_process, "");
     process_scanner.start();
-    process_scanner.join();
+    process_scanner.join(5000);
 
     Assert.assertNotNull(process_scanner.getOutputResultAsString());
   }
 
   @Test(expected = AssertionError.class)
-  public void test_Constructor_NullString_AwaitingException() throws InterruptedException
+  public void test_Constructor_NullStringFilter_AwaitingException() throws InterruptedException
   {
     new ProcessScanner(this.processBuilder, (String) null);
   }
 
   @Test(expected = AssertionError.class)
-  public void test_Constructor_NullStringAndBoolean_AwaitingException()
+  public void test_Constructor_NullStringFilterAndBoolean_AwaitingException()
   {
     new ProcessScanner(this.processBuilder, (String) null, false);
   }
 
   @Test(expected = AssertionError.class)
-  public void test_Constructor_NullPredicateFilter_AwaitingException()
+  public void test_Constructor_NullRuleFilter_AwaitingException()
   {
     new ProcessScanner(this.processBuilder, (Predicate<String>) null);
   }
 
   @Test(expected = AssertionError.class)
-  public void test_Constructor_NullPredicateFilterAndBoolean_AwaitingException()
+  public void test_Constructor_NullRuleFilterAndBoolean_AwaitingResult()
   {
     new ProcessScanner(this.processBuilder, (Predicate<String>) null, false);
-  }
-
-  @Test
-  public void test_getOutputResultAsString_AfterRunningWithEmptyFilter_NoNullValue() throws InterruptedException
-  {
-    ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "");
-    process_scanner.run();
-    process_scanner.join();
-
-    Assert.assertNotNull(process_scanner.getOutputResultAsString());
   }
 }

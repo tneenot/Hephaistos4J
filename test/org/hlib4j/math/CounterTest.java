@@ -224,20 +224,6 @@ public class CounterTest
   }
 
   @Test
-  public void test_getCurrentValue_CountWhileIsValid_UpperLimitReach() throws RangeException
-  {
-    // Setup
-    Counter counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 0, 10, 0);
-    while (counter.isValid())
-    {
-      counter.increment();
-    }
-
-    // SUT
-    Assert.assertEquals(counter.getUpperLimitValue(), counter.getCurrentValue());
-  }
-
-  @Test
   public void test_rearm_forInvalidCounter_CounterRearmedAndValid()
   {
     // Setup
@@ -281,6 +267,33 @@ public class CounterTest
 
     // Assert
     Assert.assertEquals(this.counterTesting.getLowerLimitValue(), this.counterTesting.getCurrentValue());
+  }
+
+  @Test
+  public void test_invalidate_InvalidateCounter_CounterNoValid()
+  {
+    this.counterTesting.rearm();
+    this.counterTesting.invalidate();
+
+    Assert.assertFalse(this.counterTesting.isValid());
+  }
+
+  @Test
+  public void test_getCurrentValue_InvalidateCounter_LowerLimitValue()
+  {
+    this.counterTesting.invalidate();
+
+    Assert.assertEquals(this.counterTesting.getCurrentValue(), this.counterTesting.getLowerLimitValue());
+  }
+
+
+  @Test
+  public void test_isValid_InvalidateAndRearmCounter_CounterIsValid()
+  {
+    this.counterTesting.invalidate();
+    this.counterTesting.rearm();
+
+    Assert.assertTrue(this.counterTesting.isValid());
   }
 
   @After

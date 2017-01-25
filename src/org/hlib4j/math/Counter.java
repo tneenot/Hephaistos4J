@@ -1,7 +1,7 @@
 /*
- *  Hephaistos 4 Java library: a library with facilities to get more concise code.
+ * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -32,7 +32,8 @@ package org.hlib4j.math;
  *
  * @author Tioben Neenot
  */
-public class Counter extends Range<Integer> {
+public class Counter extends Range<Integer>
+{
 
     private int counterStep = 1;
     private int initialValue = -1;
@@ -47,7 +48,8 @@ public class Counter extends Range<Integer> {
      * @param defaultValue Default value for this counter.
      * @throws RangeException If counter is not valid due to its parameters.
      */
-    public Counter(Integer lowLimit, Integer highLimit, Integer defaultValue) throws RangeException {
+    public Counter(Integer lowLimit, Integer highLimit, Integer defaultValue) throws RangeException
+    {
         this(LimitType.CLOSE_OPEN, lowLimit, highLimit, defaultValue);
     }
 
@@ -60,7 +62,8 @@ public class Counter extends Range<Integer> {
      * @param defaultValue Default value for this counter.
      * @throws RangeException If counter is not valid due to its parameters.
      */
-    public Counter(LimitType limitType, Integer lowLimit, Integer highLimit, Integer defaultValue) throws RangeException {
+    public Counter(LimitType limitType, Integer lowLimit, Integer highLimit, Integer defaultValue) throws RangeException
+    {
         super(limitType, lowLimit, highLimit, defaultValue);
         this.isValidCounter = true;
         this.initialValue = defaultValue;
@@ -73,7 +76,8 @@ public class Counter extends Range<Integer> {
      * @param highLimit High limit for this Counter.
      * @throws RangeException If counter parameters are not valid
      */
-    public Counter(Integer lowLimit, Integer highLimit) throws RangeException {
+    public Counter(Integer lowLimit, Integer highLimit) throws RangeException
+    {
         this(lowLimit, highLimit, lowLimit);
     }
 
@@ -142,7 +146,8 @@ public class Counter extends Range<Integer> {
      * @param counterStep Counter step value (can be negative).
      * @throws RangeException If the counterStep value overload one of the counter limits.
      */
-    public void setCounterStep(int counterStep) throws RangeException {
+    public void setCounterStep(int counterStep) throws RangeException
+    {
         int _hypothetical_value = this.getCurrentValue() + counterStep;
 
         if (_hypothetical_value >= this.getUpperLimitValue() || _hypothetical_value < this.getLowerLimitValue()) {
@@ -164,7 +169,8 @@ public class Counter extends Range<Integer> {
     }
 
     @Override
-    public void setCurrentValue(Integer currentValue) throws RangeException {
+    public void setCurrentValue(Integer currentValue) throws RangeException
+    {
         this.isValidCounter = false;
         super.setCurrentValue(currentValue);
         this.isValidCounter = true;
@@ -184,4 +190,18 @@ public class Counter extends Range<Integer> {
 
         return this.isValid();
     }
+
+  /**
+   * Force the current counter to set to invalidate state. Afterwards {@link #isValid()} will return <code>false</code>
+   */
+  public void invalidate()
+  {
+    try
+    {
+      setCurrentValue(this.getUpperLimitValue().intValue());
+    } catch (RangeException e)
+    {
+      // No other action
+    }
+  }
 }

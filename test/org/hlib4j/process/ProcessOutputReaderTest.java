@@ -23,85 +23,59 @@ package org.hlib4j.process;
 import org.hlib4j.util.States;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.function.Predicate;
 
 /**
  * Unit tests for {@link ProcessOutputReader}.
  */
 public class ProcessOutputReaderTest
 {
-  private Process testProcess = null;
-
-  @Before
-  public void setUp() throws IOException
-  {
-    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.10").start();
-  }
+  private Process testProcess;
 
   @Test
-  public void test_Constructor_WithInputStream_NoError()
+  public void test_Constructor_WithInputStream_NoError() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.14").start();
     new ProcessOutputReader(testProcess.getInputStream());
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndFilter_NoError()
+  public void test_Constructor_WithInputStreamAndFilter_NoError() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.15").start();
     new ProcessOutputReader(testProcess.getInputStream(), "unreachable");
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndPredicate_NoError()
+  public void test_Constructor_WithInputStreamAndNullFilter_NoError() throws IOException
   {
-    new ProcessOutputReader(testProcess.getInputStream(), p -> (!p.contains("foo")));
-  }
-
-  @Test
-  public void test_Constructor_WithInputStreamAndPredicateAndBoolean_NoError()
-  {
-    new ProcessOutputReader(testProcess.getInputStream(), p -> (!p.contains("foo")), true);
-  }
-
-  @Test
-  public void test_Constructor_WithInputStreamAndNullFilter_NoError()
-  {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.16").start();
     new ProcessOutputReader(testProcess.getInputStream(), (String) null);
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndNullPredicate_NoError()
+  public void test_Constructor_WithInputStreamAndFilterAndBoolean_NoError() throws IOException
   {
-    new ProcessOutputReader(testProcess.getInputStream(), (Predicate<String>) null);
-  }
-
-  @Test
-  public void test_Constructor_WithInputStreamAndFilterAndBoolean_NoError()
-  {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.17").start();
     new ProcessOutputReader(testProcess.getInputStream(), "", false);
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndNullPredicateAndBoolean_NoError()
+  public void test_getOutputResult_Default_EmptyString() throws IOException
   {
-    new ProcessOutputReader(testProcess.getInputStream(), (Predicate<String>) null, false);
-  }
-
-  @Test
-  public void test_getOutputResult_Default_EmptyString()
-  {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.18").start();
     ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream());
 
     Assert.assertTrue(States.isNullOrEmpty(process_output_reader.getOutputResult()));
   }
 
   @Test
-  public void test_getOutputResult_RunAndGetResult_StringNotEmpty()
+  public void test_getOutputResult_RunAndGetResult_StringNotEmpty() throws IOException
   {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream());
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.19").start();
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream());
     process_output_reader.start();
     try
     {
@@ -115,8 +89,9 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_RunWithValidFilter_StringContainsFilter()
+  public void test_getOutputResult_RunWithValidFilter_StringContainsFilter() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.20").start();
     ProcessOutputReader process_output_stream = new ProcessOutputReader(testProcess.getErrorStream(), "unreachable");
     process_output_stream.start();
     try
@@ -131,8 +106,9 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_RunWithValidFilterAndOnceOccurrence_StringContainsFilter()
+  public void test_getOutputResult_RunWithValidFilterAndOnceOccurrence_StringContainsFilter() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.21").start();
     ProcessOutputReader process_output_filter = new ProcessOutputReader(testProcess.getErrorStream(), "unreachable",
       true);
     process_output_filter.start();
@@ -148,8 +124,9 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_WithValidFilterAndSeveralOccurrences_ResultGetsSeveralOccurrences()
+  public void test_getOutputResult_WithValidFilterAndSeveralOccurrences_ResultGetsSeveralOccurrences() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.22").start();
     ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream(), "unreachable");
     process_output_reader.start();
     try
@@ -165,49 +142,12 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOuputResult_WithValidPredicateAndSeveralOccurrences_ResultsGetsSeveralOccurrences()
+  public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainOnceOccurrence() throws IOException
   {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream(), (p -> p
-      .contains("unreachable")));
-    process_output_reader.start();
-
-    try
-    {
-      process_output_reader.join(5000);
-    } catch (InterruptedException e)
-    {
-      // Do nothing
-    }
-
-    String[] results = process_output_reader.getOutputResult().split("\\n");
-    Assert.assertFalse(States.isNullOrEmptyArray(results));
-  }
-
-  @Test
-  public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainsOnceOccurrence()
-  {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream(), "unreachable",
+    ProcessBuilder process_test = new ProcessBuilder("ping", "-r", "10.10.10.23");
+    ProcessOutputReader process_output_reader = new ProcessOutputReader(process_test.start().getErrorStream(), "unreachable",
       true);
     process_output_reader.start();
-    try
-    {
-      process_output_reader.join();
-    } catch (InterruptedException e)
-    {
-      // Do nothing
-    }
-
-    String[] results = process_output_reader.getOutputResult().split("\\n");
-    Assert.assertEquals(1, results.length);
-  }
-
-  @Test
-  public void test_getOuputResult_WithValidPredicateAndOneOccurrence_ResultsContainsOneOccurrence()
-  {
-    ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream(), (p -> p
-      .contains("unreachable")), true);
-    process_output_reader.start();
-
     try
     {
       process_output_reader.join(5000);
@@ -225,7 +165,8 @@ public class ProcessOutputReaderTest
   {
     if (null != testProcess)
     {
-      testProcess.destroyForcibly();
+      testProcess.destroy();
+      testProcess = null;
     }
   }
 }

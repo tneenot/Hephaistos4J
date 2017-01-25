@@ -33,7 +33,6 @@ import java.io.IOException;
 
 public class ProcessDelayTest
 {
-  private ProcessDelay processDelay;
   private Counter internalCounter;
 
   @Before
@@ -41,9 +40,6 @@ public class ProcessDelayTest
   {
     internalCounter = new Counter(0, 5000);
     internalCounter.setCounterStep(1000);
-
-    processDelay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "10.10.10.10"), "foo"),
-      internalCounter);
   }
 
   private ProcessDelay createValidTask()
@@ -56,7 +52,9 @@ public class ProcessDelayTest
   {
     TimeFlow time_flow = new TimeFlow();
     time_flow.begin();
-    processDelay.run();
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.10"), "foo"),
+      internalCounter);
+    process_delay.run();
     time_flow.end();
 
     Assert.assertTrue(time_flow.getTimeFlow() >= internalCounter.getUpperLimitValue());
@@ -95,19 +93,21 @@ public class ProcessDelayTest
   @Test
   public void test_getProcessScanner_InvalidTaskIntoThread_NullResult() throws InterruptedException
   {
-    Thread start_thread = new Thread(processDelay);
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.11"), "foo"),
+      internalCounter);
+    Thread start_thread = new Thread(process_delay);
     start_thread.start();
     start_thread.join();
 
-    Assert.assertTrue(States.isNullOrEmpty(processDelay.getProcessScanner().getOutputResultAsString()));
+    Assert.assertTrue(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
   }
 
   @Test
   public void test_getProcessScanner_RunTaskInBackground_ControlIfTaskWasRunningSeveralTimes() throws InterruptedException, RangeException
   {
     // Setup
-    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.10"),
-      "unreachable", true), internalCounter);
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.12"),
+      "unreachable"), internalCounter);
 
     // SUT
     Thread start_thread = new Thread(process_delay);
@@ -117,6 +117,47 @@ public class ProcessDelayTest
     // Result
     String string_result = process_delay.getProcessScanner().getOutputResultAsString();
     Assert.assertTrue(string_result.contains("unreachable"));
+  }
+
+  @Test
+  public void test_interrupt_RunTaskInBackgroundAndInterruptIt_NoError()
+  {
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.13"),
+      "unreachable"), internalCounter);
+
+    // SUT
+    Thread start_thread = new Thread(process_delay);
+    start_thread.start();
+
+    try
+    {
+      Thread.sleep(1000);
+    } catch (InterruptedException e)
+    {
+      // No error
+    }
+    process_delay.interrupt();
+  }
+
+  @Test
+  public void test_interrupt_RunTaskInBackgroundAndInterruptTwice_NoError()
+  {
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.133"),
+      "unreachable"), internalCounter);
+
+    // SUT
+    Thread start_thread = new Thread(process_delay);
+    start_thread.start();
+
+    try
+    {
+      Thread.sleep(1000);
+    } catch (InterruptedException e)
+    {
+      // No error
+    }
+    process_delay.interrupt();
+    process_delay.interrupt();
   }
 
 }
