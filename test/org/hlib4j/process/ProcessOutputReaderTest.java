@@ -23,7 +23,6 @@ package org.hlib4j.process;
 import org.hlib4j.util.States;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,49 +32,49 @@ import java.io.IOException;
  */
 public class ProcessOutputReaderTest
 {
-  private Process testProcess = null;
-
-  @Before
-  public void setUp() throws IOException
-  {
-    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.10").start();
-  }
+  private Process testProcess;
 
   @Test
-  public void test_Constructor_WithInputStream_NoError()
+  public void test_Constructor_WithInputStream_NoError() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.14").start();
     new ProcessOutputReader(testProcess.getInputStream());
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndFilter_NoError()
+  public void test_Constructor_WithInputStreamAndFilter_NoError() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.15").start();
     new ProcessOutputReader(testProcess.getInputStream(), "unreachable");
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndNullFilter_NoError()
+  public void test_Constructor_WithInputStreamAndNullFilter_NoError() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.16").start();
     new ProcessOutputReader(testProcess.getInputStream(), (String) null);
   }
 
   @Test
-  public void test_Constructor_WithInputStreamAndFilterAndBoolean_NoError()
+  public void test_Constructor_WithInputStreamAndFilterAndBoolean_NoError() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.17").start();
     new ProcessOutputReader(testProcess.getInputStream(), "", false);
   }
 
   @Test
-  public void test_getOutputResult_Default_EmptyString()
+  public void test_getOutputResult_Default_EmptyString() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.18").start();
     ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getInputStream());
 
     Assert.assertTrue(States.isNullOrEmpty(process_output_reader.getOutputResult()));
   }
 
   @Test
-  public void test_getOutputResult_RunAndGetResult_StringNotEmpty()
+  public void test_getOutputResult_RunAndGetResult_StringNotEmpty() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.19").start();
     ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream());
     process_output_reader.start();
     try
@@ -90,8 +89,9 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_RunWithValidFilter_StringContainsFilter()
+  public void test_getOutputResult_RunWithValidFilter_StringContainsFilter() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.20").start();
     ProcessOutputReader process_output_stream = new ProcessOutputReader(testProcess.getErrorStream(), "unreachable");
     process_output_stream.start();
     try
@@ -106,8 +106,9 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_RunWithValidFilterAndOnceOccurrence_StringContainsFilter()
+  public void test_getOutputResult_RunWithValidFilterAndOnceOccurrence_StringContainsFilter() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.21").start();
     ProcessOutputReader process_output_filter = new ProcessOutputReader(testProcess.getErrorStream(), "unreachable",
       true);
     process_output_filter.start();
@@ -123,8 +124,9 @@ public class ProcessOutputReaderTest
   }
 
   @Test
-  public void test_getOutputResult_WithValidFilterAndSeveralOccurrences_ResultGetsSeveralOccurrences()
+  public void test_getOutputResult_WithValidFilterAndSeveralOccurrences_ResultGetsSeveralOccurrences() throws IOException
   {
+    testProcess = new ProcessBuilder("ping", "-r", "10.10.10.22").start();
     ProcessOutputReader process_output_reader = new ProcessOutputReader(testProcess.getErrorStream(), "unreachable");
     process_output_reader.start();
     try
@@ -142,7 +144,7 @@ public class ProcessOutputReaderTest
   @Test
   public void test_getOutputResult_WithValidFilterAndOnceOccurrence_ResultContainOnceOccurrence() throws IOException
   {
-    ProcessBuilder process_test = new ProcessBuilder("ping", "-r", "10.10.10.10");
+    ProcessBuilder process_test = new ProcessBuilder("ping", "-r", "10.10.10.23");
     ProcessOutputReader process_output_reader = new ProcessOutputReader(process_test.start().getErrorStream(), "unreachable",
       true);
     process_output_reader.start();
@@ -164,6 +166,7 @@ public class ProcessOutputReaderTest
     if (null != testProcess)
     {
       testProcess.destroy();
+      testProcess = null;
     }
   }
 }

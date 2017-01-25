@@ -79,7 +79,7 @@ public class ProcessScannerTest
   @Test
   public void test_getOutputResultAsString_AfterRunningWithValidFilter_NoNullValue() throws InterruptedException
   {
-    ProcessBuilder ping_process = new ProcessBuilder("ping", "-r", "10.10.10.10");
+    ProcessBuilder ping_process = new ProcessBuilder("ping", "-r", "10.10.10.24");
     ProcessScanner process_scanner = new ProcessScanner(ping_process, "");
     process_scanner.start();
     process_scanner.join(5000);

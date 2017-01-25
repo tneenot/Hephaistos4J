@@ -39,6 +39,7 @@ public class ProcessScanner extends Thread
   private int exitValue;
   private ProcessOutputReader outputCapture;
   private ProcessOutputReader errorCapture;
+  private Process associatedProcess;
 
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter. Takes on first
@@ -141,19 +142,19 @@ public class ProcessScanner extends Thread
   @Override
   public void run()
   {
-    Process associated_process = null;
+    associatedProcess = null;
     try
     {
-      associated_process = this.processBuilder.start();
-      outputCapture = new ProcessOutputReader(associated_process.getInputStream(), filterResult, firstInstanceOnly);
-      errorCapture = new ProcessOutputReader(associated_process.getErrorStream(), filterResult, firstInstanceOnly);
+      associatedProcess = this.processBuilder.start();
+      outputCapture = new ProcessOutputReader(associatedProcess.getInputStream(), filterResult, firstInstanceOnly);
+      errorCapture = new ProcessOutputReader(associatedProcess.getErrorStream(), filterResult, firstInstanceOnly);
 
       outputCapture.start();
       errorCapture.start();
 
       try
       {
-        this.exitValue = associated_process.waitFor();
+        this.exitValue = associatedProcess.waitFor();
       } catch (InterruptedException e)
       {
         // Do nothing
@@ -164,16 +165,27 @@ public class ProcessScanner extends Thread
       e.printStackTrace();
     } finally
     {
-      if (null != associated_process)
-      {
-        associated_process.destroy();
-      }
+      interrupt();
     }
   }
 
   @Override
   public void interrupt()
   {
+    if (null != associatedProcess)
+    {
+      try
+      {
+        this.exitValue = associatedProcess.exitValue();
+      } catch (IllegalThreadStateException e)
+      {
+        // Do nothing
+      }
+
+      associatedProcess.destroy();
+      associatedProcess = null;
+    }
+
     if (this.exitValue == -1)
     {
       this.exitValue = getOutputResultAsString() == null ? -1 : 0;

@@ -102,6 +102,9 @@ public class ProcessDelay implements Runnable
     } catch (InterruptedException | ExecutionException | TimeoutException | CancellationException e)
     {
       // Do nothing
+    } finally
+    {
+      interrupt();
     }
   }
 
