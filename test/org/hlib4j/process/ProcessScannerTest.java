@@ -110,4 +110,13 @@ public class ProcessScannerTest
   {
     new ProcessScanner(this.processBuilder, (Rule<String>) null, false);
   }
+
+  @Test
+  public void test_getOutputResultAsString_AfterRunningWithEmptyFilter_NoNullValue() throws InterruptedException
+  {
+    ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "");
+    process_scanner.run();
+
+    Assert.assertNotNull(process_scanner.getOutputResultAsString());
+  }
 }

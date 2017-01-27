@@ -155,6 +155,8 @@ public class ProcessScanner extends Thread
       try
       {
         this.exitValue = associatedProcess.waitFor();
+        outputCapture.join();
+        errorCapture.join();
       } catch (InterruptedException e)
       {
         // Do nothing

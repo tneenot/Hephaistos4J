@@ -36,6 +36,7 @@ public class ProcessOutputReader extends Thread
   private final InputStream inputStream;
   private final StringBuffer stringBuffer;
   private final Rule<String> filter;
+  private final Rule<String> ruleCounter;
   private Counter occurrenceCounter;
 
   /**
@@ -108,7 +109,7 @@ public class ProcessOutputReader extends Thread
    * @param filter                Predicate filter
    * @param stopOnFirstOccurrence Stop on first occurrence find if <code>true</code>. Otherwise, takes all occurrences.
    */
-  public ProcessOutputReader(InputStream inputStream, Rule<String> filter, boolean stopOnFirstOccurrence)
+  public ProcessOutputReader(InputStream inputStream, final Rule<String> filter, boolean stopOnFirstOccurrence)
   {
     this.inputStream = inputStream;
     this.stringBuffer = new StringBuffer();
@@ -127,6 +128,21 @@ public class ProcessOutputReader extends Thread
     {
       // Do nothing
     }
+
+    this.ruleCounter = new Rule<String>()
+    {
+
+      @Override
+      public boolean accept(String element)
+      {
+        if (occurrenceCounter.isValid() && filter.accept(element))
+        {
+          stringBuffer.append(element).append('\n');
+          occurrenceCounter.increment();
+        }
+        return (occurrenceCounter.isValid() && filter.accept(element));
+      }
+    };
   }
 
   /**
@@ -151,12 +167,7 @@ public class ProcessOutputReader extends Thread
     {
       synchronized (stringBuffer)
       {
-        String a_line = text_reader.nextLine();
-        if (filter.accept(a_line))
-        {
-          stringBuffer.append(a_line).append('\n');
-        }
-        occurrenceCounter.increment();
+        this.ruleCounter.accept(text_reader.nextLine());
       }
     }
 
