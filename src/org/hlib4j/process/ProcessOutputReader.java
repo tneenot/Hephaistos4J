@@ -35,7 +35,6 @@ public class ProcessOutputReader extends Thread
 {
   private final InputStream inputStream;
   private final StringBuffer stringBuffer;
-  private final Rule<String> filter;
   private final Rule<String> ruleCounter;
   private Counter occurrenceCounter;
 
@@ -113,7 +112,6 @@ public class ProcessOutputReader extends Thread
   {
     this.inputStream = inputStream;
     this.stringBuffer = new StringBuffer();
-    this.filter = filter;
 
     try
     {
@@ -147,6 +145,7 @@ public class ProcessOutputReader extends Thread
 
   /**
    * Gets the output result.
+   *
    * @return The output result string or <code>null</code> value if the criteria is not applicable.
    */
   public String getOutputResult()
