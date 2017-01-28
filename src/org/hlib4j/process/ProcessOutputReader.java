@@ -35,7 +35,7 @@ public class ProcessOutputReader extends Thread
 {
   private final InputStream inputStream;
   private final StringBuffer stringBuffer;
-  private final Predicate<String> filter;
+  private final Predicate<String> ruleCounter;
   private Counter occurrenceCounter;
 
   /**
@@ -97,7 +97,6 @@ public class ProcessOutputReader extends Thread
   {
     this.inputStream = inputStream;
     this.stringBuffer = new StringBuffer();
-    this.filter = filter;
 
     try
     {
@@ -112,10 +111,33 @@ public class ProcessOutputReader extends Thread
     {
       // Do nothing
     }
+
+    this.ruleCounter = new Predicate<String>()
+    {
+
+      /**
+       * Evaluates this predicate on the given argument.
+       *
+       * @param element the input argument
+       * @return {@code true} if the input argument matches the predicate,
+       * otherwise {@code false}
+       */
+      @Override
+      public boolean test(String element)
+      {
+        if (occurrenceCounter.isValid() && filter.test(element))
+        {
+          stringBuffer.append(element).append('\n');
+          occurrenceCounter.increment();
+        }
+        return (occurrenceCounter.isValid() && filter.test(element));
+      }
+    };
   }
 
   /**
    * Gets the output result.
+   *
    * @return The output result string or an empty string.
    */
   public String getOutputResult()
@@ -131,12 +153,7 @@ public class ProcessOutputReader extends Thread
     {
       synchronized (stringBuffer)
       {
-        String a_line = text_reader.nextLine();
-        if (filter.test(a_line))
-        {
-          stringBuffer.append(a_line).append('\n');
-        }
-        occurrenceCounter.increment();
+        this.ruleCounter.test(text_reader.nextLine());
       }
     }
 
