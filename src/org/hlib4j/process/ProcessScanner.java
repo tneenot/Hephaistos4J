@@ -135,11 +135,7 @@ public class ProcessScanner extends Thread
     String final_output_result = null;
     if (null != outputCapture)
     {
-      String output_result = outputCapture.getOutputResult();
-      if (null != output_result && filterResult.accept(output_result))
-      {
-        final_output_result = output_result;
-      }
+      final_output_result = outputCapture.getOutputResult();
     }
 
     if (null != errorCapture)
