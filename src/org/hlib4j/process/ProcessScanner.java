@@ -36,6 +36,7 @@ public class ProcessScanner extends Thread
   private final Predicate<String> filterResult;
   private final ProcessBuilder processBuilder;
   private final boolean firstInstanceOnly;
+  private final FactoryOutputStreamReader factoryOutputStreamReader;
   private int exitValue;
   private ProcessOutputReader outputCapture;
   private ProcessOutputReader errorCapture;
@@ -87,10 +88,25 @@ public class ProcessScanner extends Thread
    */
   public ProcessScanner(ProcessBuilder processBuilder, Predicate<String> filter, boolean firstInstanceOnly)
   {
+    this(processBuilder, filter, firstInstanceOnly, new ProcessOutputStreamFactory());
+  }
+
+  /**
+   * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
+   *
+   * @param processBuilder            The process builder associated with this instance.
+   * @param filter                    The predicate filter that will control the final result.
+   * @param firstInstanceOnly         Stop on first instance if <code>true</code>, <code>false</code> otherwise.
+   * @param factoryOutputStreamReader The factory output stream to use with this instance.
+   */
+  public ProcessScanner(ProcessBuilder processBuilder, Predicate<String> filter, boolean firstInstanceOnly,
+                        FactoryOutputStreamReader factoryOutputStreamReader)
+  {
     this.processBuilder = processBuilder;
     this.filterResult = States.validateNotNullOnly(filter);
     this.firstInstanceOnly = firstInstanceOnly;
     this.exitValue = -1;
+    this.factoryOutputStreamReader = States.validateNotNullOnly(factoryOutputStreamReader);
   }
 
   /**
@@ -131,8 +147,10 @@ public class ProcessScanner extends Thread
     try
     {
       associatedProcess = this.processBuilder.start();
-      outputCapture = new ProcessOutputReader(associatedProcess.getInputStream(), filterResult, firstInstanceOnly);
-      errorCapture = new ProcessOutputReader(associatedProcess.getErrorStream(), filterResult, firstInstanceOnly);
+      outputCapture = factoryOutputStreamReader.makeOutputStream(associatedProcess.getInputStream(), filterResult,
+        firstInstanceOnly);
+      errorCapture = factoryOutputStreamReader.makeOutputStream(associatedProcess.getErrorStream(), filterResult,
+        firstInstanceOnly);
 
       outputCapture.start();
       errorCapture.start();

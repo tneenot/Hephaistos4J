@@ -97,4 +97,35 @@ public class ProcessScannerTest
   {
     new ProcessScanner(this.processBuilder, (Predicate<String>) null, false);
   }
+
+  @Test
+  public void test_getOutputResultAsString_AfterRunningWithEmptyFilter_NoNullValue() throws InterruptedException
+  {
+    ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "");
+    process_scanner.run();
+
+    Assert.assertNotNull(process_scanner.getOutputResultAsString());
+  }
+
+  @Test
+  public void test_getOutputResultAsString_WithSubstituteValue_SubstituteValueReturned()
+  {
+    ProcessScanner process_scanner = new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), element -> element
+      .contains("r"), false, new ProcessOutputReaderSubstituteFactory(element -> null != element && !element.contains("booboo"), "foo"));
+
+    process_scanner.run();
+
+    Assert.assertTrue(process_scanner.getOutputResultAsString().contains("foo"));
+  }
+
+  @Test
+  public void test_getOutputResultAsString_WithSubstituteValueButRealValueFound_RealValueReturned() throws InterruptedException
+  {
+    ProcessScanner process_scanner = new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.241"), element ->
+      element.contains("unreachable"), false, new ProcessOutputReaderSubstituteFactory(element -> null != element && !element.contains("sendto"), "foo"));
+    process_scanner.start();
+    process_scanner.join(5000);
+
+    Assert.assertTrue((!process_scanner.getOutputResultAsString().contains("foo") && process_scanner.getOutputResultAsString().contains("unreachable")));
+  }
 }
