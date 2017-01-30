@@ -106,9 +106,22 @@ public class ProcessScannerTest
   }
 
   @Test(expected = AssertionError.class)
-  public void test_Constructor_NullRuleFilterAndBoolean_AwaitingResult()
+  public void test_Constructor_NullRuleFilterAndBoolean_AwaitingException()
   {
     new ProcessScanner(this.processBuilder, (Rule<String>) null, false);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void test_Constructor_NullFactoryParameter_AwaitingException()
+  {
+    new ProcessScanner(this.processBuilder, new Rule<String>()
+    {
+      @Override
+      public boolean accept(String element)
+      {
+        return false;
+      }
+    }, true, null);
   }
 
   @Test

@@ -29,13 +29,16 @@ import java.io.IOException;
  * Convenient class to get the first string output result for the process builder. Once the standard output or error of the
  * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
  * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
- * end of the underlying process, or if it receives a thread interrupted signal.
+ * end of the underlying process, or if it receives a thread interrupted signal.<br><br>
+ *
+ * It's possible to specify a specific output stream reader to use with {@link #ProcessScanner(ProcessBuilder, Rule, boolean, FactoryOutputStream)} constructor. The factory uses by default is a type of {@link FactoryOutputStream}. This convenience constructor allows to define a specific output stream class reader for specific usages.
  */
 public class ProcessScanner extends Thread
 {
   private final Rule<String> filterResult;
   private final ProcessBuilder processBuilder;
   private final boolean firstInstanceOnly;
+  private final FactoryOutputStream factoryOutputStream;
   private int exitValue;
   private ProcessOutputReader outputCapture;
   private ProcessOutputReader errorCapture;
@@ -102,10 +105,24 @@ public class ProcessScanner extends Thread
    */
   public ProcessScanner(ProcessBuilder processBuilder, Rule<String> filter, boolean firstInstanceOnly)
   {
+    this(processBuilder, filter, firstInstanceOnly, new FactoryOutputStream());
+  }
+
+  /**
+   * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
+   *
+   * @param processBuilder      The process builder associated with this instance.
+   * @param filter              The predicate filter that will control the final result.
+   * @param firstInstanceOnly   Stop on first instance if <code>true</code>, <code>false</code> otherwise.
+   * @param factoryOutputStream The factory output stream to use with this instance.
+   */
+  public ProcessScanner(ProcessBuilder processBuilder, Rule<String> filter, boolean firstInstanceOnly, FactoryOutputStream factoryOutputStream)
+  {
     this.processBuilder = processBuilder;
     this.filterResult = States.validateNotNullOnly(filter);
     this.firstInstanceOnly = firstInstanceOnly;
     this.exitValue = -1;
+    this.factoryOutputStream = States.validateNotNullOnly(factoryOutputStream);
   }
 
   /**
@@ -146,8 +163,8 @@ public class ProcessScanner extends Thread
     try
     {
       associatedProcess = this.processBuilder.start();
-      outputCapture = new ProcessOutputReader(associatedProcess.getInputStream(), filterResult, firstInstanceOnly);
-      errorCapture = new ProcessOutputReader(associatedProcess.getErrorStream(), filterResult, firstInstanceOnly);
+      outputCapture = factoryOutputStream.makeOutputStream(associatedProcess.getInputStream(), filterResult, firstInstanceOnly);
+      errorCapture = factoryOutputStream.makeOutputStream(associatedProcess.getErrorStream(), filterResult, firstInstanceOnly);
 
       outputCapture.start();
       errorCapture.start();
