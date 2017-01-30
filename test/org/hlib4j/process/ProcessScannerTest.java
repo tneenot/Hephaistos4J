@@ -141,9 +141,9 @@ public class ProcessScannerTest
       @Override
       public boolean accept(String element)
       {
-        return element.contains("foo");
+        return element.contains("r");
       }
-    }, false, new ProcessOutputReaderSubstituteFactory("foo"));
+    }, false, new ProcessOutputReaderSubstituteFactory("booboo", "foo"));
 
     process_scanner.run();
 
@@ -160,10 +160,10 @@ public class ProcessScannerTest
       {
         return element.contains("unreachable");
       }
-    }, false, new ProcessOutputReaderSubstituteFactory("foo"));
+    }, false, new ProcessOutputReaderSubstituteFactory("sendmsg", "foo"));
     process_scanner.start();
     process_scanner.join(5000);
 
-    Assert.assertTrue((process_scanner.getOutputResultAsString().contains("foo") && process_scanner.getOutputResultAsString().contains("unreachable")));
+    Assert.assertTrue((!process_scanner.getOutputResultAsString().contains("foo") && process_scanner.getOutputResultAsString().contains("unreachable")));
   }
 }

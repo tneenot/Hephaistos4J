@@ -11,19 +11,22 @@ import java.io.InputStream;
 public class ProcessOutputReaderSubstituteFactory implements FactoryOutputStreamReader
 {
   private final String substituteValue;
+  private final String initialState;
 
   /**
    * Builds an instance of factory with the substitute value to used to if the awaiting filter value hadn't got.
    *
-   * @param substituteValue Subtitute value to used. Must be not <code>null</code>.
+   * @param initialValue Initial value that will be used as reference to decide if substitute value must be setting or not.
+   * @param substituteValue Substitute value to used. Must be not <code>null</code>.
    */
-  public ProcessOutputReaderSubstituteFactory(String substituteValue)
+  public ProcessOutputReaderSubstituteFactory(String initialValue, String substituteValue)
   {
+    this.initialState = States.validateNotNullOnly(initialValue);
     this.substituteValue = States.validateNotNullOnly(substituteValue);
   }
 
   @Override
-  public ProcessOutputReader makeOutputStream(InputStream inputStream, Rule<String> filter, boolean stopOnFirstOccurrence)
+  public ProcessOutputReader makeOutputStream(final InputStream inputStream, Rule<String> filter, boolean stopOnFirstOccurrence)
   {
     return new ProcessOutputReader(inputStream, filter, stopOnFirstOccurrence)
     {
@@ -31,7 +34,7 @@ public class ProcessOutputReaderSubstituteFactory implements FactoryOutputStream
       public String getOutputResult()
       {
         String output_result = super.getOutputResult();
-        if (output_result == null)
+        if (null != output_result && !output_result.contains(initialState))
         {
           return substituteValue;
         }
