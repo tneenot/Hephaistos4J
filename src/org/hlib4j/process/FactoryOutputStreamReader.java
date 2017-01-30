@@ -5,9 +5,9 @@ import org.hlib4j.concept.Rule;
 import java.io.InputStream;
 
 /**
- * Factory class to create the output stream readers for the given process..
+ * Defines a factory output stream reader concept. This interface allows to specify specific output stream reader for specific usages.
  */
-public class FactoryOutputStream
+public interface FactoryOutputStreamReader
 {
   /**
    * Creates an instance of stream readers for the given input stream
@@ -17,8 +17,5 @@ public class FactoryOutputStream
    * @param stopOnFirstOccurrence Stop on first occurrence find from the input stream if <code>true</code>. Otherwise takes all occurrences.
    * @return An instance of {@link ProcessOutputReader}.
    */
-  public ProcessOutputReader makeOutputStream(InputStream inputStream, Rule<String> filter, boolean stopOnFirstOccurrence)
-  {
-    return new ProcessOutputReader(inputStream, filter, stopOnFirstOccurrence);
-  }
+  ProcessOutputReader makeOutputStream(InputStream inputStream, Rule<String> filter, boolean stopOnFirstOccurrence);
 }
