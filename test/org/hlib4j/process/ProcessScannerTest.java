@@ -172,7 +172,7 @@ public class ProcessScannerTest
       @Override
       public boolean accept(String element)
       {
-        return null != element && !element.contains("sendmsg");
+        return null != element && !element.contains("sendto");
       }
     }, "foo"));
     process_scanner.start();
