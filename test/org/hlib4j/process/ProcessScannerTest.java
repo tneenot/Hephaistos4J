@@ -143,7 +143,14 @@ public class ProcessScannerTest
       {
         return element.contains("r");
       }
-    }, false, new ProcessOutputReaderSubstituteFactory("booboo", "foo"));
+    }, false, new ProcessOutputReaderSubstituteFactory(new Rule<String>()
+    {
+      @Override
+      public boolean accept(String element)
+      {
+        return null != element && !element.contains("booboo");
+      }
+    }, "foo"));
 
     process_scanner.run();
 
@@ -160,7 +167,14 @@ public class ProcessScannerTest
       {
         return element.contains("unreachable");
       }
-    }, false, new ProcessOutputReaderSubstituteFactory("sendmsg", "foo"));
+    }, false, new ProcessOutputReaderSubstituteFactory(new Rule<String>()
+    {
+      @Override
+      public boolean accept(String element)
+      {
+        return null != element && !element.contains("sendmsg");
+      }
+    }, "foo"));
     process_scanner.start();
     process_scanner.join(5000);
 
