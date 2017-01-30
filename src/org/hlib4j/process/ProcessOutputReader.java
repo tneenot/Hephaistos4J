@@ -162,7 +162,7 @@ public class ProcessOutputReader extends Thread
   public void run()
   {
     Scanner text_reader = new Scanner(this.inputStream);
-    while (occurrenceCounter.isValid() && text_reader.hasNextLine())
+    while (occurrenceCounter.isValid() && text_reader.hasNext())
     {
       synchronized (stringBuffer)
       {
