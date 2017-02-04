@@ -18,7 +18,7 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.math.Counter;
 import org.hlib4j.math.RangeException;
@@ -76,7 +76,7 @@ public class ProcessDelayTest
   {
     ProcessDelay process_delay = createValidTask();
     process_delay.run();
-    Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
+    Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getStandardOutput().getOutputResult()));
   }
 
   @Test
@@ -87,7 +87,7 @@ public class ProcessDelayTest
     start_thread.start();
     start_thread.join();
 
-    Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
+    Assert.assertFalse(States.isNullOrEmpty(process_delay.getProcessScanner().getStandardOutput().getOutputResult()));
   }
 
   @Test
@@ -99,7 +99,7 @@ public class ProcessDelayTest
     start_thread.start();
     start_thread.join();
 
-    Assert.assertTrue(States.isNullOrEmpty(process_delay.getProcessScanner().getOutputResultAsString()));
+    Assert.assertTrue(States.isNullOrEmpty(process_delay.getProcessScanner().getErrorOutput().getOutputResult()));
   }
 
   @Test
@@ -115,7 +115,7 @@ public class ProcessDelayTest
     start_thread.join();
 
     // Result
-    String string_result = process_delay.getProcessScanner().getOutputResultAsString();
+    String string_result = process_delay.getProcessScanner().getErrorOutput().getOutputResult();
     Assert.assertTrue(string_result.contains("unreachable"));
   }
 

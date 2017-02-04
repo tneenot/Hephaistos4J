@@ -18,7 +18,7 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.math.Counter;
 import org.hlib4j.math.RangeException;
@@ -103,7 +103,7 @@ public class ProcessFutureTest
     ProcessFuture process_future = new ProcessFuture(new ProcessDelay(new ProcessScanner(new ProcessBuilder("ls", "-l", "/"), "r"), counter_delay), 5000);
     process_future.run();
 
-    Assert.assertNotNull(((ProcessDelay) process_future.getRunnableTask()).getProcessScanner().getOutputResultAsString());
+    Assert.assertNotNull(((ProcessDelay) process_future.getRunnableTask()).getProcessScanner().getStandardOutput().getOutputResult());
   }
 }
 

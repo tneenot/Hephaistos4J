@@ -18,7 +18,7 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.util.States;
 
@@ -27,8 +27,8 @@ import java.util.function.Predicate;
 
 /**
  * Convenient class to get the first string output result for the process builder. Once the standard output or error of the
- * underlying process builder returns the awaiting result, the {@link #getOutputResultAsString()} will return the
- * first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
+ * underlying process builder returns the awaiting result, the {@link #getStandardOutput()}} or the {@link #getErrorOutput()} will
+ * return the first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
  * end of the underlying process, or if it receives a thread interrupted signal.
  */
 public class ProcessScanner extends Thread
@@ -110,34 +110,22 @@ public class ProcessScanner extends Thread
   }
 
   /**
-   * The output result that's verifying the filter result.
-   *
-   * @return The output that's verifying the filter result or <code>null</code>.
+   * Gets the standard output result
+   * @return The standard output result
    */
-  public synchronized String getOutputResultAsString()
+  public ProcessOutputReader getStandardOutput()
   {
-    String final_output_result = null;
-    if (null != outputCapture)
-    {
-      String output_result = outputCapture.getOutputResult();
-      if (null != output_result && filterResult.test(output_result))
-      {
-        final_output_result = output_result;
-      }
-    }
+    return this.outputCapture;
+  }
 
-    if (null != errorCapture)
-    {
-      if (null != final_output_result)
-      {
-        final_output_result += "-" + errorCapture.getOutputResult();
-      } else
-      {
-        final_output_result = errorCapture.getOutputResult();
-      }
-    }
-
-    return final_output_result;
+  /**
+   * Gets the error output result
+   *
+   * @return The error output result.
+   */
+  public ProcessOutputReader getErrorOutput()
+  {
+    return this.errorCapture;
   }
 
   @Override
@@ -193,7 +181,7 @@ public class ProcessScanner extends Thread
 
     if (this.exitValue == -1)
     {
-      this.exitValue = getOutputResultAsString() == null ? -1 : 0;
+      this.exitValue = getStandardOutput().getOutputResult() == null ? -1 : 0;
     }
     super.interrupt();
   }

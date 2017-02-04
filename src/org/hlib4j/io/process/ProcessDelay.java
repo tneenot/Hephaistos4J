@@ -18,9 +18,10 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.math.Counter;
+import org.hlib4j.util.States;
 
 import java.util.concurrent.*;
 
@@ -76,7 +77,8 @@ public class ProcessDelay implements Runnable
       {
         processScanner.run();
 
-        if (processScanner.getOutputResultAsString() == null && counterDelay.isValid())
+        if (!(States.isNullOrEmpty(processScanner.getStandardOutput().getOutputResult()) || States.isNullOrEmpty
+          (processScanner.getErrorOutput().getOutputResult())) && counterDelay.isValid())
         {
           counterDelay.increment();
           try
@@ -88,7 +90,8 @@ public class ProcessDelay implements Runnable
           }
         }
       }
-      while (processScanner.getOutputResultAsString() == null && counterDelay.isValid());
+      while (!(States.isNullOrEmpty(processScanner.getStandardOutput().getOutputResult()) || States.isNullOrEmpty
+        (processScanner.getErrorOutput().getOutputResult())) && counterDelay.isValid());
     }, null);
 
     executorService.execute(futureTask);

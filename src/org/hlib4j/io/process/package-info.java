@@ -1,7 +1,7 @@
 /*
  * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -22,4 +22,4 @@
  * Conveniences classes to proceed processes and capture their results. Some processes can be proceed according to an amount
  * of time waiting.
  */
-package org.hlib4j.process;
+package org.hlib4j.io.process;

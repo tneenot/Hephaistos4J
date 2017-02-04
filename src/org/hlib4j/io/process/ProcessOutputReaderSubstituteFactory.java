@@ -18,7 +18,7 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.util.States;
 
@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.util.function.Predicate;
 
 /**
- * Create an output reader with a substitute value as final result if the awaiting one hadn't got.
+ * Create an output reader with a substitute value as final result if the awaiting one doesn't exist.
  */
 public class ProcessOutputReaderSubstituteFactory implements FactoryOutputStreamReader
 {

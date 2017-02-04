@@ -18,23 +18,20 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import java.io.InputStream;
 import java.util.function.Predicate;
 
 /**
- * Defines a factory output stream reader concept. This interface allows to specify specific output stream reader for specific usages.
+ * Factory class to create the output stream readers for the given process..
  */
-public interface FactoryOutputStreamReader
+public class ProcessOutputStreamFactory implements FactoryOutputStreamReader
 {
-  /**
-   * Creates an instance of stream readers for the given input stream
-   *
-   * @param inputStream           Stream to read
-   * @param filter                Filter rule to apply
-   * @param stopOnFirstOccurrence Stop on first occurrence find from the input stream if <code>true</code>. Otherwise takes all occurrences.
-   * @return An instance of {@link ProcessOutputReader}.
-   */
-  ProcessOutputReader makeOutputStream(InputStream inputStream, Predicate<String> filter, boolean stopOnFirstOccurrence);
+  @Override
+  public ProcessOutputReader makeOutputStream(InputStream inputStream, Predicate<String> filter, boolean
+    stopOnFirstOccurrence)
+  {
+    return new ProcessOutputReader(inputStream, filter, stopOnFirstOccurrence);
+  }
 }
