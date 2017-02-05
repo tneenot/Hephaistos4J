@@ -1,7 +1,7 @@
 /*
  * Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2016 Tioben Neenot
+ *  Copyright (C) 2017 Tioben Neenot
  *
  *  This program is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
@@ -71,6 +71,25 @@ public class States {
     public static <T> boolean isNullOrEmptyArray(T[] array) {
         return isNullOrEmpty(array) || array.length == 0;
     }
+
+  /**
+   * Controls if one of the given element is <code>null</code> or empty.
+   *
+   * @param elements Elements to control
+   * @param <T>      Type of element
+   * @return <code>true</code> if one of these elements is <code>null</code> or empty, <code>false</code> otherwise.
+   */
+  public static <T> boolean isOneNullOrEmpty(T... elements)
+  {
+    boolean is_one_null = States.isNullOrEmpty(elements) | States.isNullOrEmptyArray(elements);
+
+    for (int idx = 0; is_one_null == false && idx < elements.length; ++idx)
+    {
+      is_one_null |= States.isNullOrEmpty(elements[idx]);
+    }
+
+    return is_one_null;
+  }
 
 
 	/**
