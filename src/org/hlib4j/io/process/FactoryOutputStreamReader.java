@@ -1,4 +1,4 @@
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.concept.Rule;
 

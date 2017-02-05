@@ -18,9 +18,10 @@
  *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package org.hlib4j.process;
+package org.hlib4j.io.process;
 
 import org.hlib4j.concept.Rule;
+import org.hlib4j.util.States;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class ProcessScannerTest
   public void test_getOutputResultAsString_Default_NullValue()
   {
     ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "");
-    Assert.assertNull(process_scanner.getOutputResultAsString());
+    Assert.assertTrue(States.isNullOrEmpty(process_scanner.getStandardOutput()));
   }
 
   @Test
@@ -84,7 +85,7 @@ public class ProcessScannerTest
     process_scanner.start();
     process_scanner.join(5000);
 
-    Assert.assertNotNull(process_scanner.getOutputResultAsString());
+    Assert.assertNotNull(process_scanner.getErrorOutput());
   }
 
   @Test(expected = AssertionError.class)
@@ -130,7 +131,7 @@ public class ProcessScannerTest
     ProcessScanner process_scanner = new ProcessScanner(this.processBuilder, "");
     process_scanner.run();
 
-    Assert.assertNotNull(process_scanner.getOutputResultAsString());
+    Assert.assertNotNull(process_scanner.getStandardOutput());
   }
 
   @Test
@@ -154,7 +155,7 @@ public class ProcessScannerTest
 
     process_scanner.run();
 
-    Assert.assertTrue(process_scanner.getOutputResultAsString().contains("foo"));
+    Assert.assertTrue(process_scanner.getStandardOutput().getOutputResult().contains("foo"));
   }
 
   @Test
@@ -178,6 +179,7 @@ public class ProcessScannerTest
     process_scanner.start();
     process_scanner.join(5000);
 
-    Assert.assertTrue((!process_scanner.getOutputResultAsString().contains("foo") && process_scanner.getOutputResultAsString().contains("unreachable")));
+    Assert.assertTrue((!process_scanner.getErrorOutput().getOutputResult().contains("foo") && process_scanner
+      .getErrorOutput().getOutputResult().contains("unreachable")));
   }
 }

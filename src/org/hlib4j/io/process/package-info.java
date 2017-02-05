@@ -22,4 +22,4 @@
  * Conveniences classes to proceed processes and capture their results. Some processes can be proceed according to an amount
  * of time waiting.
  */
-package org.hlib4j.process;
+package org.hlib4j.io.process;
