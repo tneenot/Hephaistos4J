@@ -179,7 +179,7 @@ public class ProcessScannerTest
     process_scanner.start();
     process_scanner.join(5000);
 
-    Assert.assertTrue((!process_scanner.getErrorOutput().getOutputResult().contains("foo") && process_scanner
+    Assert.assertTrue((process_scanner.getErrorOutput().getOutputResult().contains("foo") && !process_scanner
       .getErrorOutput().getOutputResult().contains("unreachable")));
   }
 }
