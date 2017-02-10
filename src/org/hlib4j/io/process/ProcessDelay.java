@@ -77,7 +77,7 @@ public class ProcessDelay implements Runnable
       {
         processScanner.run();
 
-        if (!(States.isOneNullOrEmpty(processScanner.getStandardOutput().getOutputResult(), processScanner
+        if ((States.isNullOrEmpty(processScanner.getStandardOutput().getOutputResult()) && States.isNullOrEmpty(processScanner
           .getErrorOutput().getOutputResult())) && counterDelay.isValid())
         {
           counterDelay.increment();
@@ -88,10 +88,12 @@ public class ProcessDelay implements Runnable
           {
             // Do nothing
           }
+        } else
+        {
+          counterDelay.invalidate();
         }
       }
-      while (!(States.isOneNullOrEmpty(processScanner.getStandardOutput().getOutputResult(), processScanner
-        .getErrorOutput().getOutputResult())) && counterDelay.isValid());
+      while (counterDelay.isValid());
     }, null);
 
     executorService.execute(futureTask);
