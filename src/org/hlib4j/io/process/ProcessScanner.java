@@ -44,6 +44,23 @@ public class ProcessScanner extends Thread
   private ProcessOutputReader errorCapture;
   private Process associatedProcess;
 
+
+  /**
+   * Builds an instance of process scanner and accepts all output.
+   *
+   * @param processBuilder Process builder associated to this scanner.
+   */
+  public ProcessScanner(ProcessBuilder processBuilder)
+  {
+    this(processBuilder, new Rule<String>()
+    {
+      @Override
+      public boolean accept(String element)
+      {
+        return true;
+      }
+    }, false);
+  }
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter. Takes on first
    * occurrence or not according to <code>firstInstanceOnly</code> value.

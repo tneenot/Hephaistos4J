@@ -182,4 +182,20 @@ public class ProcessScannerTest
     Assert.assertTrue((process_scanner.getErrorOutput().getOutputResult().contains("foo") && !process_scanner
       .getErrorOutput().getOutputResult().contains("unreachable")));
   }
+
+  @Test
+  public void test_Constructor_ProcessBuilderOnly_BuildWithoutError()
+  {
+    new ProcessScanner(processBuilder);
+  }
+
+  @Test
+  public void test_Constructor_ProcessBuilderOnlyAndRunProcess_AllOutputCaptured()
+  {
+    ProcessScanner process_scanner = new ProcessScanner(processBuilder);
+    process_scanner.run();
+
+    String[] lines = process_scanner.getStandardOutput().getOutputResult().split("\n");
+    Assert.assertTrue(lines.length > 1);
+  }
 }
