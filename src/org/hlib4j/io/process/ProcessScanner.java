@@ -181,7 +181,13 @@ public class ProcessScanner extends Thread
 
     if (this.exitValue == -1)
     {
-      this.exitValue = getStandardOutput().getOutputResult() == null ? -1 : 0;
+      try
+      {
+        this.exitValue = getStandardOutput().getOutputResult() == null ? -1 : 0;
+      } catch (NullPointerException e)
+      {
+        // Do nothing. In some certain circumstances due to concurret access we can get a NullPointerException.
+      }
     }
     super.interrupt();
   }

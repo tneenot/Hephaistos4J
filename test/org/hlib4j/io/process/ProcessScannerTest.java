@@ -123,7 +123,7 @@ public class ProcessScannerTest
   public void test_getOutputResultAsString_WithSubstituteValueButRealValueFound_RealValueReturned() throws InterruptedException
   {
     ProcessScanner process_scanner = new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.241"), element ->
-      element.contains("unreachable"), false, new ProcessOutputReaderSubstituteFactory(element -> null != element && !element.contains("sendto"), "foo"));
+      element.contains("unreachable"), false, new ProcessOutputReaderSubstituteFactory(element -> null != element && !element.contains("send"), "foo"));
     process_scanner.start();
     process_scanner.join(5000);
 
