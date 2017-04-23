@@ -86,7 +86,8 @@ public class Counter extends Range<Integer>
      *
      * @return The new value after increment.
      */
-    public int increment() {
+    public synchronized int increment()
+    {
         return incrementByStep(this.counterStep);
     }
 
@@ -97,7 +98,8 @@ public class Counter extends Range<Integer>
      * @param step Incrementation step value.
      * @return The new value after increment.
      */
-    public int incrementByStep(int step) {
+    public synchronized int incrementByStep(int step)
+    {
         return computeNewValue(this.getCurrentValue() + step);
     }
 
@@ -116,7 +118,8 @@ public class Counter extends Range<Integer>
      *
      * @return The new value after decrement.
      */
-    public int decrement() {
+    public synchronized int decrement()
+    {
         return decrementByStep(this.counterStep);
     }
 
@@ -127,7 +130,8 @@ public class Counter extends Range<Integer>
      * @param step Decrementing step value.
      * @return The new value after decrement.
      */
-    public int decrementByStep(int step) {
+    public synchronized int decrementByStep(int step)
+    {
         return computeNewValue(this.getCurrentValue() - step);
     }
 
@@ -164,7 +168,8 @@ public class Counter extends Range<Integer>
      * }, {@link #incrementByStep(int)}, {@link #decrement()} or {@link #decrementByStep(int)} don't change the current value, since this
      * counter is not valid again.
      */
-    public boolean isValid() {
+    public synchronized boolean isValid()
+    {
         return this.isValidCounter;
     }
 
@@ -181,7 +186,8 @@ public class Counter extends Range<Integer>
      *
      * @return <code>true</code> if counter has been rearm with its default initial value.
      */
-    public boolean rearm() {
+    public synchronized boolean rearm()
+    {
         try {
             setCurrentValue(this.initialValue);
         } catch (RangeException e) {
