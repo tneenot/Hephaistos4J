@@ -40,49 +40,53 @@ import java.util.function.Predicate;
  * @param <E> Element of the processing.
  * @author Tioben Neenot
  */
-public abstract class Processing<E> implements Predicate<E> {
+public abstract class Processing<E> implements Predicate<E>
+{
 
-    /**
-     * Predicate for this processing class.
-     */
-    private Predicate<E> predicate = null;
+  /**
+   * Predicate for this processing class.
+   */
+  private Predicate<E> predicate = null;
 
-    /**
-     * Default constructor that's implementing a predicate that's returning always
-     * {@code true}.
-     */
-    public Processing() {
-        this(p -> true);
-    }
+  /**
+   * Default constructor that's implementing a predicate that's returning always
+   * {@code true}.
+   */
+  public Processing()
+  {
+    this(p -> true);
+  }
 
-    /**
-     * Builds an instance of the Processing class with a predicate value
-     *
-     * @param predicate Predicate value
-     */
-    public Processing(Predicate<E> predicate) {
-        this.predicate = States.validate(predicate);
-    }
+  /**
+   * Builds an instance of the Processing class with a predicate value
+   *
+   * @param predicate Predicate value
+   */
+  public Processing(Predicate<E> predicate)
+  {
+    this.predicate = States.validate(predicate);
+  }
 
-    /**
-     * Evaluates this predicate on the given argument.
-     *
-     * @param e the input argument
-     * @return {@code true} if the input argument matches the predicate,
-     * otherwise {@code false}
-     */
-    @Override
-    public boolean test(E e) {
+  /**
+   * Evaluates this predicate on the given argument.
+   *
+   * @param e the input argument
+   * @return {@code true} if the input argument matches the predicate,
+   * otherwise {@code false}
+   */
+  @Override
+  public boolean test(E e)
+  {
 
-      return this.predicate.test(e);
+    return this.predicate.test(e);
 
-    }
+  }
 
-    /**
-     * Applies a treatment for the element given as parameter.
-     *
-     * @param e Element on which the treatment will be applied.
-     * @return The result of the perform task.
-     */
-    public abstract boolean perform(E e);
+  /**
+   * Applies a treatment for the element given as parameter.
+   *
+   * @param e Element on which the treatment will be applied.
+   * @return The result of the perform task.
+   */
+  public abstract boolean perform(E e);
 }

@@ -29,20 +29,21 @@ import java.util.Locale;
  *
  * @author Tioben Neenot
  */
-public interface I18n {
+public interface I18n
+{
 
-    /**
-     * Change the locale with the new one.
-     *
-     * @param locale New locale to apply.
-     */
-    void change(Locale locale);
+  /**
+   * Change the locale with the new one.
+   *
+   * @param locale New locale to apply.
+   */
+  void change(Locale locale);
 
-    /**
-     * Gets base name for current I18n implementation. This base name is using by
-     * internal ResourceBundle of implementation.
-     *
-     * @return Base name for current I18n implementation.
-     */
-    String getBaseName();
+  /**
+   * Gets base name for current I18n implementation. This base name is using by
+   * internal ResourceBundle of implementation.
+   *
+   * @return Base name for current I18n implementation.
+   */
+  String getBaseName();
 }

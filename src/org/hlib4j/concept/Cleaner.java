@@ -25,12 +25,13 @@ package org.hlib4j.concept;
  *
  * @author Tioben Neenot
  */
-public interface Cleaner {
+public interface Cleaner
+{
 
-    /**
-     * Perform the cleaning process.
-     *
-     * @return The number of elements that had been cleaned.
-     */
-    int clean();
+  /**
+   * Perform the cleaning process.
+   *
+   * @return The number of elements that had been cleaned.
+   */
+  int clean();
 }

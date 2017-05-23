@@ -111,6 +111,7 @@ public class ProcessScanner extends Thread
 
   /**
    * Gets the standard output result
+   *
    * @return The standard output result
    */
   public ProcessOutputReader getStandardOutput()

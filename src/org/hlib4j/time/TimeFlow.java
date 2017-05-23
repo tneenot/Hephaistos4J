@@ -27,21 +27,21 @@ import java.util.Date;
 
 /**
  * This class allows to compute the flow of time between two startTime and endTime marks time.
- *
+ * <p>
  * <H1>When TimeFlow is initializing ?</H1>
  * <code>TimeFlow</code> is considering as initialized, while {@link #begin()} or {@link #end()} was called. In this case
  * {@link #getStartTime()} and {@link #getEndTime()} will returned the value between the moment where the <code>begin</code>
  * or <code>end</code> was called. The {@link #getTimeFlow()} will return the amount of time between that's corresponding
  * between start and end time.
- *
+ * <p>
  * <H1>When TimeFlow is not initializing ?</H1>
  * <code>TimeFlow</code> is considering as not initialized while {@link #begin()} or {@link #end()} wasn't called. In this case
  * {@link #getStartTime()} and {@link #getEndTime()} will returned <code>-1</code> value. The {@link #getTimeFlow()} will raise
  * an <code>IllegalStateException</code>.
- *
+ * <p>
  * <H1>TimeFlow description</H1>
  * The time flow description is given with {@link #toString()}.
- *
+ * <p>
  * <H1>Time values management</H1>
  * While {@link #begin()} or {@link #end()} is calling alone, the {@link #getStartTime()} and {@link #getEndTime()} are equals.
  */
