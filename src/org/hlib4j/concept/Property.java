@@ -31,158 +31,164 @@ import org.hlib4j.util.States;
  */
 public class Property
 {
-	/**
-     * Flag to specify if the property is isReadOnly or not.
-     */
-    private boolean isReadOnly = false;
-    /**
-	 * Property name
-	 */
+  /**
+   * Flag to specify if the property is isReadOnly or not.
+   */
+  private boolean isReadOnly = false;
+  /**
+   * Property name
+   */
 
-	private String  name     = null;
-	/**
-	 * Property value
-	 */
+  private String name = null;
+  /**
+   * Property value
+   */
 
-	private Object  value    = null;
+  private Object value = null;
 
-	/**
-	 * Create an instance of the Property class with read/write status and no default value.
-	 *
-	 * @param name Property name
-	 * @throws IllegalArgumentException If name is <code>null</code> or empty
-	 */
-	public Property( String name ) throws IllegalArgumentException
-	{
-		this( name, false );
-	}
+  /**
+   * Create an instance of the Property class with read/write status and no default value.
+   *
+   * @param name Property name
+   * @throws IllegalArgumentException If name is <code>null</code> or empty
+   */
+  public Property(String name) throws IllegalArgumentException
+  {
+    this(name, false);
+  }
 
-	/**
-	 * Create an instance of the Property class with no default value.
-	 *
-	 * @param name     Property name
-     * @param readonly <code>true</code> if the property is isReadOnly, <code>false</code> otherwise.
-     * @throws IllegalArgumentException If name is <code>null</code> or empty
-	 */
-	public Property( String name, boolean readonly ) throws IllegalArgumentException
-	{
-        if (States.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("Null or empty name");
-        }
-
-		this.name = name;
-        this.isReadOnly = readonly;
+  /**
+   * Create an instance of the Property class with no default value.
+   *
+   * @param name     Property name
+   * @param readonly <code>true</code> if the property is isReadOnly, <code>false</code> otherwise.
+   * @throws IllegalArgumentException If name is <code>null</code> or empty
+   */
+  public Property(String name, boolean readonly) throws IllegalArgumentException
+  {
+    if (States.isNullOrEmpty(name))
+    {
+      throw new IllegalArgumentException("Null or empty name");
     }
 
-	/**
-     * Create an instance of the Property class with a isReadOnly status and default value. Even if the property is isReadOnly
-     * it's possible to set a default value with only this constructor. If the developer set a value later with the
-	 * <code>setValue(Object )</code> method, an exception will occur.
-	 *
-	 * @param name     Property name
-	 * @param value    Initial property value
-     * @param readonly Flag to specify if the property is isReadOnly or not.
-     * @throws IllegalArgumentException If name is null or empty
-	 */
-	public Property( String name, Object value, boolean readonly ) throws IllegalArgumentException
-	{
-		this( name, readonly );
-		this.value = value;
-	}
+    this.name = name;
+    this.isReadOnly = readonly;
+  }
 
-	/**
-	 * Gets the property name
-	 *
-	 * @return The property name
-	 */
-	public final String getName()
-	{
-		return name;
-	}
+  /**
+   * Create an instance of the Property class with a isReadOnly status and default value. Even if the property is isReadOnly
+   * it's possible to set a default value with only this constructor. If the developer set a value later with the
+   * <code>setValue(Object )</code> method, an exception will occur.
+   *
+   * @param name     Property name
+   * @param value    Initial property value
+   * @param readonly Flag to specify if the property is isReadOnly or not.
+   * @throws IllegalArgumentException If name is null or empty
+   */
+  public Property(String name, Object value, boolean readonly) throws IllegalArgumentException
+  {
+    this(name, readonly);
+    this.value = value;
+  }
 
-	/**
-	 * Gets the property value
-	 *
-	 * @return The property value
-	 */
-	public final Object getValue()
-	{
-		return value;
-	}
+  /**
+   * Gets the property name
+   *
+   * @return The property name
+   */
+  public final String getName()
+  {
+    return name;
+  }
 
-	/**
-	 * Sets a property value
-	 *
-	 * @param value Value to set for the property
-     * @throws UnsupportedOperationException If set a isReadOnly value.
-     */
-	public final void setValue( Object value ) throws UnsupportedOperationException
-	{
-		if (isReadOnly())
-		{
-            throw new UnsupportedOperationException("Readonly property");
-        }
+  /**
+   * Gets the property value
+   *
+   * @return The property value
+   */
+  public final Object getValue()
+  {
+    return value;
+  }
 
-		this.value = value;
-	}
-
-	/*
-	 * Override the equals to compare 2 instances of Property
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-    public boolean equals(Object object) {
-
-        try {
-            return equalsToThisProperty((Property) object);
-        } catch (ClassCastException e) {
-            // Do nothing else. Is not the same object type.
-        }
-
-		return false;
-	}
-
-    private boolean equalsToThisProperty(Property property) {
-        return null == getValue() ? equalsToNameAndReadOnlyStatus(property) : equalsToNameAndReadOnlyStatus(property) && getValue().equals(property.getValue());
+  /**
+   * Sets a property value
+   *
+   * @param value Value to set for the property
+   * @throws UnsupportedOperationException If set a isReadOnly value.
+   */
+  public final void setValue(Object value) throws UnsupportedOperationException
+  {
+    if (isReadOnly())
+    {
+      throw new UnsupportedOperationException("Readonly property");
     }
 
-    private boolean equalsToNameAndReadOnlyStatus(Property property) {
-        return getName().equals(property.getName()) && isReadOnly() == property.isReadOnly();
+    this.value = value;
+  }
+
+  /*
+   * Override the equals to compare 2 instances of Property
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object object)
+  {
+
+    try
+    {
+      return equalsToThisProperty((Property) object);
+    } catch (ClassCastException e)
+    {
+      // Do nothing else. Is not the same object type.
     }
 
-    /**
-     * Gets the hashCode for the property
-	 *
-	 * @return HashCode for the property
-	 */
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 19 * hash + ( this.name != null ? this.name.hashCode() : 0 );
-		hash = 19 * hash + ( this.value != null ? this.value.hashCode() : 0 );
-		return hash;
-	}
+    return false;
+  }
 
-	/**
-     * Defines if the property is isReadOnly or not
-     *
-     * @return <code>true</code> if the property is isReadOnly, <code>false</code> if the property is read/write.
-     */
-	public boolean isReadOnly()
-	{
-        return isReadOnly;
-    }
+  private boolean equalsToThisProperty(Property property)
+  {
+    return null == getValue() ? equalsToNameAndReadOnlyStatus(property) : equalsToNameAndReadOnlyStatus(property) && getValue().equals(property.getValue());
+  }
 
-	/**
-	 * Return the property description
-	 *
-	 * @return Property description
-	 */
-	@Override
-	public String toString()
-	{
-        return getName() + "=" + getValue() + " (isReadOnly:" + isReadOnly() + ")";
-    }
+  private boolean equalsToNameAndReadOnlyStatus(Property property)
+  {
+    return getName().equals(property.getName()) && isReadOnly() == property.isReadOnly();
+  }
+
+  /**
+   * Gets the hashCode for the property
+   *
+   * @return HashCode for the property
+   */
+  @Override
+  public int hashCode()
+  {
+    int hash = 7;
+    hash = 19 * hash + (this.name != null ? this.name.hashCode() : 0);
+    hash = 19 * hash + (this.value != null ? this.value.hashCode() : 0);
+    return hash;
+  }
+
+  /**
+   * Defines if the property is isReadOnly or not
+   *
+   * @return <code>true</code> if the property is isReadOnly, <code>false</code> if the property is read/write.
+   */
+  public boolean isReadOnly()
+  {
+    return isReadOnly;
+  }
+
+  /**
+   * Return the property description
+   *
+   * @return Property description
+   */
+  @Override
+  public String toString()
+  {
+    return getName() + "=" + getValue() + " (isReadOnly:" + isReadOnly() + ")";
+  }
 }

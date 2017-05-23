@@ -35,162 +35,171 @@ import java.lang.reflect.InvocationTargetException;
 public class ClassDefinitionTest
 {
 
-	/**
-	 * Properties list
-	 */
-	private PropertiesFactorFake properties = null;
+  /**
+   * Properties list
+   */
+  private PropertiesFactorFake properties = null;
 
 
-	@Before
-	public void setUp() throws Exception
-	{
-		properties = new PropertiesFactorFake();
-	}
+  @Before
+  public void setUp() throws Exception
+  {
+    properties = new PropertiesFactorFake();
+  }
 
 
-	@After
-	public void tearDown() throws Exception
-	{
-		properties = null;
-	}
+  @After
+  public void tearDown() throws Exception
+  {
+    properties = null;
+  }
 
-	@Test( expected = IllegalArgumentException.class )
-	public final void test_SetProperty_WithNullName_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
-			UnsupportedOperationException
-	{
-		properties.setPropertyValue( null, "toto" );
-	}
+  @Test(expected = IllegalArgumentException.class)
+  public final void test_SetProperty_WithNullName_IllegalArgumentException() throws IllegalArgumentException, InvocationTargetException,
+    UnsupportedOperationException
+  {
+    properties.setPropertyValue(null, "toto");
+  }
 
-	@Test( expected = IllegalArgumentException.class )
-    public final void test_SetProperty_EmptyNameWithNaturalForm_IllegalArgumentException() throws IllegalArgumentException,
-            InvocationTargetException,
-            UnsupportedOperationException
-	{
-		properties.setPropertyValue("", null);
-	}
+  @Test(expected = IllegalArgumentException.class)
+  public final void test_SetProperty_EmptyNameWithNaturalForm_IllegalArgumentException() throws IllegalArgumentException,
+    InvocationTargetException,
+    UnsupportedOperationException
+  {
+    properties.setPropertyValue("", null);
+  }
 
-	@Test( expected = IllegalArgumentException.class )
-    public final void test_SetProperty_EmptyNameWithVariantForm_IllegalArgumentException() throws IllegalArgumentException,
-            InvocationTargetException,
-            UnsupportedOperationException
-	{
-		properties.setPropertyValue( " ", null );
-	}
+  @Test(expected = IllegalArgumentException.class)
+  public final void test_SetProperty_EmptyNameWithVariantForm_IllegalArgumentException() throws IllegalArgumentException,
+    InvocationTargetException,
+    UnsupportedOperationException
+  {
+    properties.setPropertyValue(" ", null);
+  }
 
-	@Test( expected = InvocationTargetException.class )
-	public final void test_SetProperty_UnknownName_InvocationTargetException() throws IllegalArgumentException, InvocationTargetException,
-			UnsupportedOperationException
-	{
-		properties.setPropertyValue("toto", 1);
-	}
+  @Test(expected = InvocationTargetException.class)
+  public final void test_SetProperty_UnknownName_InvocationTargetException() throws IllegalArgumentException, InvocationTargetException,
+    UnsupportedOperationException
+  {
+    properties.setPropertyValue("toto", 1);
+  }
 
-	@Test
-    public final void test_SetProperty_ForReadWrite_PropertyUpdated() throws IllegalArgumentException, InvocationTargetException,
-            UnsupportedOperationException
-	{
-		properties.setPropertyValue( "age", 10 );
+  @Test
+  public final void test_SetProperty_ForReadWrite_PropertyUpdated() throws IllegalArgumentException, InvocationTargetException,
+    UnsupportedOperationException
+  {
+    properties.setPropertyValue("age", 10);
 
-		Assert.assertEquals(10, properties.getPropertyValue("age"));
-	}
+    Assert.assertEquals(10, properties.getPropertyValue("age"));
+  }
 
-	@Test( expected = UnsupportedOperationException.class )
-    public final void test_SetProperty_ForReadOnly_UnsupportedOperationException() throws IllegalArgumentException,
-            InvocationTargetException,
-            UnsupportedOperationException
-	{
-		properties.setPropertyValue("numSecu", "999");
-	}
+  @Test(expected = UnsupportedOperationException.class)
+  public final void test_SetProperty_ForReadOnly_UnsupportedOperationException() throws IllegalArgumentException,
+    InvocationTargetException,
+    UnsupportedOperationException
+  {
+    properties.setPropertyValue("numSecu", "999");
+  }
 
-	@Test
-    public final void test_GetProperty_ForValidName_ValidValue() throws IllegalArgumentException, InvocationTargetException {
-		Assert.assertEquals("1234567890", properties.getPropertyValue("numSecu"));
-	}
+  @Test
+  public final void test_GetProperty_ForValidName_ValidValue() throws IllegalArgumentException, InvocationTargetException
+  {
+    Assert.assertEquals("1234567890", properties.getPropertyValue("numSecu"));
+  }
 
-	@Test( expected = InvocationTargetException.class )
-	public final void test_GetProperty_InvalidName_InvocationTargetException() throws IllegalArgumentException,
-			InvocationTargetException {
-		properties.getPropertyValue( "toto" );
-	}
+  @Test(expected = InvocationTargetException.class)
+  public final void test_GetProperty_InvalidName_InvocationTargetException() throws IllegalArgumentException,
+    InvocationTargetException
+  {
+    properties.getPropertyValue("toto");
+  }
 
-	@Test( expected = IllegalArgumentException.class )
-	public final void test_GetProperty_NullName_IllegalArgumentException() throws IllegalArgumentException,
-            InvocationTargetException {
-		properties.getPropertyValue(null);
-	}
+  @Test(expected = IllegalArgumentException.class)
+  public final void test_GetProperty_NullName_IllegalArgumentException() throws IllegalArgumentException,
+    InvocationTargetException
+  {
+    properties.getPropertyValue(null);
+  }
 
-	@Test
-    public final void test_GetProperties_ValidList_NotNull() {
-		Assert.assertNotNull( properties.getProperties() );
-	}
+  @Test
+  public final void test_GetProperties_ValidList_NotNull()
+  {
+    Assert.assertNotNull(properties.getProperties());
+  }
 
-	@Test
-    public final void test_GetProperties_ValidListElement_NotNull() {
-		for ( Property p : properties.getProperties() )
-		{
-			Assert.assertNotNull( p );
-		}
-	}
+  @Test
+  public final void test_GetProperties_ValidListElement_NotNull()
+  {
+    for (Property p : properties.getProperties())
+    {
+      Assert.assertNotNull(p);
+    }
+  }
 
-	@Test( expected = UnsupportedOperationException.class )
-	public final void test_GetProperties_AddPropertyForbidden_UnsupportedOperationException() {
-		properties.getProperties().add( new Property( "Toto", 5, true ) );
-	}
+  @Test(expected = UnsupportedOperationException.class)
+  public final void test_GetProperties_AddPropertyForbidden_UnsupportedOperationException()
+  {
+    properties.getProperties().add(new Property("Toto", 5, true));
+  }
 
-	@Test
-	public final void test_GetProperties_UpdatePropertyValue_PropertyUpdated() throws IllegalAccessException {
-		// Modify all properties in read/write mode
-		setupValueForReadWriterProperty();
+  @Test
+  public final void test_GetProperties_UpdatePropertyValue_PropertyUpdated() throws IllegalAccessException
+  {
+    // Modify all properties in read/write mode
+    setupValueForReadWriterProperty();
 
-		for ( Property p : properties.getProperties() )
-		{
-			if (!p.isReadOnly())
-			{
-				Assert.assertNotNull( p.getValue() );
-			}
-		}
-	}
+    for (Property p : properties.getProperties())
+    {
+      if (!p.isReadOnly())
+      {
+        Assert.assertNotNull(p.getValue());
+      }
+    }
+  }
 
-	private void setupValueForReadWriterProperty() {
-		for ( Property p : properties.getProperties() )
-		{
-			if (!p.isReadOnly())
-			{
-				p.setValue( 10 );
-			}
-		}
-	}
+  private void setupValueForReadWriterProperty()
+  {
+    for (Property p : properties.getProperties())
+    {
+      if (!p.isReadOnly())
+      {
+        p.setValue(10);
+      }
+    }
+  }
 
-	@Test
-    public void test_ToString_DescriptionClass_ValidDescription() {
-		ClassDefinition instance = new PropertiesFactorFake();
-		String expResult = "ClassName";
-		String result = instance.toString();
-		Assert.assertEquals( expResult, result );
-	}
+  @Test
+  public void test_ToString_DescriptionClass_ValidDescription()
+  {
+    ClassDefinition instance = new PropertiesFactorFake();
+    String expResult = "ClassName";
+    String result = instance.toString();
+    Assert.assertEquals(expResult, result);
+  }
 
-	// ----------------------------------------------------------
-	// Internal classes for tests
-	// ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // Internal classes for tests
+  // ----------------------------------------------------------
 
-	/**
-	 * Implementation class for properties management
-	 *
-	 * @author Tioben Neenot
-	 */
-	class PropertiesFactorFake extends ClassDefinition
-	{
+  /**
+   * Implementation class for properties management
+   *
+   * @author Tioben Neenot
+   */
+  class PropertiesFactorFake extends ClassDefinition
+  {
 
-		PropertiesFactorFake()
-		{
-			properties.put( "age", new Property( "age", false ) );
-			properties.put( "name", new Property( "name", false ) );
-			properties.put( "numSecu", new Property( "numSecu", "1234567890", true ) );
-		}
+    PropertiesFactorFake()
+    {
+      properties.put("age", new Property("age", false));
+      properties.put("name", new Property("name", false));
+      properties.put("numSecu", new Property("numSecu", "1234567890", true));
+    }
 
-		@Override
-		public String getName()
-		{
-			return "ClassName";
-		}
-	}
+    @Override
+    public String getName()
+    {
+      return "ClassName";
+    }
+  }
 }

@@ -30,7 +30,7 @@ import java.io.IOException;
  * underlying process builder returns the awaiting result, the {@link #getStandardOutput()} or {@link #getErrorOutput()} will return
  * the first line that's verifying this filter. Otherwise, the <code>ProcessScanner</code> will be activated until the
  * end of the underlying process, or if it receives a thread interrupted signal.<br><br>
- *
+ * <p>
  * It's possible to specify a specific output stream reader to use with {@link #ProcessScanner(ProcessBuilder, Rule, boolean, FactoryOutputStreamReader)} constructor. The factory uses by default is a type of {@link ProcessOutputStreamFactory}. This convenience constructor allows to define a specific output stream class reader for specific usages.
  */
 public class ProcessScanner extends Thread
@@ -61,6 +61,7 @@ public class ProcessScanner extends Thread
       }
     }, false);
   }
+
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter. Takes on first
    * occurrence or not according to <code>firstInstanceOnly</code> value.
@@ -128,9 +129,9 @@ public class ProcessScanner extends Thread
   /**
    * Builds an instance of ProcessScanner for the given process builder and the awaiting filter.
    *
-   * @param processBuilder      The process builder associated with this instance.
-   * @param filter              The predicate filter that will control the final result.
-   * @param firstInstanceOnly   Stop on first instance if <code>true</code>, <code>false</code> otherwise.
+   * @param processBuilder            The process builder associated with this instance.
+   * @param filter                    The predicate filter that will control the final result.
+   * @param firstInstanceOnly         Stop on first instance if <code>true</code>, <code>false</code> otherwise.
    * @param factoryOutputStreamReader The factory output stream to use with this instance.
    */
   public ProcessScanner(ProcessBuilder processBuilder, Rule<String> filter, boolean firstInstanceOnly, FactoryOutputStreamReader factoryOutputStreamReader)
@@ -144,6 +145,7 @@ public class ProcessScanner extends Thread
 
   /**
    * Gets the standard output result
+   *
    * @return The standard output result
    */
   public ProcessOutputReader getStandardOutput()

@@ -28,11 +28,12 @@ import org.hlib4j.concept.Rule;
  *
  * @author Tioben Neenot.
  */
-public class True implements Rule< Object >
+public class True implements Rule<Object>
 {
 
-	@Override
-    public boolean accept(Object element) {
-		return true;
-	}
+  @Override
+  public boolean accept(Object element)
+  {
+    return true;
+  }
 }

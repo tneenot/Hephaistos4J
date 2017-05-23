@@ -29,19 +29,22 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 /**
  * Unit tests based on template for ConcurrentLinkedDeque type.
  */
-public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>> {
-    @Override
-    protected void instantiateReferencesTestData() {
-        this.collectionOfThisTemplate = new ConcurrentLinkedDeque<>();
-        this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
+public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+{
+  @Override
+  protected void instantiateReferencesTestData()
+  {
+    this.collectionOfThisTemplate = new ConcurrentLinkedDeque<>();
+    this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 
-        this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
-        this.invalidCollectionValues = new ConcurrentLinkedDeque<>();
+    this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
+    this.invalidCollectionValues = new ConcurrentLinkedDeque<>();
 
-    }
+  }
 
-    // Used only to force all running tests
-    @Test
-    public void test_ForceRunAllUnitTests() {
-    }
+  // Used only to force all running tests
+  @Test
+  public void test_ForceRunAllUnitTests()
+  {
+  }
 }

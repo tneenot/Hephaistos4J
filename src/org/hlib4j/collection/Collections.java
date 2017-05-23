@@ -36,25 +36,25 @@ import java.util.Map;
  * These collections allow to avoid to write code like the following example. Imagine you want a collection with no
  * value equal to <code>5</code>. Usually developers write this functionality like this (pseudo-code): <br>
  * <br>
- * 
+ * <p>
  * <pre>
  * For all values
  * 	if(value != 5)}
  * 		collection.add(value);
  * endFor
  * </pre>
- *
+ * <p>
  * To avoid to write always the same fundamental code, here developer will use these features that are waiting with a
  * filter to control forbidden values from the original collection. The role of the filter is to control each data while
  * is adding into the collection. While the rule is defining for the new kind of collection, this rule is applying for
  * each element of the collection and silently. If filter implementation accepts a valid data, it will be inserted into
  * collection, otherwise it will be rejected. So, with our example, the same functionality will write like this: <br>
  * <br>
- * 
+ * <p>
  * <pre>
  * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, new Not&lt;Integer&gt;(5));
  * </pre>
- * 
+ * <p>
  * So each time the developer adds a value like this <code>collectionTest.add(value)</code>, all values equals to
  * <code>5</code> will not be added into the collection. It's possible for the developer to work with its
  * <code>originalCollection</code> in our example. But in this case, forbidden values can be added compare to the
@@ -63,7 +63,7 @@ import java.util.Map;
  * forbidden values he must to call {@link #clean(Collection)} or {@link #clean(Map)}. In this case all forbidden values
  * will be deleted from the original collection. Here it's another example: <br>
  * <br>
- * 
+ * <p>
  * <pre>
  * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, new Not&lt;Integer&gt;(5));
  * ... // Some other operations
@@ -71,7 +71,7 @@ import java.util.Map;
  * int nbDeletedValues = Collections.clean(collectionTest);
  * ... // other operations
  * </pre>
- * 
+ * <p>
  * This sample run a clean on all elements from originalCollection since <b>these collections are linked together</b>.
  * All <code>clean(...)</code> methods return the number of elements deleted. In our example the <code>5</code> value
  * was deleted from the <code>originalCollection</code>. Don't forget to set in the <code>clean(...)</code> method the
@@ -91,107 +91,100 @@ import java.util.Map;
 public class Collections
 {
 
-	/**
-	 * Avoid the instantiation of this class
-	 */
-	private Collections()
-	{
-		// Do nothing
-	}
+  /**
+   * Avoid the instantiation of this class
+   */
+  private Collections()
+  {
+    // Do nothing
+  }
 
-	/**
-	 * Returns a collection for which all elements are managing according to a {@link Rule} definition.
-	 *
-	 * @param <ElementType>
-	 *          The type of the element in the collection.
-	 * @param originalCollection
-	 *          The original collection on which the rule will be applied.
-	 * @param ruleForThisCollection
-   *          The {@link Rule} used to manage all elements in this collection.
+  /**
+   * Returns a collection for which all elements are managing according to a {@link Rule} definition.
+   *
+   * @param <ElementType>         The type of the element in the collection.
+   * @param originalCollection    The original collection on which the rule will be applied.
+   * @param ruleForThisCollection The {@link Rule} used to manage all elements in this collection.
    * @return The collection with a filter rule on collection elements.
-	 */
-	public static <ElementType> Collection<ElementType> makeFilteredCollection(
-			Collection<ElementType> originalCollection, Rule<ElementType> ruleForThisCollection)
-	{
-		return new FilteredCollection<>(originalCollection, ruleForThisCollection);
-	}
+   */
+  public static <ElementType> Collection<ElementType> makeFilteredCollection(
+    Collection<ElementType> originalCollection, Rule<ElementType> ruleForThisCollection)
+  {
+    return new FilteredCollection<>(originalCollection, ruleForThisCollection);
+  }
 
-	/**
-	 * Returns a list for which all elements of this list are managing according to a {@link Rule} definition.
-	 *
-	 * @param <ElementType>
-	 *          The type of the element in the list
-	 * @param originalList
-	 *          The original list on which the rule will be applied.
-	 * @param ruleForThisList
-	 *          The {@link Rule} used to manage all elements of this list.
-	 * @return The list with a filter rule on adding elements.
-	 */
-	public static <ElementType> List<ElementType> makeFilteredList(List<ElementType> originalList,
-			Rule<ElementType> ruleForThisList)
-	{
-		return new FilteredList<>(originalList, ruleForThisList);
-	}
+  /**
+   * Returns a list for which all elements of this list are managing according to a {@link Rule} definition.
+   *
+   * @param <ElementType>   The type of the element in the list
+   * @param originalList    The original list on which the rule will be applied.
+   * @param ruleForThisList The {@link Rule} used to manage all elements of this list.
+   * @return The list with a filter rule on adding elements.
+   */
+  public static <ElementType> List<ElementType> makeFilteredList(List<ElementType> originalList,
+                                                                 Rule<ElementType> ruleForThisList)
+  {
+    return new FilteredList<>(originalList, ruleForThisList);
+  }
 
-	/**
-	 * Returns a map for which all elements of this map are managing according to a {@link Rule} definition.
-	 *
-	 * @param <K>
-	 *          The key of the map
-	 * @param <V>
-	 *          The value type of the map
-	 * @param originalMap
-	 *          The original map on which the rule will be applied.
-	 * @param ruleForThisMap
-	 *          The {@link Rule} used to manage all elements in this map.
-	 * @return The map with a filter rule on adding elements.
-	 */
-	public static <K, V> Map<K, V> makeFilteredMap(Map<K, V> originalMap, Rule<V> ruleForThisMap)
-	{
-		return new FilteredMap<>(originalMap, ruleForThisMap);
-	}
+  /**
+   * Returns a map for which all elements of this map are managing according to a {@link Rule} definition.
+   *
+   * @param <K>            The key of the map
+   * @param <V>            The value type of the map
+   * @param originalMap    The original map on which the rule will be applied.
+   * @param ruleForThisMap The {@link Rule} used to manage all elements in this map.
+   * @return The map with a filter rule on adding elements.
+   */
+  public static <K, V> Map<K, V> makeFilteredMap(Map<K, V> originalMap, Rule<V> ruleForThisMap)
+  {
+    return new FilteredMap<>(originalMap, ruleForThisMap);
+  }
 
-	/**
-	 * Delete values from the collection that are not corresponding to a {@link Rule} definition. Values will be deleted
-	 * only if the collection gets a {@link Rule} implementation.
-	 *
-	 * @param collectionToClean
-	 *          Collection for which all values must be removed according to its underlying rule.
-	 * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the {@link Rule}
-	 *         definition.
-	 */
-	public static int clean(Collection<?> collectionToClean)
-	{
-		if (collectionToClean instanceof org.hlib4j.concept.Cleaner) { return cleanOn((org.hlib4j.concept.Cleaner) collectionToClean); }
+  /**
+   * Delete values from the collection that are not corresponding to a {@link Rule} definition. Values will be deleted
+   * only if the collection gets a {@link Rule} implementation.
+   *
+   * @param collectionToClean Collection for which all values must be removed according to its underlying rule.
+   * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the {@link Rule}
+   * definition.
+   */
+  public static int clean(Collection<?> collectionToClean)
+  {
+    if (collectionToClean instanceof org.hlib4j.concept.Cleaner)
+    {
+      return cleanOn((org.hlib4j.concept.Cleaner) collectionToClean);
+    }
 
-		return -1;
-	}
+    return -1;
+  }
 
-	/**
-	 * Delete values from the map that are not corresponding to a {@link Rule} definition. Values will be deleted only if
-	 * the map gets a {@link Rule} implementation.
-	 *
-	 * @param mapToClean
-	 *          Map for which all values must be removed according to its underlying rule..
-	 * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the {@link Rule}
-	 *         implementation.
-	 */
-	public static int clean(Map<?, ?> mapToClean)
-	{
-		if (mapToClean instanceof org.hlib4j.concept.Cleaner) { return cleanOn((org.hlib4j.concept.Cleaner) mapToClean); }
+  /**
+   * Delete values from the map that are not corresponding to a {@link Rule} definition. Values will be deleted only if
+   * the map gets a {@link Rule} implementation.
+   *
+   * @param mapToClean Map for which all values must be removed according to its underlying rule..
+   * @return The number of elements deleted, or <code>-1</code> if the collection doesn't contains the {@link Rule}
+   * implementation.
+   */
+  public static int clean(Map<?, ?> mapToClean)
+  {
+    if (mapToClean instanceof org.hlib4j.concept.Cleaner)
+    {
+      return cleanOn((org.hlib4j.concept.Cleaner) mapToClean);
+    }
 
-		return -1;
-	}
+    return -1;
+  }
 
-	/**
-	 * Runs a cleaner operation on the {@link org.hlib4j.concept.Cleaner} type.
-	 *
-	 * @param collectionToClean
-	 *          Element on which the cleaning will be run.
-	 * @return The number of elements removed.
-	 */
-	private static int cleanOn(org.hlib4j.concept.Cleaner collectionToClean)
-	{
-		return collectionToClean.clean();
-	}
+  /**
+   * Runs a cleaner operation on the {@link org.hlib4j.concept.Cleaner} type.
+   *
+   * @param collectionToClean Element on which the cleaning will be run.
+   * @return The number of elements removed.
+   */
+  private static int cleanOn(org.hlib4j.concept.Cleaner collectionToClean)
+  {
+    return collectionToClean.clean();
+  }
 }

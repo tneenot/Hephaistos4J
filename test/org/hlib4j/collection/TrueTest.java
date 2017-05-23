@@ -33,15 +33,16 @@ public class TrueTest
 {
 
 
-	/**
-	 * Test of accept method, of class True.
-	 */
-	@Test
-    public void test_Accept_AnyValue_ValidValue() {
-		Object e = null;
-		True instance = new True();
-		boolean expResult = true;
-		boolean result = instance.accept( e );
-		assertEquals( expResult, result );
-	}
+  /**
+   * Test of accept method, of class True.
+   */
+  @Test
+  public void test_Accept_AnyValue_ValidValue()
+  {
+    Object e = null;
+    True instance = new True();
+    boolean expResult = true;
+    boolean result = instance.accept(e);
+    assertEquals(expResult, result);
+  }
 }

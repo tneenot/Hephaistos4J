@@ -25,30 +25,30 @@
 
 <!-- Root element for classes definition -->
 <classes>
-    <!-- Class definition -->
-    <class name="ClassRef">
-        <!-- Properties definition -->
-        <properties>
-            <!-- readonly property type with default value -->
-            <property name="property_name" readonly="true">
-                Property value
-            </property>
+  <!-- Class definition -->
+  <class name="ClassRef">
+    <!-- Properties definition -->
+    <properties>
+      <!-- readonly property type with default value -->
+      <property name="property_name" readonly="true">
+        Property value
+      </property>
 
-            <!-- read/write property type with default value -->
-            <property name="prop_read_write" readonly="false">
-                Property value read write
-            </property>
+      <!-- read/write property type with default value -->
+      <property name="prop_read_write" readonly="false">
+        Property value read write
+      </property>
 
-            <!-- read/write property type with no value -->
-            <property name="prop_read_write_no_value" readonly="false"/>
-        </properties>
-    </class>
+      <!-- read/write property type with no value -->
+      <property name="prop_read_write_no_value" readonly="false"/>
+    </properties>
+  </class>
 
-    <!-- Second class for implementation test -->
-    <class name="SecondClass">
-        <properties>
-            <property name="value" readonly="true">A value</property>
-            <property name="name" readonly="false"/>
-        </properties>
-    </class>
+  <!-- Second class for implementation test -->
+  <class name="SecondClass">
+    <properties>
+      <property name="value" readonly="true">A value</property>
+      <property name="name" readonly="false"/>
+    </properties>
+  </class>
 </classes>

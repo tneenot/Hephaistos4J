@@ -33,51 +33,57 @@ import java.util.ResourceBundle;
  *
  * @author Tioben Neenot
  */
-public class JFI18NChild extends JFrame implements I18n {
+public class JFI18NChild extends JFrame implements I18n
+{
 
-    /**
-     * Serial ID
-     */
-    private static final long serialVersionUID = -7010803432954171543L;
-    /**
-     * Internal components
-     */
-    private final JLabel lblText;
+  /**
+   * Serial ID
+   */
+  private static final long serialVersionUID = -7010803432954171543L;
+  /**
+   * Internal components
+   */
+  private final JLabel lblText;
 
-    /**
-     * Create the frame.
-     */
-    public JFI18NChild() {
-        // Here adds another window same i18n manager than JFI18nTest window.
-        // JFI18NTest.i18n.add(this);
+  /**
+   * Create the frame.
+   */
+  public JFI18NChild()
+  {
+    // Here adds another window same i18n manager than JFI18nTest window.
+    // JFI18NTest.i18n.add(this);
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBounds(100, 100, 200, 100);
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setBounds(100, 100, 200, 100);
         /*
       Internal content pane
 	 */
-        JPanel contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(0, 0));
-        setContentPane(contentPane);
+    JPanel contentPane = new JPanel();
+    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    contentPane.setLayout(new BorderLayout(0, 0));
+    setContentPane(contentPane);
 
-        lblText = new JLabel();
-        contentPane.add(lblText, BorderLayout.CENTER);
-    }
+    lblText = new JLabel();
+    contentPane.add(lblText, BorderLayout.CENTER);
+  }
 
-    @Override
-    public void change(Locale l) {
-        try {
-            ResourceBundle r = ResourceBundle.getBundle(getBaseName(), l);
-            setTitle(r.getString("JFI18NChild.title"));
-            lblText.setText(r.getString("JFI18NChild.lbl.text"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  @Override
+  public void change(Locale l)
+  {
+    try
+    {
+      ResourceBundle r = ResourceBundle.getBundle(getBaseName(), l);
+      setTitle(r.getString("JFI18NChild.title"));
+      lblText.setText(r.getString("JFI18NChild.lbl.text"));
+    } catch (Exception e)
+    {
+      e.printStackTrace();
     }
+  }
 
-    @Override
-    public String getBaseName() {
-        return "org.hlib4j.samples.i18n.messages";
-    }
+  @Override
+  public String getBaseName()
+  {
+    return "org.hlib4j.samples.i18n.messages";
+  }
 }

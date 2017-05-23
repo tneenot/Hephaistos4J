@@ -31,13 +31,13 @@ import java.lang.reflect.Method;
  * only if the &lt;E&gt; type referenced from the constructor, is equal to the
  * the value type given in the {@link #accept(Object)} method. For example,
  * suppose we have a class like this:<br>
- * <pre> 
- * class A 
- * { 
+ * <pre>
+ * class A
+ * {
  *   private boolean aFlag;
- * 
+ *
  *   public A(boolean v) { aFlag = v; }
- * 
+ *
  *   public boolean isFlag() { return aFlag; }
  * }</pre>
  * <br>
@@ -66,83 +66,82 @@ import java.lang.reflect.Method;
  * @param <E> value type for comparison
  * @author Tioben Neenot
  */
-public class PredicateMethod< E > implements Rule < E >
+public class PredicateMethod<E> implements Rule<E>
 {
-	/**
-     * The property to use to compare a value
-     */
-    private String propertyName = null;
+  /**
+   * The property to use to compare a value
+   */
+  private String propertyName = null;
 
-	/**
-	 * The equal clause to gets the referenced value
-	 */
-    private Object valueFromPropertyName = null;
+  /**
+   * The equal clause to gets the referenced value
+   */
+  private Object valueFromPropertyName = null;
 
-	/**
-	 * Builds an instance of the <code>PredicateMethod</code> class.
-	 *
-	 * @param model      Model type of this class
-	 * @param methodName The method's name for the class. The value returned by this
-     *                   propertyName will be compare to the &lt;E&gt; type.
-     * @throws InvocationTargetException Invocation method error
-	 * @throws IllegalAccessException    Method invocation error
-	 * @throws IllegalArgumentException  Invocation error into given model
-	 *                                   <b>Note: </b> If method not found, a ClassCastException will be thrown.
-	 */
-	public PredicateMethod(E model, String methodName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
-		// Control if the property name exists in the element and gets the value
-		// returned by this method, as referenced value
-        this.valueFromPropertyName = isValid(model, methodName).invoke(model);
-        this.propertyName = methodName;
+  /**
+   * Builds an instance of the <code>PredicateMethod</code> class.
+   *
+   * @param model      Model type of this class
+   * @param methodName The method's name for the class. The value returned by this
+   *                   propertyName will be compare to the &lt;E&gt; type.
+   * @throws InvocationTargetException Invocation method error
+   * @throws IllegalAccessException    Method invocation error
+   * @throws IllegalArgumentException  Invocation error into given model
+   *                                   <b>Note: </b> If method not found, a ClassCastException will be thrown.
+   */
+  public PredicateMethod(E model, String methodName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
+  {
+    // Control if the property name exists in the element and gets the value
+    // returned by this method, as referenced value
+    this.valueFromPropertyName = isValid(model, methodName).invoke(model);
+    this.propertyName = methodName;
+  }
+
+  /**
+   * Controls if the propertyName exists in the element
+   *
+   * @param element      The element reference
+   * @param propertyName The property name to find
+   * @return The field found.
+   * @throws InvocationTargetException If <code>propertyName</code> doesn't exist
+   */
+  private static Method isValid(Object element, String propertyName) throws InvocationTargetException
+  {
+    try
+    {
+      return element.getClass().getMethod(propertyName);
+    } catch (NoSuchMethodException | SecurityException e)
+    {
+      throw new InvocationTargetException(null, "The " + propertyName + " doesn't exist in the "
+        + (element == null ? null : element.getClass().getName()));
+    }
+  }
+
+  /**
+   * Controls if the element <code>element</code> is conforming to the {@link Rule}.
+   * If <code>e</code> element doesn't contains the <code>propertyName</code>
+   * method a <code>ClassCastException</code> will be thrown. If method exist
+   * and invocation error is occurs, so return <code>false</code>. If
+   * <code>PredicateMethod</code> was built for a reference value only with
+   * {@link #PredicateMethod(Object, String)} constructor , so in this case accept method runs
+   * only on this value.
+   *
+   * @see Rule#accept(java.lang.Object)
+   */
+  @Override
+  public boolean accept(E element)
+  {
+    Object _target_value_from_element;
+
+    try
+    {
+      // Controls if the method name exists in the element
+      _target_value_from_element = isValid(element, this.propertyName).invoke(element);
+    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1)
+    {
+      return false;
     }
 
-    /**
-	 * Controls if the propertyName exists in the element
-	 *
-	 * @param element      The element reference
-	 * @param propertyName The property name to find
-	 * @return The field found.
-	 * @throws InvocationTargetException If <code>propertyName</code> doesn't exist
-	 */
-	private static Method isValid(Object element, String propertyName) throws InvocationTargetException
-	{
-		try
-		{
-			return element.getClass().getMethod( propertyName );
-		}
-		catch ( NoSuchMethodException | SecurityException e )
-		{
-			throw new InvocationTargetException(null, "The " + propertyName + " doesn't exist in the "
-																			+ ( element == null ? null : element.getClass().getName() ) );
-		}
-	}
-
-	/**
-     * Controls if the element <code>element</code> is conforming to the {@link Rule}.
-     * If <code>e</code> element doesn't contains the <code>propertyName</code>
-     * method a <code>ClassCastException</code> will be thrown. If method exist
-	 * and invocation error is occurs, so return <code>false</code>. If
-	 * <code>PredicateMethod</code> was built for a reference value only with
-	 * {@link #PredicateMethod(Object, String)} constructor , so in this case accept method runs
-	 * only on this value.
-	 *
-	 * @see Rule#accept(java.lang.Object)
-	 */
-	@Override
-    public boolean accept(E element) {
-        Object _target_value_from_element;
-
-        try
-        {
-            // Controls if the method name exists in the element
-            _target_value_from_element = isValid(element, this.propertyName).invoke(element);
-        }
-        catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException e1 )
-        {
-            return false;
-        }
-
-        return this.valueFromPropertyName.equals(_target_value_from_element);
-    }
+    return this.valueFromPropertyName.equals(_target_value_from_element);
+  }
 }

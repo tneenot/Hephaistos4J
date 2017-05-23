@@ -16,7 +16,7 @@ public class ProcessOutputReaderSubstituteFactory implements FactoryOutputStream
   /**
    * Builds an instance of factory with the substitute value to used to if the awaiting filter value hadn't got.
    *
-   * @param substituteRule Substitute rule to apply for this factory..
+   * @param substituteRule  Substitute rule to apply for this factory..
    * @param substituteValue Substitute value to used. Must be not <code>null</code>.
    */
   public ProcessOutputReaderSubstituteFactory(Rule<String> substituteRule, String substituteValue)

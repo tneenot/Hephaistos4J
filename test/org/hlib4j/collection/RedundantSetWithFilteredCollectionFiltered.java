@@ -29,18 +29,21 @@ import java.util.Collection;
  * Unit tests class to control {@link RedundantSet} class using as a filtered collection type. Uses this class with the {@link
  * CollectionBehaviorTest} to control the Liskov principle.
  */
-public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>> {
+public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+{
 
-    @Override
-    protected void instantiateReferencesTestData() {
-        this.collectionOfThisTemplate = new RedundantSet<>();
-        this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
-        this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
-        this.invalidCollectionValues = new RedundantSet<>();
-    }
+  @Override
+  protected void instantiateReferencesTestData()
+  {
+    this.collectionOfThisTemplate = new RedundantSet<>();
+    this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
+    this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
+    this.invalidCollectionValues = new RedundantSet<>();
+  }
 
-    @Test
-    public void test_ForceRunAllUnitTests() {
-        // Default method to force to run all unit tests due to xUnit limitation constraint.
-    }
+  @Test
+  public void test_ForceRunAllUnitTests()
+  {
+    // Default method to force to run all unit tests due to xUnit limitation constraint.
+  }
 }

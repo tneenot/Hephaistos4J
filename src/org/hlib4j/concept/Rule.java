@@ -27,7 +27,7 @@ import org.hlib4j.collection.Collections;
  * allows to attach a control on the element itself. The {@link #accept(Object)}
  * method's allows to control if an element is valid with the rule
  * implementation and can be accepted. <br><br>
- * 
+ * <p>
  * A rule can be linked to a collection for managing this collection during data
  * insertion for example.
  *
@@ -35,15 +35,15 @@ import org.hlib4j.collection.Collections;
  * @author Tioben Neenot
  * @see Collections
  */
-public interface Rule < E >
+public interface Rule<E>
 {
 
-	/**
-	 * Verifies if the element is valid according to the rule.
-	 *
-     * @param element Element to control by the rule.
-     * @return <code>true</code> if the rule implementation determines if the
-	 * element is valid, <code>false</code> otherwise.
-	 */
-    boolean accept(E element);
+  /**
+   * Verifies if the element is valid according to the rule.
+   *
+   * @param element Element to control by the rule.
+   * @return <code>true</code> if the rule implementation determines if the
+   * element is valid, <code>false</code> otherwise.
+   */
+  boolean accept(E element);
 }

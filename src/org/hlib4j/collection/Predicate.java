@@ -58,28 +58,30 @@ import org.hlib4j.util.States;
 public class Predicate<E> implements Rule<E>
 {
 
-    /**
-     * The equal clause to gets the referenced value
-     */
-    private E simpleValue = null;
+  /**
+   * The equal clause to gets the referenced value
+   */
+  private E simpleValue = null;
 
 
-    /**
-     * Builds an instance of a PredicateMethod with a value only as reference.
-     *
-     * @param simpleValue Reference value
-     */
-    public Predicate(E simpleValue) {
-        this.simpleValue = simpleValue;
-    }
+  /**
+   * Builds an instance of a PredicateMethod with a value only as reference.
+   *
+   * @param simpleValue Reference value
+   */
+  public Predicate(E simpleValue)
+  {
+    this.simpleValue = simpleValue;
+  }
 
 
-    /**
-     * @see Rule#accept(Object)
-     */
-    @Override
-    public boolean accept(E element) {
+  /**
+   * @see Rule#accept(Object)
+   */
+  @Override
+  public boolean accept(E element)
+  {
 
-        return States.isNullOrEmpty(this.simpleValue) ? this.simpleValue == element : this.simpleValue.equals(element);
-    }
+    return States.isNullOrEmpty(this.simpleValue) ? this.simpleValue == element : this.simpleValue.equals(element);
+  }
 }

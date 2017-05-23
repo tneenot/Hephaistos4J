@@ -29,19 +29,22 @@ import java.util.Collection;
 /**
  * Unit tests based on template for {@link ArrayDeque} type.
  */
-public class ArrayDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>> {
-    @Override
-    protected void instantiateReferencesTestData() {
-        this.collectionOfThisTemplate = new ArrayDeque<>();
-        this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
+public class ArrayDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+{
+  @Override
+  protected void instantiateReferencesTestData()
+  {
+    this.collectionOfThisTemplate = new ArrayDeque<>();
+    this.ruleRef = new Not<>(this.randomGenerator.getOnceValue());
 
-        this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
-        this.invalidCollectionValues = new ArrayDeque<>();
+    this.testingCollection = Collections.makeFilteredCollection(this.collectionOfThisTemplate, this.ruleRef);
+    this.invalidCollectionValues = new ArrayDeque<>();
 
-    }
+  }
 
-    // Used only to force all running tests
-    @Test
-    public void test_ForceRunInheritTests() {
-    }
+  // Used only to force all running tests
+  @Test
+  public void test_ForceRunInheritTests()
+  {
+  }
 }
