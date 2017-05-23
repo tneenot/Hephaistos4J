@@ -36,87 +36,96 @@ import java.util.ResourceBundle;
  *
  * @author Tioben Neenot
  */
-public class JF18NBis extends JFrame implements ActionListener, I18n {
+public class JF18NBis extends JFrame implements ActionListener, I18n
+{
 
-    /**
-     * Serial ID
-     */
-    private static final long serialVersionUID = -6047130304181848275L;
-    private final JLabel lblLang;
-    /**
-     * I18n manager
-     */
-    private final I18nContainer i18n;
+  /**
+   * Serial ID
+   */
+  private static final long serialVersionUID = -6047130304181848275L;
+  private final JLabel lblLang;
+  /**
+   * I18n manager
+   */
+  private final I18nContainer i18n;
 
-    /**
-     * Create the frame.
-     */
-    public JF18NBis() {
-        // I18n manager for other base name
-        i18n = new I18nContainer();
-        i18n.add(this);
+  /**
+   * Create the frame.
+   */
+  public JF18NBis()
+  {
+    // I18n manager for other base name
+    i18n = new I18nContainer();
+    i18n.add(this);
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBounds(100, 100, 250, 60);
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setBounds(100, 100, 250, 60);
 
         /*  Internal component  */
-        JPanel contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout());
-        setContentPane(contentPane);
+    JPanel contentPane = new JPanel();
+    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    contentPane.setLayout(new BorderLayout());
+    setContentPane(contentPane);
 
-        lblLang = new JLabel();
-        JComboBox<Object> cbLang = new JComboBox<>(new Object[]
-                {
-                        "Français", "English"
-                });
+    lblLang = new JLabel();
+    JComboBox<Object> cbLang = new JComboBox<>(new Object[]
+      {
+        "Français", "English"
+      });
 
-        contentPane.add(lblLang, BorderLayout.WEST);
-        contentPane.add(cbLang, BorderLayout.CENTER);
+    contentPane.add(lblLang, BorderLayout.WEST);
+    contentPane.add(cbLang, BorderLayout.CENTER);
 
-        cbLang.addActionListener(this);
-        cbLang.setSelectedIndex(1);
+    cbLang.addActionListener(this);
+    cbLang.setSelectedIndex(1);
+  }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see
+   * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+   */
+  @Override
+  public void actionPerformed(ActionEvent e)
+  {
+    @SuppressWarnings("unchecked")
+    JComboBox<Object> _box = (JComboBox<Object>) e.getSource();
+    if (_box.getSelectedItem().equals("English"))
+    {
+      i18n.change(new Locale("en", "GB"));
+    } else
+    {
+      i18n.change(new Locale("fr", "FR"));
     }
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        @SuppressWarnings("unchecked")
-        JComboBox<Object> _box = (JComboBox<Object>) e.getSource();
-        if (_box.getSelectedItem().equals("English")) {
-            i18n.change(new Locale("en", "GB"));
-        } else {
-            i18n.change(new Locale("fr", "FR"));
-        }
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.tioben.i18n.I18n#change(java.util.Locale)
+   */
+  @Override
+  public void change(Locale l)
+  {
+    try
+    {
+      ResourceBundle r = ResourceBundle.getBundle(getBaseName(), l);
+      setTitle(r.getString("JF18NBis.title"));
+      lblLang.setText(r.getString("JF18NBis.txt"));
+    } catch (Exception ignored)
+    {
     }
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.tioben.i18n.I18n#change(java.util.Locale)
-     */
-    @Override
-    public void change(Locale l) {
-        try {
-            ResourceBundle r = ResourceBundle.getBundle(getBaseName(), l);
-            setTitle(r.getString("JF18NBis.title"));
-            lblLang.setText(r.getString("JF18NBis.txt"));
-        } catch (Exception ignored) {
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.tioben.i18n.I18n#getBaseName()
-     */
-    @Override
-    public String getBaseName() {
-        return "org.hlib4j.samples.i18n.bis";
-    }
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.tioben.i18n.I18n#getBaseName()
+   */
+  @Override
+  public String getBaseName()
+  {
+    return "org.hlib4j.samples.i18n.bis";
+  }
 }
