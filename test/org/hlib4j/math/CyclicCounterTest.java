@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2017 Tioben Neenot
  *
- *  This source is distributed under conditions defines into the LICENSE file.
+ * This source is distributed under conditions defined into the LICENSE file.
  */
 
 package org.hlib4j.math;

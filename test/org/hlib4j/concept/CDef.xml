@@ -1,68 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Hephaistos 4 Java library: a library with facilities to get more concise code.
- 
- Copyright (C) 2015 Tioben Neenot
- 
- This program is free software; you can redistribute it and/or modify it under
- the terms of the GNU General Public License as published by the Free Software
- Foundation; either version 2 of the License, or (at your option) any later
- version.
- 
- This program is distributed in the hope that it will be useful, but WITHOUT
- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- details.
- 
- You should have received a copy of the GNU General Public License along with
- this program; if not, write to the Free Software Foundation, Inc., 51
- Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- 
--->
+  ~ Hephaistos 4 Java library: a library with facilities to get more concise code.
+  ~
+  ~  Copyright (C) 2017 Tioben Neenot
+  ~
+  ~ This source is distributed under conditions defined into the LICENSE file.
+  -->
 
 <!-- Document : CDef.xml Created on : 3 juillet 2009, 18:56 Author : Tioben 
 	Neenot Description: Classes definition concepts -->
 
 <!-- Root element for classes definition -->
 <classes>
-    <!-- Class definition -->
-    <class name="ClassRef">
-        <!-- Properties definition -->
-        <properties>
-            <!-- readonly property type with default value -->
-            <property name="property_name" readonly="true">
-                Property value
-            </property>
+  <!-- Class definition -->
+  <class name="ClassRef">
+    <!-- Properties definition -->
+    <properties>
+      <!-- readonly property type with default value -->
+      <property name="property_name" readonly="true">
+        Property value
+      </property>
 
-            <!-- read/write property type with default value -->
-            <property name="prop_read_write" readonly="false">
-                Property value read write
-            </property>
+      <!-- read/write property type with default value -->
+      <property name="prop_read_write" readonly="false">
+        Property value read write
+      </property>
 
-            <!-- read/write property type with no value -->
-            <property name="prop_read_write_no_value" readonly="false"/>
-        </properties>
-    </class>
+      <!-- read/write property type with no value -->
+      <property name="prop_read_write_no_value" readonly="false"/>
+    </properties>
+  </class>
 
-    <!-- Second class for implementation test -->
-    <class name="SecondClass">
-        <properties>
-            <property name="value" readonly="true">A value</property>
-            <property name="name" readonly="false"/>
-        </properties>
-    </class>
+  <!-- Second class for implementation test -->
+  <class name="SecondClass">
+    <properties>
+      <property name="value" readonly="true">A value</property>
+      <property name="name" readonly="false"/>
+    </properties>
+  </class>
 
-    <!-- Third class with different values types -->
-    <class name="ThirdClass">
-        <properties>
-            <property name="value.str" readonly="false">A value string</property>
-            <property name="value.str2" readonly="false">"Another value string"</property>
-            <property name="value.float" readonly="false">45.3f</property>
-            <property name="value.double" readonly="false">45.3</property>
-            <property name="value.int" readonly="false">45</property>
-            <property name="value.hex" readonly="false">0xff</property>
-            <property name="value.date" readonly="false">#13/05/2013#</property>
-            <property name="value.long" readonly="false">2L</property>
-        </properties>
-    </class>
+  <!-- Third class with different values types -->
+  <class name="ThirdClass">
+    <properties>
+      <property name="value.str" readonly="false">A value string</property>
+      <property name="value.str2" readonly="false">"Another value string"</property>
+      <property name="value.float" readonly="false">45.3f</property>
+      <property name="value.double" readonly="false">45.3</property>
+      <property name="value.int" readonly="false">45</property>
+      <property name="value.hex" readonly="false">0xff</property>
+      <property name="value.date" readonly="false">#13/05/2013#</property>
+      <property name="value.long" readonly="false">2L</property>
+    </properties>
+  </class>
 </classes>

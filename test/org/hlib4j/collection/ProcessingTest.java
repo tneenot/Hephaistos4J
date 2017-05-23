@@ -3,19 +3,7 @@
  *
  *  Copyright (C) 2017 Tioben Neenot
  *
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the GNU General Public License as published by the Free Software
- *  Foundation; either version 2 of the License, or (at your option) any later
- *  version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- *  details.
- *
- *  You should have received a copy of the GNU General Public License along with
- *  this program; if not, write to the Free Software Foundation, Inc., 51
- *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * This source is distributed under conditions defined into the LICENSE file.
  */
 
 package org.hlib4j.collection;
@@ -25,83 +13,93 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
-public class ProcessingTest {
+public class ProcessingTest
+{
+
+  /**
+   * Test of test method, of class Processing.
+   */
+  @Test
+  public void test_Test_ValidProcessing_True()
+  {
+    Processing<Object> instance = new ProcessingFake<>();
+    Assert.assertTrue(instance.test(new Object()));
+  }
+
+  @Test
+  public void test_Test_NullObject_False()
+  {
+    Processing<Object> instance = new ProcessingFake<>();
+    Assert.assertFalse(instance.test(null));
+  }
+
+  /**
+   * Test of perform method, of class Processing.
+   */
+  @Test
+  public void test_Perform_ValidProcessing_True()
+  {
+    Processing<Object> instance = new ProcessingFake<>();
+    Assert.assertTrue(instance.perform(new Object()));
+  }
+
+  /**
+   * Test of perform method, of class Processing.
+   */
+  @Test
+  public void test_Perform_NullObject_False()
+  {
+    Processing<Object> instance = new ProcessingFake<>();
+    Assert.assertFalse(instance.perform(null));
+  }
+
+
+  /**
+   * Implementation class for unit tests.
+   */
+  class ProcessingFake<E> extends Processing<E>
+  {
 
     /**
-     * Test of test method, of class Processing.
+     * Count if perform is calling or not.
      */
-    @Test
-    public void test_Test_ValidProcessing_True() {
-        Processing<Object> instance = new ProcessingFake<>();
-        Assert.assertTrue(instance.test(new Object()));
+    private int count = 0;
+
+    public ProcessingFake()
+    {
+      super();
     }
 
-    @Test
-    public void test_Test_NullObject_False() {
-        Processing<Object> instance = new ProcessingFake<>();
-        Assert.assertFalse(instance.test(null));
+    public ProcessingFake(Predicate<E> r)
+    {
+      super(r);
+    }
+
+    @Override
+    public boolean perform(Object e)
+    {
+      ++count;
+
+      return e != null;
+
     }
 
     /**
-     * Test of perform method, of class Processing.
+     * Evaluates this predicate on the given argument.
+     *
+     * @param e the input argument
+     * @return {@code true} if the input argument matches the predicate,
+     * otherwise {@code false}
      */
-    @Test
-    public void test_Perform_ValidProcessing_True() {
-        Processing<Object> instance = new ProcessingFake<>();
-        Assert.assertTrue(instance.perform(new Object()));
+    @Override
+    public boolean test(E e)
+    {
+      return (e != null);
     }
 
-    /**
-     * Test of perform method, of class Processing.
-     */
-    @Test
-    public void test_Perform_NullObject_False() {
-        Processing<Object> instance = new ProcessingFake<>();
-        Assert.assertFalse(instance.perform(null));
+    public int getCount()
+    {
+      return count;
     }
-
-
-    /**
-     * Implementation class for unit tests.
-     */
-    class ProcessingFake<E> extends Processing<E> {
-
-        /**
-         * Count if perform is calling or not.
-         */
-        private int count = 0;
-
-        public ProcessingFake() {
-            super();
-        }
-
-        public ProcessingFake(Predicate<E> r) {
-            super(r);
-        }
-
-        @Override
-        public boolean perform(Object e) {
-            ++count;
-
-            return e != null;
-
-        }
-
-      /**
-       * Evaluates this predicate on the given argument.
-       *
-       * @param e the input argument
-       * @return {@code true} if the input argument matches the predicate,
-       * otherwise {@code false}
-       */
-      @Override
-      public boolean test(E e)
-      {
-        return (e != null);
-      }
-
-        public int getCount() {
-            return count;
-        }
-    }
+  }
 }
