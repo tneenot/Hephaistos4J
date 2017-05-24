@@ -1,9 +1,21 @@
 /*
  *  Hephaistos 4 Java library: a library with facilities to get more concise code.
  *
- *  Copyright (C) 2017 Tioben Neenot
+ *  Copyright (C) 2016 Tioben Neenot
  *
- *  This source is distributed under conditions defined into the LICENSE file.
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the GNU General Public License as published by the Free Software
+ *  Foundation; either version 2 of the License, or (at your option) any later
+ *  version.
+ *
+ *  This program is distributed in the hope that it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ *  details.
+ *
+ *  You should have received a copy of the GNU General Public License along with
+ *  this program; if not, write to the Free Software Foundation, Inc., 51
+ *  Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 package org.hlib4j.util;
@@ -26,9 +38,19 @@ import org.hlib4j.math.RangeException;
 public class RelativeProgressStep implements ProgressStep
 {
 
-  private final Counter counter;
+  private Counter counter;
   private ProgressStep successor;
   private double progressValue;
+
+  /**
+   * Builds the default instance with a {@link #getMaxStep()} to 1.
+   *
+   * @throws RangeException Exception due to self implementation. If this exception is thrown, that's meaning an internal conception failure was occured !
+   */
+  public RelativeProgressStep() throws RangeException
+  {
+    this(1);
+  }
 
   /**
    * Builds an instance of RelativeProgressStep with the maximum step for this progress.
@@ -40,6 +62,27 @@ public class RelativeProgressStep implements ProgressStep
   {
     this.counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 1, maxSteps, 1);
     this.successor = null;
+  }
+
+  /**
+   * Gets the maximum step value for this instance.
+   *
+   * @return Maximum step value for this instance;
+   */
+  public int getMaxStep()
+  {
+    return this.counter.getUpperLimitValue();
+  }
+
+  /**
+   * Sets a new maximum step value for this instance. The internal counter is reinitialize with default 1 value as minimum.
+   *
+   * @param maxSteps Maximum step value
+   * @throws RangeException If maximum steps value is &lt;= 0.
+   */
+  public void setMaxStep(int maxSteps) throws RangeException
+  {
+    this.counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 1, maxSteps, 1);
   }
 
   @Override
@@ -86,14 +129,6 @@ public class RelativeProgressStep implements ProgressStep
     return this.counter.isValid();
   }
 
-  private void initializeProgressValueAccordingToCounterValidStatus()
-  {
-    if (this.counter.isValid())
-    {
-      this.progressValue = 0;
-    }
-  }
-
   @Override
   public boolean previousStep()
   {
@@ -115,4 +150,11 @@ public class RelativeProgressStep implements ProgressStep
     return this.counter.getCurrentValue();
   }
 
+  private void initializeProgressValueAccordingToCounterValidStatus()
+  {
+    if (this.counter.isValid())
+    {
+      this.progressValue = 0;
+    }
+  }
 }
