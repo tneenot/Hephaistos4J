@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 /**
  * Unit tests based on template for ConcurrentLinkedDeque type.
  */
-public class ConcurrentLinkedDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+public class ConcurrentLinkedDequeTestFiltered extends TemplateTestCollectionFilteredBehavior<Collection<Integer>, Not<Integer>>
 {
   @Override
   protected void instantiateReferencesTestData()

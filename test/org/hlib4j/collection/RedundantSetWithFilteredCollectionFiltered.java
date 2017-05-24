@@ -16,7 +16,7 @@ import java.util.Collection;
  * Unit tests class to control {@link RedundantSet} class using as a filtered collection type. Uses this class with the {@link
  * CollectionBehaviorTest} to control the Liskov principle.
  */
-public class RedundantSetWithFilteredCollectionFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+public class RedundantSetWithFilteredCollectionFiltered extends TemplateTestCollectionFilteredBehavior<Collection<Integer>, Not<Integer>>
 {
 
   @Override

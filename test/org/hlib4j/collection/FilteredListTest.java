@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Unit tests on a collection List managed by {@link Collections#makeFilteredList(List, Rule)} with data.
  */
-public class FilteredListTest extends CollectionFilteredBehaviorTest<List<Integer>, Not<Integer>>
+public class FilteredListTest extends TemplateTestCollectionFilteredBehavior<List<Integer>, Not<Integer>>
 {
 
   @Override

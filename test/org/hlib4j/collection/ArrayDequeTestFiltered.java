@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * Unit tests based on template for {@link ArrayDeque} type.
  */
-public class ArrayDequeTestFiltered extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+public class ArrayDequeTestFiltered extends TemplateTestCollectionFilteredBehavior<Collection<Integer>, Not<Integer>>
 {
   @Override
   protected void instantiateReferencesTestData()

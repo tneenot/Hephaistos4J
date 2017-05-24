@@ -12,9 +12,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit tests to test the definition domain interface itself with the {@link DefinitionDomainBehaviorTest}.
+ * Unit tests to test the definition domain interface itself with the {@link TemplateTestDefinitionDomainBehavior}.
  */
-public class DefinitionDomainInterfaceTest extends DefinitionDomainBehaviorTest<DefinitionDomain<Integer>, Integer>
+public class DefinitionDomainInterfaceTest extends TemplateTestDefinitionDomainBehavior<DefinitionDomain<Integer>, Integer>
 {
   @Override
   public void setUp() throws Exception

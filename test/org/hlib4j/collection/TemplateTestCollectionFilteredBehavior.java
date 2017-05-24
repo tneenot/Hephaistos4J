@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Unit tests on a collection List managed by {@link Collections#makeFilteredList(List, Rule)} with data.
  */
-public abstract class CollectionFilteredBehaviorTest<C extends java.util.Collection<Integer>, R extends Rule> extends CollectionBehaviorTest<C>
+public abstract class TemplateTestCollectionFilteredBehavior<C extends java.util.Collection<Integer>, R extends Rule> extends CollectionBehaviorTest<C>
 {
 
   protected R ruleRef = null;

@@ -17,7 +17,7 @@ import java.util.Vector;
 /**
  * Unit test classes for a {@link Vector} class type.
  */
-public class CollectionFilteredTest extends CollectionFilteredBehaviorTest<Collection<Integer>, Not<Integer>>
+public class CollectionFilteredTest extends TemplateTestCollectionFilteredBehavior<Collection<Integer>, Not<Integer>>
 {
 
   @Override

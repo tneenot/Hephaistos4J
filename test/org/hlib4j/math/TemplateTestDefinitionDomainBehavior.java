@@ -17,7 +17,7 @@ import org.junit.Test;
  * Template tests for {@link DefinitionDomain} class implementation. This template tests class allows to control the
  * behavior for all implementations classes.
  */
-public abstract class DefinitionDomainBehaviorTest<D extends DefinitionDomain<T>, T>
+public abstract class TemplateTestDefinitionDomainBehavior<D extends DefinitionDomain<T>, T>
 {
 
   protected D definitionDomainTesting = null;
@@ -72,7 +72,7 @@ public abstract class DefinitionDomainBehaviorTest<D extends DefinitionDomain<T>
 }
 
 /**
- * This class is using for {@link DefinitionDomainBehaviorTest} self tests. It's allowing to control that tests of template are conforms
+ * This class is using for {@link TemplateTestDefinitionDomainBehavior} self tests. It's allowing to control that tests of template are conforms
  * to the awaiting results to ensure valid definition for all {@link DefinitionDomain} implementation.
  */
 class DefinitionDomainFake extends DefinitionDomain<Integer>
@@ -105,9 +105,9 @@ class DefinitionDomainFake extends DefinitionDomain<Integer>
 }
 
 /**
- * This class is using for {@link DefinitionDomainBehaviorTest} self tests. It's allowing to control that tests of template are conforms
+ * This class is using for {@link TemplateTestDefinitionDomainBehavior} self tests. It's allowing to control that tests of template are conforms
  * to the awaiting results to ensure valid definition for all {@link DefinitionDomain} implementation. This class return always false for
- * its methods, for self {@link DefinitionDomainBehaviorTest} self control.
+ * its methods, for self {@link TemplateTestDefinitionDomainBehavior} self control.
  */
 class DefinitionDomainAlwaysFalseFake extends DefinitionDomain<Integer>
 {
