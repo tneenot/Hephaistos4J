@@ -8,6 +8,7 @@
 
 package org.hlib4j.io.process;
 
+import org.hlib4j.concept.Rule;
 import org.hlib4j.math.Counter;
 import org.hlib4j.util.States;
 
@@ -27,6 +28,7 @@ public class ProcessDelay implements Runnable
 {
   private final ProcessScanner processScanner;
   private final Counter counterDelay;
+  private final Rule<ProcessScanner> validateRule;
   private FutureTask<ProcessScanner> futureTask;
   private ExecutorService executorService;
 
@@ -39,8 +41,30 @@ public class ProcessDelay implements Runnable
    */
   public ProcessDelay(ProcessScanner processScanner, Counter counterDelay)
   {
+    this(processScanner, counterDelay, new Rule<ProcessScanner>()
+    {
+      @Override
+      public boolean accept(ProcessScanner processScanner)
+      {
+        return (!States.isNullOrEmpty(processScanner.getStandardOutput().getOutputResult()) || !States.isNullOrEmpty(processScanner
+          .getErrorOutput().getOutputResult()));
+      }
+    });
+  }
+
+  /**
+   * Builds an instance of the process delay for the process scanner. The {@link Counter} class is using to
+   * specify the way of the timeout will be managed.
+   *
+   * @param processScanner Process scanner that will proceed the underlying command.
+   * @param counterDelay   The counter delay for this controller.
+   * @param validateRule   Rule to use to validate the {@link ProcessScanner} command result. This constructor is using while it's necessary to get specific validation rule for the underlying command.
+   */
+  public ProcessDelay(ProcessScanner processScanner, Counter counterDelay, Rule<ProcessScanner> validateRule)
+  {
     this.processScanner = processScanner;
     this.counterDelay = counterDelay;
+    this.validateRule = States.validate(validateRule);
   }
 
 
@@ -68,8 +92,7 @@ public class ProcessDelay implements Runnable
         {
           processScanner.run();
 
-          if ((States.isNullOrEmpty(processScanner.getStandardOutput().getOutputResult()) && States.isNullOrEmpty(processScanner
-            .getErrorOutput().getOutputResult())) && counterDelay.isValid())
+          if (!validateRule.accept(processScanner) && counterDelay.isValid())
           {
             counterDelay.increment();
             try

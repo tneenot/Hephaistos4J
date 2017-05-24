@@ -8,6 +8,7 @@
 
 package org.hlib4j.io.process;
 
+import org.hlib4j.concept.Rule;
 import org.hlib4j.math.Counter;
 import org.hlib4j.math.RangeException;
 import org.hlib4j.time.TimeFlow;
@@ -146,6 +147,32 @@ public class ProcessDelayTest
     }
     process_delay.interrupt();
     process_delay.interrupt();
+  }
+
+  @Test
+  public void test_Constructor_WithSpecificRule_RuleAccepted()
+  {
+    ProcessDelay process_delay = new ProcessDelay(new ProcessScanner(new ProcessBuilder("ping", "-r", "10.10.10.134"),
+      "unreachable"), internalCounter, new Rule<ProcessScanner>()
+    {
+      @Override
+      public synchronized boolean accept(ProcessScanner element)
+      {
+        return true;
+      }
+    });
+
+    Thread waiting_thread = new Thread(process_delay);
+    waiting_thread.start();
+    try
+    {
+      waiting_thread.join(5000);
+    } catch (InterruptedException e)
+    {
+      // Do nothing
+    }
+
+    Assert.assertEquals(0, internalCounter.getCurrentValue().intValue());
   }
 
 }
