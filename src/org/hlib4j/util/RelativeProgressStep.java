@@ -26,9 +26,19 @@ import org.hlib4j.math.RangeException;
 public class RelativeProgressStep implements ProgressStep
 {
 
-  private final Counter counter;
+  private Counter counter;
   private ProgressStep successor;
   private double progressValue;
+
+  /**
+   * Builds the default instance with a {@link #getMaxStep()} to 1.
+   *
+   * @throws RangeException Exception due to self implementation. If this exception is thrown, that's meaning an internal conception failure was occured !
+   */
+  public RelativeProgressStep() throws RangeException
+  {
+    this(1);
+  }
 
   /**
    * Builds an instance of RelativeProgressStep with the maximum step for this progress.
@@ -40,6 +50,27 @@ public class RelativeProgressStep implements ProgressStep
   {
     this.counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 1, maxSteps, 1);
     this.successor = null;
+  }
+
+  /**
+   * Gets the maximum step value for this instance.
+   *
+   * @return Maximum step value for this instance;
+   */
+  public int getMaxStep()
+  {
+    return this.counter.getUpperLimitValue();
+  }
+
+  /**
+   * Sets a new maximum step value for this instance. The internal counter is reinitialize with default 1 value as minimum.
+   *
+   * @param maxSteps Maximum step value
+   * @throws RangeException If maximum steps value is &lt;= 0.
+   */
+  public void setMaxStep(int maxSteps) throws RangeException
+  {
+    this.counter = new Counter(DefinitionDomain.LimitType.BOTH_CLOSE, 1, maxSteps, 1);
   }
 
   @Override

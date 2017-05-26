@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Created by TiobenNeenot on 01/07/2016.
+ * Unit test for {@link RelativeProgressStep} class.
  */
 public class RelativeProgressStepTest
 {
@@ -220,5 +220,40 @@ public class RelativeProgressStepTest
     relativeProgressStep.previousStep();
 
     Assert.assertEquals(1, relativeProgressStep.getCurrentStep());
+  }
+
+  @Test
+  public void test_GetMaxStep_GetMaximumSteps_AccordingToConstructorValue() throws Exception
+  {
+    Assert.assertEquals(4, relativeProgressStep.getMaxStep());
+  }
+
+  @Test
+  public void test_SetMaxStep_DefineNewMaxStepValue_MaxStepsValueUpdated() throws Exception
+  {
+    relativeProgressStep.setMaxStep(5);
+
+    Assert.assertEquals(5, relativeProgressStep.getMaxStep());
+  }
+
+  @Test(expected = RangeException.class)
+  public void test_SetMaxStep_ZeroMaxSteps_ExceptionAwaiting() throws Exception
+  {
+    relativeProgressStep.setMaxStep(0);
+  }
+
+  @Test
+  public void test_SetMaxStep_DefineNewMaxStepAfterIncrement_CurrentStepValueIsOneValue() throws Exception
+  {
+    relativeProgressStep.nextStep();
+    relativeProgressStep.setMaxStep(2);
+
+    Assert.assertEquals(1, relativeProgressStep.getCurrentStep());
+  }
+
+  @Test
+  public void test_Constructor_DefaultConstructor_BuildWithoutError() throws Exception
+  {
+    new RelativeProgressStep();
   }
 }
