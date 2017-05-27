@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2017 Tioben Neenot
  *
- * This source is distributed under conditions defined into the LICENSE file.
+ *  This source is distributed under conditions defined into the LICENSE file.
  */
 
 package org.hlib4j.collection;
@@ -25,32 +25,32 @@ import java.util.function.Predicate;
  * These collections allow to avoid to write code like the following example. Imagine you want a collection with no
  * odd value. Usually developers write this functionality like this (pseudo-code): <br>
  * <br>
- * <p>
+ *
  * <pre>
  * For all values
  * 	if(value%2 == 0)
  * 		collection.add(value);
  * endFor
  * </pre>
- * <p>
+ *
  * To avoid to write always the same fundamental code, here developer will use these features that are waiting with a
  * filter to control forbidden values from the original collection. The role of the filter is to control each data while
  * is adding into the collection. While the rule is defining for the new kind of collection, this rule is applying for
  * each element of the collection and silently. If filter implementation accepts a valid data, it will be inserted into
  * collection, otherwise it will be rejected. So, with our example, the same functionality will write like this: <br>
  * <br>
- * <p>
+ *
  * <pre>
  * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, (n) -&gt; n%2 == 0 );
  * </pre>
- * <p>
+ *
  * So each time the developer adds a value like this <code>collectionTest.add(value)</code>, all values that are not even  will not be added into the collection. It's possible for the developer to work with its
  * <code>originalCollection</code> in our example. But in this case, forbidden values can be added compare to the
  * managed <code>collectionTest</code>. This choice can be made for performance reason according to the filter used
  * (e.g: a filter with a complex filter algorithm). If the developer wants to clean its <code>originalCollection </code> for all forbidden values he must to call {@link #clean(Collection)} or {@link #clean(Map)}. In this case all forbidden values
  * will be deleted from the original collection, since the <code>collectionTest</code> and <code>originalCollection</code> are linked together. Here it's another example: <br>
  * <br>
- * <p>
+ *
  * <pre>
  * Collection&lt;Integer&gt; collectionTest = Collections.makeFilteredCollection(originalCollection, (n) -&gt; n%2 == 0 );
  * ... // Some other operations
