@@ -117,8 +117,9 @@ public class ProcessOutputReader extends Thread
         {
           stringBuffer.append(element).append('\n');
           occurrenceCounter.increment();
+          return true;
         }
-        return (occurrenceCounter.isValid() && filter.test(element));
+        return false;
       }
     };
   }
