@@ -14,8 +14,8 @@ import org.hlib4j.math.RangeException;
 import java.util.*;
 
 /**
- * Collection of elements with redundant elements authorized. This collection doesn't each duplicate element as an specific
- * instance, but register only the first instance as reference element. All other same elements are counted as a supplementary
+ * Collection of elements with redundant elements authorized. This collection doesn't take each duplicate element as an specific
+ * instance, but register only the first instance as reference element. All other same elements are computed as a supplementary
  * instance without recorded them. That's meaning in the internal representation, the element is recorded once. Other elements
  * are counted as supplementary instance, but the effective instance will not be setting into the collection.<br><br>
  * <p>
@@ -57,14 +57,14 @@ public class RedundantSet<T> extends AbstractSet<T>
   @Override
   public int size()
   {
-    int _real_size = 0;
+    int real_size = 0;
 
     for (T _element : this.internalRedundantValues.keySet())
     {
-      _real_size += this.countElementFor(_element);
+      real_size += this.countElementFor(_element);
     }
 
-    return _real_size;
+    return real_size;
   }
 
   public boolean add(T value)
@@ -108,19 +108,19 @@ public class RedundantSet<T> extends AbstractSet<T>
   @Override
   public boolean removeAll(Collection<?> otherCollection)
   {
-    boolean _are_some_removing = false;
+    boolean are_some_removing = false;
     for (Object _element : otherCollection)
     {
-      _are_some_removing |= this.remove(_element);
+      are_some_removing |= this.remove(_element);
     }
 
-    return _are_some_removing;
+    return are_some_removing;
   }
 
   @Override
   public boolean retainAll(Collection<?> otherCollection)
   {
-    boolean _are_some_retaining = false;
+    boolean are_some_retaining = false;
     List<T> _duplicate_for_loop = (List<T>) Arrays.asList(this.internalRedundantValues.keySet().toArray());
     for (Object _element : _duplicate_for_loop)
     {
@@ -129,11 +129,11 @@ public class RedundantSet<T> extends AbstractSet<T>
         this.internalRedundantValues.remove(_element);
       } else
       {
-        _are_some_retaining = true;
+        are_some_retaining = true;
       }
     }
 
-    return _are_some_retaining;
+    return are_some_retaining;
   }
 
   @Override
