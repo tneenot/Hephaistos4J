@@ -146,7 +146,7 @@ public class StatesTest
   @Test
   public void test_isOneNullOrEmpty_NullParameter_IsNull()
   {
-    Assert.assertTrue(States.isOneNullOrEmpty(null));
+    Assert.assertTrue(States.isOneNullOrEmpty((Object) null));
   }
 
   @Test

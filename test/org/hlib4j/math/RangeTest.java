@@ -30,7 +30,7 @@ public class RangeTest
     RandomGenerator _random = new RandomGenerator();
     validValue = _random.getIsolatedValue();
 
-    rangeInTest = new Range(DefinitionDomain.LimitType.BOTH_CLOSE, validValue, validValue + RANGE_VALUES);
+    rangeInTest = new Range<>(DefinitionDomain.LimitType.BOTH_CLOSE, validValue, validValue + RANGE_VALUES);
     validValue += 1;
   }
 
